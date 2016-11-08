@@ -3,5 +3,8 @@ import {Athletics} from './competition_types/athletics.js';
 export {CompetitionTypes};
 
 let CompetitionTypes = [
-    Athletics
+    {
+        id: 'ct_athletics',
+        object: Athletics
+    }
 ];
