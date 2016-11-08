@@ -1,6 +1,6 @@
-import { Athletics } from './competition_types/athletics.js';
+import {Athletics} from './competition_types/athletics.js';
 
-export { CompetitionTypes };
+export {CompetitionTypes};
 
 let CompetitionTypes = [
     Athletics

@@ -1,7 +1,7 @@
-export { Athletics };
+export {Athletics};
 
 let Athletics = {
-    getSports: function() {
+    getSports: function () {
         return ['SPRINT', 'TEST'];
     }
 };
