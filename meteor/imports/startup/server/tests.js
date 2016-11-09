@@ -12,6 +12,6 @@ export function tests() {
     console.log(p.getShortName());
 
     for (var n in _.range(10)) {
-        console.log(genRandomPassword(100))
+        console.log(genRandomPassword(100));
     }
 }

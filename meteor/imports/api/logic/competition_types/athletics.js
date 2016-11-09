@@ -45,6 +45,6 @@ let Athletics = {
         return {
             'Allgemein': '',
             'Bewertung': ''
-        }
+        };
     },
 };

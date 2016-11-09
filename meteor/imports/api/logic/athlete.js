@@ -17,10 +17,10 @@ function Athlete(first_name, last_name, age, is_male, group, handicap) {
 }
 
 Athlete.prototype.checkPerson = function() {
-    return typeof(this.first_name) == 'string' && this.first_name != "" &&
-           typeof(this.last_name)  == 'string' && this.last_name  != "" &&
+    return typeof(this.first_name) == 'string' && this.first_name !== "" &&
+        typeof(this.last_name) == 'string' && this.last_name !== "" &&
            typeof(this.age)  == 'number' && this.age  > 0 &&
-           typeof(this.is_male)  == 'boolean'
+        typeof(this.is_male) == 'boolean';
 };
 
 Athlete.prototype.getFullName = function() {
