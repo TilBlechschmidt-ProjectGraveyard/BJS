@@ -23,3 +23,4 @@ insecure@1.0.7                # Allow all DB writes from clients (for prototypin
 erasaur:meteor-lodash
 jshint@1.1.7
 appcache@1.0.12
+ground:db
