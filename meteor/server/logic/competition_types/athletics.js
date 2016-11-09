@@ -4,8 +4,8 @@ let Athletics = {
     getSports: function () {
         return [
             {
-                name: 'Sprint',
-                id: 'sp_sprint',
+                name: 'Sprint 50m',
+                id: 'sp_sprint_50',
                 select_electronic: true,
                 description: ''
             },
@@ -18,12 +18,11 @@ let Athletics = {
         ];
     },
 
-    /// data is an array of objects with id (view getSports) and score
-    // example: [{id: 'sp_sprint', score: 16}]
-    validate: function (data) {
+
+    validate: function (athlete) {
         var result = [];
 
-        for (var sport in data) {
+        for (var sport in athlete.data) {
             if (sport.value > 0) {
                 result.push(sport.id);
             }
@@ -33,6 +32,10 @@ let Athletics = {
     },
 
     calculate: function (data) {
+
+    },
+
+    check_configuration: function (config_data) {
 
     },
 
