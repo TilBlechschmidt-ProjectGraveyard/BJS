@@ -13,25 +13,60 @@ let Athletics = {
 
 
     /**
-     * Validates the data of an athlete and adds more information to it. A copy of the data is returned.
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param athlete
+     * @param group_private_hash
+     * @param write_private_hash
      * @returns {Array}
      */
-    getValidData: function (athlete) {
-        let sports = this.getSports(); //TODO add age and handicap check
+    getValidData: function (athlete, group_private_hash, write_private_hash) {
+        let sports = this.getSports(); //TODO add handicap check
 
-        return _.map(_.filter(athlete.data, function (data_value) {
+        var [tmp_data, log] = athlete.data.getPlain(group_private_hash, write_private_hash);
+
+        // filter data with more then on point
+        tmp_data = _.filter(tmp_data, function (data_value) {
             return data_value.measurement > 0;
-        }), function (data_value) {
+        });
+
+
+        // add information to the data.
+        tmp_data = _.map(tmp_data, function (data_value) {
+
             var base_information = _.find(sports, function (st) {
-                return st.id == data_value.st_id;
+                return st.id === data_value.st_id;
             });
+            if (!base_information) {
+                log.addError(data_value.st_id + " is not a valid sport type id.");
+                return undefined;
+            }
             return {
                 st_id: data_value.st_id,
                 category: base_information.category,
+                age_w: base_information.age_w,
+                age_m: base_information.age_m,
                 measurement: data_value.measurement
             };
         });
+
+        // filter undefined and wrong age
+        tmp_data = _.filter(tmp_data, function (data_value) {
+
+            if (data_value == undefined) {
+                return false;
+            }
+            var age_set = athlete.is_male ? data_value.age_m : data_value.age_w;
+
+            console.log(age_set);
+
+            if (_.indexOf(age_set, athlete.age) == -1) {
+                log.addWarning(athlete.getFullName() + " does not have a valid age for " + data_value.name + ".");
+                return false;
+            }
+            return true;
+        });
+
+        return [tmp_data, log];
     },
 
     /**
@@ -40,15 +75,19 @@ let Athletics = {
      * @returns {boolean}
      */
     validate: function (athlete) {
-        var validData = this.getValidData(athlete);
+        var [validData, log] = this.getValidData(athlete);
+        console.log(validData);
         var categories = [false, false, false, false];
         for (var st in validData) {
             categories[validData[st].category] = true;
         }
 
-        return 3 <= _.filter(categories, function (category) {
+        return [
+            3 <= _.filter(categories, function (category) {
                 return category;
-            }).length;
+            }).length,
+            log
+        ];
     },
 
     calculate: function (data) {

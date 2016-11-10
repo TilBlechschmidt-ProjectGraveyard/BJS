@@ -35,9 +35,9 @@ Athlete.prototype = {
      */
     check: function () {
         return 1 * (typeof(this.first_name) != 'string') +
-            2 * (this.first_name == "") +
+            2 * (this.first_name === "") +
             4 * (typeof(this.last_name) != 'string') +
-            8 * (this.last_name == "") +
+            8 * (this.last_name === "") +
             16 * (typeof(this.age_group) != 'number') +
             32 * (this.age_group <= 1900) +
             64 * (typeof(this.is_male) != 'boolean');

@@ -1,3 +1,5 @@
+import {Log} from "../log";
+
 export {Data};
 
 //TODO daten löschen ohne dafür berechtigt zu sein ist möglich.
@@ -13,19 +15,22 @@ function Data() {
 
 Data.prototype = {
     /**
-     * Returns the data in plain text. Without the write_private_hash the data is just decrypted without write permission check.
+     * Returns the data in plain text. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param {string} group_private_hash
      * @param {string} [write_private_hash=undefined]
      * @returns {Array}
      */
-    get_plain: function (group_private_hash, write_private_hash) {
-        return _.map(this.data, function (data_value) {
-            return {
-                st_id: data_value.encrypted_st_id, //TODO decrypt
-                measurement: data_value.measurement, //TODO implement encryption and signature check
-                error_code: 0
-            };
-        });
+    getPlain: function (group_private_hash, write_private_hash) {
+        var log = new Log();
+        return [
+            _.map(this.data, function (data_value) {
+                return {
+                    st_id: data_value.encrypted_st_id, //TODO decrypt
+                    measurement: data_value.measurement, //TODO implement encryption and signature check
+                };
+            }),
+            log
+        ];
     },
 
     /**
@@ -44,7 +49,7 @@ Data.prototype = {
             old_data.measurement = new_encrypted_measurement;
         } else {
             this.data.push({
-                st_id: encrypted_st_id,
+                encrypted_st_id: encrypted_st_id,
                 measurement: new_encrypted_measurement,
                 signature_write: "", //TODO implement signature
                 signature_group: "" //TODO implement signature
