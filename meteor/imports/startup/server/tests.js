@@ -1,6 +1,6 @@
 import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
-import {genRandomPassword} from "./pwdgen";
+import {genRandomCode} from "../../api/crypto/pwdgen";
 import {generateHMAC, generateAC} from "../../api/crypto/crypto";
 
 export function tests() {
@@ -12,8 +12,9 @@ export function tests() {
     console.log(p.getFullName());
     console.log(p.getShortName());
 
+
     for (var n in _.range(10)) {
-        console.log(genRandomPassword(100));
+        console.log(genRandomCode());
     }
 
     var HMAC = generateHMAC("Hi there!", "123456798");
