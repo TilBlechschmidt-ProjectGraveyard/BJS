@@ -6,12 +6,11 @@ export {genRandomCode, genRandomString};
 
 let words_de = require('./../../data/words_de.json');
 
-
 function genRandomString(length) {
     var pass = "";
-    for (var i in _.range(length)) {
-        pass += genRandomInt(33, 127);
-    }
+    // for (var i in _.range(length)) {
+    //     pass += genRandomInt(33, 127);
+    // }
     return pass;
 }
 

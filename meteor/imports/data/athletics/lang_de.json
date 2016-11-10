@@ -1,0 +1,15 @@
+{
+  "sport_types": [
+    "Sprint",
+    "Lauf",
+    "Sprung",
+    "Wurf oder Stoß"
+  ],
+  "error_msg": {
+    "missing_types": [
+      "Der Sportler {long_name} hat noch keinen der drei Pfichtbereiche abgedeckt.",
+      "Der Sportler {long_name} hat nur einen der drei Pfichtbereiche abgedeckt.",
+      "Der Sportler {long_name} hat nur zwei der drei Pfichtbereiche abgedeckt."
+    ]
+  }
+}
