@@ -12,7 +12,7 @@ function Athlete(first_name, last_name, age_group, is_male, group, handicap) {
     this.group = group;
     this.handicap = handicap;
     /// data is an array of objects with id (view getSports) and measurement
-    // example: [{id: 'sp_sprint', measurement: 16}]
+    // example: [{id: 'st_sprint', measurement: 16}]
     this.data = [];
 }
 

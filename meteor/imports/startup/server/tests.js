@@ -15,11 +15,11 @@ export function tests() {
 
     p.data = [
         {
-            id: "sp_sprint_50",
+            id: "st_sprint_50",
             measurement: 10.2
         },
         {
-            id: "sp_long_jump",
+            id: "st_long_jump",
             measurement: 3.4
         }
     ];

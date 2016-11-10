@@ -14,8 +14,8 @@ let Athletics = {
         return _.map(_.filter(athlete.data, function (data_value) {
             return data_value.measurement > 0;
         }), function (data_value) {
-            var base_information = _.find(sports, function (sp) {
-                return sp.id == data_value.id;
+            var base_information = _.find(sports, function (st) {
+                return st.id == data_value.id;
             });
             return {
                 id: data_value.id,
@@ -28,8 +28,8 @@ let Athletics = {
     validate: function (athlete) {
         var validData = this.getValidData(athlete);
         var categories = [false, false, false, false];
-        for (var sp in validData) {
-            categories[validData[sp].category] = true;
+        for (var st in validData) {
+            categories[validData[st].category] = true;
         }
 
         return 3 <= _.filter(categories, function (category) {
