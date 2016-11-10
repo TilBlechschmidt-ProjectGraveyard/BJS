@@ -1,6 +1,10 @@
 export {Data};
 
 //TODO daten löschen ohne dafür berechtigt zu sein ist möglich.
+/**
+ * Creates an empty Data object. The information in the Data object are encrypted. To read/write you always need the group_private_hash.
+ * @constructor
+ */
 function Data() {
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{encrypted_st_id: encrypted('st_sprint'), measurement: encrypted(16), signature_write: <signature>, signature_group: <signature>}]
@@ -8,7 +12,13 @@ function Data() {
 }
 
 Data.prototype = {
-    get_plain: function (write_private_hash, group_private_hash) {
+    /**
+     * Returns the data in plain text. Without the write_private_hash the data is just decrypted without write permission check.
+     * @param {string} group_private_hash
+     * @param {string} [write_private_hash=undefined]
+     * @returns {Array}
+     */
+    get_plain: function (group_private_hash, write_private_hash) {
         return _.map(this.data, function (data_value) {
             return {
                 st_id: data_value.encrypted_st_id, //TODO decrypt
@@ -18,8 +28,14 @@ Data.prototype = {
         });
     },
 
-
-    update: function (st_id, new_measurement, write_private_hash, group_private_hash) { //TODO implement encryption
+    /**
+     * Updates the data of a given st_id.
+     * @param {string} st_id
+     * @param {number} new_measurement
+     * @param {string} group_private_hash
+     * @param {string} write_private_hash
+     */
+    update: function (st_id, new_measurement, group_private_hash, write_private_hash) { //TODO implement encryption
         var encrypted_st_id = st_id; //TODO implement encryption
         var new_encrypted_measurement = new_measurement; //TODO implement encryption
 

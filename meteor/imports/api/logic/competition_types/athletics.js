@@ -4,7 +4,7 @@ let lang = require('./../../../data/athletics/lang_de.json');
 
 let Athletics = {
     /**
-     * Returns a list of sport types associated with athletics.
+     * Returns a list of sport types associated with the ct athletics.
      * @returns {{id: string, name: string, category: number, description: string, age_w: number[], age_m: number[]}[]}
      */
     getSports: function () {
@@ -34,6 +34,11 @@ let Athletics = {
         });
     },
 
+    /**
+     * Returns whether an athlete is already finished.
+     * @param athlete
+     * @returns {boolean}
+     */
     validate: function (athlete) {
         var validData = this.getValidData(athlete);
         var categories = [false, false, false, false];
@@ -50,10 +55,17 @@ let Athletics = {
 
     },
 
+    /**
+     * Returns an array of all ages which can be part of the BJS with the given configuration.
+     * @param config_data
+     */
     check_configuration: function (config_data) {
 
     },
 
+    /**
+     * Returns information about the ct athletics.
+     */
     getInformation: function () {
         return require('./../../../data/athletics/information.json');
     },
