@@ -2,7 +2,7 @@ export {Athletics};
 
 let Athletics = {
     getSports: function () {
-        return require('./../../data/athletics_sports.json');
+        return require('./../../../data/athletics_sports.json');
     },
 
 
@@ -27,6 +27,6 @@ let Athletics = {
     },
 
     getInformation: function () {
-        return require('./../../data/athletics_information.json');
+        return require('./../../../data/athletics_information.json');
     },
 };
