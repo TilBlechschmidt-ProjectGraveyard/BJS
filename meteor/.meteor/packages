@@ -24,4 +24,10 @@ erasaur:meteor-lodash
 jshint@1.1.7
 appcache@1.0.12
 ground:db
-icellan:sjcl
+jparker:crypto-core
+jparker:crypto-hmac
+jparker:crypto-sha256
+jparker:crypto-mode
+jparker:crypto-cipher-core
+jparker:crypto-padding
+jparker:crypto-aes
