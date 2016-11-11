@@ -4,408 +4,648 @@
     "name": "Sprint 50m (Elektronische Zeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ],
-    "age_m": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ]
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 3.64800,
+        "c": 0.00660
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 3.79000,
+        "c": 0.00690
+      }
+    }
   },
   {
     "id": "st_sprint_50",
     "name": "Sprint 50m (Handzeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ],
-    "age_m": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ]
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 3.64800,
+        "c": 0.00660
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 3.79000,
+        "c": 0.00690
+      }
+    }
   },
   {
     "id": "st_sprint_75_el",
     "name": "Sprint 75m (Elektronische Zeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      13,
-      14,
-      15
-    ],
-    "age_m": [
-      13,
-      14,
-      15
-    ]
+    "w": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 3.99800,
+        "c": 0.00660
+      }
+    },
+    "m": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 4.10000,
+        "c": 0.00664
+      }
+    }
   },
   {
     "id": "st_sprint_75",
     "name": "Sprint 75m (Handzeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      13,
-      14,
-      15
-    ],
-    "age_m": [
-      13,
-      14,
-      15
-    ]
+    "w": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 3.99800,
+        "c": 0.00660
+      }
+    },
+    "m": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 4.10000,
+        "c": 0.00664
+      }
+    }
   },
   {
     "id": "st_sprint_100_el",
     "name": "Sprint 100m (Elektronische Zeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
+    "w": {
+      "age": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 4.00620,
+        "c": 0.00656
+      }
+    },
+    "m": {
+      "age": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 4.34100,
+        "c": 0.00676
+      }
+    }
   },
   {
     "id": "st_sprint_100",
     "name": "Sprint 100m (Handzeitmessung)",
     "category": 0,
     "description": "",
-    "age_w": [
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
+    "w": {
+      "age": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 4.00620,
+        "c": 0.00656
+      }
+    },
+    "m": {
+      "age": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 4.34100,
+        "c": 0.00676
+      }
+    }
+  },
+  {
+    "id": "st_endurance_800",
+    "name": "Ausdauerlauf 800m",
+    "category": 1,
+    "description": "",
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 2.02320,
+        "c": 0.00647
+      }
+    },
+    "m": {
+      "age": [],
+      "score_calculation": {
+        "a": 0.0,
+        "c": 0.0
+      }
+    }
+  },
+  {
+    "id": "st_endurance_1000",
+    "name": "Ausdauerlauf 1000m",
+    "category": 1,
+    "description": "",
+    "w": {
+      "age": [],
+      "score_calculation": {
+        "a": 0.0,
+        "c": 0.0
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 2.15800,
+        "c": 0.00600
+      }
+    }
+  },
+  {
+    "id": "st_endurance_2000",
+    "name": "Ausdauerlauf 2000m",
+    "category": 1,
+    "description": "",
+    "w": {
+      "age": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 1.80000,
+        "c": 0.00540
+      }
+    },
+    "m": {
+      "age": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 1.78400,
+        "c": 0.00600
+      }
+    }
+  },
+  {
+    "id": "st_endurance_3000",
+    "name": "Ausdauerlauf 3000m",
+    "category": 1,
+    "description": "",
+    "w": {
+      "age": [
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.75000,
+        "c": 0.00500
+      }
+    },
+    "m": {
+      "age": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.70000,
+        "c": 0.00580
+      }
+    }
   },
   {
     "id": "st_long_jump",
     "name": "Weitsprung",
     "category": 2,
     "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Der Absprung von einer Absprungfläche ist zulässig. Diese erstreckt sich von den Kanten des Absprungbalkens 30 cm nach beiden Seiten, umfasst also insgesamt 80 cm. Die Sprungweite wird vom hintersten Eindruck des Niedersprungs bis zur Höhe des vordersten Eindrucks des Absprungs gemessen, wobei die Messung immer im rechten Winkel zum Balken vorgenommen wird. Gültigkeit der Sprünge siehe Zeichnung.",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.09350,
+        "c": 0.00208
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.15028,
+        "c": 0.00219
+      }
+    }
   },
   {
     "id": "st_high_jump",
     "name": "Hochsprung",
     "category": 2,
     "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Der Absprung von einer Absprungfläche ist zulässig. Diese erstreckt sich von den Kanten des Absprungbalkens 30 cm nach beiden Seiten, umfasst also insgesamt 80 cm. Die Sprungweite wird vom hintersten Eindruck des Niedersprungs bis zur Höhe des vordersten Eindrucks des Absprungs gemessen, wobei die Messung immer im rechten Winkel zum Balken vorgenommen wird. Gültigkeit der Sprünge siehe Zeichnung.",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 0.88070,
+        "c": 0.00068
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 0.84100,
+        "c": 0.00080
+      }
+    }
   },
   {
     "id": "st_rounders",
     "name": "Schlagball 80g",
     "category": 3,
     "description": "",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ],
-    "age_m": [
-      8,
-      9,
-      10,
-      11
-    ]
+    "w": {
+      "age": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 2.02320,
+        "c": 0.00874
+      }
+    },
+    "m": {
+      "age": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "score_calculation": {
+        "a": 2.80000,
+        "c": 0.01100
+      }
+    }
   },
   {
     "id": "st_shot_put_3",
     "name": "Kugelstoßen 3kg",
     "category": 3,
     "description": "",
-    "age_w": [
-      12,
-      13,
-      14,
-      15,
-      16,
-      17
-    ],
-    "age_m": [
-      12,
-      13
-    ]
+    "w": {
+      "age": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "score_calculation": {
+        "a": 1.27900,
+        "c": 0.00398
+      }
+    },
+    "m": {
+      "age": [
+        12,
+        13
+      ],
+      "score_calculation": {
+        "a": 1.42500,
+        "c": 0.00370
+      }
+    }
   },
   {
     "id": "st_shot_put_4",
     "name": "Kugelstoßen 4kg",
     "category": 3,
     "description": "",
-    "age_w": [
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      14,
-      15
-    ]
+    "w": {
+      "age": [
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.27900,
+        "c": 0.00398
+      }
+    },
+    "m": {
+      "age": [
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 1.42500,
+        "c": 0.00370
+      }
+    }
   },
   {
     "id": "st_shot_put_5",
     "name": "Kugelstoßen 5kg",
     "category": 3,
     "description": "",
-    "age_w": [],
-    "age_m": [
-      16,
-      17
-    ]
+    "w": {
+      "age": [],
+      "score_calculation": {
+        "a": 1.27900,
+        "c": 0.00398
+      }
+    },
+    "m": {
+      "age": [
+        16,
+        17
+      ],
+      "score_calculation": {
+        "a": 1.42500,
+        "c": 0.00370
+      }
+    }
   },
   {
     "id": "st_shot_put_6",
     "name": "Kugelstoßen 6kg",
     "category": 3,
     "description": "6kg oder 6.25kg",
-    "age_w": [],
-    "age_m": [
-      18,
-      19
-    ]
+    "w": {
+      "age": [],
+      "score_calculation": {
+        "a": 1.27900,
+        "c": 0.00398
+      }
+    },
+    "m": {
+      "age": [
+        18,
+        19
+      ],
+      "score_calculation": {
+        "a": 1.42500,
+        "c": 0.00370
+      }
+    }
   },
   {
     "id": "st_shot_put_7.26",
     "name": "Kugelstoßen 7,26kg",
     "category": 3,
     "description": "",
-    "age_w": [],
-    "age_m": [
-      20
-    ]
+    "w": {
+      "age": [],
+      "score_calculation": {
+        "a": 1.27900,
+        "c": 0.00398
+      }
+    },
+    "m": {
+      "age": [
+        20
+      ],
+      "score_calculation": {
+        "a": 1.42500,
+        "c": 0.00370
+      }
+    }
   },
   {
     "id": "st_ball_200",
     "name": "Ball 200g",
     "category": 3,
     "description": "",
-    "age_w": [
-      14,
-      15,
-      16,
-      17,
-      18
-    ],
-    "age_m": [
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18
-    ]
+    "w": {
+      "age": [
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "score_calculation": {
+        "a": 1.41490,
+        "c": 0.01039
+      }
+    },
+    "m": {
+      "age": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "score_calculation": {
+        "a": 1.93600,
+        "c": 0.01240
+      }
+    }
   },
   {
     "id": "st_ball_with_throwing_strap_1",
     "name": "Schleuderball 1kg",
     "category": 3,
     "description": "",
-    "age_w": [
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
-  },
-  {
-    "id": "st_endurance_800",
-    "name": "Ausdauerlauf 800m",
-    "category": 2,
-    "description": "",
-    "age_w": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": []
-  },
-  {
-    "id": "st_endurance_1000",
-    "name": "Ausdauerlauf 1000m",
-    "category": 2,
-    "description": "",
-    "age_w": [],
-    "age_m": [
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
-  },
-  {
-    "id": "st_endurance_2000",
-    "name": "Ausdauerlauf 2000m",
-    "category": 2,
-    "description": "",
-    "age_w": [
-      10,
-      11,
-      12,
-      13,
-      14,
-      15
-    ],
-    "age_m": [
-      10,
-      11,
-      12,
-      13
-    ]
-  },
-  {
-    "id": "st_endurance_3000",
-    "name": "Ausdauerlauf 3000m",
-    "category": 2,
-    "description": "",
-    "age_w": [
-      16,
-      17,
-      18,
-      19,
-      20
-    ],
-    "age_m": [
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20
-    ]
+    "w": {
+      "age": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.08500,
+        "c": 0.00921
+      }
+    },
+    "m": {
+      "age": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "score_calculation": {
+        "a": 1.59500,
+        "c": 0.009125
+      }
+    }
   }
 ]

@@ -42,9 +42,9 @@ let Athletics = {
             }
             return {
                 st_id: data_value.st_id,
+                name: base_information.name,
                 category: base_information.category,
-                age_w: base_information.age_w,
-                age_m: base_information.age_m,
+                gender_info: athlete.is_male ? base_information.m : base_information.w,
                 measurement: data_value.measurement
             };
         });
@@ -52,14 +52,11 @@ let Athletics = {
         // filter undefined and wrong age
         tmp_data = _.filter(tmp_data, function (data_value) {
 
-            if (data_value == undefined) {
+            if (data_value === undefined) {
                 return false;
             }
-            var age_set = athlete.is_male ? data_value.age_m : data_value.age_w;
 
-            console.log(age_set);
-
-            if (_.indexOf(age_set, athlete.age) == -1) {
+            if (_.indexOf(data_value.gender_info.age, athlete.age) == -1) {
                 log.addWarning(athlete.getFullName() + " does not have a valid age for " + data_value.name + ".");
                 return false;
             }
@@ -76,7 +73,7 @@ let Athletics = {
      */
     validate: function (athlete) {
         var [validData, log] = this.getValidData(athlete);
-        console.log(validData);
+        console.log(validData); //TODO remove
         var categories = [false, false, false, false];
         for (var st in validData) {
             categories[validData[st].category] = true;
