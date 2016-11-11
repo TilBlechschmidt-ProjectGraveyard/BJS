@@ -1,7 +1,7 @@
 import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
 import {genRandomCode} from "../../api/crypto/pwdgen";
-import {generateHMAC, generateAC} from "../../api/crypto/crypto";
+import {encrypt, decrypt, generateAC} from "../../api/crypto/crypto";
 import {Log} from "../../api/log";
 
 /**
@@ -17,11 +17,20 @@ export function tests() {
 
     console.log("--- Testing Crypto ---");
 
-    var HMAC = generateHMAC("Hi there!", "123456798");
-    console.log("HMAC", HMAC);
+    var group_ac = generateAC("1234567ljhfaljawf8");
+    var station_ac = generateAC("hflhkfks;kjfjankfa");
+    var data = {
+        a: 10,
+        b: 20,
+        c: 30
+    };
 
-    var ac = generateAC("123456798", "djlka9das9", 1);
-    console.log("PWDH", ac);
+    var encrypted_data = encrypt(data, group_ac, station_ac);
+    var decrypted_data = decrypt(encrypted_data, group_ac, station_ac);
+    var decrypted_data_group_only = decrypt(encrypted_data, group_ac);
+    console.log(encrypted_data);
+    console.log(decrypted_data);
+    console.log(decrypted_data_group_only);
 
     console.log("--- Testing Log ---");
 

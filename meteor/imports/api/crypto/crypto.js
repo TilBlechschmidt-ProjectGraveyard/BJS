@@ -19,22 +19,41 @@ export function generateHMAC(data, password) {
     return wordsToHex(CryptoJS.HmacSHA512(data, password));
 }
 
-// AC = authentication code = object of the hash and the salt
+// AC = authentication code = object of the hashes and the salt
 // TODO: Make two different versions of this resulting in different hashes (differing pepper maybe?)
 //noinspection JSUnresolvedVariable
-export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8), type = 1) {
-    console.log(typeof salt);
-    if (typeof salt === 'string')
+export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
+    if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
         salt = CryptoJS.enc.Utf8.parse(salt);
-    var pepper = (type == 1) ? TYPE1_PEPPER : TYPE2_PEPPER;
+    }
     //noinspection JSUnresolvedFunction
     return {
         salt: wordsToHex(salt),
-        hash: wordsToHex(CryptoJS.PBKDF2(password + pepper, salt, {keySize: 512 / 32, iterations: 1000})),
-        type: type
+        pub_hash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+        priv_hash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
     };
 }
 
-export function encode(data, ac) {
+export function encrypt(data, group_ac, station_ac) {
+    //noinspection JSUnresolvedVariable
+    return {
+        group_signature: generateHMAC(data, group_ac.priv_hash),
+        station_signature: generateHMAC(data, station_ac.priv_hash),
+        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), group_ac.priv_hash).toString()
+    };
+}
 
+export function decrypt(signed_enc_data, group_ac, station_ac) {
+    //noinspection JSUnresolvedVariable
+    var bytes = CryptoJS.Rabbit.decrypt(signed_enc_data.data, group_ac.priv_hash);
+    //noinspection JSUnresolvedVariable
+    var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    var signature_ok = (generateHMAC(data, group_ac.priv_hash) == signed_enc_data.group_signature) &&
+        ( typeof station_ac === "object" ? (generateHMAC(data, station_ac.priv_hash) == signed_enc_data.station_signature) : true);
+
+    if (typeof station_ac !== "object") console.log("WARNING: No station_ac provided! Skipping signature check!");
+    if (signature_ok)
+        return data; // If the signature checks are valid return the data
+    else
+        return false; // Else return false
 }
