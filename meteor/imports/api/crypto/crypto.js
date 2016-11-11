@@ -8,19 +8,20 @@ function wordsToHex(words) {
     return CryptoJS.enc.Hex.stringify(words);
 }
 
-function hexToWords(hex) {
-    //noinspection JSUnresolvedVariable
-    return CryptoJS.enc.Hex.parse(hex);
-}
-
 // Hash-based message authentication code
-export function generateHMAC(data, password) {
+function generateHMAC(data, password) {
     //noinspection JSUnresolvedFunction
     return wordsToHex(CryptoJS.HmacSHA512(data, password));
 }
 
 // AC = authentication code = object of the hashes and the salt
 // TODO: Make two different versions of this resulting in different hashes (differing pepper maybe?)
+/**
+ * Generates a authentication code for
+ * @param password      passwd to generate the auth. code from
+ * @param salt [random] optional salt to recreate a auth. code
+ * @returns {{salt, pub_hash, priv_hash}}   authentication code
+ */
 //noinspection JSUnresolvedVariable
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
     if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
@@ -34,6 +35,13 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
     };
 }
 
+/**
+ * Encrypt data and sign it
+ * @param data          Data to encrypt
+ * @param group_ac      Group auth. code
+ * @param station_ac    Station auth. code
+ * @returns {{group_signature, station_signature, data: (string|*)}}
+ */
 export function encrypt(data, group_ac, station_ac) {
     //noinspection JSUnresolvedVariable
     return {
@@ -43,6 +51,13 @@ export function encrypt(data, group_ac, station_ac) {
     };
 }
 
+/**
+ * Decrypt the signed data and check the signatures.
+ * @param signed_enc_data       encrypted and signed data
+ * @param group_ac              auth. code of the group
+ * @param station_ac []         auth. code of the station (if left out the station signature is not checked!)
+ * @returns {boolean|object}    either the decrypted data or false if the signature verification failed
+ */
 export function decrypt(signed_enc_data, group_ac, station_ac) {
     //noinspection JSUnresolvedVariable
     var bytes = CryptoJS.Rabbit.decrypt(signed_enc_data.data, group_ac.priv_hash);
