@@ -15,7 +15,6 @@ function generateHMAC(data, password) {
 }
 
 // AC = authentication code = object of the hashes and the salt
-// TODO: Make two different versions of this resulting in different hashes (differing pepper maybe?)
 /**
  * Generates a authentication code for
  * @param password      passwd to generate the auth. code from
