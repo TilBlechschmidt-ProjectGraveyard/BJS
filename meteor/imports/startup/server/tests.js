@@ -54,6 +54,7 @@ export function tests() {
     var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
 
     p.data.update("st_ball_200", 69, undefined, undefined);
+    p.data.update("st_long_jump", 7.33, undefined, undefined);
     p.age = 16;
 
     console.log("++ validate");
