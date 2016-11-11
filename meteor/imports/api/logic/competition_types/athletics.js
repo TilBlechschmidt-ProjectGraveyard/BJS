@@ -18,6 +18,7 @@ let Athletics = {
      * Returns whether a given athlete can do the sport type with the id st_id.
      * @param athlete
      * @param {string} st_id
+     * @returns {*[]}
      */
     canDoSportType: function (athlete, st_id) {
 
@@ -79,6 +80,7 @@ let Athletics = {
 
         var that = this; //TODO alternative?
 
+        // Add information
         tmp_data = _.map(tmp_data, function (data_object) {
             let [can_do_sport, new_data_object, new_log] = that.canDoSportType(athlete, data_object.st_id);
             log.merge(new_log);
