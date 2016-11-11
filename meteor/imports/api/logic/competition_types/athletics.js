@@ -1,6 +1,9 @@
+import {Log} from "../../log";
+
 export {Athletics};
 
-let lang = require('./../../../data/athletics/lang_de.json');
+let LANG = require('./../../../data/athletics/lang_de.json');
+let START_CLASSES = require('./../../../data/start_classes.json');
 
 let Athletics = {
     /**
@@ -9,6 +12,51 @@ let Athletics = {
      */
     getSports: function () {
         return require('./../../../data/athletics/sports.json');
+    },
+
+    /**
+     * Returns whether a given athlete can do the sport type with the id st_id.
+     * @param athlete
+     * @param {string} st_id
+     */
+    canDoSportType: function (athlete, st_id) {
+
+        var log = new Log();
+
+        //collect information
+        var base_information = _.find(this.getSports(), function (st) {
+            return st.id === st_id;
+        });
+
+        if (!base_information) {
+            log.addError(st_id + " is not a valid sport type id.");
+            return [false, undefined, log];
+        }
+
+        let gender_info = athlete.is_male ? base_information.m : base_information.w;
+        let handicap_data = gender_info.score_calculation.conversion_factor[athlete.handicap];
+
+        let data_object = {
+            st_id: st_id,
+            name: base_information.name,
+            category: base_information.category,
+            gender_info: gender_info,
+            conversion_factor: handicap_data === undefined ? 1.0 : handicap_data
+        };
+
+        var can_do_sport = true;
+
+        if (_.indexOf(data_object.gender_info.age, athlete.age) == -1) {
+            log.addWarning(athlete.getFullName() + " does not have a valid age for " + base_information.name + ".");
+            can_do_sport = false;
+        }
+
+        if (data_object.conversion_factor === 0.0) {
+            log.addWarning(athlete.getFullName() + " can not do " + base_information.name + " because of the start class " + athlete.handicap + ".");
+            can_do_sport = false;
+        }
+
+        return [can_do_sport, data_object, log];
     },
 
 
@@ -20,47 +68,26 @@ let Athletics = {
      * @returns {Array}
      */
     getValidData: function (athlete, group_private_hash, write_private_hash) {
-        let sports = this.getSports(); //TODO add handicap check
+        // let sports = this.getSports();
 
         var [tmp_data, log] = athlete.data.getPlain(group_private_hash, write_private_hash);
 
         // filter data with more then on point
-        tmp_data = _.filter(tmp_data, function (data_value) {
-            return data_value.measurement > 0;
+        tmp_data = _.filter(tmp_data, function (data_object) {
+            return data_object.measurement > 0;
         });
 
+        var that = this; //TODO alternative?
 
-        // add information to the data.
-        tmp_data = _.map(tmp_data, function (data_value) {
-
-            var base_information = _.find(sports, function (st) {
-                return st.id === data_value.st_id;
-            });
-            if (!base_information) {
-                log.addError(data_value.st_id + " is not a valid sport type id.");
-                return undefined;
-            }
-            return {
-                st_id: data_value.st_id,
-                name: base_information.name,
-                category: base_information.category,
-                gender_info: athlete.is_male ? base_information.m : base_information.w,
-                measurement: data_value.measurement
-            };
+        tmp_data = _.map(tmp_data, function (data_object) {
+            let [can_do_sport, new_data_object, new_log] = that.canDoSportType(athlete, data_object.st_id);
+            log.merge(new_log);
+            return can_do_sport ? new_data_object : undefined;
         });
 
-        // filter undefined and wrong age
+        // filter undefined
         tmp_data = _.filter(tmp_data, function (data_value) {
-
-            if (data_value === undefined) {
-                return false;
-            }
-
-            if (_.indexOf(data_value.gender_info.age, athlete.age) == -1) {
-                log.addWarning(athlete.getFullName() + " does not have a valid age for " + data_value.name + ".");
-                return false;
-            }
-            return true;
+            return data_value !== undefined;
         });
 
         return [tmp_data, log];

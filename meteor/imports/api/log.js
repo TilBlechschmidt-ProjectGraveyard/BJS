@@ -1,6 +1,9 @@
 export {Log};
 
-
+/**
+ * A logging object to save errors, warnings and other messages for the user.
+ * @constructor
+ */
 function Log() {
     this.messages = [];
 }

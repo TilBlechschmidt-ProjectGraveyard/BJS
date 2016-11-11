@@ -49,6 +49,7 @@ export function tests() {
 
     p.data.update("st_rounders", 10.2, undefined, undefined);
     p.data.update("st_long_jump", 3.4, undefined, undefined);
+    p.data.update("st_shot_put_4", 3.4, undefined, undefined);
 
 
     console.log(p.check());
