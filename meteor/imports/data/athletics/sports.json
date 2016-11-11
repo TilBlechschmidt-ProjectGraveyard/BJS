@@ -16,6 +16,7 @@
       "score_calculation": {
         "a": 3.64800,
         "c": 0.00660,
+        "d": 50,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.67,
@@ -44,6 +45,7 @@
       "score_calculation": {
         "a": 3.79000,
         "c": 0.00690,
+        "d": 50,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.87,
@@ -78,6 +80,7 @@
       "score_calculation": {
         "a": 3.64800,
         "c": 0.00660,
+        "d": 50,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.67,
@@ -106,6 +109,7 @@
       "score_calculation": {
         "a": 3.79000,
         "c": 0.00690,
+        "d": 50,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.87,
@@ -137,48 +141,7 @@
       "score_calculation": {
         "a": 3.99800,
         "c": 0.00660,
-        "conversion_factor": {
-          "A1": 0.95,
-          "A2": 0.67,
-          "A3": 0.62,
-          "A4": 0.76,
-          "A5": 0.62,
-          "A6": 0.45,
-          "B1": 0.85,
-          "B2": 0.85,
-          "C1": 0.95,
-          "C2": 0.98,
-          "D": 0.84,
-          "E": 0.60
-        }
-      }
-    },
-    "m": {
-      "age": [
-        13,
-        14,
-        15
-      ],
-      "score_calculation": {
-        "a": 4.10000,
-        "c": 0.00664
-      }
-    }
-  },
-  {
-    "id": "st_sprint_75",
-    "name": "Sprint 75m (Handzeitmessung)",
-    "category": 0,
-    "description": "",
-    "w": {
-      "age": [
-        13,
-        14,
-        15
-      ],
-      "score_calculation": {
-        "a": 3.99800,
-        "c": 0.00660,
+        "d": 75,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.67,
@@ -204,6 +167,65 @@
       "score_calculation": {
         "a": 4.10000,
         "c": 0.00664,
+        "d": 75,
+        "conversion_factor": {
+          "A1": 0.95,
+          "A2": 0.87,
+          "A3": 0.69,
+          "A4": 0.82,
+          "A5": 0.69,
+          "A6": 0.51,
+          "B1": 0.86,
+          "B2": 0.90,
+          "C1": 0.95,
+          "C2": 0.98,
+          "D": 0.89,
+          "E": 0.60
+        }
+      }
+    }
+  },
+  {
+    "id": "st_sprint_75",
+    "name": "Sprint 75m (Handzeitmessung)",
+    "category": 0,
+    "description": "",
+    "w": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 3.99800,
+        "c": 0.00660,
+        "d": 75,
+        "conversion_factor": {
+          "A1": 0.95,
+          "A2": 0.67,
+          "A3": 0.62,
+          "A4": 0.76,
+          "A5": 0.62,
+          "A6": 0.45,
+          "B1": 0.85,
+          "B2": 0.85,
+          "C1": 0.95,
+          "C2": 0.98,
+          "D": 0.84,
+          "E": 0.60
+        }
+      }
+    },
+    "m": {
+      "age": [
+        13,
+        14,
+        15
+      ],
+      "score_calculation": {
+        "a": 4.10000,
+        "c": 0.00664,
+        "d": 75,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.87,
@@ -238,6 +260,7 @@
       "score_calculation": {
         "a": 4.00620,
         "c": 0.00656,
+        "d": 100,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.67,
@@ -266,6 +289,7 @@
       "score_calculation": {
         "a": 4.34100,
         "c": 0.00676,
+        "d": 100,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.87,
@@ -300,6 +324,7 @@
       "score_calculation": {
         "a": 4.00620,
         "c": 0.00656,
+        "d": 100,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.67,
@@ -328,6 +353,7 @@
       "score_calculation": {
         "a": 4.34100,
         "c": 0.00676,
+        "d": 100,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.87,
@@ -369,6 +395,7 @@
       "score_calculation": {
         "a": 2.02320,
         "c": 0.00647,
+        "d": 800,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -390,6 +417,7 @@
       "score_calculation": {
         "a": 0.0,
         "c": 0.0,
+        "d": 800,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -417,6 +445,7 @@
       "score_calculation": {
         "a": 0.0,
         "c": 0.0,
+        "d": 1000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -452,6 +481,7 @@
       "score_calculation": {
         "a": 2.15800,
         "c": 0.00600,
+        "d": 1000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -486,6 +516,7 @@
       "score_calculation": {
         "a": 1.80000,
         "c": 0.00540,
+        "d": 2000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -512,6 +543,7 @@
       "score_calculation": {
         "a": 1.78400,
         "c": 0.00600,
+        "d": 2000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -545,6 +577,7 @@
       "score_calculation": {
         "a": 1.75000,
         "c": 0.00500,
+        "d": 3000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -574,6 +607,7 @@
       "score_calculation": {
         "a": 1.70000,
         "c": 0.00580,
+        "d": 3000,
         "conversion_factor": {
           "A1": 0.95,
           "A2": 0.0,
@@ -615,6 +649,7 @@
       "score_calculation": {
         "a": 1.09350,
         "c": 0.00208,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.05,
@@ -650,6 +685,7 @@
       "score_calculation": {
         "a": 1.15028,
         "c": 0.00219,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.44,
@@ -691,6 +727,7 @@
       "score_calculation": {
         "a": 0.88070,
         "c": 0.00068,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.58,
@@ -726,6 +763,7 @@
       "score_calculation": {
         "a": 0.84100,
         "c": 0.00080,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.25,
@@ -760,6 +798,7 @@
       "score_calculation": {
         "a": 2.02320,
         "c": 0.00874,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.98,
@@ -786,6 +825,7 @@
       "score_calculation": {
         "a": 2.80000,
         "c": 0.01100,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.50,
@@ -820,6 +860,7 @@
       "score_calculation": {
         "a": 1.27900,
         "c": 0.00398,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.19,
@@ -844,6 +885,7 @@
       "score_calculation": {
         "a": 1.42500,
         "c": 0.00370,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.61,
@@ -875,6 +917,7 @@
       "score_calculation": {
         "a": 1.27900,
         "c": 0.00398,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.19,
@@ -899,6 +942,7 @@
       "score_calculation": {
         "a": 1.42500,
         "c": 0.00370,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.61,
@@ -926,6 +970,7 @@
       "score_calculation": {
         "a": 1.27900,
         "c": 0.00398,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.19,
@@ -950,6 +995,7 @@
       "score_calculation": {
         "a": 1.42500,
         "c": 0.00370,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.61,
@@ -977,6 +1023,7 @@
       "score_calculation": {
         "a": 1.27900,
         "c": 0.00398,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.19,
@@ -1001,6 +1048,7 @@
       "score_calculation": {
         "a": 1.42500,
         "c": 0.00370,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.61,
@@ -1028,6 +1076,7 @@
       "score_calculation": {
         "a": 1.27900,
         "c": 0.00398,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.19,
@@ -1051,6 +1100,7 @@
       "score_calculation": {
         "a": 1.42500,
         "c": 0.00370,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 1.61,
@@ -1084,6 +1134,7 @@
       "score_calculation": {
         "a": 1.41490,
         "c": 0.01039,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.98,
@@ -1113,6 +1164,7 @@
       "score_calculation": {
         "a": 1.93600,
         "c": 0.01240,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.50,
@@ -1148,6 +1200,7 @@
       "score_calculation": {
         "a": 1.08500,
         "c": 0.00921,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.98,
@@ -1177,6 +1230,7 @@
       "score_calculation": {
         "a": 1.59500,
         "c": 0.009125,
+        "d": 0,
         "conversion_factor": {
           "A1": 1.05,
           "A2": 2.50,

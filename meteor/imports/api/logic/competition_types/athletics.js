@@ -84,6 +84,9 @@ let Athletics = {
         tmp_data = _.map(tmp_data, function (data_object) {
             let [can_do_sport, new_data_object, new_log] = that.canDoSportType(athlete, data_object.st_id);
             log.merge(new_log);
+            if (new_data_object !== undefined) {
+                new_data_object.measurement = data_object.measurement;
+            }
             return can_do_sport ? new_data_object : undefined;
         });
 
@@ -116,8 +119,52 @@ let Athletics = {
         ];
     },
 
-    calculate: function (data) {
+    calculateOne: function (data_object) {
+        var calculate_function;
 
+        switch (data_object.st_id) {
+            case "st_sprint_50_el":
+            case "st_sprint_75_el":
+            case "st_sprint_100_el":
+            case "st_endurance_800":
+            case "st_endurance_1000":
+            case "st_endurance_2000":
+            case "st_endurance_3000":
+                calculate_function = function (d, m, a, c) {
+                    return ((d / m) - a) / c;
+                };
+                break;
+            case "st_sprint_50":
+            case "st_sprint_75":
+            case "st_sprint_100":
+                calculate_function = function (d, m, a, c) {
+                    return ((d / (m + 0.24)) - a) / c;
+                };
+                break;
+            default:
+                calculate_function = function (d, m, a, c) {
+                    return ( Math.sqrt(m) - a) / c;
+                };
+        }
+
+        console.log("d=" + data_object.gender_info.score_calculation.d);
+        console.log("m=" + data_object.conversion_factor * data_object.measurement);
+        console.log("a=" + data_object.gender_info.score_calculation.a);
+        console.log("c=" + data_object.gender_info.score_calculation.c);
+
+        // return Math.round(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
+        let score = Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
+        console.log(data_object.name + ": " + score);
+        return score;
+    },
+
+    calculate: function (athlete) {
+        let that = this;
+        var [validData, log] = this.getValidData(athlete);
+
+        return [_.foldl(validData, function (mem, data_object) {
+            return mem + that.calculateOne(data_object);
+        }, 0), log];//TODO take 3
     },
 
     /**
