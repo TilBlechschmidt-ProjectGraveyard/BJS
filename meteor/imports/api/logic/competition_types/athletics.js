@@ -8,7 +8,7 @@ let START_CLASSES = require('./../../../data/start_classes.json');
 let Athletics = {
     /**
      * Returns a list of sport types associated with the ct athletics.
-     * @returns {{id: string, name: string, category: number, description: string, age_w: number[], age_m: number[]}[]}
+     * @returns {{id: string, name: string, category: number, description: string, w: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
      */
     getSports: function () {
         return require('./../../../data/athletics/sports.json');
@@ -18,7 +18,7 @@ let Athletics = {
      * Returns whether a given athlete can do the sport type with the id st_id.
      * @param athlete
      * @param {string} st_id
-     * @returns {*[]}
+     * @returns {{can_do_sport, data_object, log}}
      */
     canDoSportType: function (athlete, st_id) {
 
@@ -57,7 +57,11 @@ let Athletics = {
             can_do_sport = false;
         }
 
-        return [can_do_sport, data_object, log];
+        return {
+            can_do_sport: can_do_sport,
+            data_object: data_object,
+            log: log
+        };
     },
 
 
@@ -66,15 +70,16 @@ let Athletics = {
      * @param athlete
      * @param group_private_hash
      * @param write_private_hash
-     * @returns {Array}
+     * @returns {{valid_data, log}}
      */
     getValidData: function (athlete, group_private_hash, write_private_hash) {
         // let sports = this.getSports();
 
-        var [tmp_data, log] = athlete.data.getPlain(group_private_hash, write_private_hash);
+        var plain = athlete.data.getPlain(group_private_hash, write_private_hash);
+        var log = plain.log;
 
         // filter data with more then on point
-        tmp_data = _.filter(tmp_data, function (data_object) {
+        var tmp_data = _.filter(plain.data, function (data_object) {
             return data_object.measurement > 0;
         });
 
@@ -82,12 +87,12 @@ let Athletics = {
 
         // Add information
         tmp_data = _.map(tmp_data, function (data_object) {
-            let [can_do_sport, new_data_object, new_log] = that.canDoSportType(athlete, data_object.st_id);
-            log.merge(new_log);
-            if (new_data_object !== undefined) {
-                new_data_object.measurement = data_object.measurement;
+            let can_do_sport_object = that.canDoSportType(athlete, data_object.st_id);
+            log.merge(can_do_sport_object.log);
+            if (can_do_sport_object.data_object !== undefined) {
+                can_do_sport_object.data_object.measurement = data_object.measurement;
             }
-            return can_do_sport ? new_data_object : undefined;
+            return can_do_sport_object.can_do_sport ? can_do_sport_object.data_object : undefined;
         });
 
         // filter undefined
@@ -95,28 +100,31 @@ let Athletics = {
             return data_value !== undefined;
         });
 
-        return [tmp_data, log];
+        return {
+            valid_data: tmp_data,
+            log: log
+        };
     },
 
     /**
      * Returns whether an athlete is already finished.
      * @param athlete
-     * @returns {boolean}
+     * @returns {{valid, log}}
      */
     validate: function (athlete) {
-        var [validData, log] = this.getValidData(athlete);
-        console.log(validData); //TODO remove
+        var data = this.getValidData(athlete);
+        console.log(data.valid_data); //TODO remove
         var categories = [false, false, false, false];
-        for (var st in validData) {
-            categories[validData[st].category] = true;
+        for (var st in data.valid_data) {
+            categories[data.valid_data[st].category] = true;
         }
 
-        return [
-            3 <= _.filter(categories, function (category) {
+        return {
+            valid: 3 <= _.filter(categories, function (category) {
                 return category;
             }).length,
-            log
-        ];
+            log: data.log
+        };
     },
 
     /**
@@ -158,32 +166,37 @@ let Athletics = {
     /**
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param athlete
-     * @returns {*[]}
+     * @returns {{score, log}}
      */
     calculate: function (athlete) {
-        var [validData, log] = this.getValidData(athlete);
+        var data = this.getValidData(athlete);
+        var log = data.log;
 
         var scores = [0, 0, 0, 0];
 
-        for (var vd in validData) {
-            let score = this.calculateOne(validData[vd]);
-            let category = validData[vd].category;
+        for (var vd in data.valid_data) {
+            let score = this.calculateOne(data.valid_data[vd]);
+            let category = data.valid_data[vd].category;
 
-            log.addInfo(validData[vd].name + ': ' + score);
+            log.addInfo(data.valid_data[vd].name + ': ' + score);
             if (scores[category] < score) {
                 scores[category] = score;
             }
         }
 
-        return [_.reduce(_.sortBy(scores, function (num) {
-            return num;
-        }).splice(1, 3), function (mem, num) {
-            return mem + num;
-        }, 0), log];
+        return {
+            score: _.reduce(_.sortBy(scores, function (num) {
+                return num;
+            }).splice(1, 3), function (mem, num) {
+                return mem + num;
+            }, 0),
+            log: log
+        };
     },
 
     /**
      * Returns information about the ct athletics.
+     * @returns {object}
      */
     getInformation: function () {
         return require('./../../../data/athletics/information.json');

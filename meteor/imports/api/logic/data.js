@@ -18,19 +18,19 @@ Data.prototype = {
      * Returns the data in plain text. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param {string} group_private_hash
      * @param {string} [write_private_hash=undefined]
-     * @returns {Array}
+     * @returns {{data, log}}
      */
     getPlain: function (group_private_hash, write_private_hash) {
         var log = new Log();
-        return [
-            _.map(this.data, function (data_value) {
+        return {
+            data: _.map(this.data, function (data_value) {
                 return {
                     st_id: data_value.encrypted_st_id, //TODO decrypt
                     measurement: data_value.measurement, //TODO implement encryption and signature check
                 };
             }),
-            log
-        ];
+            log: log
+        };
     },
 
     /**

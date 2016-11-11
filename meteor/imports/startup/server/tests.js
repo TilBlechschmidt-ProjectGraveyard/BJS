@@ -67,12 +67,11 @@ export function tests() {
     p.age = 16;
 
     console.log("++ validate");
-    var [r1, log1] = ct.validate(p);
-    console.log(r1);
-    console.log(log1.getAsString());
+    var r1 = ct.validate(p);
+    console.log(r1.valid);
+    console.log(r1.log.getAsString());
     console.log("++ calculate");
-    var [r2, log2] = ct.calculate(p);
-    // console.log(type(r2));
-    console.log(r2);
-    console.log(log2.getAsString());
+    var r2 = ct.calculate(p);
+    console.log(r2.score);
+    console.log(r2.log.getAsString());
 }
