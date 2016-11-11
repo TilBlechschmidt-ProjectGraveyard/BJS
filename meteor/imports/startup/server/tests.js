@@ -45,7 +45,7 @@ export function tests() {
 
     console.log("--- Testing Logic ---");
     var ct = CompetitionTypes[0].object;
-    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', 'A0');
+    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
 
     p.data.update("st_rounders", 10.2, undefined, undefined);
     p.data.update("st_long_jump", 3.4, undefined, undefined);

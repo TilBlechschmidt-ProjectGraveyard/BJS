@@ -1,0 +1,50 @@
+{
+  "A1": {
+    "name": "Leichtbehindert",
+    "description": "Hierzu zählen Schüler/innen, deren motorische Funktionsfähigkeit nicht bzw. gering eingeschränkt ist (z. B. Schüler mit Blasen- und Darminkontinenz, minimalen cerebralen Dysfunktionen, einseitiger Armbehinderung u. a.); Laufen, Springen und Werfen sind ohne Einschränkungen möglich."
+  },
+  "A2": {
+    "name": "Beinbehinderte, Gehbehinderte",
+    "description": "Hierzu zählen Schüler/innen, deren Arm- und Rumpffunktionen nicht bzw. gering eingeschränkt sind, bei denen aber durch die Beinbehinderung erhebliche Einschränkungen für das Schnelllaufen und das Springen bestehen (z. B. Poliogelähmte, Amputierte, spastische Diplegiker bzw. Paraplegiker, Beinverkürzungen, Knieversteifungen, Hüftversteifungen u. a.)."
+  },
+  "A3": {
+    "name": "Beinbehinderte, Rollstuhlfahrer/innen",
+    "description": "Hierzu zählen Schüler/innen, bei denen zumindest die Arme und der Schultergürtel nicht beeinträchtigt sind (z. B. Schüler/innen mit Spina bifida, Querschnittgelähmte, Poliolähmungen, Beinamputation, spast. Diplegie, evtl. Glasknochen, Hämophilie, Dysmelie u. a.). Für die Ausführung der Wettkämpfe muss ein Rollstuhl benutzt werden."
+  },
+  "A4": {
+    "name": "Einseitig Arm- und Beinbehinderte",
+    "description": "Hierzu zählen Schüler/innen, bei denen die Funktionsfähigkeit eines Beines und eines Armes nicht beeinträchtigt und eine selbständige Fortbewegung mit den unteren Extremitäten (ggf. mit Prothesen, Schienen, Manschetten u.a.) möglich ist (z. B. Schüler/innen mit Hemiplegien, Poliolähmungen, Amputationen u. a.)."
+  },
+  "A5": {
+    "name": "Beidseitig Arm- und Beinbehinderte",
+    "description": "Hierzu zählen Schüler/innen, bei denen alle vier Extremitäten behindert, jedoch mindestens selbständige und gezielte Bewegungen im Stand möglich sind (z. B. Schüler/innen mit Tetraspastik, Tetraplegie inkomplett, Athetose, Ataxie, Poliolähmung u. a.)."
+  },
+  "A6": {
+    "name": "Beidseitig Arm- und Beinbehinderte, Rollstuhlfahrer ohne Fremdantrieb",
+    "description": "Hierzu zählen Schüler/innen, bei denen alle vier Extremitäten behindert, jedoch mindestens selbständige und gezielte Bewegungen vom Rollstuhl aus und mit dem Rollstuhl möglich sind (z. B. Schüler mit Tetraplegien, Tetraspastik, Dysmelie, Muskeldystrophie, Athetose, Poliolähmung u. a.)."
+  },
+  "B1": {
+    "name": "Blind",
+    "description": "Hierzu zählen Schüler/innen, die blind sind."
+  },
+  "B2": {
+    "name": "Sehbehindert",
+    "description": "Hierzu zählen Schüler/innen, die noch einen Sehrest vorhanden haben."
+  },
+  "C1": {
+    "name": "Gehörlos",
+    "description": "Hierzu zählen Schüler/innen, die gehörlos sind."
+  },
+  "C2": {
+    "name": "Schwerhörig",
+    "description": "Hierzu zählen Schüler/innen, die schwerhörig sind."
+  },
+  "D": {
+    "name": "Förderschwerpunkt geistige Entwicklung",
+    "description": ""
+  },
+  "E": {
+    "name": "Kleinwuchs",
+    "description": ""
+  }
+}
