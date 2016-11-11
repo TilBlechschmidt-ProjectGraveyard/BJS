@@ -158,15 +158,28 @@ let Athletics = {
     /**
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param athlete
-     * @returns {number}
+     * @returns {*[]}
      */
     calculate: function (athlete) {
-        let that = this;
         var [validData, log] = this.getValidData(athlete);
 
-        return [_.foldl(validData, function (mem, data_object) {
-            return mem + that.calculateOne(data_object);
-        }, 0), log];//TODO take 3
+        var scores = [0, 0, 0, 0];
+
+        for (var vd in validData) {
+            let score = this.calculateOne(validData[vd]);
+            let category = validData[vd].category;
+
+            log.addInfo(validData[vd].name + ': ' + score);
+            if (scores[category] < score) {
+                scores[category] = score;
+            }
+        }
+
+        return [_.reduce(_.sortBy(scores, function (num) {
+            return num;
+        }).splice(1, 3), function (mem, num) {
+            return mem + num;
+        }, 0), log];
     },
 
     /**
