@@ -119,6 +119,11 @@ let Athletics = {
         ];
     },
 
+    /**
+     * Calculates the score of one data_object returned by the getValidData function.
+     * @param data_object
+     * @returns {number}
+     */
     calculateOne: function (data_object) {
         var calculate_function;
 
@@ -147,17 +152,14 @@ let Athletics = {
                 };
         }
 
-        console.log("d=" + data_object.gender_info.score_calculation.d);
-        console.log("m=" + data_object.conversion_factor * data_object.measurement);
-        console.log("a=" + data_object.gender_info.score_calculation.a);
-        console.log("c=" + data_object.gender_info.score_calculation.c);
-
-        // return Math.round(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
-        let score = Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
-        console.log(data_object.name + ": " + score);
-        return score;
+        return Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
     },
 
+    /**
+     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @param athlete
+     * @returns {number}
+     */
     calculate: function (athlete) {
         let that = this;
         var [validData, log] = this.getValidData(athlete);
@@ -165,14 +167,6 @@ let Athletics = {
         return [_.foldl(validData, function (mem, data_object) {
             return mem + that.calculateOne(data_object);
         }, 0), log];//TODO take 3
-    },
-
-    /**
-     * Returns an array of all ages which can be part of the BJS with the given configuration.
-     * @param config_data
-     */
-    check_configuration: function (config_data) {
-
     },
 
     /**
