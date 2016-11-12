@@ -45,13 +45,13 @@ describe('crypto', function () {
     it('enforces parameter passing (encrypt)', function () {
         var valid = encrypt(data, cachedAC1, cachedAC2);
         (function () {
-            encrypt(data, cachedAC1)
+            encrypt(data, cachedAC1);
         }).should.throw();
         (function () {
-            encrypt(data)
+            encrypt(data);
         }).should.throw();
         (function () {
-            encrypt()
+            encrypt();
         }).should.throw();
 
         valid.should.be.a('object');
@@ -65,10 +65,10 @@ describe('crypto', function () {
     it('enforces parameter passing (tryDecrypt)', function () {
         var valid = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
         (function () {
-            tryDecrypt(cachedSED, [cachedAC1, cachedAC2])
+            tryDecrypt(cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log missing
         (function () {
-            tryDecrypt([], cachedSED, [cachedAC1, cachedAC2])
+            tryDecrypt([], cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log wrong type
         var stationACMissing = tryDecrypt(log, cachedSED, [cachedAC1]);
         var emptyACList = tryDecrypt(log, cachedSED, []);
