@@ -63,7 +63,7 @@ function checkSignature(SED, data, groupAC, stationAC) {
         ( typeof stationAC === "object" ? (stationAC.pubHash == SED.stationSignature.pubHash && generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
 }
 
-export function tryDecrypt(SED, acs, log) {
+export function tryDecrypt(log, SED, acs) {
 
     lodash.remove(acs, _.isUndefined);
 

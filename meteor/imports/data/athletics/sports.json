@@ -3,6 +3,7 @@
     "id": "st_sprint_50_el",
     "name": "Sprint 50m (Elektronische Zeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -67,6 +68,7 @@
     "id": "st_sprint_50",
     "name": "Sprint 50m (Handzeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -131,6 +133,7 @@
     "id": "st_sprint_75_el",
     "name": "Sprint 75m (Elektronische Zeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -189,6 +192,7 @@
     "id": "st_sprint_75",
     "name": "Sprint 75m (Handzeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -247,6 +251,7 @@
     "id": "st_sprint_100_el",
     "name": "Sprint 100m (Elektronische Zeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -311,6 +316,7 @@
     "id": "st_sprint_100",
     "name": "Sprint 100m (Handzeitmessung)",
     "category": 0,
+    "unit": "s",
     "description": "",
     "w": {
       "age": [
@@ -375,6 +381,7 @@
     "id": "st_endurance_800",
     "name": "Ausdauerlauf 800m",
     "category": 1,
+    "unit": "min:s",
     "description": "",
     "w": {
       "age": [
@@ -439,6 +446,7 @@
     "id": "st_endurance_1000",
     "name": "Ausdauerlauf 1000m",
     "category": 1,
+    "unit": "min:s",
     "description": "",
     "w": {
       "age": [],
@@ -503,6 +511,7 @@
     "id": "st_endurance_2000",
     "name": "Ausdauerlauf 2000m",
     "category": 1,
+    "unit": "min:s",
     "description": "",
     "w": {
       "age": [
@@ -565,6 +574,7 @@
     "id": "st_endurance_3000",
     "name": "Ausdauerlauf 3000m",
     "category": 1,
+    "unit": "min:s",
     "description": "",
     "w": {
       "age": [
@@ -629,6 +639,7 @@
     "id": "st_long_jump",
     "name": "Weitsprung",
     "category": 2,
+    "unit": "m",
     "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Der Absprung von einer Absprungfläche ist zulässig. Diese erstreckt sich von den Kanten des Absprungbalkens 30 cm nach beiden Seiten, umfasst also insgesamt 80 cm. Die Sprungweite wird vom hintersten Eindruck des Niedersprungs bis zur Höhe des vordersten Eindrucks des Absprungs gemessen, wobei die Messung immer im rechten Winkel zum Balken vorgenommen wird. Gültigkeit der Sprünge siehe Zeichnung.",
     "w": {
       "age": [
@@ -707,6 +718,7 @@
     "id": "st_high_jump",
     "name": "Hochsprung",
     "category": 2,
+    "unit": "m",
     "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Der Absprung von einer Absprungfläche ist zulässig. Diese erstreckt sich von den Kanten des Absprungbalkens 30 cm nach beiden Seiten, umfasst also insgesamt 80 cm. Die Sprungweite wird vom hintersten Eindruck des Niedersprungs bis zur Höhe des vordersten Eindrucks des Absprungs gemessen, wobei die Messung immer im rechten Winkel zum Balken vorgenommen wird. Gültigkeit der Sprünge siehe Zeichnung.",
     "w": {
       "age": [
@@ -785,6 +797,7 @@
     "id": "st_rounders",
     "name": "Schlagball 80g",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [
@@ -847,6 +860,7 @@
     "id": "st_shot_put_3",
     "name": "Kugelstoßen 3kg",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [
@@ -907,6 +921,7 @@
     "id": "st_shot_put_4",
     "name": "Kugelstoßen 4kg",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [
@@ -964,6 +979,7 @@
     "id": "st_shot_put_5",
     "name": "Kugelstoßen 5kg",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [],
@@ -1017,6 +1033,7 @@
     "id": "st_shot_put_6",
     "name": "Kugelstoßen 6kg",
     "category": 3,
+    "unit": "m",
     "description": "6kg oder 6.25kg",
     "w": {
       "age": [],
@@ -1070,6 +1087,7 @@
     "id": "st_shot_put_7.26",
     "name": "Kugelstoßen 7,26kg",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [],
@@ -1122,6 +1140,7 @@
     "id": "st_ball_200",
     "name": "Ball 200g",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [
@@ -1186,6 +1205,7 @@
     "id": "st_ball_with_throwing_strap_1",
     "name": "Schleuderball 1kg",
     "category": 3,
+    "unit": "m",
     "description": "",
     "w": {
       "age": [
