@@ -8,58 +8,58 @@ let START_CLASSES = require('./../../../data/start_classes.json');
 export let Athletics = {
     /**
      * Returns a list of sport types associated with the ct athletics.
-     * @returns {{id: string, name: string, category: number, description: string, w: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
+     * @returns {{id: string, name: string, category: number, description: string, w: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
      */
     getSports: function () {
         return require('./../../../data/athletics/sports.json');
     },
 
     /**
-     * Returns whether a given athlete can do the sport type with the id st_id.
+     * Returns whether a given athlete can do the sport type with the id stID.
      * @param athlete
-     * @param {string} st_id
-     * @returns {{can_do_sport, data_object, log}}
+     * @param {string} stID
+     * @returns {{canDoSport, dataObject, log}}
      */
-    canDoSportType: function (athlete, st_id) {
+    canDoSportType: function (athlete, stID) {
 
         var log = new Log();
 
         //collect information
-        var base_information = _.find(this.getSports(), function (st) {
-            return st.id === st_id;
+        var baseInformation = _.find(this.getSports(), function (st) {
+            return st.id === stID;
         });
 
-        if (!base_information) {
-            log.addError(st_id + " is not a valid sport type id.");
+        if (!baseInformation) {
+            log.error(stID + " is not a valid sport type id.");
             return [false, undefined, log];
         }
 
-        let gender_info = athlete.is_male ? base_information.m : base_information.w;
-        let handicap_data = gender_info.score_calculation.conversion_factor[athlete.handicap];
+        let genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        let handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
 
-        let data_object = {
-            st_id: st_id,
-            name: base_information.name,
-            category: base_information.category,
-            gender_info: gender_info,
-            conversion_factor: handicap_data === undefined ? 1.0 : handicap_data
+        let dataObject = {
+            stID: stID,
+            name: baseInformation.name,
+            category: baseInformation.category,
+            genderInfo: genderInfo,
+            conversionFactor: handicapData === undefined ? 1.0 : handicapData
         };
 
-        var can_do_sport = true;
+        var canDoSport = true;
 
-        if (_.indexOf(data_object.gender_info.age, athlete.age) == -1) {
-            log.addWarning(athlete.getFullName() + " does not have a valid age for " + base_information.name + ".");
-            can_do_sport = false;
+        if (_.indexOf(dataObject.genderInfo.age, athlete.age) == -1) {
+            log.warning(athlete.getFullName() + " does not have a valid age for " + baseInformation.name + ".");
+            canDoSport = false;
         }
 
-        if (data_object.conversion_factor === 0.0) {
-            log.addWarning(athlete.getFullName() + " can not do " + base_information.name + " because of the start class " + athlete.handicap + ".");
-            can_do_sport = false;
+        if (dataObject.conversionFactor === 0.0) {
+            log.warning(athlete.getFullName() + " can not do " + baseInformation.name + " because of the start class " + athlete.handicap + ".");
+            canDoSport = false;
         }
 
         return {
-            can_do_sport: can_do_sport,
-            data_object: data_object,
+            canDoSport: canDoSport,
+            dataObject: dataObject,
             log: log
         };
     },
@@ -68,38 +68,37 @@ export let Athletics = {
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param athlete
-     * @param {object} group_ac              auth. code of the group
-     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
-     * @returns {{valid_data, log}}
+     * @param {object[]} acs              auth. codes
+     * * @returns {{validData, log}}
      */
-    getValidData: function (athlete, group_ac, station_ac) {
+    getValidData: function (athlete, acs) {
         // let sports = this.getSports();
 
-        var plain = athlete.data.getPlain(group_ac, station_ac);
+        var plain = athlete.data.getPlain(acs);
         var log = plain.log;
 
         // filter data with more then on point
-        var tmp_data = _.filter(plain.data, function (data_object) {
-            return _.max(data_object.measurements) > 0;
+        var tmpData = _.filter(plain.data, function (dataObject) {
+            return _.max(dataObject.measurements) > 0;
         });
 
         var that = this; //TODO alternative?
 
         // Add information
-        tmp_data = _.map(tmp_data, function (data_object) {
-            let can_do_sport_object = that.canDoSportType(athlete, data_object.st_id);
-            log.merge(can_do_sport_object.log);
-            if (can_do_sport_object.data_object !== undefined) {
-                can_do_sport_object.data_object.measurements = data_object.measurements;
+        tmpData = _.map(tmpData, function (dataObject) {
+            let canDoSportObject = that.canDoSportType(athlete, dataObject.stID);
+            log.merge(canDoSportObject.log);
+            if (canDoSportObject.dataObject !== undefined) {
+                canDoSportObject.dataObject.measurements = dataObject.measurements;
             }
-            return can_do_sport_object.can_do_sport ? can_do_sport_object.data_object : undefined;
+            return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
         });
 
         // filter undefined
-        tmp_data = filterUndefined(tmp_data);
+        tmpData = filterUndefined(tmpData);
 
         return {
-            valid_data: tmp_data,
+            validData: tmpData,
             log: log
         };
     },
@@ -107,15 +106,14 @@ export let Athletics = {
     /**
      * Returns whether an athlete is already finished.
      * @param athlete
-     * @param {object} group_ac              auth. code of the group
-     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
+     * @param {object[]} acs              auth. codes
      * @returns {{valid, log}}
      */
-    validate: function (athlete, group_ac, station_ac) {
-        var data = this.getValidData(athlete, group_ac, station_ac);
+    validate: function (athlete, acs) {
+        var data = this.getValidData(athlete, acs);
         var categories = [false, false, false, false];
-        for (var st in data.valid_data) {
-            categories[data.valid_data[st].category] = true;
+        for (var st in data.validData) {
+            categories[data.validData[st].category] = true;
         }
 
         return {
@@ -127,14 +125,14 @@ export let Athletics = {
     },
 
     /**
-     * Calculates the score of one data_object returned by the getValidData function.
-     * @param data_object
+     * Calculates the score of one dataObject returned by the getValidData function.
+     * @param dataObject
      * @returns {number[]}
      */
-    calculateOne: function (data_object) {
-        var calculate_function;
+    calculateOne: function (dataObject) {
+        var calculateFunction;
 
-        switch (data_object.st_id) {
+        switch (dataObject.stID) {
             case "st_sprint_50_el":
             case "st_sprint_75_el":
             case "st_sprint_100_el":
@@ -142,50 +140,49 @@ export let Athletics = {
             case "st_endurance_1000":
             case "st_endurance_2000":
             case "st_endurance_3000":
-                calculate_function = function (d, m, a, c) {
+                calculateFunction = function (d, m, a, c) {
                     return ((d / m) - a) / c;
                 };
                 break;
             case "st_sprint_50":
             case "st_sprint_75":
             case "st_sprint_100":
-                calculate_function = function (d, m, a, c) {
+                calculateFunction = function (d, m, a, c) {
                     return ((d / (m + 0.24)) - a) / c;
                 };
                 break;
             default:
-                calculate_function = function (d, m, a, c) {
+                calculateFunction = function (d, m, a, c) {
                     return ( Math.sqrt(m) - a) / c;
                 };
         }
 
-        return _.map(data_object.measurements, function (measurement) {
-            return Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
+        return _.map(dataObject.measurements, function (measurement) {
+            return Math.floor(calculateFunction(dataObject.genderInfo.scoreCalculation.d, dataObject.conversionFactor * measurement, dataObject.genderInfo.scoreCalculation.a, dataObject.genderInfo.scoreCalculation.c));
         });
     },
 
     /**
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param athlete
-     * @param {object} group_ac              auth. code of the group
-     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
+     * @param {object[]} acs              auth. codes
      * @returns {{score, log}}
      */
-    calculate: function (athlete, group_ac, station_ac) {
-        var data = this.getValidData(athlete, group_ac, station_ac);
+    calculate: function (athlete, acs) {
+        var data = this.getValidData(athlete, acs);
         var log = data.log;
 
         var scores = [0, 0, 0, 0];
 
-        for (var vd in data.valid_data) {
-            let score = this.calculateOne(data.valid_data[vd]);
-            let best_score = _.max(score);
-            let category = data.valid_data[vd].category;
+        for (var vd in data.validData) {
+            let score = this.calculateOne(data.validData[vd]);
+            let bestScore = _.max(score);
+            let category = data.validData[vd].category;
 
-            log.addInfo(data.valid_data[vd].name + ': ' + score + " -> " + best_score);
+            log.info(data.validData[vd].name + ': ' + score + " -> " + bestScore);
 
-            if (scores[category] < best_score) {
-                scores[category] = best_score;
+            if (scores[category] < bestScore) {
+                scores[category] = bestScore;
             }
         }
 

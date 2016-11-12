@@ -42,15 +42,15 @@ function test_log() {
 
     var m = new Log();
 
-    m.addError("Error!");
-    m.addWarning("Warning");
-    m.addInfo("Info");
+    m.error("Error!");
+    m.warning("Warning");
+    m.info("Info");
 
     var m2 = new Log();
 
-    m2.addError("Error2!");
-    m2.addWarning("Warning2");
-    m2.addInfo("Info2");
+    m2.error("Error2!");
+    m2.warning("Warning2");
+    m2.info("Info2");
 
     m.merge(m2);
 
@@ -82,11 +82,11 @@ function test_logic() {
 
 
     console.log("++ validate");
-    var r1 = ct.validate(p, group_ac);
+    var r1 = ct.validate(p, [group_ac]);
     console.log(r1.valid);
     console.log(r1.log.getAsString());
     console.log("++ calculate");
-    var r2 = ct.calculate(p, group_ac, station_ac);
+    var r2 = ct.calculate(p, [group_ac, station_ac]);
     console.log(r2.score);
     console.log(r2.log.getAsString());
 }

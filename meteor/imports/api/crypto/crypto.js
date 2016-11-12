@@ -74,14 +74,14 @@ export function tryDecrypt(SED, acs) {
         return SED.groupSignature.pubHash == ac.pubHash;
     });
     if (!groupAC) {
-        log.addError("GROUP AC NOT PROVIDED - FATAL - RETURNING");
+        log.error("GROUP AC NOT PROVIDED - FATAL - RETURNING");
         return false;
     }
 
     var stationAC = _.find(acs, function (ac) {
         return SED.stationSignature.pubHash == ac.pubHash;
     });
-    if (!stationAC) log.addWarning("STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK");
+    if (!stationAC) log.warning("STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK");
 
     var data = decrypt(SED, groupAC);
     if (!data)
@@ -94,7 +94,7 @@ export function tryDecrypt(SED, acs) {
  * Decrypt the signed data and check the signatures.
  * @param SED       encrypted and signed data
  * @param groupAC              auth. code of the group
- * @returns {{result: boolean|object}}    either the decrypted data or false if the signature verification failed
+ * @returns {boolean|object}    either the decrypted data or false if the signature verification failed
  */
 function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
