@@ -1,4 +1,3 @@
-import {Log} from "./../log";
 import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
 
@@ -17,39 +16,31 @@ Data.prototype = {
     /**
      * Returns the data in plain text.
      * @param {object[]} acs              auth. codes
-     * @returns {boolean|{data: {stID, measurements}[], log}}
+     * @param log
+     * @returns {boolean|{stID, measurements}[]}
      */
-    getPlain: function (acs) {
-        var log = new Log();
-        return {
-            data: filterUndefined(_.map(this.data, function (dataObject) {
-                var stIDDecryptResult = tryDecrypt(dataObject.encryptedStID, acs);
-                var measurementsDecryptResult = tryDecrypt(dataObject.encryptedMeasurements, acs);
-                log.merge(stIDDecryptResult.log);
-                log.merge(measurementsDecryptResult.log);
-
-                var stID = stIDDecryptResult.result;
-                var measurements = measurementsDecryptResult.result;
-
+    getPlain: function (acs, log) {
+        return filterUndefined(_.map(this.data, function (dataObject) {
+            var stIDDecryptResult = tryDecrypt(dataObject.encryptedStID, acs, log);
+            var measurementsDecryptResult = tryDecrypt(dataObject.encryptedMeasurements, acs, log);
 
                 return {
-                    stID: stID,
-                    measurements: measurements
+                    stID: stIDDecryptResult,
+                    measurements: measurementsDecryptResult
                 };
-            })),
-            log: log
-        };
+        }));
     },
 
     /**
      * Finds and returns the dataObject with the given stID.
      * @param stID     the sport type of the data
      * @param {object[]} acs              auth. codes
+     * @param log
      * @returns {{groupSignature, stationSignature, data: {Array}}}
      */
-    findEncrypted: function (stID, acs) {
+    findEncrypted: function (stID, acs, log) {
         return _.find(this.data, function (dataObject) {
-            var decryptedData = tryDecrypt(dataObject.encryptedStID, acs);
+            var decryptedData = tryDecrypt(dataObject.encryptedStID, acs, log);
             return decryptedData.result === stID;
         });
     },
@@ -60,11 +51,12 @@ Data.prototype = {
      * @param {number[]} newMeasurements      the new data
      * @param groupAC      Group auth. code
      * @param stationAC    Station auth. code
+     * @param log
      */
-    update: function (stID, newMeasurements, groupAC, stationAC) {
+    update: function (stID, newMeasurements, groupAC, stationAC, log) {
         var encryptedStID = encrypt(stID, groupAC, stationAC);
         var newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
-        var oldData = this.findEncrypted(stID, groupAC);
+        var oldData = this.findEncrypted(stID, [groupAC, stationAC], log);
 
         if (oldData) {
             oldData.encryptedStID = encryptedStID;

@@ -69,16 +69,16 @@ export let Athletics = {
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * * @returns {{validData, log}}
+     * * @param log
+     * * @returns {object[]}
      */
-    getValidData: function (athlete, acs) {
+    getValidData: function (athlete, acs, log) {
         // let sports = this.getSports();
 
-        var plain = athlete.data.getPlain(acs);
-        var log = plain.log;
+        var plain = athlete.data.getPlain(acs, log);
 
         // filter data with more then on point
-        var tmpData = _.filter(plain.data, function (dataObject) {
+        var tmpData = _.filter(plain, function (dataObject) {
             return _.max(dataObject.measurements) > 0;
         });
 
@@ -97,31 +97,27 @@ export let Athletics = {
         // filter undefined
         tmpData = filterUndefined(tmpData);
 
-        return {
-            validData: tmpData,
-            log: log
-        };
+
+        return tmpData;
     },
 
     /**
      * Returns whether an athlete is already finished.
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * @returns {{valid, log}}
+     * @param log
+     * @returns {boolean}
      */
-    validate: function (athlete, acs) {
-        var data = this.getValidData(athlete, acs);
+    validate: function (athlete, acs, log) {
+        var data = this.getValidData(athlete, acs, log);
         var categories = [false, false, false, false];
-        for (var st in data.validData) {
-            categories[data.validData[st].category] = true;
+        for (var st in data) {
+            categories[data[st].category] = true;
         }
 
-        return {
-            valid: 3 <= _.filter(categories, function (category) {
+        return 3 <= _.filter(categories, function (category) {
                 return category;
-            }).length,
-            log: data.log
-        };
+            }).length;
     },
 
     /**
@@ -166,34 +162,31 @@ export let Athletics = {
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * @returns {{score, log}}
+     * @param log
+     * @returns {number}
      */
-    calculate: function (athlete, acs) {
-        var data = this.getValidData(athlete, acs);
-        var log = data.log;
+    calculate: function (athlete, acs, log) {
+        var validData = this.getValidData(athlete, acs, log);
 
         var scores = [0, 0, 0, 0];
 
-        for (var vd in data.validData) {
-            let score = this.calculateOne(data.validData[vd]);
+        for (var vd in validData) {
+            let score = this.calculateOne(validData[vd]);
             let bestScore = _.max(score);
-            let category = data.validData[vd].category;
+            let category = validData[vd].category;
 
-            log.info(data.validData[vd].name + ': ' + score + " -> " + bestScore);
+            log.info(validData[vd].name + ': ' + score + " -> " + bestScore);
 
             if (scores[category] < bestScore) {
                 scores[category] = bestScore;
             }
         }
 
-        return {
-            score: _.reduce(_.sortBy(scores, function (num) {
+        return _.reduce(_.sortBy(scores, function (num) {
                 return num;
             }).splice(1, 3), function (mem, num) {
                 return mem + num;
-            }, 0),
-            log: log
-        };
+        }, 0);
     },
 
     /**
