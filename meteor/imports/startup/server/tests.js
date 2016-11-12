@@ -5,11 +5,11 @@ import {encrypt, decrypt, generateAC} from "../../api/crypto/crypto";
 import {Log} from "../../api/log";
 
 /**
- * Runs some random tests.
+ * Run some random tests.
  */
 export function tests() {
-    test_crypto();
     test_logic();
+    test_crypto();
 }
 
 function test_codes() {
@@ -36,6 +36,7 @@ function test_crypto() {
     var decrypted_data = decrypt(encrypted_data, group_ac, station_ac);
     var decrypted_data_group_only = decrypt(encrypted_data, group_ac);
     var decrypted_data_station_wrong = decrypt(encrypted_data, group_ac, wrong_station_ac);
+    console.log(station_ac);
     console.log(encrypted_data);
     console.log(decrypted_data);
     console.log(decrypted_data_group_only);

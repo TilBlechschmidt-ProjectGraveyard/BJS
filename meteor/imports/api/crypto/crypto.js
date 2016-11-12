@@ -45,8 +45,8 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 export function encrypt(data, group_ac, station_ac) {
     //noinspection JSUnresolvedVariable
     return {
-        group_signature: generateHMAC(data, group_ac.priv_hash),
-        station_signature: generateHMAC(data, station_ac.priv_hash),
+        group_signature: {signature: generateHMAC(data, group_ac.priv_hash), pub_hash: group_ac.pub_hash},
+        station_signature: {signature: generateHMAC(data, station_ac.priv_hash), pub_hash: station_ac.pub_hash},
         data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), group_ac.priv_hash).toString()
     };
 }
@@ -64,8 +64,8 @@ export function decrypt(signed_enc_data, group_ac, station_ac) {
     var bytes = CryptoJS.Rabbit.decrypt(signed_enc_data.data, group_ac.priv_hash);
     //noinspection JSUnresolvedVariable
     var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    var signature_ok = (generateHMAC(data, group_ac.priv_hash) == signed_enc_data.group_signature) &&
-        ( typeof station_ac === "object" ? (generateHMAC(data, station_ac.priv_hash) == signed_enc_data.station_signature) : true);
+    var signature_ok = (group_ac.pub_hash == signed_enc_data.group_signature.pub_hash && generateHMAC(data, group_ac.priv_hash) == signed_enc_data.group_signature.signature) &&
+        ( typeof station_ac === "object" ? (station_ac.pub_hash == signed_enc_data.station_signature.pub_hash && generateHMAC(data, station_ac.priv_hash) == signed_enc_data.station_signature.signature) : true);
 
     if (typeof station_ac !== "object") log.addWarning("No station_ac provided! Skipping signature check!");
     if (signature_ok)
