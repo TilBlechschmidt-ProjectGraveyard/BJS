@@ -9,8 +9,6 @@ function Log() {
 }
 
 Log.prototype = {
-    err: this.error,
-    warn: this.warning,
 
     /**
      * Adds a new error.
@@ -23,6 +21,8 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
+    err: this.error,
+
     /**
      * Adds a new warning.
      * @param {string} message
@@ -34,6 +34,8 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
+    warn: this.warning,
+
     /**
      * Adds a new info message.
      * @param {string} message
@@ -45,6 +47,7 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
+
     /**
      * Adds a new message with a custom level.
      * @param {number} level
@@ -57,6 +60,7 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
+
     /**
      * Merge another Log objects messages to this.messages.
      * @param other
@@ -64,6 +68,7 @@ Log.prototype = {
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
     },
+
     /**
      * Returns all messages as strings.
      * @returns {Array}
@@ -73,6 +78,7 @@ Log.prototype = {
             return message.timestamp.toLocaleString() + " [" + message.level + "]: " + message.message;
         });
     },
+
     /**
      * Returns all messages with the given level as strings.
      * @param level
@@ -83,6 +89,7 @@ Log.prototype = {
             return message.timestamp.toLocaleString() + " [" + message.level + "]: " + message.message;
         });
     },
+
     /**
      * Returns all messages with the given or higher level as strings.
      * @param level
