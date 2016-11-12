@@ -24,10 +24,12 @@ describe('crypto', function () {
     });
 
     it('generates salted ACs', function () {
+        this.timeout(5000);
         generateAC(password).should.not.be.equal(generateAC(password));
     });
 
     it('takes a salt for AC creation', function () {
+        this.timeout(5000);
         var ac1 = generateAC(password);
         var ac2 = generateAC(password, ac1.salt);
 
@@ -35,6 +37,7 @@ describe('crypto', function () {
     });
 
     it('generates reproducible ACs', function () {
+        this.timeout(5000);
         var ac1 = generateAC(password);
         var ac2 = generateAC(password, ac1.salt);
 
