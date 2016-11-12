@@ -15,12 +15,19 @@ function generateHMAC(data, password) {
     return wordsToHex(CryptoJS.HmacSHA512(data, password));
 }
 
+function generateSignature(data, ac) {
+    return {
+        signature: generateHMAC(data, ac.privHash),
+        pubHash: ac.pubHash
+    };
+}
+
 // AC = authentication code = object of the hashes and the salt
 /**
  * Generates a authentication code for
  * @param password      passwd to generate the auth. code from
  * @param salt [random] optional salt to recreate a auth. code
- * @returns {{salt, pub_hash, priv_hash}}   authentication code
+ * @returns {{salt, pubHash, privHash}}   authentication code
  */
 //noinspection JSUnresolvedVariable
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
@@ -30,52 +37,75 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
     //noinspection JSUnresolvedFunction
     return {
         salt: wordsToHex(salt),
-        pub_hash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-        priv_hash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+        pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+        privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
     };
 }
 
 /**
  * Encrypt data and sign it
  * @param data          Data to encrypt
- * @param group_ac      Group auth. code
- * @param station_ac    Station auth. code
- * @returns {{group_signature, station_signature, data: (string|*)}}
+ * @param groupAC      Group auth. code
+ * @param stationAC    Station auth. code
+ * @returns {{groupSignature, stationSignature, data: (string|*)}}
  */
-export function encrypt(data, group_ac, station_ac) {
+export function encrypt(data, groupAC, stationAC) {
     //noinspection JSUnresolvedVariable
     return {
-        group_signature: {signature: generateHMAC(data, group_ac.priv_hash), pub_hash: group_ac.pub_hash},
-        station_signature: {signature: generateHMAC(data, station_ac.priv_hash), pub_hash: station_ac.pub_hash},
-        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), group_ac.priv_hash).toString()
+        groupSignature: generateSignature(data, groupAC),
+        stationSignature: generateSignature(data, stationAC),
+        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
     };
+}
+
+// SED = signed && encrypted data
+function checkSignature(SED, data, groupAC, stationAC) {
+    return (groupAC.pubHash == SED.groupSignature.pubHash && generateHMAC(data, groupAC.privHash) == SED.groupSignature.signature) &&
+        ( typeof stationAC === "object" ? (stationAC.pubHash == SED.stationSignature.pubHash && generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
+}
+
+export function tryDecrypt(SED, acs) {
+
+    var log = new Log();
+
+    lodash.remove(acs, _.isUndefined);
+
+    var groupAC = _.find(acs, function (ac) {
+        return SED.groupSignature.pubHash == ac.pubHash;
+    });
+    if (!groupAC) {
+        log.addError("GROUP AC NOT PROVIDED - FATAL - RETURNING");
+        return false;
+    }
+
+    var stationAC = _.find(acs, function (ac) {
+        return SED.stationSignature.pubHash == ac.pubHash;
+    });
+    if (!stationAC) log.addWarning("STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK");
+
+    var data = decrypt(SED, groupAC);
+    if (!data)
+        return {result: false, log: log};
+    else if (checkSignature(SED, data, groupAC, stationAC))
+        return {result: data, log: log};
 }
 
 /**
  * Decrypt the signed data and check the signatures.
- * @param signed_enc_data       encrypted and signed data
- * @param group_ac              auth. code of the group
- * @param station_ac []         auth. code of the station (if left out the station signature is not checked!)
- * @returns {{result: boolean|object, log: object}}    either the decrypted data or false if the signature verification failed
+ * @param SED       encrypted and signed data
+ * @param groupAC              auth. code of the group
+ * @returns {{result: boolean|object}}    either the decrypted data or false if the signature verification failed
  */
-export function decrypt(signed_enc_data, group_ac, station_ac) {
-    var log = new Log();
+function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
-    var bytes = CryptoJS.Rabbit.decrypt(signed_enc_data.data, group_ac.priv_hash);
+    var bytes = CryptoJS.Rabbit.decrypt(SED.data, groupAC.privHash);
     //noinspection JSUnresolvedVariable
-    var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    var signature_ok = (group_ac.pub_hash == signed_enc_data.group_signature.pub_hash && generateHMAC(data, group_ac.priv_hash) == signed_enc_data.group_signature.signature) &&
-        ( typeof station_ac === "object" ? (station_ac.pub_hash == signed_enc_data.station_signature.pub_hash && generateHMAC(data, station_ac.priv_hash) == signed_enc_data.station_signature.signature) : true);
-
-    if (typeof station_ac !== "object") log.addWarning("No station_ac provided! Skipping signature check!");
-    if (signature_ok)
-        return { // If the signature checks are valid return the data
-            result: data,
-            log: log
-        };
-    else
-        return { // Else return false
-            result: false,
-            log: log
-        };
+    var data;
+    try {
+        //noinspection JSUnresolvedVariable
+        data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    } catch (err) {
+        data = false;
+    }
+    return data;
 }

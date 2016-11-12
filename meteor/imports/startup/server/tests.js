@@ -1,7 +1,7 @@
 import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
 import {genRandomCode} from "../../api/crypto/pwdgen";
-import {encrypt, decrypt, generateAC} from "../../api/crypto/crypto";
+import {encrypt, tryDecrypt, generateAC} from "../../api/crypto/crypto";
 import {Log} from "../../api/log";
 
 /**
@@ -33,14 +33,8 @@ function test_crypto() {
     };
 
     var encrypted_data = encrypt(data, group_ac, station_ac);
-    var decrypted_data = decrypt(encrypted_data, group_ac, station_ac);
-    var decrypted_data_group_only = decrypt(encrypted_data, group_ac);
-    var decrypted_data_station_wrong = decrypt(encrypted_data, group_ac, wrong_station_ac);
-    console.log(station_ac);
-    console.log(encrypted_data);
-    console.log(decrypted_data);
-    console.log(decrypted_data_group_only);
-    console.log(decrypted_data_station_wrong);
+    var x = tryDecrypt(encrypted_data, [group_ac, station_ac, wrong_station_ac]);
+    console.log(typeof x, x);
 }
 
 function test_log() {
