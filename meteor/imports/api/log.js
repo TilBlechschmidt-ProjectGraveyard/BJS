@@ -9,6 +9,9 @@ function Log() {
 }
 
 Log.prototype = {
+    err: this.error,
+    warn: this.warning,
+
     /**
      * Adds a new error.
      * @param {string} message
