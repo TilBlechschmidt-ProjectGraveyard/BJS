@@ -21,70 +21,10 @@ function generateSignature(data, ac) {
     };
 }
 
-// AC = authentication code = object of the hashes and the salt
-/**
- * Generates a authentication code for
- * @param password      passwd to generate the auth. code from
- * @param salt [random] optional salt to recreate a auth. code
- * @returns {{salt, pubHash, privHash}}   authentication code
- */
-//noinspection JSUnresolvedVariable
-export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
-    if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
-        salt = CryptoJS.enc.Utf8.parse(salt);
-    }
-    //noinspection JSUnresolvedFunction
-    return {
-        salt: wordsToHex(salt),
-        pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-        privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-    };
-}
-
-/**
- * Encrypt data and sign it
- * @param data          Data to encrypt
- * @param groupAC      Group auth. code
- * @param stationAC    Station auth. code
- * @returns {{groupSignature, stationSignature, data: (string|*)}}
- */
-export function encrypt(data, groupAC, stationAC) {
-    //noinspection JSUnresolvedVariable
-    return {
-        groupSignature: generateSignature(data, groupAC),
-        stationSignature: generateSignature(data, stationAC),
-        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
-    };
-}
-
 // SED = signed && encrypted data
 function checkSignature(SED, data, groupAC, stationAC) {
     return (groupAC.pubHash == SED.groupSignature.pubHash && generateHMAC(data, groupAC.privHash) == SED.groupSignature.signature) &&
         ( typeof stationAC === "object" ? (stationAC.pubHash == SED.stationSignature.pubHash && generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
-}
-
-export function tryDecrypt(log, SED, acs) {
-
-    lodash.remove(acs, _.isUndefined);
-
-    var groupAC = _.find(acs, function (ac) {
-        return SED.groupSignature.pubHash == ac.pubHash;
-    });
-    if (!groupAC) {
-        log.error("GROUP AC NOT PROVIDED - FATAL - RETURNING");
-        return false;
-    }
-
-    var stationAC = _.find(acs, function (ac) {
-        return SED.stationSignature.pubHash == ac.pubHash;
-    });
-    if (!stationAC) log.warning("STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK");
-
-    var data = decrypt(SED, groupAC);
-    if (!data)
-        return false;
-    else if (checkSignature(SED, data, groupAC, stationAC))
-        return data;
 }
 
 /**
@@ -105,4 +45,70 @@ function decrypt(SED, groupAC) {
         data = false;
     }
     return data;
+}
+
+// AC = authentication code = object of the hashes and the salt
+/**
+ * Generates a authentication code for
+ * @param password      passwd to generate the auth. code from
+ * @param salt [random] optional salt to recreate a auth. code
+ * @returns {{salt, pubHash, privHash}}   authentication code
+ */
+//noinspection JSUnresolvedVariable
+export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
+    if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+        salt = CryptoJS.enc.Hex.parse(salt);
+    }
+    //noinspection JSUnresolvedFunction
+    return {
+        salt: wordsToHex(salt),
+        pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+        privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+    };
+}
+
+/**
+ * Encrypt data and sign it
+ * @param data          Data to encrypt
+ * @param groupAC      Group auth. code
+ * @param stationAC    Station auth. code
+ * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
+ */
+export function encrypt(data, groupAC, stationAC) {
+    if (!data || !groupAC || !stationAC) return false;
+    //noinspection JSUnresolvedVariable
+    return {
+        groupSignature: generateSignature(data, groupAC),
+        stationSignature: generateSignature(data, stationAC),
+        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
+    };
+}
+
+export function tryDecrypt(log, SED, acs) {
+
+    if (!SED || !log || !(typeof log === 'object' && typeof log.warning === 'function') || !(typeof SED === 'object' && SED.hasOwnProperty('groupSignature') && SED.hasOwnProperty('stationSignature') && SED.hasOwnProperty('data'))
+    ) return false;
+
+    lodash.remove(acs, _.isUndefined);
+
+    var groupAC = _.find(acs, function (ac) {
+        return SED.groupSignature.pubHash == ac.pubHash;
+    });
+    if (!groupAC) {
+        log.error("GROUP AC NOT PROVIDED - FATAL - RETURNING");
+        return false;
+    }
+
+    var stationAC = _.find(acs, function (ac) {
+        return SED.stationSignature.pubHash == ac.pubHash;
+    });
+    if (!stationAC) log.warning("STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK");
+
+    var data = decrypt(SED, groupAC);
+    if (data && checkSignature(SED, data, groupAC, stationAC))
+        return {
+            data: data,
+            signatureEnforced: stationAC !== undefined
+        };
+    return false;
 }
