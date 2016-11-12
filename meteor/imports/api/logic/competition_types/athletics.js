@@ -41,6 +41,7 @@ export let Athletics = {
             stID: stID,
             name: baseInformation.name,
             category: baseInformation.category,
+            unit: baseInformation.unit,
             genderInfo: genderInfo,
             conversionFactor: handicapData === undefined ? 1.0 : handicapData
         };
@@ -173,7 +174,7 @@ export let Athletics = {
             let bestScore = _.max(score);
             let category = validData[vd].category;
 
-            log.info(validData[vd].name + ': ' + score + " -> " + bestScore);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + " (" + score + ") -> " + bestScore);
 
             if (scores[category] < bestScore) {
                 scores[category] = bestScore;
