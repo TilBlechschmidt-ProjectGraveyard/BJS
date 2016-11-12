@@ -1,4 +1,3 @@
-import {Log} from "../../log";
 import {filterUndefined} from "./../general";
 
 
@@ -16,14 +15,12 @@ export let Athletics = {
 
     /**
      * Returns whether a given athlete can do the sport type with the id stID.
+     * @param log
      * @param athlete
      * @param {string} stID
      * @returns {{canDoSport, dataObject, log}}
      */
-    canDoSportType: function (athlete, stID) {
-
-        var log = new Log();
-
+    canDoSportType: function (log, athlete, stID) {
         //collect information
         var baseInformation = _.find(this.getSports(), function (st) {
             return st.id === stID;
@@ -31,7 +28,10 @@ export let Athletics = {
 
         if (!baseInformation) {
             log.error(stID + " is not a valid sport type id.");
-            return [false, undefined, log];
+            return {
+                canDoSport: undefined,
+                dataObject: undefined
+            };
         }
 
         let genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
@@ -59,23 +59,22 @@ export let Athletics = {
 
         return {
             canDoSport: canDoSport,
-            dataObject: dataObject,
-            log: log
+            dataObject: dataObject
         };
     },
 
 
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * * @param log
      * * @returns {object[]}
      */
-    getValidData: function (athlete, acs, log) {
+    getValidData: function (log, athlete, acs) {
         // let sports = this.getSports();
 
-        var plain = athlete.data.getPlain(acs, log);
+        var plain = athlete.data.getPlain(log, acs);
 
         // filter data with more then on point
         var tmpData = _.filter(plain, function (dataObject) {
@@ -86,8 +85,7 @@ export let Athletics = {
 
         // Add information
         tmpData = _.map(tmpData, function (dataObject) {
-            let canDoSportObject = that.canDoSportType(athlete, dataObject.stID);
-            log.merge(canDoSportObject.log);
+            let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID);
             if (canDoSportObject.dataObject !== undefined) {
                 canDoSportObject.dataObject.measurements = dataObject.measurements;
             }
@@ -103,13 +101,13 @@ export let Athletics = {
 
     /**
      * Returns whether an athlete is already finished.
+     * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * @param log
      * @returns {boolean}
      */
-    validate: function (athlete, acs, log) {
-        var data = this.getValidData(athlete, acs, log);
+    validate: function (log, athlete, acs) {
+        var data = this.getValidData(log, athlete, acs);
         var categories = [false, false, false, false];
         for (var st in data) {
             categories[data[st].category] = true;
@@ -160,13 +158,13 @@ export let Athletics = {
 
     /**
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
-     * @param log
      * @returns {number}
      */
-    calculate: function (athlete, acs, log) {
-        var validData = this.getValidData(athlete, acs, log);
+    calculate: function (log, athlete, acs) {
+        var validData = this.getValidData(log, athlete, acs);
 
         var scores = [0, 0, 0, 0];
 

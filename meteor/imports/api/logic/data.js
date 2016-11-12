@@ -15,14 +15,14 @@ export function Data() {
 Data.prototype = {
     /**
      * Returns the data in plain text.
-     * @param {object[]} acs              auth. codes
      * @param log
+     * @param {object[]} acs              auth. codes
      * @returns {boolean|{stID, measurements}[]}
      */
-    getPlain: function (acs, log) {
+    getPlain: function (log, acs) {
         return filterUndefined(_.map(this.data, function (dataObject) {
-            var stIDDecryptResult = tryDecrypt(dataObject.encryptedStID, acs, log);
-            var measurementsDecryptResult = tryDecrypt(dataObject.encryptedMeasurements, acs, log);
+            var stIDDecryptResult = tryDecrypt(log, dataObject.encryptedStID, acs);
+            var measurementsDecryptResult = tryDecrypt(log, dataObject.encryptedMeasurements, acs);
 
                 return {
                     stID: stIDDecryptResult,
@@ -33,30 +33,30 @@ Data.prototype = {
 
     /**
      * Finds and returns the dataObject with the given stID.
+     * @param log
      * @param stID     the sport type of the data
      * @param {object[]} acs              auth. codes
-     * @param log
      * @returns {{groupSignature, stationSignature, data: {Array}}}
      */
-    findEncrypted: function (stID, acs, log) {
+    findEncrypted: function (log, stID, acs) {
         return _.find(this.data, function (dataObject) {
-            var decryptedData = tryDecrypt(dataObject.encryptedStID, acs, log);
-            return decryptedData.result === stID;
+            var decryptedData = tryDecrypt(log, dataObject.encryptedStID, acs);
+            return decryptedData === stID;
         });
     },
 
     /**
      * Updates the data of a given stID.
+     * @param log
      * @param {string} stID                the sport type of the data
      * @param {number[]} newMeasurements      the new data
      * @param groupAC      Group auth. code
      * @param stationAC    Station auth. code
-     * @param log
      */
-    update: function (stID, newMeasurements, groupAC, stationAC, log) {
+    update: function (log, stID, newMeasurements, groupAC, stationAC) {
         var encryptedStID = encrypt(stID, groupAC, stationAC);
         var newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
-        var oldData = this.findEncrypted(stID, [groupAC, stationAC], log);
+        var oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
 
         if (oldData) {
             oldData.encryptedStID = encryptedStID;
