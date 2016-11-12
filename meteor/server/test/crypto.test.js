@@ -44,29 +44,38 @@ describe('crypto', function () {
 
     it('enforces parameter passing (encrypt)', function () {
         var valid = encrypt(data, cachedAC1, cachedAC2);
-        var oneMissing = encrypt(data, cachedAC1);
-        var twoMissing = encrypt(data);
+        (function () {
+            encrypt(data, cachedAC1)
+        }).should.throw();
+        (function () {
+            encrypt(data)
+        }).should.throw();
+        (function () {
+            encrypt()
+        }).should.throw();
 
         valid.should.be.a('object');
         valid.should.have.property('groupSignature');
         valid.should.have.property('stationSignature');
         valid.should.have.property('data');
-        oneMissing.should.be.equal(false);
-        twoMissing.should.be.equal(false);
+        // oneMissing.should.be.equal(false);
+        // twoMissing.should.be.equal(false);
     });
 
     it('enforces parameter passing (tryDecrypt)', function () {
         var valid = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
-        var logMissing = tryDecrypt(cachedSED, [cachedAC1, cachedAC2]);
-        var logWrongType = tryDecrypt([], cachedSED, [cachedAC1, cachedAC2]);
+        (function () {
+            tryDecrypt(cachedSED, [cachedAC1, cachedAC2])
+        }).should.throw(); // log missing
+        (function () {
+            tryDecrypt([], cachedSED, [cachedAC1, cachedAC2])
+        }).should.throw(); // log wrong type
         var stationACMissing = tryDecrypt(log, cachedSED, [cachedAC1]);
         var emptyACList = tryDecrypt(log, cachedSED, []);
         var acsMissing = tryDecrypt(log, cachedSED);
         var wrongDataType = tryDecrypt(log, {}, [cachedAC1, cachedAC2]);
 
         valid.should.not.be.equal(false);
-        logMissing.should.be.equal(false);
-        logWrongType.should.be.equal(false);
 
         stationACMissing.should.be.a('object');
         stationACMissing.should.have.property('signatureEnforced');

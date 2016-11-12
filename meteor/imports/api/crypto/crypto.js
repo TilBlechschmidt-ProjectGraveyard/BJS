@@ -21,7 +21,7 @@ function generateSignature(data, ac) {
     };
 }
 
-// SED = signed && encrypted data
+// SED = signed & encrypted data
 function checkSignature(SED, data, groupAC, stationAC) {
     return (groupAC.pubHash == SED.groupSignature.pubHash && generateHMAC(data, groupAC.privHash) == SED.groupSignature.signature) &&
         ( typeof stationAC === "object" ? (stationAC.pubHash == SED.stationSignature.pubHash && generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
@@ -48,13 +48,13 @@ function decrypt(SED, groupAC) {
 }
 
 // AC = authentication code = object of the hashes and the salt
+//noinspection JSUnresolvedVariable
 /**
  * Generates a authentication code for
  * @param password      passwd to generate the auth. code from
  * @param salt [random] optional salt to recreate a auth. code
  * @returns {{salt, pubHash, privHash}}   authentication code
  */
-//noinspection JSUnresolvedVariable
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
     if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
         salt = CryptoJS.enc.Hex.parse(salt);
@@ -75,7 +75,6 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
  * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
  */
 export function encrypt(data, groupAC, stationAC) {
-    if (!data || !groupAC || !stationAC) return false;
     //noinspection JSUnresolvedVariable
     return {
         groupSignature: generateSignature(data, groupAC),
@@ -84,10 +83,22 @@ export function encrypt(data, groupAC, stationAC) {
     };
 }
 
+/**
+ * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
+ * @param log   Logger instance to use
+ * @param SED   signed and encrypted data object
+ * @param acs   array of authentication codes
+ * @returns {*|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
+ */
 export function tryDecrypt(log, SED, acs) {
 
-    if (!SED || !log || !(typeof log === 'object' && typeof log.warning === 'function') || !(typeof SED === 'object' && SED.hasOwnProperty('groupSignature') && SED.hasOwnProperty('stationSignature') && SED.hasOwnProperty('data'))
-    ) return false;
+    var loggerPresent = (typeof log === 'object' && typeof log.warning === 'function');
+    if (!SED || !log || !loggerPresent || !(typeof SED === 'object' && SED.hasOwnProperty('groupSignature') && SED.hasOwnProperty('stationSignature') && SED.hasOwnProperty('data'))
+    ) {
+        if (loggerPresent) log.error("Wrong parameters passed! (consult documentation)");
+        else throw new Error("Wrong parameters passed! (consult documentation)");
+        return false;
+    }
 
     lodash.remove(acs, _.isUndefined);
 
