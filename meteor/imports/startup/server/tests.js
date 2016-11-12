@@ -8,13 +8,19 @@ import {Log} from "../../api/log";
  * Runs some random tests.
  */
 export function tests() {
+    test_crypto();
+    test_logic();
+}
 
+function test_codes() {
     console.log("--- Testing Codes ---");
 
     for (var n in _.range(10)) {
         console.log(genRandomCode());
     }
+}
 
+function test_crypto() {
     console.log("--- Testing Crypto ---");
 
     var group_ac = generateAC("1234567ljhfaljawf8");
@@ -34,7 +40,9 @@ export function tests() {
     console.log(decrypted_data);
     console.log(decrypted_data_group_only);
     console.log(decrypted_data_station_wrong);
+}
 
+function test_log() {
     console.log("--- Testing Log ---");
 
     var m = new Log();
@@ -54,9 +62,13 @@ export function tests() {
     console.log(m.getAsString());
     console.log(m.getAsStringWithLevel(2));
     console.log(m.getAsStringWithMinLevel(1));
+}
 
+function test_logic() {
     console.log("--- Testing Logic ---");
     var ct = CompetitionTypes[0].object;
+    var group_ac = generateAC("1234567ljhfaljawf8");
+    var station_ac = generateAC("hflhkfks;kjfjankfa");
     // var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', 'B1');
 
     // p.data.update("st_sprint_100", 18, undefined, undefined);
@@ -66,10 +78,10 @@ export function tests() {
     var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
 
     p.age = 16;
-    p.data.update("st_long_jump", 7.33, group_ac, station_ac);
-    p.data.update("st_ball_200", 69, group_ac, station_ac);
-    p.data.update("st_ball_200", 70, group_ac, station_ac);
-    p.data.update("st_endurance_1000", 160, group_ac, station_ac);
+    p.data.update("st_long_jump", [7.33], group_ac, station_ac);
+    p.data.update("st_ball_200", [70], group_ac, station_ac);
+    p.data.update("st_ball_200", [69, 70], group_ac, station_ac);
+    p.data.update("st_endurance_1000", [160], group_ac, station_ac);
 
 
     console.log("++ validate");

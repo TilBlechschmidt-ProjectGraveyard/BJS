@@ -81,7 +81,7 @@ let Athletics = {
 
         // filter data with more then on point
         var tmp_data = _.filter(plain.data, function (data_object) {
-            return data_object.measurement > 0;
+            return _.max(data_object.measurements) > 0;
         });
 
         var that = this; //TODO alternative?
@@ -91,7 +91,7 @@ let Athletics = {
             let can_do_sport_object = that.canDoSportType(athlete, data_object.st_id);
             log.merge(can_do_sport_object.log);
             if (can_do_sport_object.data_object !== undefined) {
-                can_do_sport_object.data_object.measurement = data_object.measurement;
+                can_do_sport_object.data_object.measurements = data_object.measurements;
             }
             return can_do_sport_object.can_do_sport ? can_do_sport_object.data_object : undefined;
         });
@@ -114,6 +114,7 @@ let Athletics = {
      */
     validate: function (athlete, group_ac, station_ac) {
         var data = this.getValidData(athlete, group_ac, station_ac);
+        console.log(data.valid_data);
         var categories = [false, false, false, false];
         for (var st in data.valid_data) {
             categories[data.valid_data[st].category] = true;
@@ -130,7 +131,7 @@ let Athletics = {
     /**
      * Calculates the score of one data_object returned by the getValidData function.
      * @param data_object
-     * @returns {number}
+     * @returns {number[]}
      */
     calculateOne: function (data_object) {
         var calculate_function;
@@ -160,7 +161,9 @@ let Athletics = {
                 };
         }
 
-        return Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * data_object.measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
+        return _.map(data_object.measurements, function (measurement) {
+            return Math.floor(calculate_function(data_object.gender_info.score_calculation.d, data_object.conversion_factor * measurement, data_object.gender_info.score_calculation.a, data_object.gender_info.score_calculation.c));
+        });
     },
 
     /**
@@ -178,11 +181,13 @@ let Athletics = {
 
         for (var vd in data.valid_data) {
             let score = this.calculateOne(data.valid_data[vd]);
+            let best_score = _.max(score);
             let category = data.valid_data[vd].category;
 
-            log.addInfo(data.valid_data[vd].name + ': ' + score);
-            if (scores[category] < score) {
-                scores[category] = score;
+            log.addInfo(data.valid_data[vd].name + ': ' + score + " -> " + best_score);
+
+            if (scores[category] < best_score) {
+                scores[category] = best_score;
             }
         }
 
