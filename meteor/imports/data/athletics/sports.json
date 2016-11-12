@@ -13,11 +13,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.64800,
         "c": 0.00660,
         "d": 50,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -42,11 +42,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.79000,
         "c": 0.00690,
         "d": 50,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -77,11 +77,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.64800,
         "c": 0.00660,
         "d": 50,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -106,11 +106,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.79000,
         "c": 0.00690,
         "d": 50,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -138,11 +138,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.99800,
         "c": 0.00660,
         "d": 75,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -164,11 +164,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.10000,
         "c": 0.00664,
         "d": 75,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -196,11 +196,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 3.99800,
         "c": 0.00660,
         "d": 75,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -222,11 +222,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.10000,
         "c": 0.00664,
         "d": 75,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -257,11 +257,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.00620,
         "c": 0.00656,
         "d": 100,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -286,11 +286,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.34100,
         "c": 0.00676,
         "d": 100,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -321,11 +321,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.00620,
         "c": 0.00656,
         "d": 100,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.67,
           "A3": 0.62,
@@ -350,11 +350,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 4.34100,
         "c": 0.00676,
         "d": 100,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.87,
           "A3": 0.69,
@@ -392,11 +392,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 2.02320,
         "c": 0.00647,
         "d": 800,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.84,
@@ -414,11 +414,11 @@
     },
     "m": {
       "age": [],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 0.0,
         "c": 0.0,
         "d": 800,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.93,
@@ -442,11 +442,11 @@
     "description": "",
     "w": {
       "age": [],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 0.0,
         "c": 0.0,
         "d": 1000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.84,
@@ -478,11 +478,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 2.15800,
         "c": 0.00600,
         "d": 1000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.93,
@@ -513,11 +513,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.80000,
         "c": 0.00540,
         "d": 2000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.84,
@@ -540,11 +540,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.78400,
         "c": 0.00600,
         "d": 2000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.93,
@@ -574,11 +574,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.75000,
         "c": 0.00500,
         "d": 3000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.84,
@@ -604,11 +604,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.70000,
         "c": 0.00580,
         "d": 3000,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 0.95,
           "A2": 0.0,
           "A3": 0.93,
@@ -646,11 +646,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.09350,
         "c": 0.00208,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.05,
           "A3": 0.0,
@@ -682,11 +682,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.15028,
         "c": 0.00219,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.44,
           "A3": 0.0,
@@ -724,11 +724,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 0.88070,
         "c": 0.00068,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.58,
           "A3": 0.0,
@@ -760,11 +760,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 0.84100,
         "c": 0.00080,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.25,
           "A3": 0.0,
@@ -795,11 +795,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 2.02320,
         "c": 0.00874,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.98,
           "A3": 3.61,
@@ -822,11 +822,11 @@
         10,
         11
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 2.80000,
         "c": 0.01100,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.50,
           "A3": 3.19,
@@ -857,11 +857,11 @@
         16,
         17
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.27900,
         "c": 0.00398,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.19,
           "A3": 2.52,
@@ -882,11 +882,11 @@
         12,
         13
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.42500,
         "c": 0.00370,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.61,
           "A3": 1.88,
@@ -914,11 +914,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.27900,
         "c": 0.00398,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.19,
           "A3": 2.52,
@@ -939,11 +939,11 @@
         14,
         15
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.42500,
         "c": 0.00370,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.61,
           "A3": 1.88,
@@ -967,11 +967,11 @@
     "description": "",
     "w": {
       "age": [],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.27900,
         "c": 0.00398,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.19,
           "A3": 2.52,
@@ -992,11 +992,11 @@
         16,
         17
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.42500,
         "c": 0.00370,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.61,
           "A3": 1.88,
@@ -1020,11 +1020,11 @@
     "description": "6kg oder 6.25kg",
     "w": {
       "age": [],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.27900,
         "c": 0.00398,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.19,
           "A3": 2.52,
@@ -1045,11 +1045,11 @@
         18,
         19
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.42500,
         "c": 0.00370,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.61,
           "A3": 1.88,
@@ -1073,11 +1073,11 @@
     "description": "",
     "w": {
       "age": [],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.27900,
         "c": 0.00398,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.19,
           "A3": 2.52,
@@ -1097,11 +1097,11 @@
       "age": [
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.42500,
         "c": 0.00370,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 1.61,
           "A3": 1.88,
@@ -1131,11 +1131,11 @@
         17,
         18
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.41490,
         "c": 0.01039,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.98,
           "A3": 3.61,
@@ -1161,11 +1161,11 @@
         17,
         18
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.93600,
         "c": 0.01240,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.50,
           "A3": 3.19,
@@ -1197,11 +1197,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.08500,
         "c": 0.00921,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.98,
           "A3": 3.61,
@@ -1227,11 +1227,11 @@
         19,
         20
       ],
-      "score_calculation": {
+      "scoreCalculation": {
         "a": 1.59500,
         "c": 0.009125,
         "d": 0,
-        "conversion_factor": {
+        "conversionFactor": {
           "A1": 1.05,
           "A2": 2.50,
           "A3": 3.19,

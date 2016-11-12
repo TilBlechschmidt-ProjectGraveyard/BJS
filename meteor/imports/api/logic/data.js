@@ -9,35 +9,31 @@ import {filterUndefined} from "./general";
  */
 export function Data() {
     /// data is an array of objects with id (view getSports) and measurement
-    // example: [{encrypted_st_id: object, encrypted_measurements: object}]
+    // example: [{encryptedStID: object, encryptedMeasurements: object}]
     this.data = [];
 }
 
 Data.prototype = {
     /**
      * Returns the data in plain text.
-     * @param {object} group_ac              auth. code of the group
-     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
-     * @returns {boolean|{data: {st_id, measurements}[], log}}
+     * @param {object[]} acs              auth. codes
+     * @returns {boolean|{data: {stID, measurements}[], log}}
      */
-    getPlain: function (group_ac, station_ac) {
+    getPlain: function (acs) {
         var log = new Log();
         return {
-            data: filterUndefined(_.map(this.data, function (data_object) {
-                var st_id_decrypt_result = tryDecrypt(data_object.encrypted_st_id, [group_ac, station_ac]);
-                var measurements_decrypt_result = tryDecrypt(data_object.encrypted_measurements, [group_ac, station_ac]);
-                log.merge(st_id_decrypt_result.log);
-                log.merge(measurements_decrypt_result.log);
+            data: filterUndefined(_.map(this.data, function (dataObject) {
+                var stIDDecryptResult = tryDecrypt(dataObject.encryptedStID, acs);
+                var measurementsDecryptResult = tryDecrypt(dataObject.encryptedMeasurements, acs);
+                log.merge(stIDDecryptResult.log);
+                log.merge(measurementsDecryptResult.log);
 
-                var st_id = st_id_decrypt_result.result;
-                var measurements = measurements_decrypt_result.result;
+                var stID = stIDDecryptResult.result;
+                var measurements = measurementsDecryptResult.result;
 
-                if (!(st_id && measurements)) {
-                    log.addError("Unable to encrypt.");
-                    return undefined;
-                }
+
                 return {
-                    st_id: st_id,
+                    stID: stID,
                     measurements: measurements
                 };
             })),
@@ -46,61 +42,38 @@ Data.prototype = {
     },
 
     /**
-     * Finds and returns the data_object with the given st_id.
-     * @param st_id     the sport type of the data
-     * @param group_ac  auth. code of the group
-     * @returns {{group_signature, station_signature, data: {Array}}}
+     * Finds and returns the dataObject with the given stID.
+     * @param stID     the sport type of the data
+     * @param {object[]} acs              auth. codes
+     * @returns {{groupSignature, stationSignature, data: {Array}}}
      */
-    findEncrypted: function (st_id, group_ac) {
-        return _.find(this.data, function (data_object) {
-            var decrypted_data = tryDecrypt(data_object.encrypted_st_id, [group_ac]);
-            return decrypted_data.result === st_id;
+    findEncrypted: function (stID, acs) {
+        return _.find(this.data, function (dataObject) {
+            var decryptedData = tryDecrypt(dataObject.encryptedStID, acs);
+            return decryptedData.result === stID;
         });
     },
 
     /**
-     * Updates the data of a given st_id.
-     * @param {string} st_id                the sport type of the data
-     * @param {number[]} new_measurements      the new data
-     * @param {object} group_ac             auth. code of the group
-     * @param {object} station_ac           auth. code of the station
+     * Updates the data of a given stID.
+     * @param {string} stID                the sport type of the data
+     * @param {number[]} newMeasurements      the new data
+     * @param groupAC      Group auth. code
+     * @param stationAC    Station auth. code
      */
-    update: function (st_id, new_measurements, group_ac, station_ac) {
-        var encrypted_st_id = encrypt(st_id, group_ac, station_ac);
-        var new_encrypted_measurements = encrypt(new_measurements, group_ac, station_ac);
-        old_data = this.findEncrypted(st_id, group_ac);
+    update: function (stID, newMeasurements, groupAC, stationAC) {
+        var encryptedStID = encrypt(stID, groupAC, stationAC);
+        var newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
+        var oldData = this.findEncrypted(stID, groupAC);
 
-        if (old_data) {
-            old_data.encrypted_st_id = encrypted_st_id;
-            old_data.encrypted_measurements = new_encrypted_measurements;
+        if (oldData) {
+            oldData.encryptedStID = encryptedStID;
+            oldData.encryptedMeasurements = newEncryptedMeasurements;
         } else {
             this.data.push({
-                encrypted_st_id: encrypted_st_id,
-                encrypted_measurements: new_encrypted_measurements,
+                encryptedStID: encryptedStID,
+                encryptedMeasurements: newEncryptedMeasurements,
             });
         }
-    },
-
-    // /**
-    //  * Adds a measurement to the data of a given st_id.
-    //  * @param {string} st_id                the sport type of the data
-    //  * @param {number} new_measurement      the new data
-    //  * @param {object} group_ac             auth. code of the group
-    //  * @param {object} station_ac           auth. code of the station
-    //  */
-    // add: function (st_id, new_measurement, group_ac, station_ac) {
-    //     var encrypted_st_id = encrypt(st_id, group_ac, station_ac);
-    //     var new_encrypted_measurements = encrypt(new_measurements, group_ac, station_ac);
-    //     old_data = this.findEncrypted(st_id, group_ac);
-    //
-    //     if (old_data) {
-    //         old_data.encrypted_st_id = encrypted_st_id;
-    //         old_data.encrypted_measurements.push(new_encrypted_measurements);
-    //     } else {
-    //         this.data.push({
-    //             encrypted_st_id: encrypted_st_id,
-    //             encrypted_measurements: new_encrypted_measurements,
-    //         });
-    //     }
-    // }
+    }
 };

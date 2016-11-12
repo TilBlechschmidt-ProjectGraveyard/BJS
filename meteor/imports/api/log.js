@@ -13,7 +13,7 @@ Log.prototype = {
      * Adds a new error.
      * @param {string} message
      */
-    addError: function (message) {
+    error: function (message) {
         this.messages.push({
             level: 2,
             message: message,
@@ -24,7 +24,7 @@ Log.prototype = {
      * Adds a new warning.
      * @param {string} message
      */
-    addWarning: function (message) {
+    warning: function (message) {
         this.messages.push({
             level: 1,
             message: message,
@@ -35,7 +35,7 @@ Log.prototype = {
      * Adds a new info message.
      * @param {string} message
      */
-    addInfo: function (message) {
+    info: function (message) {
         this.messages.push({
             level: 0,
             message: message,
@@ -47,7 +47,7 @@ Log.prototype = {
      * @param {number} level
      * @param {string} message
      */
-    addCustom: function (level, message) {
+    custom: function (level, message) {
         this.messages.push({
             level: level,
             message: message,
