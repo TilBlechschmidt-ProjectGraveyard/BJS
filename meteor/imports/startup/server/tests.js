@@ -19,6 +19,7 @@ export function tests() {
 
     var group_ac = generateAC("1234567ljhfaljawf8");
     var station_ac = generateAC("hflhkfks;kjfjankfa");
+    var wrong_station_ac = generateAC("blasdhiusfhsiu");
     var data = {
         a: 10,
         b: 20,
@@ -28,9 +29,11 @@ export function tests() {
     var encrypted_data = encrypt(data, group_ac, station_ac);
     var decrypted_data = decrypt(encrypted_data, group_ac, station_ac);
     var decrypted_data_group_only = decrypt(encrypted_data, group_ac);
+    var decrypted_data_station_wrong = decrypt(encrypted_data, group_ac, wrong_station_ac);
     console.log(encrypted_data);
     console.log(decrypted_data);
     console.log(decrypted_data_group_only);
+    console.log(decrypted_data_station_wrong);
 
     console.log("--- Testing Log ---");
 
@@ -62,16 +65,19 @@ export function tests() {
 
     var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
 
-    p.data.update("st_ball_200", 69, undefined, undefined);
-    p.data.update("st_long_jump", 7.33, undefined, undefined);
     p.age = 16;
+    p.data.update("st_long_jump", 7.33, group_ac, station_ac);
+    p.data.update("st_ball_200", 69, group_ac, station_ac);
+    p.data.update("st_ball_200", 70, group_ac, station_ac);
+    p.data.update("st_endurance_1000", 160, group_ac, station_ac);
+
 
     console.log("++ validate");
-    var r1 = ct.validate(p);
+    var r1 = ct.validate(p, group_ac, station_ac);
     console.log(r1.valid);
     console.log(r1.log.getAsString());
     console.log("++ calculate");
-    var r2 = ct.calculate(p);
+    var r2 = ct.calculate(p, group_ac);
     console.log(r2.score);
     console.log(r2.log.getAsString());
 }

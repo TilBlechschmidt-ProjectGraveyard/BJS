@@ -1,4 +1,6 @@
-import {Log} from "../log";
+import {Log} from "./../log";
+import {encrypt, decrypt} from "./../crypto/crypto.js";
+import {filterUndefined} from "./general";
 
 export {Data};
 
@@ -9,50 +11,59 @@ export {Data};
  */
 function Data() {
     /// data is an array of objects with id (view getSports) and measurement
-    // example: [{encrypted_st_id: encrypted('st_sprint'), measurement: encrypted(16), signature_write: <signature>, signature_group: <signature>}]
+    // example: [{encrypted_st_id: object, encrypted_measurement: object}]
     this.data = [];
 }
 
 Data.prototype = {
     /**
-     * Returns the data in plain text. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @param {string} group_private_hash
-     * @param {string} [write_private_hash=undefined]
-     * @returns {{data, log}}
+     * Returns the data in plain text.
+     * @param {object} group_ac              auth. code of the group
+     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
+     * @returns {boolean|{data, log}}
      */
-    getPlain: function (group_private_hash, write_private_hash) {
+    getPlain: function (group_ac, station_ac) {
         var log = new Log();
         return {
-            data: _.map(this.data, function (data_value) {
+            data: filterUndefined(_.map(this.data, function (data_object) {
+                var st_id = decrypt(data_object.encrypted_st_id, group_ac, station_ac);
+                var measurement = decrypt(data_object.encrypted_measurement, group_ac, station_ac);
+
+                if (!(st_id && measurement)) {
+                    log.addError("Unable to encrypt.");
+                    return undefined;
+                }
                 return {
-                    st_id: data_value.encrypted_st_id, //TODO decrypt
-                    measurement: data_value.measurement, //TODO implement encryption and signature check
+                    st_id: st_id,
+                    measurement: measurement
                 };
-            }),
+            })),
             log: log
         };
     },
 
     /**
      * Updates the data of a given st_id.
-     * @param {string} st_id
-     * @param {number} new_measurement
-     * @param {string} group_private_hash
-     * @param {string} write_private_hash
+     * @param {string} st_id                the sport type of the data
+     * @param {number} new_measurement      the new data
+     * @param {object} group_ac             auth. code of the group
+     * @param {object} station_ac           auth. code of the station
      */
-    update: function (st_id, new_measurement, group_private_hash, write_private_hash) { //TODO implement encryption
-        var encrypted_st_id = st_id; //TODO implement encryption
-        var new_encrypted_measurement = new_measurement; //TODO implement encryption
+    update: function (st_id, new_measurement, group_ac, station_ac) {
+        var encrypted_st_id = encrypt(st_id, group_ac, station_ac);
+        var new_encrypted_measurement = encrypt(new_measurement, group_ac, station_ac);
 
-        var old_data = _.where(this.data, {encrypted_st_id: encrypted_st_id})[0];
+        var old_data = _.find(this.data, function (data_object) {
+            var decrypted_data = decrypt(data_object.encrypted_st_id, group_ac);
+            return decrypted_data === st_id;
+        });
         if (old_data) {
-            old_data.measurement = new_encrypted_measurement;
+            old_data.encrypted_st_id = encrypted_st_id;
+            old_data.encrypted_measurement = new_encrypted_measurement;
         } else {
             this.data.push({
                 encrypted_st_id: encrypted_st_id,
-                measurement: new_encrypted_measurement,
-                signature_write: "", //TODO implement signature
-                signature_group: "" //TODO implement signature
+                encrypted_measurement: new_encrypted_measurement,
             });
         }
     }

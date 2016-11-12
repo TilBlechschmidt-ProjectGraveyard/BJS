@@ -1,4 +1,5 @@
 import {Log} from "../../log";
+import {filterUndefined} from "./../general";
 
 export {Athletics};
 
@@ -68,14 +69,14 @@ let Athletics = {
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param athlete
-     * @param group_private_hash
-     * @param write_private_hash
+     * @param {object} group_ac              auth. code of the group
+     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
      * @returns {{valid_data, log}}
      */
-    getValidData: function (athlete, group_private_hash, write_private_hash) {
+    getValidData: function (athlete, group_ac, station_ac) {
         // let sports = this.getSports();
 
-        var plain = athlete.data.getPlain(group_private_hash, write_private_hash);
+        var plain = athlete.data.getPlain(group_ac, station_ac);
         var log = plain.log;
 
         // filter data with more then on point
@@ -96,9 +97,7 @@ let Athletics = {
         });
 
         // filter undefined
-        tmp_data = _.filter(tmp_data, function (data_value) {
-            return data_value !== undefined;
-        });
+        tmp_data = filterUndefined(tmp_data);
 
         return {
             valid_data: tmp_data,
@@ -109,11 +108,12 @@ let Athletics = {
     /**
      * Returns whether an athlete is already finished.
      * @param athlete
+     * @param {object} group_ac              auth. code of the group
+     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
      * @returns {{valid, log}}
      */
-    validate: function (athlete) {
-        var data = this.getValidData(athlete);
-        console.log(data.valid_data); //TODO remove
+    validate: function (athlete, group_ac, station_ac) {
+        var data = this.getValidData(athlete, group_ac, station_ac);
         var categories = [false, false, false, false];
         for (var st in data.valid_data) {
             categories[data.valid_data[st].category] = true;
@@ -166,10 +166,12 @@ let Athletics = {
     /**
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param athlete
+     * @param {object} group_ac              auth. code of the group
+     * @param {object} [station_ac]         auth. code of the station (if left out the station signature is not checked!)
      * @returns {{score, log}}
      */
-    calculate: function (athlete) {
-        var data = this.getValidData(athlete);
+    calculate: function (athlete, group_ac, station_ac) {
+        var data = this.getValidData(athlete, group_ac, station_ac);
         var log = data.log;
 
         var scores = [0, 0, 0, 0];
