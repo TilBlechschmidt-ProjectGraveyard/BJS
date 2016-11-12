@@ -4,7 +4,6 @@
 
 import {Data} from "./data";
 
-export {Athlete};
 
 /**
  * Creates a new Athlete with the given information.
@@ -16,7 +15,7 @@ export {Athlete};
  * @param handicap
  * @constructor
  */
-function Athlete(first_name, last_name, age_group, is_male, group, handicap) {
+export function Athlete(first_name, last_name, age_group, is_male, group, handicap) {
     this.first_name = first_name;
     this.last_name = last_name;
     this.age_group = age_group;

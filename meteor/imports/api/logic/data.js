@@ -2,14 +2,12 @@ import {Log} from "./../log";
 import {encrypt, decrypt} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
 
-export {Data};
-
 //TODO daten löschen ohne dafür berechtigt zu sein ist möglich.
 /**
  * Creates an empty Data object. The information in the Data object are encrypted. To read/write you always need the group_private_hash.
  * @constructor
  */
-function Data() {
+export function Data() {
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{encrypted_st_id: object, encrypted_measurements: object}]
     this.data = [];

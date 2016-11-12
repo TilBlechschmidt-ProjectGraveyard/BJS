@@ -8,8 +8,8 @@ import {Log} from "../../api/log";
  * Run some random tests.
  */
 export function tests() {
-    test_logic();
     test_crypto();
+    test_logic();
 }
 
 function test_codes() {

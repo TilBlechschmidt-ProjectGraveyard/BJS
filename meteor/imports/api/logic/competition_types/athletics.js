@@ -1,12 +1,11 @@
 import {Log} from "../../log";
 import {filterUndefined} from "./../general";
 
-export {Athletics};
 
 let LANG = require('./../../../data/athletics/lang_de.json');
 let START_CLASSES = require('./../../../data/start_classes.json');
 
-let Athletics = {
+export let Athletics = {
     /**
      * Returns a list of sport types associated with the ct athletics.
      * @returns {{id: string, name: string, category: number, description: string, w: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversion_factor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
