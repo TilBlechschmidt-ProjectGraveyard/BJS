@@ -26,8 +26,13 @@ Data.prototype = {
         var log = new Log();
         return {
             data: filterUndefined(_.map(this.data, function (data_object) {
-                var st_id = decrypt(data_object.encrypted_st_id, group_ac, station_ac);
-                var measurements = decrypt(data_object.encrypted_measurements, group_ac, station_ac);
+                var st_id_decrypt_result = decrypt(data_object.encrypted_st_id, group_ac, station_ac);
+                var measurements_decrypt_result = decrypt(data_object.encrypted_measurements, group_ac, station_ac);
+                log.merge(st_id_decrypt_result.log);
+                log.merge(measurements_decrypt_result.log);
+
+                var st_id = st_id_decrypt_result.result;
+                var measurements = measurements_decrypt_result.result;
 
                 if (!(st_id && measurements)) {
                     log.addError("Unable to encrypt.");
@@ -51,7 +56,7 @@ Data.prototype = {
     findEncrypted: function (st_id, group_ac) {
         return _.find(this.data, function (data_object) {
             var decrypted_data = decrypt(data_object.encrypted_st_id, group_ac);
-            return decrypted_data === st_id;
+            return decrypted_data.result === st_id;
         });
     },
 

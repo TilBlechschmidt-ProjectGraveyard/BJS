@@ -82,14 +82,16 @@ function test_logic() {
     p.data.update("st_ball_200", [70], group_ac, station_ac);
     p.data.update("st_ball_200", [69, 70], group_ac, station_ac);
     p.data.update("st_endurance_1000", [160], group_ac, station_ac);
+    p.data.update("st_endurance_3000", [640], group_ac, station_ac);
+    p.data.update("st_sprint_100", [10], group_ac, station_ac);
 
 
     console.log("++ validate");
-    var r1 = ct.validate(p, group_ac, station_ac);
+    var r1 = ct.validate(p, group_ac);
     console.log(r1.valid);
     console.log(r1.log.getAsString());
     console.log("++ calculate");
-    var r2 = ct.calculate(p, group_ac);
+    var r2 = ct.calculate(p, group_ac, station_ac);
     console.log(r2.score);
     console.log(r2.log.getAsString());
 }

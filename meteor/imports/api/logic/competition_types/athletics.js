@@ -114,7 +114,6 @@ let Athletics = {
      */
     validate: function (athlete, group_ac, station_ac) {
         var data = this.getValidData(athlete, group_ac, station_ac);
-        console.log(data.valid_data);
         var categories = [false, false, false, false];
         for (var st in data.valid_data) {
             categories[data.valid_data[st].category] = true;
