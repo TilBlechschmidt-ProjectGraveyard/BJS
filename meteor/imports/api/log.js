@@ -21,7 +21,7 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
-    err: this.error,
+    err: this.error, //TODO: These don't work for some reason. Fix them
 
     /**
      * Adds a new warning.
@@ -34,7 +34,7 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
-    warn: this.warning,
+    warn: this.warning, //TODO: These don't work for some reason. Fix them
 
     /**
      * Adds a new info message.
