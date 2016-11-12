@@ -70,9 +70,10 @@ export let Athletics = {
      * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
+     * * @param requireSignature
      * * @returns {object[]}
      */
-    getValidData: function (log, athlete, acs) {
+    getValidData: function (log, athlete, acs, requireSignature) {
         // let sports = this.getSports();
 
         var plain = athlete.data.getPlain(log, acs);
@@ -86,9 +87,15 @@ export let Athletics = {
 
         // Add information
         tmpData = _.map(tmpData, function (dataObject) {
-            let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID);
+            let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
+
+            if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
+                log.error("Cannot verify signature for " + canDoSportObject.dataObject.name + " but signature is required.");
+                return undefined;
+            }
+
             if (canDoSportObject.dataObject !== undefined) {
-                canDoSportObject.dataObject.measurements = dataObject.measurements;
+                canDoSportObject.dataObject.measurements = dataObject.measurements.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
         });
@@ -105,10 +112,11 @@ export let Athletics = {
      * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
+     * @param requireSignature
      * @returns {boolean}
      */
-    validate: function (log, athlete, acs) {
-        var data = this.getValidData(log, athlete, acs);
+    validate: function (log, athlete, acs, requireSignature) {
+        var data = this.getValidData(log, athlete, acs, requireSignature);
         var categories = [false, false, false, false];
         for (var st in data) {
             categories[data[st].category] = true;
@@ -162,10 +170,11 @@ export let Athletics = {
      * @param log
      * @param athlete
      * @param {object[]} acs              auth. codes
+     * @param requireSignature
      * @returns {number}
      */
-    calculate: function (log, athlete, acs) {
-        var validData = this.getValidData(log, athlete, acs);
+    calculate: function (log, athlete, acs, requireSignature) {
+        var validData = this.getValidData(log, athlete, acs, requireSignature);
 
         var scores = [0, 0, 0, 0];
 

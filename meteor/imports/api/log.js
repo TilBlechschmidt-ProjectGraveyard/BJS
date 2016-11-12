@@ -21,7 +21,9 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
-    err: this.error, //TODO: These don't work for some reason. Fix them
+    err: function (message) {
+        this.error(message);
+    },
 
     /**
      * Adds a new warning.
@@ -34,7 +36,9 @@ Log.prototype = {
             timestamp: new Date()
         });
     },
-    warn: this.warning, //TODO: These don't work for some reason. Fix them
+    warn: function (message) {
+        this.warning(message);
+    },
 
     /**
      * Adds a new info message.
