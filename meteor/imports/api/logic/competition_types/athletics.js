@@ -118,7 +118,7 @@ export let Athletics = {
      */
     validate: function (log, athlete, acs, requireSignature) {
         var data = this.getValidData(log, athlete, acs, requireSignature);
-        var categories = [false, false, false, false];
+        var categories = [];
         for (var st in data) {
             categories[data[st].category] = true;
         }
