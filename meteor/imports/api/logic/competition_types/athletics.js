@@ -2,6 +2,7 @@ import {filterUndefined} from "./../general";
 
 
 let LANG = require('./../../../data/athletics/lang_de.json');
+let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json');
 let START_CLASSES = require('./../../../data/start_classes.json');
 
 export let Athletics = {
@@ -27,7 +28,7 @@ export let Athletics = {
         });
 
         if (!baseInformation) {
-            log.error(stID + " is not a valid sport type id.");
+            log.error(stID + " ist keine gültige Sport ID.");
             return {
                 canDoSport: undefined,
                 dataObject: undefined
@@ -48,13 +49,13 @@ export let Athletics = {
 
         var canDoSport = true;
 
-        if (_.indexOf(dataObject.genderInfo.age, athlete.age) == -1) {
-            log.warning(athlete.getFullName() + " does not have a valid age for " + baseInformation.name + ".");
+        if (_.indexOf(dataObject.genderInfo.age, athlete.tableAge) == -1) {
+            log.warning(athlete.getFullName() + " hat kein gültiges Alter für " + baseInformation.name + ".");
             canDoSport = false;
         }
 
         if (dataObject.conversionFactor === 0.0) {
-            log.warning(athlete.getFullName() + " can not do " + baseInformation.name + " because of the start class " + athlete.handicap + ".");
+            log.warning(athlete.getFullName() + " can die Sportart " + baseInformation.name + " aufgrund der Startklasse " + athlete.handicap + " nicht durchführen.");
             canDoSport = false;
         }
 
@@ -90,7 +91,7 @@ export let Athletics = {
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
 
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
-                log.error("Cannot verify signature for " + canDoSportObject.dataObject.name + " but signature is required.");
+                log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
                 return undefined;
             }
 
@@ -204,4 +205,44 @@ export let Athletics = {
     getInformation: function () {
         return require('./../../../data/athletics/information.json');
     },
+
+    /**
+     * Returns the min. score for the different certificates.
+     * @param log
+     * @param athlete
+     * @returns {undefined|number[]}
+     */
+    getCertificateInfo: function (log, athlete) {
+        if (athlete.check(log) === false) {
+            log.error("Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (" + athlete.getFullName() + ").");
+            return undefined;
+        }
+
+        var genderInfo = athlete.isMale ? CERTIFICATE_INFO.m : CERTIFICATE_INFO.w;
+
+        return genderInfo[athlete.age];
+    },
+
+    generateCertificate: function (log, athlete, acs, requireSignature) {
+        var score = this.calculate(log, athlete, acs, requireSignature);
+
+        var certificate = -1;
+
+        var certificateInfo = this.getCertificateInfo(log, athlete);
+
+        if (certificateInfo !== undefined) {
+            if (score >= certificateInfo[1]) {
+                certificate = 2;
+            } else if (score >= certificateInfo[0]) {
+                certificate = 1;
+            } else {
+                certificate = 0;
+            }
+        }
+
+        return {
+            score: score,
+            certificate: certificate
+        };
+    }
 };

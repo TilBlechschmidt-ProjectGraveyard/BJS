@@ -1,7 +1,7 @@
 import {tests} from "./tests";
 
 export function onStartup() {
-    initDatabase();
+    // initDatabase();
     tests();
 }
 

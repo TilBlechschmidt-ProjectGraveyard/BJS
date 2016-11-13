@@ -61,7 +61,7 @@ describe('athletics', function () {
         ct.validate(log, p, [groupAC], true).should.be.equal(false);
     });
 
-    it('validates the configuration of Hans Müller without stationAC', function () {
+    it('calculates the configuration of Hans Müller without stationAC', function () {
         var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
         p.age = 16;
         var log = new Log();
@@ -75,7 +75,7 @@ describe('athletics', function () {
         ct.calculate(log, p, [groupAC], false).should.be.equal(2195);
     });
 
-    it('validates the configuration of Hans Müller with stationAC', function () {
+    it('calculates the configuration of Hans Müller with stationAC', function () {
         var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
         p.age = 16;
         var log = new Log();
@@ -89,7 +89,7 @@ describe('athletics', function () {
         ct.calculate(log, p, [groupAC, stationAC], false).should.be.equal(2195);
     });
 
-    it('validates the configuration of Hans Müller without stationAC but signature required', function () {
+    it('calculates the configuration of Hans Müller without stationAC but signature required', function () {
         var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
         p.age = 16;
         var log = new Log();
@@ -101,5 +101,19 @@ describe('athletics', function () {
         p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
 
         ct.calculate(log, p, [groupAC], true).should.be.equal(0);
+    });
+
+    it('generates the certificate of Hans Müller', function () {
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        p.age = 16;
+        var log = new Log();
+        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
+        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
+        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
+        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
+        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
+        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+
+        ct.generateCertificate(log, p, [groupAC, stationAC], true).should.be.equal({score: 2195, certificate: 2});
     });
 });

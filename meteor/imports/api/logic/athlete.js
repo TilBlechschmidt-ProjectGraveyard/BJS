@@ -30,16 +30,31 @@ export function Athlete(firstName, lastName, ageGroup, isMale, group, handicap) 
 Athlete.prototype = {
     /**
      * Checks whether the properties of the athlete are correct.
-     * @returns {number}
+     * @returns {boolean}
      */
-    check: function () {
-        return 1 * (typeof(this.firstName) != 'string') +
-            2 * (this.firstName === "") +
-            4 * (typeof(this.lastName) != 'string') +
-            8 * (this.lastName === "") +
-            16 * (typeof(this.ageGroup) != 'number') +
-            32 * (this.ageGroup <= 1900) +
-            64 * (typeof(this.isMale) != 'boolean');
+    check: function (log) {
+        var result = true;
+
+        if ((typeof(this.firstName) != 'string') || (this.firstName === "")) {
+            log.error("Der Vorname des Athleten ist ungültig.");
+            result = false;
+        }
+        if ((typeof(this.lastName) != 'string') || (this.filastNamerstName === "")) {
+            log.error("Der Nachname des Athleten ist ungültig.");
+            result = false;
+        }
+        if (typeof(this.ageGroup) != 'number') {
+            log.error("Der Jahrgang des Athleten ist ungültig.");
+            result = false;
+        } else if (this.age < 8) {
+            log.error("Der Athlete ist zu jung um an den Bundesjugendspielen teilzunehmen.");
+            result = false;
+        }
+        if (typeof(this.isMale) != 'boolean') {
+            log.error("Das Geschlecht ds Athleten ist ungültig");
+            result = false;
+        }
+        return result;
     },
     /**
      * Returns the full name (first name & last name) of the athlete.
@@ -61,6 +76,13 @@ Athlete.prototype = {
      */
     get age() {
         return new Date().getFullYear() - this.ageGroup;
+    },
+    /**
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than 20, 20 is returned.
+     * @returns {number}
+     */
+    get tableAge() {
+        return Math.min(new Date().getFullYear() - this.ageGroup, 20);
     },
     /**
      * Sets the age of the athlete.
