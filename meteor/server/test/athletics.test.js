@@ -114,6 +114,7 @@ describe('athletics', function () {
         p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
         p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
 
-        ct.generateCertificate(log, p, [groupAC, stationAC], true).should.be.equal({score: 2195, certificate: 2});
+        var certificate = ct.generateCertificate(log, p, [groupAC, stationAC], true);
+        (certificate.score == 2195 && certificate.certificate == 2).should.be.equal(true);
     });
 });
