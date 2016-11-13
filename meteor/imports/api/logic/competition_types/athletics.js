@@ -6,6 +6,7 @@ let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json'
 let START_CLASSES = require('./../../../data/start_classes.json');
 
 export let Athletics = {
+    maxAge: 20,
     /**
      * Returns a list of sport types associated with the ct athletics.
      * @returns {{id: string, name: string, category: number, description: string, w: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}

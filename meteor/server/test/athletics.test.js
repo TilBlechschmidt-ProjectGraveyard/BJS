@@ -11,7 +11,7 @@ var stationAC = generateAC("hflhkfks;kjfjankfa");
 
 describe('athletics', function () {
     it('updates a measurement', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -20,7 +20,7 @@ describe('athletics', function () {
     });
 
     it('validates the configuration of Hans Müller without stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -34,7 +34,7 @@ describe('athletics', function () {
     });
 
     it('validates the configuration of Hans Müller with stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -48,7 +48,7 @@ describe('athletics', function () {
     });
 
     it('validates the configuration of Hans Müller without stationAC but signature required', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -62,7 +62,7 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller without stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -76,7 +76,7 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller with stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -90,7 +90,7 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller without stationAC but signature required', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -104,7 +104,7 @@ describe('athletics', function () {
     });
 
     it('generates the certificate of Hans Müller', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         var log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);

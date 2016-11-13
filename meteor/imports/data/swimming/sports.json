@@ -35,8 +35,15 @@
     "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
   },
   {
-    "id": "diving",
+    "id": "diving_push",
     "name": "Streckentauchen mit Abstoß vom Rand",
+    "category": 2,
+    "unit": "m",
+    "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."
+  },
+  {
+    "id": "diving",
+    "name": "Streckentauchen",
     "category": 2,
     "unit": "m",
     "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."

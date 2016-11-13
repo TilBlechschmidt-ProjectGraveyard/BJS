@@ -13,7 +13,7 @@ export function tests() {
     var groupAC = generateAC("1234567ljhfaljawf8");
     var stationAC = generateAC("hflhkfks;kjfjankfa");
 
-    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0');
+    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
     p.age = 16;
     var log = new Log();
     p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);

@@ -7,21 +7,23 @@ import {Data} from "./data";
 
 /**
  * Creates a new Athlete with the given information.
- * @param first_name
+ * @param firstName
  * @param lastName
  * @param ageGroup
- * @param is_male
+ * @param isMale
  * @param group
  * @param handicap
+ * @param maxAge
  * @constructor
  */
-export function Athlete(firstName, lastName, ageGroup, isMale, group, handicap) {
+export function Athlete(firstName, lastName, ageGroup, isMale, group, handicap, maxAge) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.ageGroup = ageGroup;
     this.isMale = isMale;
     this.group = group;
     this.handicap = handicap;
+    this.maxAge = maxAge;
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{id: 'st_sprint', measurement: 16}]
     this.data = new Data();
@@ -82,7 +84,7 @@ Athlete.prototype = {
      * @returns {number}
      */
     get tableAge() {
-        return Math.min(new Date().getFullYear() - this.ageGroup, 20);
+        return Math.min(new Date().getFullYear() - this.ageGroup, this.maxAge);
     },
     /**
      * Sets the age of the athlete.
