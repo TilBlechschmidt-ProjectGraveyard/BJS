@@ -1,76 +1,76 @@
 [
   {
-    "id": "face_down_25",
+    "id": "st_face_down_25",
     "name": "25m Freistil in Bauchlage",
     "category": 0,
     "unit": "min:s",
     "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt)."
   },
   {
-    "id": "face_down_50",
+    "id": "st_face_down_50",
     "name": "50m Freistil in Bauchlage",
     "category": 0,
     "unit": "min:s",
     "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt)."
   },
   {
-    "id": "face_up_25",
+    "id": "st_face_up_25",
     "name": "25m Rückenlage",
     "category": 1,
     "unit": "min:s",
     "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
   },
   {
-    "id": "face_up_50",
+    "id": "st_face_up_50",
     "name": "50m Rückenlage",
     "category": 1,
     "unit": "min:s",
     "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
   },
   {
-    "id": "face_up_100",
+    "id": "st_face_up_100",
     "name": "100m Rückenlage",
     "category": 4,
     "unit": "min:s",
     "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
   },
   {
-    "id": "diving_push",
+    "id": "st_diving_push",
     "name": "Streckentauchen mit Abstoß vom Rand",
     "category": 2,
     "unit": "m",
     "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."
   },
   {
-    "id": "diving",
+    "id": "st_diving",
     "name": "Streckentauchen",
     "category": 2,
     "unit": "m",
     "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."
   },
   {
-    "id": "butterfly_25",
+    "id": "st_butterfly_25",
     "name": "25m Schmetterling",
     "category": 3,
     "unit": "min:s",
     "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen."
   },
   {
-    "id": "butterfly_50",
+    "id": "st_butterfly_50",
     "name": "50m Schmetterling",
     "category": 4,
     "unit": "min:s",
     "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen."
   },
   {
-    "id": "breast_100",
+    "id": "st_breast_100",
     "name": "100m Brustschwimmen",
     "category": 5,
     "unit": "min:s",
     "description": "Die Ausführung der Stilart erfolgt nach den Bestimmungen des Deutschen Schwimmverbandes (WB). Bei eindeutigem Verstoß 0 Punkte."
   },
   {
-    "id": "crawl_100",
+    "id": "st_crawl_100",
     "name": "100m Kraulschwimmen",
     "category": 5,
     "unit": "min:s",
