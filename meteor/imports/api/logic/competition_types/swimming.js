@@ -106,5 +106,118 @@ export let Swimming = {
 
 
         return tmpData;
+    },
+
+    /**
+     * Returns whether an athlete is already finished.
+     * @param log
+     * @param athlete
+     * @param {object[]} acs              auth. codes
+     * @param requireSignature
+     * @returns {boolean}
+     */
+    validate: function (log, athlete, acs, requireSignature) {
+        const data = this.getValidData(log, athlete, acs, requireSignature);
+        var categories = [];
+        for (let st in data) {
+            categories[data[st].category] = true;
+        }
+
+        return 3 <= _.filter(categories, function (category) {
+                return category;
+            }).length;
+    },
+
+    calculateOne: function (dataObject) {
+        return _.map(dataObject.measurements, function (measurement) {
+            const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * measurement;
+            let score = 0;
+
+
+            for (let i = 0; i <= 14; i++) {
+                if ((dataObject.unit === "m" && tmp_measurement >= dataObject.scoreTable[i]) ||
+                    (dataObject.unit !== "m" && tmp_measurement <= dataObject.scoreTable[i])) {
+                    score = i + 1;
+                }
+            }
+            return score;
+        });
+    },
+
+    /**
+     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @param log
+     * @param athlete
+     * @param {object[]} acs              auth. codes
+     * @param requireSignature
+     * @returns {number}
+     */
+    calculate: function (log, athlete, acs, requireSignature) {
+        var validData = this.getValidData(log, athlete, acs, requireSignature);
+
+        var scores = [0, 0, 0, 0, 0, 0];
+
+        for (var vd in validData) {
+            let score = this.calculateOne(validData[vd]);
+            let bestScore = _.max(score);
+            let category = validData[vd].category;
+
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + " (" + score + ") -> " + bestScore);
+
+            if (scores[category] < bestScore) {
+                scores[category] = bestScore;
+            }
+        }
+
+        return _.reduce(_.sortBy(scores, function (num) {
+            return num;
+        }).splice(3, 3), function (mem, num) {
+            return mem + num;
+        }, 0);
+    },
+
+    /**
+     * Returns information about the ct swimming.
+     * @returns {object}
+     */
+    getInformation: function () {
+        return require('./../../../data/swimming/information.json');
+    },
+
+    /**
+     * Returns the min. score for the different certificates.
+     * @param log
+     * @param athlete
+     * @returns {undefined|number[]}
+     */
+    getCertificateInfo: function (log, athlete) {
+        if (athlete.check(log) === false) {
+            log.error("Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (" + athlete.getFullName() + ").");
+            return undefined;
+        }
+        return [15, 27];
+    },
+
+    generateCertificate: function (log, athlete, acs, requireSignature) {
+        var score = this.calculate(log, athlete, acs, requireSignature);
+
+        var certificate = -1;
+
+        var certificateInfo = this.getCertificateInfo(log, athlete);
+
+        if (certificateInfo !== undefined) {
+            if (score >= certificateInfo[1]) {
+                certificate = 2;
+            } else if (score >= certificateInfo[0]) {
+                certificate = 1;
+            } else {
+                certificate = 0;
+            }
+        }
+
+        return {
+            score: score,
+            certificate: certificate
+        };
     }
 };
