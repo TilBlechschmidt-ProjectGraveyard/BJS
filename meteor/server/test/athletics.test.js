@@ -5,24 +5,24 @@ import {Log} from "../../imports/api/log";
 import {chai} from "meteor/practicalmeteor:chai";
 chai.should();
 
-var ct = CompetitionTypes[0].object;
-var groupAC = generateAC("1234567ljhfaljawf8");
-var stationAC = generateAC("hflhkfks;kjfjankfa");
+const ct = CompetitionTypes[0].object;
+const groupAC = generateAC("1234567ljhfaljawf8");
+const stationAC = generateAC("hflhkfks;kjfjankfa");
 
 describe('athletics', function () {
     it('updates a measurement', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
 
         p.data.data.length.should.be.equal(1);
     });
 
     it('validates the configuration of Hans Müller without stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -34,9 +34,9 @@ describe('athletics', function () {
     });
 
     it('validates the configuration of Hans Müller with stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -48,9 +48,9 @@ describe('athletics', function () {
     });
 
     it('validates the configuration of Hans Müller without stationAC but signature required', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -62,9 +62,9 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller without stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -76,9 +76,9 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller with stationAC', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -90,9 +90,9 @@ describe('athletics', function () {
     });
 
     it('calculates the configuration of Hans Müller without stationAC but signature required', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -104,9 +104,9 @@ describe('athletics', function () {
     });
 
     it('generates the certificate of Hans Müller', function () {
-        var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+        const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
-        var log = new Log();
+        const log = new Log();
         p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
         p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
@@ -114,7 +114,7 @@ describe('athletics', function () {
         p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
         p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
 
-        var certificate = ct.generateCertificate(log, p, [groupAC, stationAC], true);
+        const certificate = ct.generateCertificate(log, p, [groupAC, stationAC], true);
         (certificate.score == 2195 && certificate.certificate == 2).should.be.equal(true);
     });
 });

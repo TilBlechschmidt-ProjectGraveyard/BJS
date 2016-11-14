@@ -1,9 +1,9 @@
 import {filterUndefined} from "./../general";
 
 
-let LANG = require('./../../../data/athletics/lang_de.json');
+// let LANG = require('./../../../data/athletics/lang_de.json');
+// let START_CLASSES = require('./../../../data/start_classes.json');
 let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json');
-let START_CLASSES = require('./../../../data/start_classes.json');
 
 export let Athletics = {
     maxAge: 20,
@@ -24,10 +24,11 @@ export let Athletics = {
      */
     canDoSportType: function (log, athlete, stID) {
         //collect information
-        var baseInformation = _.find(this.getSports(), function (st) {
+        let baseInformation = _.find(this.getSports(), function (st) {
             return st.id === stID;
         });
 
+        // check information
         if (!baseInformation) {
             log.error(stID + " ist keine gültige Sport ID.");
             return {
@@ -36,10 +37,12 @@ export let Athletics = {
             };
         }
 
-        let genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
-        let handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
+        // filter information
+        const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
 
-        let dataObject = {
+        // save important information
+        const dataObject = {
             stID: stID,
             name: baseInformation.name,
             category: baseInformation.category,
@@ -48,13 +51,15 @@ export let Athletics = {
             conversionFactor: handicapData === undefined ? 1.0 : handicapData
         };
 
-        var canDoSport = true;
+        let canDoSport = true;
 
+        // check age
         if (_.indexOf(dataObject.genderInfo.age, athlete.tableAge) == -1) {
             log.warning(athlete.getFullName() + " hat kein gültiges Alter für " + baseInformation.name + ".");
             canDoSport = false;
         }
 
+        // check handicap
         if (dataObject.conversionFactor === 0.0) {
             log.warning(athlete.getFullName() + " can die Sportart " + baseInformation.name + " aufgrund der Startklasse " + athlete.handicap + " nicht durchführen.");
             canDoSport = false;
@@ -84,6 +89,7 @@ export let Athletics = {
             return _.max(dataObject.measurements.data) > 0;
         });
 
+        // temporary store this in that
         const that = this; //TODO alternative?
 
         //Add information
@@ -96,6 +102,7 @@ export let Athletics = {
                 return undefined;
             }
 
+            // add measurement to general information
             if (canDoSportObject.dataObject !== undefined) {
                 canDoSportObject.dataObject.measurements = dataObject.measurements.data;
             }
@@ -112,7 +119,10 @@ export let Athletics = {
      * @returns {boolean}
      */
     validate: function (log, athlete, acs, requireSignature) {
+        // collect data
         const validData = this.getValidData(log, athlete, acs, requireSignature);
+
+        // sort for categories
         const categories = [];
         for (let st in validData) {
             categories[validData[st].category] = true;
@@ -131,6 +141,7 @@ export let Athletics = {
     calculateOne: function (dataObject) {
         let calculateFunction;
 
+        // select calculation function
         switch (dataObject.stID) {
             case "st_sprint_50_el":
             case "st_sprint_75_el":
@@ -170,10 +181,11 @@ export let Athletics = {
      * @returns {number}
      */
     calculate: function (log, athlete, acs, requireSignature) {
+        // collect data
         const validData = this.getValidData(log, athlete, acs, requireSignature);
 
+        // get best score for each category
         const scores = [0, 0, 0, 0];
-
         for (let vd in validData) {
             let score = this.calculateOne(validData[vd]);
             let bestScore = _.max(score);
@@ -186,6 +198,7 @@ export let Athletics = {
             }
         }
 
+        // take the three best categories
         return _.reduce(_.sortBy(scores, function (num) {
                 return num;
             }).splice(1, 3), function (mem, num) {

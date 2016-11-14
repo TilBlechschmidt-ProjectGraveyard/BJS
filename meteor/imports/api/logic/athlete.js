@@ -1,7 +1,6 @@
 /**
  * Created by noah on 08/11/2016.
  */
-
 import {Data} from "./data";
 
 
@@ -35,13 +34,13 @@ Athlete.prototype = {
      * @returns {boolean}
      */
     check: function (log) {
-        var result = true;
+        let result = true;
 
         if ((typeof(this.firstName) != 'string') || (this.firstName === "")) {
             log.error("Der Vorname des Athleten ist ungültig.");
             result = false;
         }
-        if ((typeof(this.lastName) != 'string') || (this.filastNamerstName === "")) {
+        if ((typeof(this.lastName) != 'string') || (this.lastName === "")) {
             log.error("Der Nachname des Athleten ist ungültig.");
             result = false;
         }

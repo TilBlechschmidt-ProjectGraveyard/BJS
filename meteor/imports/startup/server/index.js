@@ -16,8 +16,6 @@ function initDatabase() {
     // console.log(Athletes.find({}).fetch()[0].data);
     // Athletes.find({}).fetch()[0].data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
 }
-
-
 // ----------------------------------------- DEBUGGING ONLY -----------------------------------------
 import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
@@ -30,14 +28,14 @@ import {Log} from "../../api/log";
  */
 export function debugging() {
 
-    var ct = CompetitionTypes[1].object;
-    var groupAC = generateAC("1234567ljhfaljawf8");
-    var stationAC = generateAC("hflhkfks;kjfjankfa");
+    const ct = CompetitionTypes[1].object;
+    const groupAC = generateAC("1234567ljhfaljawf8");
+    const stationAC = generateAC("hflhkfks;kjfjankfa");
 
 
-    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+    const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
     p.age = 16;
-    var log = new Log();
+    const log = new Log();
     p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
     p.data.update(log, "st_face_up_100", [700], groupAC, stationAC);
     p.data.update(log, "st_diving", [13, 13], groupAC, stationAC);
