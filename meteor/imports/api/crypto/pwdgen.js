@@ -13,7 +13,8 @@ let words_de = require('./../../data/words_de.json');
  */
 function genRandomString(length) {
     let pass = "";
-    for (let i in _.range(length)) {
+    //noinspection JSUnusedLocalSymbols
+    for (let i in _.range(length)) { //TODO remove noinspection
         pass += genRandomInt(33, 127);
     }
     return pass;

@@ -37,6 +37,7 @@ export let Swimming = {
 
         // filter information
         const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        //noinspection JSUnresolvedVariable
         const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
 
         const baseScoreTable = this.getScoreTable();
@@ -92,9 +93,11 @@ export let Swimming = {
 
         // Add information
         return filterUndefined(_.map(tmpData, function (dataObject) {
+            //noinspection JSUnresolvedVariable
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
 
             //check signature
+            //noinspection JSUnresolvedVariable
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
                 log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
                 return undefined;

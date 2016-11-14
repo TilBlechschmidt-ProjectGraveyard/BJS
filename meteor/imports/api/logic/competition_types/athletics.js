@@ -94,6 +94,7 @@ export let Athletics = {
 
         //Add information
         return filterUndefined(_.map(tmpData, function (dataObject) {
+            //noinspection JSUnresolvedVariable
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
             //check signature
             //noinspection JSUnresolvedVariable
@@ -168,6 +169,7 @@ export let Athletics = {
         }
 
         return _.map(dataObject.measurements, function (measurement) {
+            //noinspection JSUnresolvedVariable
             return Math.floor(calculateFunction(dataObject.genderInfo.scoreCalculation.d, dataObject.conversionFactor * measurement, dataObject.genderInfo.scoreCalculation.a, dataObject.genderInfo.scoreCalculation.c));
         });
     },
