@@ -9,11 +9,11 @@ import {Log} from "../../api/log";
  */
 export function tests() {
 
-    var ct = CompetitionTypes[0].object;
+    var ct = CompetitionTypes[1].object;
     var groupAC = generateAC("1234567ljhfaljawf8");
     var stationAC = generateAC("hflhkfks;kjfjankfa");
 
-    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
+    var p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', 'A2', ct.maxAge);
     p.age = 16;
     var log = new Log();
     p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
@@ -23,6 +23,10 @@ export function tests() {
     p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
     p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
 
-    console.log(ct.generateCertificate(log, p, [groupAC, stationAC], true));
+    // console.log(ct.generateCertificate(log, p, [groupAC, stationAC], true));
+    console.log(ct.canDoSportType(log, p, "st_long_jump"));
+    console.log(ct.canDoSportType(log, p, "st_face_down_25"));
+    console.log(ct.canDoSportType(log, p, "st_diving"));
+    console.log(ct.canDoSportType(log, p, "st_crawl_100"));
     console.log(log.getAsString());
 }

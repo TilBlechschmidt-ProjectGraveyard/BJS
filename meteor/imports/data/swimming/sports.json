@@ -4,76 +4,424 @@
     "name": "25m Freistil in Bauchlage",
     "category": 0,
     "unit": "min:s",
-    "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt)."
+    "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt).",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.90,
+          "A2": 0.73,
+          "A3": 0.67,
+          "A4": 0.82,
+          "A5": 0.52,
+          "A6": 0.31,
+          "B1": 0.75,
+          "B2": 0.87,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.79,
+          "E": 0.67
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.78,
+          "A3": 0.68,
+          "A4": 0.82,
+          "A5": 0.54,
+          "A6": 0.34,
+          "B1": 0.83,
+          "B2": 0.88,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.70
+        }
+      }
+    }
   },
   {
     "id": "st_face_down_50",
     "name": "50m Freistil in Bauchlage",
     "category": 0,
     "unit": "min:s",
-    "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt)."
+    "description": "Gestattet ist jede Schwimmart außer Rückenlage. Der Start sollte durch Sprung vom Startblock erfolgen. (Ausnahme: Bei zu geringer Wassertiefe im Wettkampfbecken erfolgt der Start aus dem Stand, wobei eine Hand den Beckenrand bis zum Abstoß berührt).",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.90,
+          "A2": 0.73,
+          "A3": 0.67,
+          "A4": 0.82,
+          "A5": 0.52,
+          "A6": 0.31,
+          "B1": 0.75,
+          "B2": 0.87,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.79,
+          "E": 0.67
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.78,
+          "A3": 0.68,
+          "A4": 0.82,
+          "A5": 0.54,
+          "A6": 0.34,
+          "B1": 0.83,
+          "B2": 0.88,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.70
+        }
+      }
+    }
   },
   {
     "id": "st_face_up_25",
     "name": "25m Rückenlage",
     "category": 1,
     "unit": "min:s",
-    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
+    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.89,
+          "A2": 0.73,
+          "A3": 0.69,
+          "A4": 0.83,
+          "A5": 0.52,
+          "A6": 0.35,
+          "B1": 0.73,
+          "B2": 0.84,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.82,
+          "E": 0.69
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.75,
+          "A3": 0.70,
+          "A4": 0.83,
+          "A5": 0.51,
+          "A6": 0.35,
+          "B1": 0.77,
+          "B2": 0.86,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.79,
+          "E": 0.72
+        }
+      }
+    }
   },
   {
     "id": "st_face_up_50",
     "name": "50m Rückenlage",
     "category": 1,
     "unit": "min:s",
-    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
+    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.89,
+          "A2": 0.73,
+          "A3": 0.69,
+          "A4": 0.83,
+          "A5": 0.52,
+          "A6": 0.35,
+          "B1": 0.73,
+          "B2": 0.84,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.82,
+          "E": 0.69
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.75,
+          "A3": 0.70,
+          "A4": 0.83,
+          "A5": 0.51,
+          "A6": 0.35,
+          "B1": 0.77,
+          "B2": 0.86,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.79,
+          "E": 0.72
+        }
+      }
+    }
   },
   {
     "id": "st_face_up_100",
     "name": "100m Rückenlage",
     "category": 4,
     "unit": "min:s",
-    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand."
+    "description": "Gestattet ist jede Form des Rückenschwimmens. Der Start erfolgt vom Beckenrand.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.90,
+          "A2": 0.73,
+          "A3": 0.63,
+          "A4": 0.85,
+          "A5": 0.49,
+          "A6": 0.34,
+          "B1": 0.72,
+          "B2": 0.87,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.67
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.75,
+          "A3": 0.70,
+          "A4": 0.83,
+          "A5": 0.50,
+          "A6": 0.35,
+          "B1": 0.77,
+          "B2": 0.86,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.79,
+          "E": 0.72
+        }
+      }
+    }
   },
   {
     "id": "st_diving_push",
     "name": "Streckentauchen mit Abstoß vom Rand",
     "category": 2,
     "unit": "m",
-    "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."
+    "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+        }
+      }
+    }
   },
   {
     "id": "st_diving",
     "name": "Streckentauchen",
     "category": 2,
     "unit": "m",
-    "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht."
+    "description": "Es werden nur die erreichten halben bzw. ganzen Meter gewertet. Beim Tauchgang muss sich der Körper ganz unter der Wasseroberfläche befinden. Schwimmen an der Oberfläche mit Kopf im Wasser wird nicht gewertet (0 Punkte). Der Tauchgang gilt als beendet, sobald ein Teil des Körpers auftaucht.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+        }
+      }
+    }
   },
   {
     "id": "st_butterfly_25",
     "name": "25m Schmetterling",
     "category": 3,
     "unit": "min:s",
-    "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen."
+    "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.89,
+          "A2": 0.71,
+          "A3": 0.64,
+          "A4": 0.80,
+          "A5": 0.44,
+          "A6": 0.22,
+          "B1": 0.70,
+          "B2": 0.84,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.77,
+          "E": 0.65
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.76,
+          "A3": 0.67,
+          "A4": 0.81,
+          "A5": 0.47,
+          "A6": 0.21,
+          "B1": 0.80,
+          "B2": 0.87,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.72
+        }
+      }
+    }
   },
   {
     "id": "st_butterfly_50",
     "name": "50m Schmetterling",
     "category": 4,
     "unit": "min:s",
-    "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen."
+    "description": "Nicht gestattet sind Kraulbeinschläge. Der Start sollte mit Startsprung erfolgen.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.89,
+          "A2": 0.71,
+          "A3": 0.64,
+          "A4": 0.80,
+          "A5": 0.44,
+          "A6": 0.22,
+          "B1": 0.70,
+          "B2": 0.84,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.77,
+          "E": 0.65
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.76,
+          "A3": 0.67,
+          "A4": 0.81,
+          "A5": 0.47,
+          "A6": 0.21,
+          "B1": 0.80,
+          "B2": 0.87,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.72
+        }
+      }
+    }
   },
   {
     "id": "st_breast_100",
     "name": "100m Brustschwimmen",
     "category": 5,
     "unit": "min:s",
-    "description": "Die Ausführung der Stilart erfolgt nach den Bestimmungen des Deutschen Schwimmverbandes (WB). Bei eindeutigem Verstoß 0 Punkte."
+    "description": "Die Ausführung der Stilart erfolgt nach den Bestimmungen des Deutschen Schwimmverbandes (WB). Bei eindeutigem Verstoß 0 Punkte.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.90,
+          "A2": 0.67,
+          "A3": 0.59,
+          "A4": 0.81,
+          "A5": 0.55,
+          "A6": 0.33,
+          "B1": 0.74,
+          "B2": 0.84,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.77,
+          "E": 0.60
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.90,
+          "A2": 0.69,
+          "A3": 0.63,
+          "A4": 0.84,
+          "A5": 0.58,
+          "A6": 0.38,
+          "B1": 0.80,
+          "B2": 0.86,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.84,
+          "E": 0.65
+        }
+      }
+    }
   },
   {
     "id": "st_crawl_100",
     "name": "100m Kraulschwimmen",
     "category": 5,
     "unit": "min:s",
-    "description": "Die Ausführung der Stilart erfolgt nach den Bestimmungen des Deutschen Schwimmverbandes (WB). Bei eindeutigem Verstoß 0 Punkte."
+    "description": "Die Ausführung der Stilart erfolgt nach den Bestimmungen des Deutschen Schwimmverbandes (WB). Bei eindeutigem Verstoß 0 Punkte.",
+    "w": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.91,
+          "A2": 0.75,
+          "A3": 0.68,
+          "A4": 0.85,
+          "A5": 0.53,
+          "A6": 0.32,
+          "B1": 0.75,
+          "B2": 0.89,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.81,
+          "E": 0.69
+        }
+      }
+    },
+    "m": {
+      "scoreCalculation": {
+        "conversionFactor": {
+          "A1": 0.92,
+          "A2": 0.79,
+          "A3": 0.68,
+          "A4": 0.82,
+          "A5": 0.53,
+          "A6": 0.35,
+          "B1": 0.84,
+          "B2": 0.88,
+          "C1": 0.95,
+          "C2": 0.95,
+          "D": 0.82,
+          "E": 0.71
+        }
+      }
+    }
   }
 ]

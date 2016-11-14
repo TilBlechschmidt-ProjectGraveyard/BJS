@@ -1,4 +1,8 @@
 {
+  "0": {
+    "name": "Keine Behinderung",
+    "description": "Hierzu zählen Schüler/innen, die nicht eingeschränkt sind."
+  },
   "A1": {
     "name": "Leichtbehindert",
     "description": "Hierzu zählen Schüler/innen, deren motorische Funktionsfähigkeit nicht bzw. gering eingeschränkt ist (z. B. Schüler mit Blasen- und Darminkontinenz, minimalen cerebralen Dysfunktionen, einseitiger Armbehinderung u. a.); Laufen, Springen und Werfen sind ohne Einschränkungen möglich."
