@@ -1,3 +1,5 @@
+import {filterUndefined} from "./../general";
+
 export let Swimming = {
     maxAge: 18,
     /**
@@ -63,4 +65,46 @@ export let Swimming = {
             dataObject: dataObject
         };
     },
+
+    /**
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * @param log
+     * @param athlete
+     * @param {object[]} acs              auth. codes
+     * * @param requireSignature
+     * * @returns {object[]}
+     */
+    getValidData: function (log, athlete, acs, requireSignature) {
+        // let sports = this.getSports();
+
+        var plain = athlete.data.getPlain(log, acs);
+
+        // filter data with more then on point
+        var tmpData = _.filter(plain, function (dataObject) {
+            return _.max(dataObject.measurements) > 0;
+        });
+
+        var that = this; //TODO alternative?
+
+        // Add information
+        tmpData = _.map(tmpData, function (dataObject) {
+            let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
+
+            if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
+                log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
+                return undefined;
+            }
+
+            if (canDoSportObject.dataObject !== undefined) {
+                canDoSportObject.dataObject.measurements = dataObject.measurements.data;
+            }
+            return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
+        });
+
+        // filter undefined
+        tmpData = filterUndefined(tmpData);
+
+
+        return tmpData;
+    }
 };
