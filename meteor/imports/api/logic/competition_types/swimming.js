@@ -77,17 +77,17 @@ export let Swimming = {
     getValidData: function (log, athlete, acs, requireSignature) {
         // let sports = this.getSports();
 
-        var plain = athlete.data.getPlain(log, acs);
+        const plain = athlete.data.getPlain(log, acs);
 
         // filter data with more then on point
-        var tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements) > 0;
+        const tmpData = _.filter(plain, function (dataObject) {
+            return _.max(dataObject.measurements.data) > 0;
         });
 
         var that = this; //TODO alternative?
 
         // Add information
-        tmpData = _.map(tmpData, function (dataObject) {
+        return filterUndefined(_.map(tmpData, function (dataObject) {
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
 
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
@@ -99,13 +99,7 @@ export let Swimming = {
                 canDoSportObject.dataObject.measurements = dataObject.measurements.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
-        });
-
-        // filter undefined
-        tmpData = filterUndefined(tmpData);
-
-
-        return tmpData;
+        }));
     },
 
     /**
@@ -154,6 +148,8 @@ export let Swimming = {
      */
     calculate: function (log, athlete, acs, requireSignature) {
         var validData = this.getValidData(log, athlete, acs, requireSignature);
+
+        console.log(validData);
 
         var scores = [0, 0, 0, 0, 0, 0];
 

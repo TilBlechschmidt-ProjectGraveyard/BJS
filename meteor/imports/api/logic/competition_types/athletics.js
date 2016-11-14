@@ -76,21 +76,21 @@ export let Athletics = {
      * * @returns {object[]}
      */
     getValidData: function (log, athlete, acs, requireSignature) {
-        // let sports = this.getSports();
+        //get the plain data from the athlete (unencrypted)
+        const plain = athlete.data.getPlain(log, acs);
 
-        var plain = athlete.data.getPlain(log, acs);
-
-        // filter data with more then on point
-        var tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements) > 0;
+        //filter data with more then on point
+        const tmpData = _.filter(plain, function (dataObject) {
+            return _.max(dataObject.measurements.data) > 0;
         });
 
-        var that = this; //TODO alternative?
+        const that = this; //TODO alternative?
 
-        // Add information
-        tmpData = _.map(tmpData, function (dataObject) {
+        //Add information
+        return filterUndefined(_.map(tmpData, function (dataObject) {
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
-
+            //check signature
+            //noinspection JSUnresolvedVariable
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
                 log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
                 return undefined;
@@ -100,13 +100,7 @@ export let Athletics = {
                 canDoSportObject.dataObject.measurements = dataObject.measurements.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
-        });
-
-        // filter undefined
-        tmpData = filterUndefined(tmpData);
-
-
-        return tmpData;
+        }));
     },
 
     /**
@@ -118,10 +112,10 @@ export let Athletics = {
      * @returns {boolean}
      */
     validate: function (log, athlete, acs, requireSignature) {
-        var data = this.getValidData(log, athlete, acs, requireSignature);
-        var categories = [];
-        for (var st in data) {
-            categories[data[st].category] = true;
+        const validData = this.getValidData(log, athlete, acs, requireSignature);
+        const categories = [];
+        for (let st in validData) {
+            categories[validData[st].category] = true;
         }
 
         return 3 <= _.filter(categories, function (category) {
@@ -135,7 +129,7 @@ export let Athletics = {
      * @returns {number[]}
      */
     calculateOne: function (dataObject) {
-        var calculateFunction;
+        let calculateFunction;
 
         switch (dataObject.stID) {
             case "st_sprint_50_el":
@@ -176,11 +170,11 @@ export let Athletics = {
      * @returns {number}
      */
     calculate: function (log, athlete, acs, requireSignature) {
-        var validData = this.getValidData(log, athlete, acs, requireSignature);
+        const validData = this.getValidData(log, athlete, acs, requireSignature);
 
-        var scores = [0, 0, 0, 0];
+        const scores = [0, 0, 0, 0];
 
-        for (var vd in validData) {
+        for (let vd in validData) {
             let score = this.calculateOne(validData[vd]);
             let bestScore = _.max(score);
             let category = validData[vd].category;
@@ -219,17 +213,16 @@ export let Athletics = {
             return undefined;
         }
 
-        var genderInfo = athlete.isMale ? CERTIFICATE_INFO.m : CERTIFICATE_INFO.w;
+        const genderInfo = athlete.isMale ? CERTIFICATE_INFO.m : CERTIFICATE_INFO.w;
 
         return genderInfo[athlete.age];
     },
 
     generateCertificate: function (log, athlete, acs, requireSignature) {
-        var score = this.calculate(log, athlete, acs, requireSignature);
+        const score = this.calculate(log, athlete, acs, requireSignature);
+        const certificateInfo = this.getCertificateInfo(log, athlete);
 
-        var certificate = -1;
-
-        var certificateInfo = this.getCertificateInfo(log, athlete);
+        let certificate = -1;
 
         if (certificateInfo !== undefined) {
             if (score >= certificateInfo[1]) {
