@@ -1,5 +1,5 @@
-import {Log} from "../../imports/api/log";
-import {chai} from "meteor/practicalmeteor:chai";
+import {Log} from '../../imports/api/log';
+import {chai} from 'meteor/practicalmeteor:chai';
 chai.should();
 
 describe('log', function () {

@@ -1,6 +1,6 @@
-import {generateAC, encrypt, tryDecrypt} from "../../imports/api/crypto/crypto";
-import {Log} from "../../imports/api/log";
-import {chai} from "meteor/practicalmeteor:chai";
+import {generateAC, encrypt, tryDecrypt} from '../../imports/api/crypto/crypto';
+import {Log} from '../../imports/api/log';
+import {chai} from 'meteor/practicalmeteor:chai';
 chai.should();
 
 

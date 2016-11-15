@@ -1,6 +1,6 @@
-import {Athlete} from "./../../imports/api/logic/athlete";
-import {chai} from "meteor/practicalmeteor:chai";
-import {CompetitionTypes} from "../../imports/api/logic/competition_type";
+import {Athlete} from './../../imports/api/logic/athlete';
+import {chai} from 'meteor/practicalmeteor:chai';
+import {CompetitionTypes} from '../../imports/api/logic/competition_type';
 chai.should();
 
 const ct = CompetitionTypes[0].object;

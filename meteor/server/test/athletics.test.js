@@ -1,8 +1,8 @@
-import {generateAC} from "../../imports/api/crypto/crypto";
-import {CompetitionTypes} from "./../../imports/api/logic/competition_type";
-import {Athlete} from "./../../imports/api/logic/athlete";
-import {Log} from "../../imports/api/log";
-import {chai} from "meteor/practicalmeteor:chai";
+import {generateAC} from '../../imports/api/crypto/crypto';
+import {CompetitionTypes} from './../../imports/api/logic/competition_type';
+import {Athlete} from './../../imports/api/logic/athlete';
+import {Log} from '../../imports/api/log';
+import {chai} from 'meteor/practicalmeteor:chai';
 chai.should();
 
 const ct = CompetitionTypes[0].object;

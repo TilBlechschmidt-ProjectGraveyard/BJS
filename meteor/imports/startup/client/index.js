@@ -1,5 +1,5 @@
-import "../../ui/components/hello";
-import "../../ui/components/info";
+import '../../ui/components/hello';
+import '../../ui/components/info';
 
 // Run things on startup
 export function onStartup() {

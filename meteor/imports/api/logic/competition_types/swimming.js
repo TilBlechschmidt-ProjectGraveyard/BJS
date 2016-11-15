@@ -1,4 +1,4 @@
-import {filterUndefined} from "./../general";
+import {filterUndefined} from './../general';
 
 export let Swimming = {
     maxAge: 18,
