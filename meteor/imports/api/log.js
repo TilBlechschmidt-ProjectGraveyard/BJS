@@ -74,6 +74,13 @@ Log.prototype = {
     },
 
     /**
+     * Clears the messages buffer
+     */
+    clear: function () {
+        this.messages = [];
+    },
+
+    /**
      * Returns all messages as strings.
      * @returns {Array}
      */
