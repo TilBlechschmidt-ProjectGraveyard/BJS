@@ -1,7 +1,6 @@
 import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
 
-//TODO daten löschen ohne dafür berechtigt zu sein ist möglich.
 /**
  * Creates an empty Data object. The information in the Data object are encrypted. To read/write you always need the group_private_hash.
  * @constructor
