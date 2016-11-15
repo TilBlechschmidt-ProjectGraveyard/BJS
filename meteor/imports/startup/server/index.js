@@ -1,4 +1,9 @@
-import {MongoInternals} from 'meteor/mongo';
+import {MongoInternals} from "meteor/mongo";
+// ----------------------------------------- DEBUGGING ONLY -----------------------------------------
+import {CompetitionTypes} from "../../api/logic/competition_type";
+import {Athlete} from "../../api/logic/athlete";
+import {generateAC} from "../../api/crypto/crypto";
+import {Log} from "../../api/log";
 
 function setupDB() {
     import '../../api/database/collections/generic';
@@ -12,12 +17,6 @@ export function onStartup() {
     // initDatabase();
     debugging(); // TODO: Convert this function to unit tests and remove it
 }
-
-// ----------------------------------------- DEBUGGING ONLY -----------------------------------------
-import {CompetitionTypes} from "../../api/logic/competition_type";
-import {Athlete} from "../../api/logic/athlete";
-import {generateAC} from "../../api/crypto/crypto";
-import {Log} from "../../api/log";
 
 /**
  * Run some random tests.
@@ -56,7 +55,7 @@ export function debugging() {
     const encrypted = p.encryptForDatabase(groupAC);
     console.log(encrypted);
 
-    console.log(Athlete.prototype.decryptFromDatabase(log, encrypted, groupAC));
+    console.log(Athlete.prototype.decryptFromDatabase(log, encrypted, [groupAC]));
 
     console.log(log.getAsString());
 }

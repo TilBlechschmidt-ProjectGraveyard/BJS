@@ -116,7 +116,20 @@ Athlete.prototype = {
      * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
      */
     encryptForDatabase: function (groupAC) {
-        return encrypt(this, groupAC, groupAC);
+        const encrypted = {};
+
+        encrypted.firstName = encrypt(this.firstName, groupAC, groupAC);
+        encrypted.lastName = encrypt(this.lastName, groupAC, groupAC);
+        encrypted.ageGroup = encrypt(this.ageGroup, groupAC, groupAC);
+        encrypted.isMale = encrypt(this.isMale, groupAC, groupAC);
+        encrypted.group = encrypt(this.group, groupAC, groupAC);
+        encrypted.handicap = encrypt(this.handicap, groupAC, groupAC);
+        encrypted.maxAge = encrypt(this.maxAge, groupAC, groupAC);
+
+        encrypted.sports = encrypt(this.sports, groupAC, groupAC);
+        encrypted.data = this.data;
+
+        return encrypted;
     },
 
     /**
@@ -127,10 +140,19 @@ Athlete.prototype = {
      * @returns {*}
      */
     decryptFromDatabase: function (log, data, acs) {
-        const unencryptedData = tryDecrypt(log, data, acs).data;
-        if (unencryptedData) {
-            return new Athlete(log, unencryptedData.firstName, unencryptedData.lastName, unencryptedData.ageGroup, unencryptedData.isMale, unencryptedData.group, unencryptedData.handicap, unencryptedData.maxAge, unencryptedData.sports);
+        const firstName = tryDecrypt(log, data.firstName, acs);
+        const lastName = tryDecrypt(log, data.lastName, acs);
+        const ageGroup = tryDecrypt(log, data.ageGroup, acs);
+        const isMale = tryDecrypt(log, data.isMale, acs);
+        const group = tryDecrypt(log, data.group, acs);
+        const handicap = tryDecrypt(log, data.handicap, acs);
+        const maxAge = tryDecrypt(log, data.maxAge, acs);
+        const sports = tryDecrypt(log, data.sports, acs);
+
+        if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
+            return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data);
         }
+        log.error('Cannot decrypt data');
         return false;
     }
 };
