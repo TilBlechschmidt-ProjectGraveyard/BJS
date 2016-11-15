@@ -21,7 +21,7 @@ import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
 import {generateAC} from "../../api/crypto/crypto";
 import {Log} from "../../api/log";
-import {genRandomCode} from '../../api/crypto/pwdgen';
+import {genRandomCode} from "../../api/crypto/pwdgen";
 
 /**
  * Run some random tests.

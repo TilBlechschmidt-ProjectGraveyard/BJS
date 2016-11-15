@@ -4,13 +4,13 @@ import {chai} from "meteor/practicalmeteor:chai";
 chai.should();
 
 
-const password = "IAmAPotato";
-const salt = "verySaltyStuffGoingOnRightHere";
+const password = 'IAmAPotato';
+const salt = 'verySaltyStuffGoingOnRightHere';
 
 const log = new Log();
 const data = {
-    I: "am",
-    A: "Potato"
+    I: 'am',
+    A: 'Potato'
 };
 
 const cachedAC1 = generateAC(password, salt);
@@ -19,7 +19,7 @@ const cachedSED = encrypt(data, cachedAC1, cachedAC2);
 
 describe('crypto', function () {
     it('generates different hashes (pub/priv)', function () {
-        const ac = generateAC("IAmAPotato");
+        const ac = generateAC('IAmAPotato');
         ac.privHash.should.not.be.equal(ac.pubHash);
     });
 
