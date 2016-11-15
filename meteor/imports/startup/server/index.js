@@ -21,7 +21,7 @@ import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
 import {generateAC} from "../../api/crypto/crypto";
 import {Log} from "../../api/log";
-// import {genRandomCode} from "../../api/crypto/pwdgen";
+import {genRandomCode} from "../../api/crypto/pwdgen";
 
 /**
  * Run some random tests.
@@ -51,5 +51,10 @@ export function debugging() {
     console.log(ct.validate(log, p, [groupAC, stationAC], false));
     console.log(ct.generateCertificate(log, p, [groupAC, stationAC], false));
     console.log(log.getAsString());
+
+
+    for (let i = 0; i < 10; i++) {
+        console.log(genRandomCode());
+    }
 }
 // ----------------------------------------- TO BE REMOVED -----------------------------------------

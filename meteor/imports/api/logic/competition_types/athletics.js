@@ -189,9 +189,9 @@ export let Athletics = {
         // get best score for each category
         const scores = [0, 0, 0, 0];
         for (let vd in validData) {
-            let score = this.calculateOne(validData[vd]);
-            let bestScore = _.max(score);
-            let category = validData[vd].category;
+            const score = this.calculateOne(validData[vd]);
+            const bestScore = _.max(score);
+            const category = validData[vd].category;
 
             log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + " (" + score + ") -> " + bestScore);
 
