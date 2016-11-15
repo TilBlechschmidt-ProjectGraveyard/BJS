@@ -36,23 +36,23 @@ Athlete.prototype = {
     check: function (log) {
         let result = true;
 
-        if ((typeof(this.firstName) != 'string') || (this.firstName === "")) {
-            log.error("Der Vorname des Athleten ist ungültig.");
+        if ((typeof(this.firstName) != 'string') || (this.firstName === '')) {
+            log.error('Der Vorname des Athleten ist ungültig.');
             result = false;
         }
-        if ((typeof(this.lastName) != 'string') || (this.lastName === "")) {
-            log.error("Der Nachname des Athleten ist ungültig.");
+        if ((typeof(this.lastName) != 'string') || (this.lastName === '')) {
+            log.error('Der Nachname des Athleten ist ungültig.');
             result = false;
         }
         if (typeof(this.ageGroup) != 'number') {
-            log.error("Der Jahrgang des Athleten ist ungültig.");
+            log.error('Der Jahrgang des Athleten ist ungültig.');
             result = false;
         } else if (this.age < 8) {
-            log.error("Der Sportler ist zu jung um an den Bundesjugendspielen teilzunehmen.");
+            log.error('Der Sportler ist zu jung um an den Bundesjugendspielen teilzunehmen.');
             result = false;
         }
         if (typeof(this.isMale) != 'boolean') {
-            log.error("Das Geschlecht des Athleten ist ungültig");
+            log.error('Das Geschlecht des Athleten ist ungültig');
             result = false;
         }
         return result;

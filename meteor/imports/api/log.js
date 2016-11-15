@@ -79,7 +79,7 @@ Log.prototype = {
      */
     getAsString: function () {
         return _.map(this.messages, function (message) {
-            return message.timestamp.toLocaleString() + " [" + message.level + "]: " + message.message;
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
         });
     },
 
@@ -90,7 +90,7 @@ Log.prototype = {
      */
     getAsStringWithLevel: function (level) {
         return _.map(_.where(this.messages, {level: level}), function (message) {
-            return message.timestamp.toLocaleString() + " [" + message.level + "]: " + message.message;
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
         });
     },
 
@@ -103,7 +103,7 @@ Log.prototype = {
         return _.map(_.filter(this.messages, function (message) {
             return message.level >= level;
         }), function (message) {
-            return message.timestamp.toLocaleString() + " [" + message.level + "]: " + message.message;
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
         });
     }
 };

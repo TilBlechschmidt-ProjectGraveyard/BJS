@@ -30,7 +30,7 @@ export let Athletics = {
 
         // check information
         if (!baseInformation) {
-            log.error(stID + " ist keine gültige Sport ID.");
+            log.error(stID + ' ist keine gültige Sport ID.');
             return {
                 canDoSport: false,
                 dataObject: undefined
@@ -55,13 +55,13 @@ export let Athletics = {
 
         // check age
         if (_.indexOf(dataObject.genderInfo.age, athlete.tableAge) == -1) {
-            log.warning(athlete.getFullName() + " hat kein gültiges Alter für " + baseInformation.name + ".");
+            log.warning(athlete.getFullName() + ' hat kein gültiges Alter für ' + baseInformation.name + '.');
             canDoSport = false;
         }
 
         // check handicap
         if (dataObject.conversionFactor === 0.0) {
-            log.warning(athlete.getFullName() + " can die Sportart " + baseInformation.name + " aufgrund der Startklasse " + athlete.handicap + " nicht durchführen.");
+            log.warning(athlete.getFullName() + ' can die Sportart ' + baseInformation.name + ' aufgrund der Startklasse ' + athlete.handicap + ' nicht durchführen.');
             canDoSport = false;
         }
 
@@ -99,7 +99,7 @@ export let Athletics = {
             //check signature
             //noinspection JSUnresolvedVariable
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
-                log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
+                log.error('Die Signatur der Sport Art ' + canDoSportObject.dataObject.name + ' konnte nicht überprüft werden, obwohl sie benüotigt wird..');
                 return undefined;
             }
 
@@ -144,20 +144,20 @@ export let Athletics = {
 
         // select calculation function
         switch (dataObject.stID) {
-            case "st_sprint_50_el":
-            case "st_sprint_75_el":
-            case "st_sprint_100_el":
-            case "st_endurance_800":
-            case "st_endurance_1000":
-            case "st_endurance_2000":
-            case "st_endurance_3000":
+            case 'st_sprint_50_el':
+            case 'st_sprint_75_el':
+            case 'st_sprint_100_el':
+            case 'st_endurance_800':
+            case 'st_endurance_1000':
+            case 'st_endurance_2000':
+            case 'st_endurance_3000':
                 calculateFunction = function (d, m, a, c) {
                     return ((d / m) - a) / c;
                 };
                 break;
-            case "st_sprint_50":
-            case "st_sprint_75":
-            case "st_sprint_100":
+            case 'st_sprint_50':
+            case 'st_sprint_75':
+            case 'st_sprint_100':
                 calculateFunction = function (d, m, a, c) {
                     return ((d / (m + 0.24)) - a) / c;
                 };
@@ -193,7 +193,7 @@ export let Athletics = {
             let bestScore = _.max(score);
             let category = validData[vd].category;
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + " (" + score + ") -> " + bestScore);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
 
             if (scores[category] < bestScore) {
                 scores[category] = bestScore;
@@ -224,7 +224,7 @@ export let Athletics = {
      */
     getCertificateInfo: function (log, athlete) {
         if (athlete.check(log) === false) {
-            log.error("Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (" + athlete.getFullName() + ").");
+            log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
             return undefined;
         }
 

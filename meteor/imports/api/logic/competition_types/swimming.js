@@ -28,7 +28,7 @@ export let Swimming = {
 
         // check information
         if (!baseInformation) {
-            log.error(stID + " ist keine gültige Sport ID.");
+            log.error(stID + ' ist keine gültige Sport ID.');
             return {
                 canDoSport: false,
                 dataObject: undefined
@@ -54,14 +54,14 @@ export let Swimming = {
             genderInfo: genderInfo,
             scoreTable: scoreTable,
             conversionFactor: handicapData === undefined ? 1.0 : handicapData,
-            conversionAddend: (athlete.handicap !== "0" && (stID === "st_diving_push" || stID === "st_diving")) ? 1.0 : 0.0
+            conversionAddend: (athlete.handicap !== '0' && (stID === 'st_diving_push' || stID === 'st_diving')) ? 1.0 : 0.0
         };
 
         let canDoSport = true;
 
         // check age
         if (scoreTable === undefined) {
-            log.warning(athlete.getFullName() + " hat kein gültiges Alter für " + baseInformation.name + ".");
+            log.warning(athlete.getFullName() + ' hat kein gültiges Alter für ' + baseInformation.name + '.');
             canDoSport = false;
         }
 
@@ -99,7 +99,7 @@ export let Swimming = {
             //check signature
             //noinspection JSUnresolvedVariable
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
-                log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
+                log.error('Die Signatur der Sport Art ' + canDoSportObject.dataObject.name + ' konnte nicht überprüft werden, obwohl sie benüotigt wird..');
                 return undefined;
             }
 
@@ -141,8 +141,8 @@ export let Swimming = {
 
             // select score from table
             for (let i = 0; i <= 14; i++) {
-                if ((dataObject.unit === "m" && tmp_measurement >= dataObject.scoreTable[i]) ||
-                    (dataObject.unit !== "m" && tmp_measurement <= dataObject.scoreTable[i])) {
+                if ((dataObject.unit === 'm' && tmp_measurement >= dataObject.scoreTable[i]) ||
+                    (dataObject.unit !== 'm' && tmp_measurement <= dataObject.scoreTable[i])) {
                     score = i + 1;
                 }
             }
@@ -169,7 +169,7 @@ export let Swimming = {
             let bestScore = _.max(score);
             let category = validData[vd].category;
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + " (" + score + ") -> " + bestScore);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
 
             if (scores[category] < bestScore) {
                 scores[category] = bestScore;
@@ -200,7 +200,7 @@ export let Swimming = {
      */
     getCertificateInfo: function (log, athlete) {
         if (athlete.check(log) === false) {
-            log.error("Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (" + athlete.getFullName() + ").");
+            log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
             return undefined;
         }
         return [15, 27];
