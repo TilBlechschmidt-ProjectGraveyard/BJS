@@ -6,15 +6,15 @@ import {chai} from "meteor/practicalmeteor:chai";
 chai.should();
 
 const ct = CompetitionTypes[0].object;
-const groupAC = generateAC("1234567ljhfaljawf8");
-const stationAC = generateAC("hflhkfks;kjfjankfa");
+const groupAC = generateAC('1234567ljhfaljawf8');
+const stationAC = generateAC('hflhkfks;kjfjankfa');
 
 describe('athletics', function () {
     it('updates a measurement', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
 
         p.data.data.length.should.be.equal(1);
     });
@@ -23,12 +23,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.validate(log, p, [groupAC], false).should.be.equal(true);
     });
@@ -37,12 +37,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.validate(log, p, [groupAC, stationAC], false).should.be.equal(true);
     });
@@ -51,12 +51,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.validate(log, p, [groupAC], true).should.be.equal(false);
     });
@@ -65,12 +65,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.calculate(log, p, [groupAC], false).should.be.equal(2195);
     });
@@ -79,12 +79,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.calculate(log, p, [groupAC, stationAC], false).should.be.equal(2195);
     });
@@ -93,12 +93,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         ct.calculate(log, p, [groupAC], true).should.be.equal(0);
     });
@@ -107,12 +107,12 @@ describe('athletics', function () {
         const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
         p.age = 16;
         const log = new Log();
-        p.data.update(log, "st_long_jump", [7.33], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [70], groupAC, stationAC);
-        p.data.update(log, "st_ball_200", [69, 70], groupAC, stationAC);
-        p.data.update(log, "st_endurance_1000", [160], groupAC, stationAC);
-        p.data.update(log, "st_endurance_3000", [640], groupAC, stationAC);
-        p.data.update(log, "st_sprint_100", [10], groupAC, stationAC);
+        p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [70], groupAC, stationAC);
+        p.data.update(log, 'st_ball_200', [69, 70], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_1000', [160], groupAC, stationAC);
+        p.data.update(log, 'st_endurance_3000', [640], groupAC, stationAC);
+        p.data.update(log, 'st_sprint_100', [10], groupAC, stationAC);
 
         const certificate = ct.generateCertificate(log, p, [groupAC, stationAC], true);
         (certificate.score == 2195 && certificate.certificate == 2).should.be.equal(true);
