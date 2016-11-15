@@ -17,3 +17,7 @@ To test the project run either
 [http://www.byki.com/lists/german/greg%27s-german-nouns-part-1.html](http://wortschatz.uni-leipzig.de/Papers/top10000de.txt)
 
 [http://wortschatz.uni-leipzig.de/Papers/top1000de.txt](http://wortschatz.uni-leipzig.de/Papers/top10000de.txt)
+
+## Framework7-Wrapper
+
+https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framework7-ios-material
