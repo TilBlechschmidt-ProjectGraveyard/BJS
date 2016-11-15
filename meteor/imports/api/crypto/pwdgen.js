@@ -25,6 +25,7 @@ function genRandomString(length) {
  * @returns {String}
  */
 function genRandomCode() {
+    //noinspection JSUnresolvedVariable
     return words_de[genRandomInt(0, words_de.length)] +
         genRandomInt(0, 1000) +
         words_de[genRandomInt(0, words_de.length)];
