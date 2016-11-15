@@ -7,7 +7,7 @@ describe('genCode', function () {
         (typeof(genRandomCode())).should.be.equal('string');
     });
 
-    it('checks if genRandomCode returns a not-empty-string', function () {
+    it('checks if genRandomCode returns a not empty string', function () {
         genRandomCode().should.not.be.equal('');
     });
 
