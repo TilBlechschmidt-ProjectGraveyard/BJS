@@ -4,22 +4,22 @@ import {chai} from "meteor/practicalmeteor:chai";
 chai.should();
 
 
-var password = "IAmAPotato";
-var salt = "verySaltyStuffGoingOnRightHere";
+const password = "IAmAPotato";
+const salt = "verySaltyStuffGoingOnRightHere";
 
-var log = new Log();
-var data = {
+const log = new Log();
+const data = {
     I: "am",
     A: "Potato"
 };
 
-var cachedAC1 = generateAC(password, salt);
-var cachedAC2 = generateAC(password + password, salt);
-var cachedSED = encrypt(data, cachedAC1, cachedAC2);
+const cachedAC1 = generateAC(password, salt);
+const cachedAC2 = generateAC(password + password, salt);
+const cachedSED = encrypt(data, cachedAC1, cachedAC2);
 
 describe('crypto', function () {
     it('generates different hashes (pub/priv)', function () {
-        var ac = generateAC("IAmAPotato");
+        const ac = generateAC("IAmAPotato");
         ac.privHash.should.not.be.equal(ac.pubHash);
     });
 
@@ -30,23 +30,23 @@ describe('crypto', function () {
 
     it('takes a salt for AC creation', function () {
         this.timeout(5000);
-        var ac1 = generateAC(password);
-        var ac2 = generateAC(password, ac1.salt);
+        const ac1 = generateAC(password);
+        const ac2 = generateAC(password, ac1.salt);
 
         ac1.salt.should.be.equal(ac2.salt);
     });
 
     it('generates reproducible ACs', function () {
         this.timeout(5000);
-        var ac1 = generateAC(password);
-        var ac2 = generateAC(password, ac1.salt);
+        const ac1 = generateAC(password);
+        const ac2 = generateAC(password, ac1.salt);
 
         ac1.pubHash.should.be.equal(ac2.pubHash);
         ac1.privHash.should.be.equal(ac2.privHash);
     });
 
     it('enforces parameter passing (encrypt)', function () {
-        var valid = encrypt(data, cachedAC1, cachedAC2);
+        const valid = encrypt(data, cachedAC1, cachedAC2);
         (function () {
             encrypt(data, cachedAC1);
         }).should.throw();
@@ -61,22 +61,20 @@ describe('crypto', function () {
         valid.should.have.property('groupSignature');
         valid.should.have.property('stationSignature');
         valid.should.have.property('data');
-        // oneMissing.should.be.equal(false);
-        // twoMissing.should.be.equal(false);
     });
 
     it('enforces parameter passing (tryDecrypt)', function () {
-        var valid = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
+        const valid = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
         (function () {
             tryDecrypt(cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log missing
         (function () {
             tryDecrypt([], cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log wrong type
-        var stationACMissing = tryDecrypt(log, cachedSED, [cachedAC1]);
-        var emptyACList = tryDecrypt(log, cachedSED, []);
-        var acsMissing = tryDecrypt(log, cachedSED);
-        var wrongDataType = tryDecrypt(log, {}, [cachedAC1, cachedAC2]);
+        const stationACMissing = tryDecrypt(log, cachedSED, [cachedAC1]);
+        const emptyACList = tryDecrypt(log, cachedSED, []);
+        const acsMissing = tryDecrypt(log, cachedSED);
+        const wrongDataType = tryDecrypt(log, {}, [cachedAC1, cachedAC2]);
 
         valid.should.not.be.equal(false);
 
@@ -91,18 +89,20 @@ describe('crypto', function () {
 
     it('decrypts data', function () {
 
-        var decryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
+        const decryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
         JSON.stringify(decryptedData.data).should.be.equal(JSON.stringify(data));
         decryptedData.signatureEnforced.should.be.equal(true);
     });
 
-    it('checks signatures', function () {
-        var decryptedData = tryDecrypt(log, cachedSED, [cachedAC1]);
+    it('checks signatures (single)', function () {
+        const decryptedData = tryDecrypt(log, cachedSED, [cachedAC1]);
         decryptedData.should.have.property('signatureEnforced');
         decryptedData.signatureEnforced.should.be.equal(false);
+    });
 
-        decryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
-        decryptedData.should.have.property('signatureEnforced');
-        decryptedData.signatureEnforced.should.be.equal(true);
+    it('checks signatures (both)', function () {
+        const verifiedDecryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
+        verifiedDecryptedData.should.have.property('signatureEnforced');
+        verifiedDecryptedData.signatureEnforced.should.be.equal(true);
     });
 });
