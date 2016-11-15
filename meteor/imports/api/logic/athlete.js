@@ -2,10 +2,12 @@
  * Created by noah on 08/11/2016.
  */
 import {Data} from "./data";
+import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
 
 
 /**
  * Creates a new Athlete with the given information.
+ * @param log
  * @param firstName
  * @param lastName
  * @param ageGroup
@@ -13,9 +15,10 @@ import {Data} from "./data";
  * @param group
  * @param handicap
  * @param maxAge
+ * @param ct
  * @constructor
  */
-export function Athlete(firstName, lastName, ageGroup, isMale, group, handicap, maxAge) {
+export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.ageGroup = ageGroup;
@@ -25,6 +28,20 @@ export function Athlete(firstName, lastName, ageGroup, isMale, group, handicap, 
     this.maxAge = maxAge;
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{id: 'st_sprint', measurement: 16}]
+
+    if (ct.constructor == Array) {
+        this.sports = ct;
+    } else {
+        this.sports = [];
+
+        const allSports = ct.getSports();
+        for (let sport in allSports) {
+            if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
+                this.sports.push(allSports[sport].id);
+            }
+        }
+    }
+
     this.data = new Data();
 }
 
@@ -91,5 +108,29 @@ Athlete.prototype = {
      */
     set age(newAge) {
         this.ageGroup = new Date().getFullYear() - newAge;
+    },
+
+    /**
+     * Encrypts the athlete for the database
+     * @param groupAC
+     * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
+     */
+    encryptForDatabase: function (groupAC) {
+        return encrypt(this, groupAC, groupAC);
+    },
+
+    /**
+     * Decrypts the data from the database
+     * @param log
+     * @param data
+     * @param acs
+     * @returns {*}
+     */
+    decryptFromDatabase: function (log, data, acs) {
+        const unencryptedData = tryDecrypt(log, data, acs).data;
+        if (unencryptedData) {
+            return new Athlete(log, unencryptedData.firstName, unencryptedData.lastName, unencryptedData.ageGroup, unencryptedData.isMale, unencryptedData.group, unencryptedData.handicap, unencryptedData.maxAge, unencryptedData.sports);
+        }
+        return false;
     }
 };

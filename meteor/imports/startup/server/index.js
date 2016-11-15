@@ -17,11 +17,10 @@ function initDatabase() {
     // Athletes.find({}).fetch()[0].data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
 }
 // ----------------------------------------- DEBUGGING ONLY -----------------------------------------
-import {CompetitionTypes} from '../../api/logic/competition_type';
-import {Athlete} from '../../api/logic/athlete';
-import {generateAC} from '../../api/crypto/crypto';
-import {Log} from '../../api/log';
-import {genRandomCode} from '../../api/crypto/pwdgen';
+import {CompetitionTypes} from "../../api/logic/competition_type";
+import {Athlete} from "../../api/logic/athlete";
+import {generateAC} from "../../api/crypto/crypto";
+import {Log} from "../../api/log";
 
 /**
  * Run some random tests.
@@ -32,10 +31,13 @@ export function debugging() {
     const groupAC = generateAC('1234567ljhfaljawf8');
     const stationAC = generateAC('hflhkfks;kjfjankfa');
 
-
-    const p = new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge);
-    p.age = 16;
     const log = new Log();
+
+    const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+
+    console.log(p.sports);
+
+    p.age = 16;
     p.data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
     p.data.update(log, 'st_face_up_100', [700], groupAC, stationAC);
     p.data.update(log, 'st_diving', [13, 13], groupAC, stationAC);
@@ -53,8 +55,12 @@ export function debugging() {
     console.log(log.getAsString());
 
 
-    for (let i = 0; i < 10; i++) {
-        console.log(genRandomCode());
-    }
+    log.clear();
+    const encrypted = p.encryptForDatabase(groupAC);
+    console.log(encrypted);
+
+    console.log(Athlete.prototype.decryptFromDatabase(log, encrypted, groupAC));
+
+    console.log(log.getAsString());
 }
 // ----------------------------------------- TO BE REMOVED -----------------------------------------
