@@ -1,9 +1,3 @@
-const Accounts = new Mongo.Collection('Accounts');
+import {Collection} from './collection';
 
-if (Meteor.isClient) Ground.Collection(Accounts);
-
-if (Meteor.isServer) {
-    Meteor.publish('Accounts', function () {
-        return Accounts.find({});
-    });
-}
+export let Accounts = new Collection('Accounts');

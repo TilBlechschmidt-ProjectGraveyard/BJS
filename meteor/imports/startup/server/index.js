@@ -1,20 +1,37 @@
-import {MongoInternals} from 'meteor/mongo';
+import {COLLECTIONS} from '../../api/database/collections/collection';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
-function setupDB() {
-    import '../../api/database/collections/generic';
-    import '../../api/database/collections/athletes';
-    import '../../api/database/collections/accounts';
+function clearDatabase(dbVersion) {
+    console.log('-----------------------------------------------------');
+    console.log('---------------------- WARNING ----------------------');
+    console.log('-----------------------------------------------------');
+    console.log('                  Database not clean                 ');
+    console.log('Clearing database and adding mock data entries . . .');
+    resetDatabase();
+    for (let collection in COLLECTIONS)
+        if (COLLECTIONS.hasOwnProperty(collection)) COLLECTIONS[collection].createMockData();
+    console.log('-----------------------------------------------------');
+    console.log('------------------------ DONE -----------------------');
+    console.log('-----------------------------------------------------');
 }
 
 export function onStartup() {
-    const mongoURL = process.env.MONGO_URL.replace("/meteor", "/testing");
-    Meteor.DBDriver = new MongoInternals.RemoteCollectionDriver(mongoURL);
-    // initDatabase();
+    const dbVersion = require('../../../config.json').dbVersion;
+    let genericEntries = COLLECTIONS.Generic.handle.find({}).fetch();
+    //noinspection JSUnresolvedVariable
+    if (!(
+            genericEntries.length > 0 &&
+            (genericEntries[0].hasOwnProperty('cleanDB') && genericEntries[0].cleanDB === true) &&
+            (genericEntries[0].hasOwnProperty('dbVersion') && genericEntries[0].dbVersion === dbVersion)
+        )
+    ) {
+        clearDatabase(dbVersion);
+    }
     debugging(); // TODO: Convert this function to unit tests and remove it
 }
 
 // ----------------------------------------- DEBUGGING ONLY -----------------------------------------
-import {CompetitionTypes} from '../../api/logic/competition_type';
+import {COMPETITION_TYPES} from '../../api/logic/competition_type';
 import {Athlete} from '../../api/logic/athlete';
 import {generateAC} from '../../api/crypto/crypto';
 import {Log} from '../../api/log';
@@ -25,7 +42,7 @@ import {genRandomCode} from '../../api/crypto/pwdgen';
  */
 export function debugging() {
 
-    const ct = CompetitionTypes[1].object;
+    const ct = COMPETITION_TYPES[1].object;
     const groupAC = generateAC('1234567ljhfaljawf8');
     const stationAC = generateAC('hflhkfks;kjfjankfa');
 

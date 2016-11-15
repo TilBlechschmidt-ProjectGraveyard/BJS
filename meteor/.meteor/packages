@@ -33,3 +33,4 @@ jparker:crypto-padding
 jparker:crypto-aes
 dispatch:mocha
 practicalmeteor:mocha
+xolvio:cleaner

@@ -1,9 +1,3 @@
-const Generic = new Mongo.Collection('Generic');
+import {Collection} from './collection';
 
-if (Meteor.isClient) Ground.Collection(Generic);
-
-if (Meteor.isServer) {
-    Meteor.publish('Accounts', function () {
-        return Generic.find({});
-    });
-}
+export let Generic = new Collection('Generic');
