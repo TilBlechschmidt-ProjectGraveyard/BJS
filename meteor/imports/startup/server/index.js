@@ -1,21 +1,18 @@
+import {MongoInternals} from 'meteor/mongo';
+
+function setupDB() {
+    import '../../api/database/collections/generic';
+    import '../../api/database/collections/athletes';
+    import '../../api/database/collections/accounts';
+}
+
 export function onStartup() {
+    const mongoURL = process.env.MONGO_URL.replace("/meteor", "/testing");
+    Meteor.DBDriver = new MongoInternals.RemoteCollectionDriver(mongoURL);
     // initDatabase();
     debugging(); // TODO: Convert this function to unit tests and remove it
 }
 
-function initDatabase() {
-    var Athletes = new Mongo.Collection('Athletes');
-    var Accounts = new Mongo.Collection('Accounts');
-    var General = new Mongo.Collection('General');
-
-    // var groupAC = generateAC('1234567ljhfaljawf8');
-    // var stationAC = generateAC('hflhkfks;kjfjankfa');
-
-    // Athletes.insert(new Athlete('Hans', 'Müller', 2000, true, 'Q#z', '0'));
-    // var log = new Log();
-    // console.log(Athletes.find({}).fetch()[0].data);
-    // Athletes.find({}).fetch()[0].data.update(log, 'st_long_jump', [7.33], groupAC, stationAC);
-}
 // ----------------------------------------- DEBUGGING ONLY -----------------------------------------
 import {CompetitionTypes} from "../../api/logic/competition_type";
 import {Athlete} from "../../api/logic/athlete";
