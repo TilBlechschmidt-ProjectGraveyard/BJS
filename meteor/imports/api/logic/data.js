@@ -21,8 +21,8 @@ Data.prototype = {
      */
     getPlain: function (log, acs) {
         return filterUndefined(_.map(this.data, function (dataObject) {
-            var stIDDecryptResult = tryDecrypt(log, dataObject.encryptedStID, acs);
-            var measurementsDecryptResult = tryDecrypt(log, dataObject.encryptedMeasurements, acs);
+            const stIDDecryptResult = tryDecrypt(log, dataObject.encryptedStID, acs);
+            const measurementsDecryptResult = tryDecrypt(log, dataObject.encryptedMeasurements, acs);
 
                 return {
                     stID: stIDDecryptResult,
@@ -40,7 +40,7 @@ Data.prototype = {
      */
     findEncrypted: function (log, stID, acs) {
         return _.find(this.data, function (dataObject) {
-            var decryptedData = tryDecrypt(log, dataObject.encryptedStID, acs);
+            const decryptedData = tryDecrypt(log, dataObject.encryptedStID, acs);
             return decryptedData === stID;
         });
     },
@@ -54,9 +54,9 @@ Data.prototype = {
      * @param stationAC    Station auth. code
      */
     update: function (log, stID, newMeasurements, groupAC, stationAC) {
-        var encryptedStID = encrypt(stID, groupAC, stationAC);
-        var newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
-        var oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
+        const encryptedStID = encrypt(stID, groupAC, stationAC);
+        const newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
+        const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
 
         if (oldData) {
             oldData.encryptedStID = encryptedStID;

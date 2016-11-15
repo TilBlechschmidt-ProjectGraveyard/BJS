@@ -4,7 +4,7 @@ chai.should();
 
 describe('log', function () {
     it('writes a message with `error`', function () {
-        var l = new Log();
+        const l = new Log();
 
         l.error("Test");
 
@@ -12,7 +12,7 @@ describe('log', function () {
     });
 
     it('writes a message with `err`', function () {
-        var l = new Log();
+        const l = new Log();
 
         l.err("Test");
 
@@ -20,7 +20,7 @@ describe('log', function () {
     });
 
     it('writes a message with `warning`', function () {
-        var l = new Log();
+        const l = new Log();
 
         l.warning("Test");
 
@@ -28,7 +28,7 @@ describe('log', function () {
     });
 
     it('writes a message with `warn`', function () {
-        var l = new Log();
+        const l = new Log();
 
         l.warn("Test");
 
@@ -36,7 +36,7 @@ describe('log', function () {
     });
 
     it('writes a message with `info`', function () {
-        var l = new Log();
+        const l = new Log();
 
         l.info("Test");
 

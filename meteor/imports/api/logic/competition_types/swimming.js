@@ -22,10 +22,11 @@ export let Swimming = {
      */
     canDoSportType: function (log, athlete, stID) {
         //collect information
-        var baseInformation = _.find(this.getSports(), function (st) {
+        let baseInformation = _.find(this.getSports(), function (st) {
             return st.id === stID;
         });
 
+        // check information
         if (!baseInformation) {
             log.error(stID + " ist keine gültige Sport ID.");
             return {
@@ -34,15 +35,18 @@ export let Swimming = {
             };
         }
 
-        let genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
-        let handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
+        // filter information
+        const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        //noinspection JSUnresolvedVariable
+        const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
 
-        var baseScoreTable = this.getScoreTable();
+        const baseScoreTable = this.getScoreTable();
 
-        let genderScoreInfo = athlete.isMale ? baseScoreTable.m : baseScoreTable.w;
-        let scoreTable = genderScoreInfo[athlete.tableAge][stID];
+        const genderScoreInfo = athlete.isMale ? baseScoreTable.m : baseScoreTable.w;
+        const scoreTable = genderScoreInfo[athlete.tableAge][stID];
 
-        let dataObject = {
+        // save important information
+        const dataObject = {
             stID: stID,
             name: baseInformation.name,
             category: baseInformation.category,
@@ -53,8 +57,9 @@ export let Swimming = {
             conversionAddend: (athlete.handicap !== "0" && (stID === "st_diving_push" || stID === "st_diving")) ? 1.0 : 0.0
         };
 
-        var canDoSport = true;
+        let canDoSport = true;
 
+        // check age
         if (scoreTable === undefined) {
             log.warning(athlete.getFullName() + " hat kein gültiges Alter für " + baseInformation.name + ".");
             canDoSport = false;
@@ -75,37 +80,35 @@ export let Swimming = {
      * * @returns {object[]}
      */
     getValidData: function (log, athlete, acs, requireSignature) {
-        // let sports = this.getSports();
-
-        var plain = athlete.data.getPlain(log, acs);
+        //get the plain data from the athlete (unencrypted)
+        const plain = athlete.data.getPlain(log, acs);
 
         // filter data with more then on point
-        var tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements) > 0;
+        const tmpData = _.filter(plain, function (dataObject) {
+            return _.max(dataObject.measurements.data) > 0;
         });
 
-        var that = this; //TODO alternative?
+        // temporary store this in that
+        const that = this; //TODO alternative?
 
         // Add information
-        tmpData = _.map(tmpData, function (dataObject) {
+        return filterUndefined(_.map(tmpData, function (dataObject) {
+            //noinspection JSUnresolvedVariable
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
 
+            //check signature
+            //noinspection JSUnresolvedVariable
             if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
                 log.error("Die Signatur der Sport Art " + canDoSportObject.dataObject.name + " konnte nicht überprüft werden, obwohl sie benüotigt wird..");
                 return undefined;
             }
 
+            // add measurement to general information
             if (canDoSportObject.dataObject !== undefined) {
                 canDoSportObject.dataObject.measurements = dataObject.measurements.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
-        });
-
-        // filter undefined
-        tmpData = filterUndefined(tmpData);
-
-
-        return tmpData;
+        }));
     },
 
     /**
@@ -117,8 +120,11 @@ export let Swimming = {
      * @returns {boolean}
      */
     validate: function (log, athlete, acs, requireSignature) {
+        // collect data
         const data = this.getValidData(log, athlete, acs, requireSignature);
-        var categories = [];
+
+        // sort for categories
+        const categories = [];
         for (let st in data) {
             categories[data[st].category] = true;
         }
@@ -133,7 +139,7 @@ export let Swimming = {
             const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * measurement;
             let score = 0;
 
-
+            // select score from table
             for (let i = 0; i <= 14; i++) {
                 if ((dataObject.unit === "m" && tmp_measurement >= dataObject.scoreTable[i]) ||
                     (dataObject.unit !== "m" && tmp_measurement <= dataObject.scoreTable[i])) {
@@ -153,11 +159,12 @@ export let Swimming = {
      * @returns {number}
      */
     calculate: function (log, athlete, acs, requireSignature) {
-        var validData = this.getValidData(log, athlete, acs, requireSignature);
+        // collect data
+        const validData = this.getValidData(log, athlete, acs, requireSignature);
 
-        var scores = [0, 0, 0, 0, 0, 0];
-
-        for (var vd in validData) {
+        // get best score for each category
+        const scores = [0, 0, 0, 0, 0, 0];
+        for (let vd in validData) {
             let score = this.calculateOne(validData[vd]);
             let bestScore = _.max(score);
             let category = validData[vd].category;
@@ -169,6 +176,7 @@ export let Swimming = {
             }
         }
 
+        // take the three best categories
         return _.reduce(_.sortBy(scores, function (num) {
             return num;
         }).splice(3, 3), function (mem, num) {
@@ -199,11 +207,11 @@ export let Swimming = {
     },
 
     generateCertificate: function (log, athlete, acs, requireSignature) {
-        var score = this.calculate(log, athlete, acs, requireSignature);
+        const score = this.calculate(log, athlete, acs, requireSignature);
+        const certificateInfo = this.getCertificateInfo(log, athlete);
 
-        var certificate = -1;
+        let certificate = -1;
 
-        var certificateInfo = this.getCertificateInfo(log, athlete);
 
         if (certificateInfo !== undefined) {
             if (score >= certificateInfo[1]) {
