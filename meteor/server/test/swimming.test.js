@@ -1,11 +1,11 @@
 import {generateAC} from '../../imports/api/crypto/crypto';
-import {CompetitionTypes} from './../../imports/api/logic/competition_type';
+import {COMPETITION_TYPES} from './../../imports/api/logic/competition_type';
 import {Athlete} from './../../imports/api/logic/athlete';
 import {Log} from '../../imports/api/log';
 import {chai} from 'meteor/practicalmeteor:chai';
 chai.should();
 
-const ct = CompetitionTypes[1].object;
+const ct = COMPETITION_TYPES[1].object;
 const groupAC = generateAC('1234567ljhfaljawf8');
 const stationAC = generateAC('hflhkfks;kjfjankfa');
 
