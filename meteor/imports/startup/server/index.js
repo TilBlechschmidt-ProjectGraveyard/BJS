@@ -1,7 +1,7 @@
 import {COLLECTIONS} from '../../api/database/collections/collection';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 function clearDatabase() {
+    import {resetDatabase} from 'meteor/xolvio:cleaner';
     console.log('-----------------------------------------------------');
     console.log('---------------------- WARNING ----------------------');
     console.log('-----------------------------------------------------');
@@ -24,12 +24,14 @@ export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../../../config.json');
 
-    // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
-    let genericEntries = COLLECTIONS.Generic.handle.find({}).fetch();
-    //noinspection JSUnresolvedVariable
-    if (!(
-            genericEntries.length > 0 &&
-            (genericEntries[0].hasOwnProperty('cleanDB') && genericEntries[0].cleanDB === true) &&
-            (genericEntries[0].hasOwnProperty('dbVersion') && genericEntries[0].dbVersion === Meteor.config.dbVersion)
-        )) clearDatabase();
+    if (!Meteor.isProduction) {
+        // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
+        let genericEntries = COLLECTIONS.Generic.handle.find({}).fetch();
+        //noinspection JSUnresolvedVariable
+        if (!(
+                genericEntries.length > 0 &&
+                (genericEntries[0].hasOwnProperty('cleanDB') && genericEntries[0].cleanDB === true) &&
+                (genericEntries[0].hasOwnProperty('dbVersion') && genericEntries[0].dbVersion === Meteor.config.dbVersion)
+            )) clearDatabase();
+    }
 }
