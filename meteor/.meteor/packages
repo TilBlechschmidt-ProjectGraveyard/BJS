@@ -34,3 +34,4 @@ dispatch:mocha
 practicalmeteor:mocha
 xolvio:cleaner
 nobutakaoshiro:framework7-ios-material
+kadira:flow-router

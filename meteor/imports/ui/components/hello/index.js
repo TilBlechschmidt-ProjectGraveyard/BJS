@@ -19,3 +19,10 @@ Template.hello.events({
         instance.counter.set(instance.counter.get() + 1);
     },
 });
+
+console.log('TEST IT');
+
+/*
+Flowrouter.Route('/hello',{
+    console.log('Routing works');
+});*/

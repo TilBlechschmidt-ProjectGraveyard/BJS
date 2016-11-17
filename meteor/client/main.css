@@ -1,1 +1,23 @@
 /* CSS declarations go here */
+.view-left{
+    float:left;
+    width:320px !Important;
+    border-right:1px solid #b2b2b2;
+}
+.view-main{
+    width:-webkit-calc(100% - 321px) !Important;
+    width:-moz-calc(100% - 321px) !Important;
+    width:-ms-calc(100% - 321px) !Important;
+    width:calc(100% - 321px) !Important;
+}
+/*@media (max-width: 768px) {*/
+    /*.view-left{*/
+        /*width:240px;*/
+    /*}*/
+    /*.view-main{*/
+        /*width:-webkit-calc(100% - 241px);*/
+        /*width:-moz-calc(100% - 241px);*/
+        /*width:-ms-calc(100% - 241px);*/
+        /*width:calc(100% - 241px);*/
+    /*}*/
+/*}*/
