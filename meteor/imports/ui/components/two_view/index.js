@@ -1,6 +1,6 @@
 /**
  * Created by empty on 17-Nov-16.
  */
-import {Template} from 'meteor/templating';
+// import {Template} from 'meteor/templating';
 import './index.html';
-import './index.css';
+import '../../layouts/views.css';
