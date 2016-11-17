@@ -1,15 +1,8 @@
 <template name="two_view">
     <!-- Create Views container-->
     <div class="views">
-        <!-- Left View -->
-        <div class="view view-left navbar-through">
-            <!-- Filled due to routing -->
-            {{> home_left}}
-        </div>
-        <!-- Main View -->
-        <div class="view view-main navbar-through">
-            <!-- Filled due to routing -->
-            {{>home_main}}
-        </div>
+        {{>Template.dynamic template=first}}
+        {{>Template.dynamic template=second}}
+        {{>Template.dynamic template=third}}
     </div>
 </template>

@@ -4,14 +4,25 @@
  */
 import {Template} from 'meteor/templating';
 import './index.html';
-import  {RIE} from './../../../../../client/main.js';
+import {twoView} from './../../two_view/index.js';
 
-console.log('Test PcikerJS');
+export let myapp = new Framework7();
 
-
-/*let pick_comp_type = RIE.picker({
+let mypicker = myapp.picker({
     input: '#pick-comp_type',
     cols: [{
-        values: ['Leichtathletik','Schwimmen','Turnen']
-    }]
-});*/
+        values: ['Leichtathletik','Schwimmen','Turnen'],
+        textAlign: 'center'
+    }],
+    onChange: function(picker,values,displayValues) {
+        document.getElementById('pick-comp_type').value = displayValues;
+    }
+});
+
+
+Template.home_main.events({
+    'click #pick-comp_type'(event, instance) {
+        // increment the counter when button is clicked
+        mypicker.open();
+    },
+});
