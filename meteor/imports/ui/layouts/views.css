@@ -10,3 +10,14 @@
     width: -ms-calc(100% - 321px);
     width: calc(100% - 321px);
 }
+.view-middle {
+    float: left;;
+    width: 320px;
+    border-right: 1px solid #b2b2b2;
+}
+.view-right {
+    width: -webkit-calc(100% - 642px);
+    width: -moz-calc(100% - 642px);
+    width: -ms-calc(100% - 642px);
+    width: calc(100% - 642px);
+}
