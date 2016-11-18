@@ -21,3 +21,9 @@
     width: -ms-calc(100% - 642px);
     width: calc(100% - 642px);
 }
+@media print
+{
+    body * { visibility: hidden; }
+    #printcontent * { visibility: visible; }
+    #printcontent { position: absolute; top: 40px; left: 30px; }
+}

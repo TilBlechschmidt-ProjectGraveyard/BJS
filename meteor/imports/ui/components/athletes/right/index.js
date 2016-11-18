@@ -30,3 +30,9 @@ Template.athletes_right.events({
         mypicker.open();
     },
 });
+
+Template.athletes_right.events({
+    'click #link_next'(event,instance) {
+        FlowRouter.go('/config/codes');
+    },
+});

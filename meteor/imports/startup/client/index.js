@@ -9,10 +9,11 @@ import '../../ui/components/sports/left';
 import '../../ui/components/sports/main';
 import '../../ui/components/views/middle';
 import '../../ui/components/views/right';
+import '../../ui/components/views/full';
 import '../../ui/components/athletes/left';
 import '../../ui/components/athletes/middle';
 import '../../ui/components/athletes/right';
-
+import '../../ui/components/codes';
 
 // Run things on startup
 export function onStartup() {

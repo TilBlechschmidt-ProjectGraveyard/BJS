@@ -40,3 +40,12 @@ config.route('/athletes',{
         });
     }
 });
+
+config.route('/codes',{
+    action: function () {
+        BlazeLayout.render('two_view', {
+            first: 'view_full',
+            nested_full: 'codes',
+        });
+    }
+});
