@@ -102,16 +102,22 @@ export function tryDecrypt(log, SED, acs) {
 
     lodash.remove(acs, _.isUndefined);
 
-    const groupAC = _.find(acs, function (ac) {
-        return SED.groupSignature.pubHash == ac.pubHash;
+    const usedACs = {};
+
+    const groupAC = _.find(acs, function (ac, i) {
+        const match = SED.groupSignature.pubHash == ac.pubHash;
+        if (match) usedACs.groupAC = i;
+        return match;
     });
     if (!groupAC) {
         log.error('GROUP AC NOT PROVIDED - FATAL - RETURNING');
         return false;
     }
 
-    const stationAC = _.find(acs, function (ac) {
-        return SED.stationSignature.pubHash == ac.pubHash;
+    const stationAC = _.find(acs, function (ac, i) {
+        const match = SED.stationSignature.pubHash == ac.pubHash;
+        if (match) usedACs.stationAC = i;
+        return match;
     });
     if (!stationAC) log.warning('STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK');
 
@@ -119,7 +125,8 @@ export function tryDecrypt(log, SED, acs) {
     if (data && checkSignature(SED, data, groupAC, stationAC))
         return {
             data: data,
-            signatureEnforced: stationAC !== undefined
+            signatureEnforced: stationAC !== undefined,
+            usedACs: usedACs
         };
     return false;
 }
