@@ -8,18 +8,19 @@ export const COLLECTIONS = {
     Generic: Generic
 };
 
-export function Collection(name) {
+export function Collection(name, grounded) {
     const col = this;
 
     col.name = name;
 
     col.handle = new Mongo.Collection(col.name);
 
+    col.grounded = grounded;
+
     col.createMockData = function () {
-        console.log("Test");
     };
 
-    if (Meteor.isClient) Ground.Collection(col.handle);
+    if (Meteor.isClient && col.grounded) Ground.Collection(col.handle);
 
     if (Meteor.isServer) {
         Meteor.publish(col.name, function () {
