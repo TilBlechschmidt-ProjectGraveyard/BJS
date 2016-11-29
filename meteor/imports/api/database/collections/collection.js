@@ -1,19 +1,9 @@
-import {Accounts} from './accounts';
-import {Athletes} from './athletes';
-import {Generic} from './generic';
-
-export const COLLECTIONS = {
-    Accounts: Accounts,
-    Athletes: Athletes,
-    Generic: Generic
-};
-
-export function Collection(name, grounded) {
+export function Collection(name, grounded, nonCompetitionDB) {
     const col = this;
 
     col.name = name;
 
-    col.handle = new Mongo.Collection(col.name);
+    col.handle = new Mongo.Collection(col.name, nonCompetitionDB ? {} : {_driver: Meteor.dbHandle});
 
     col.grounded = grounded;
 

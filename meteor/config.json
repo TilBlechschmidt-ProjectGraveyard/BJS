@@ -1,3 +1,4 @@
 {
-  "dbVersion": "0.0.2"
+  "dbVersion": "0.0.14",
+  "competitionMongoURL": "EQUAL"
 }
