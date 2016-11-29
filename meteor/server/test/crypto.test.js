@@ -105,4 +105,18 @@ describe('crypto', function () {
         verifiedDecryptedData.should.have.property('signatureEnforced');
         verifiedDecryptedData.signatureEnforced.should.be.equal(true);
     });
+
+    it('returns the used group signature', function () {
+        const verifiedDecryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
+        verifiedDecryptedData.should.have.property('usedACs');
+        verifiedDecryptedData.usedACs.should.have.property('groupAC');
+        verifiedDecryptedData.usedACs.groupAC.should.be.equal(0);
+    });
+
+    it('returns the used station signature', function () {
+        const verifiedDecryptedData = tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
+        verifiedDecryptedData.should.have.property('usedACs');
+        verifiedDecryptedData.usedACs.should.have.property('stationAC');
+        verifiedDecryptedData.usedACs.stationAC.should.be.equal(1);
+    });
 });
