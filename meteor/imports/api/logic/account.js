@@ -4,7 +4,6 @@
 
 /**
  *
- * @param log
  * @param {string[]} score_write_permissions
  * @param {string[]} group_permissions
  * @param {*} ac
