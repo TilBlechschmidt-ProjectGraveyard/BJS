@@ -48,6 +48,20 @@ describe('athletics', function () {
         ct.validate(log, p, [groupAccount, stationAccount], false).should.be.equal(true);
     });
 
+    it('validates the configuration of Hans Müller with stationAccount and signature required', function () {
+        const log = new Log();
+        const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+        p.age = 16;
+        p.update(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.update(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.update(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.update(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.update(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.update(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+
+        ct.validate(log, p, [groupAccount, stationAccount], true).should.be.equal(true);
+    });
+
     it('validates the configuration of Hans Müller without stationAccount but signature required', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
@@ -88,6 +102,20 @@ describe('athletics', function () {
         p.update(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], false).should.be.equal(2195);
+    });
+
+    it('calculates the configuration of Hans Müller with stationAccount and signature required', function () {
+        const log = new Log();
+        const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+        p.age = 16;
+        p.update(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.update(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.update(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.update(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.update(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.update(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+
+        ct.calculate(log, p, [groupAccount, stationAccount], true).should.be.equal(2195);
     });
 
     it('calculates the configuration of Hans Müller without stationAccount but signature required', function () {

@@ -3,6 +3,7 @@
  */
 import {Data} from "./data";
 import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
+import {getAcsFromAccounts} from "./account";
 
 
 /**
@@ -156,21 +157,22 @@ Athlete.prototype = {
 
     /**
      * Encrypts the athlete for the database
-     * @param groupAC
      * @returns {*}
+     * @param groupAccount
+     * @param serverAccount
      */
-    encryptForDatabase: function (groupAC) {
+    encryptForDatabase: function (groupAccount, serverAccount) {
         const encrypted = {};
 
-        encrypted.firstName = encrypt(this.firstName, groupAC, groupAC);
-        encrypted.lastName = encrypt(this.lastName, groupAC, groupAC);
-        encrypted.ageGroup = encrypt(this.ageGroup, groupAC, groupAC);
-        encrypted.isMale = encrypt(this.isMale, groupAC, groupAC);
-        encrypted.group = encrypt(this.group, groupAC, groupAC);
-        encrypted.handicap = encrypt(this.handicap, groupAC, groupAC);
-        encrypted.maxAge = encrypt(this.maxAge, groupAC, groupAC);
+        encrypted.firstName = encrypt(this.firstName, groupAccount.ac, serverAccount.ac);
+        encrypted.lastName = encrypt(this.lastName, groupAccount.ac, serverAccount.ac);
+        encrypted.ageGroup = encrypt(this.ageGroup, groupAccount.ac, serverAccount.ac);
+        encrypted.isMale = encrypt(this.isMale, groupAccount.ac, serverAccount.ac);
+        encrypted.group = encrypt(this.group, groupAccount.ac, serverAccount.ac);
+        encrypted.handicap = encrypt(this.handicap, groupAccount.ac, serverAccount.ac);
+        encrypted.maxAge = encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
-        encrypted.sports = encrypt(this.sports, groupAC, groupAC);
+        encrypted.sports = encrypt(this.sports, groupAccount.ac, serverAccount.ac);
         encrypted.data = this.data;
 
         return encrypted;
@@ -180,10 +182,12 @@ Athlete.prototype = {
      * Decrypts the data from the database
      * @param log
      * @param data
-     * @param acs
+     * @param accounts
+     * @param require_signature
      * @returns {*}
      */
-    decryptFromDatabase: function (log, data, acs) {
+    decryptFromDatabase: function (log, data, accounts, require_signature) {
+        const acs = getAcsFromAccounts(accounts);
         const firstName = tryDecrypt(log, data.firstName, acs);
         const lastName = tryDecrypt(log, data.lastName, acs);
         const ageGroup = tryDecrypt(log, data.ageGroup, acs);
@@ -194,9 +198,46 @@ Athlete.prototype = {
         const sports = tryDecrypt(log, data.sports, acs);
 
         if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
+
+            if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+                accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) {
+                log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+                return false;
+            }
+
+            if (require_signature && !(firstName.signatureEnforced &&
+                lastName.signatureEnforced &&
+                ageGroup.signatureEnforced &&
+                isMale.signatureEnforced &&
+                group.signatureEnforced &&
+                handicap.signatureEnforced &&
+                maxAge.signatureEnforced &&
+                sports.signatureEnforced)) {
+                log.error('Die Signatur des Athleten ' + firstName.data + ' ' + lastName.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
+                return false;
+            }
+
+            if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (isMale.signatureEnforced && accounts[isMale.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (group.signatureEnforced && accounts[group.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (handicap.signatureEnforced && accounts[handicap.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (maxAge.signatureEnforced && accounts[maxAge.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+                (sports.signatureEnforced && accounts[sports.usedACs.stationAC].group_permissions.indexOf(group.data) == -1)) {
+                log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+                return false;
+            }
+
             return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data);
         }
-        log.error('Cannot decrypt data');
+        log.error('Die Daten konnten nicht entschlüsselt werden.');
         return false;
     }
 };

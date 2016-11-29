@@ -12,23 +12,18 @@ Meteor.startup(function () {
 
     const ct = COMPETITION_TYPES[0].object;
     const groupAccount = new Account(['Q#z'], [], generateAC('1234567ljhfaljawf8'));
-    const stationAccount = new Account([], ['st_long_jump', 'st_ball_200', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], generateAC('hflhkfks;kjfjankfa'));
+    const serverAccount = new Account(['Q#z'], ['st_long_jump', 'st_ball_200', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], generateAC('hflhkfks;kjfjankfa'));
 
     const log = new Log();
     const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
-    p.age = 16;
-    p.update(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-    p.update(log, 'st_ball_200', [70], groupAccount, stationAccount);
-    p.update(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-    p.update(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-    p.update(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-    p.update(log, 'st_sprint_100', [10], groupAccount, stationAccount);
-
-    console.log(p.data);
-
-    console.log(ct.calculate(log, p, [groupAccount], false));
-
-    console.log(ct.validate(log, p, [groupAccount, stationAccount], false));
-
+    const encrypted_p = p.encryptForDatabase(groupAccount, serverAccount);
+    const decrypted_p = Athlete.prototype.decryptFromDatabase(log, encrypted_p, [groupAccount, serverAccount], true);
     console.log(log.getAsString());
+    const decrypted_p2 = Athlete.prototype.decryptFromDatabase(log, encrypted_p, [groupAccount], false);
+    const decrypted_p3 = Athlete.prototype.decryptFromDatabase(log, encrypted_p, [groupAccount], true);
+
+
+    console.log(decrypted_p);
+    console.log(decrypted_p2);
+    console.log(decrypted_p3);
 });

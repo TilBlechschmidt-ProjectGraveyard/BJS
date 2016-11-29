@@ -44,6 +44,18 @@ describe('swimming', function () {
         ct.validate(log, p, [groupAccount, stationAccount], false).should.be.equal(true);
     });
 
+    it('validates the configuration of Hans Müller with stationAccount and signature required', function () {
+        const log = new Log();
+        const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+        p.age = 16;
+        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+
+        ct.validate(log, p, [groupAccount, stationAccount], true).should.be.equal(true);
+    });
+
     it('validates the configuration of Hans Müller without stationAccount but signature required', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
@@ -78,6 +90,18 @@ describe('swimming', function () {
         p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], false).should.be.equal(26);
+    });
+
+    it('calculates the configuration of Hans Müller with stationAccount and signature required', function () {
+        const log = new Log();
+        const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+        p.age = 16;
+        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+
+        ct.calculate(log, p, [groupAccount, stationAccount], true).should.be.equal(26);
     });
 
     it('calculates the configuration of Hans Müller without stationAccount but signature required', function () {
