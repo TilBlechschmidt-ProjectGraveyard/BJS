@@ -113,7 +113,7 @@ Athlete.prototype = {
     /**
      * Encrypts the athlete for the database
      * @param groupAC
-     * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
+     * @returns {*}
      */
     encryptForDatabase: function (groupAC) {
         const encrypted = {};
