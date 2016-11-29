@@ -1,5 +1,6 @@
 import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
+import {getAcsFromAccounts} from "./account";
 
 /**
  * Creates an empty Data object. The information in the Data object are encrypted. To read/write you always need the group_private_hash.
@@ -15,18 +16,38 @@ Data.prototype = {
     /**
      * Returns the data in plain text.
      * @param log
-     * @param {object[]} acs              auth. codes
-     * @returns {boolean|{stID, measurements}[]}
+     * @param {object[]} accounts
+     * @param requireSignature
+     * @param groupID
+     * @returns {{stID, measurements}[]}
      */
-    getPlain: function (log, acs) {
+    getPlain: function (log, accounts, requireSignature, groupID) {
         return filterUndefined(_.map(this.data, function (dataObject) {
+            const acs = getAcsFromAccounts(accounts);
             const stIDDecryptResult = tryDecrypt(log, dataObject.encryptedStID, acs);
             const measurementsDecryptResult = tryDecrypt(log, dataObject.encryptedMeasurements, acs);
 
-                return {
-                    stID: stIDDecryptResult,
-                    measurements: measurementsDecryptResult
-                };
+            if (requireSignature && !(stIDDecryptResult.signatureEnforced && measurementsDecryptResult.signatureEnforced)) {
+                log.error('Die Signatur der Sport Art mit der ID ' + stIDDecryptResult.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
+                return undefined;
+            }
+
+            if (accounts[stIDDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1 ||
+                accounts[measurementsDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1) {
+                log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+                return undefined;
+            }
+
+            if ((stIDDecryptResult.signatureEnforced && accounts[stIDDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1) ||
+                (measurementsDecryptResult.signatureEnforced && accounts[measurementsDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1)) {
+                log.error('Der Stations Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+                return undefined;
+            }
+
+            return {
+                stID: stIDDecryptResult,
+                measurements: measurementsDecryptResult
+            };
         }));
     },
 
@@ -49,8 +70,8 @@ Data.prototype = {
      * @param log
      * @param {string} stID                the sport type of the data
      * @param {number[]} newMeasurements      the new data
-     * @param groupAC      Group auth. code
-     * @param stationAC    Station auth. code
+     * @param groupAC
+     * @param stationAC
      */
     update: function (log, stID, newMeasurements, groupAC, stationAC) {
         const encryptedStID = encrypt(stID, groupAC, stationAC);

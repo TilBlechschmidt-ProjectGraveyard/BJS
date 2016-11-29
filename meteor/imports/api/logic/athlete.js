@@ -47,6 +47,50 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
 Athlete.prototype = {
     /**
+     * Returns the data in plain text.
+     * @param log
+     * @param {object[]} accounts
+     * @param requireSignature
+     * @returns {{stID, measurements}[]}
+     */
+    getPlain: function (log, accounts, requireSignature) {
+        return this.data.getPlain(log, accounts, requireSignature, this.group);
+    },
+
+
+    /**
+     * Updates the data of a given stID.
+     * @param log
+     * @param {string} stID                the sport type of the data
+     * @param {number[]} newMeasurements      the new data
+     * @param groupAccount
+     * @param stationAccount
+     * @returns {boolean}
+     */
+    update: function (log, stID, newMeasurements, groupAccount, stationAccount) {
+
+        let canWrite = true;
+
+        if (groupAccount.group_permissions.indexOf(this.group) == -1) {
+            log.error('Der Gruppen Account hat keine Berechtigung');
+            canWrite = false;
+        }
+
+        if (stationAccount.score_write_permissions.indexOf(stID) == -1) {
+            log.error('Der Stations Account hat keine Berechtigung');
+            canWrite = false;
+        }
+
+
+        if (canWrite) {
+            this.data.update(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
      * Checks whether the properties of the athlete are correct.
      * @returns {boolean}
      */

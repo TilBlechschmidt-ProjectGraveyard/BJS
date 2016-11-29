@@ -76,13 +76,13 @@ export let Athletics = {
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param log
      * @param athlete
-     * @param {object[]} acs              auth. codes
+     * @param {object[]} accounts
      * * @param requireSignature
      * * @returns {object[]}
      */
-    getValidData: function (log, athlete, acs, requireSignature) {
+    getValidData: function (log, athlete, accounts, requireSignature) {
         //get the plain data from the athlete (unencrypted)
-        const plain = athlete.data.getPlain(log, acs);
+        const plain = athlete.getPlain(log, accounts, requireSignature);
 
         //filter data with more then on point
         const tmpData = _.filter(plain, function (dataObject) {
@@ -96,12 +96,6 @@ export let Athletics = {
         return filterUndefined(_.map(tmpData, function (dataObject) {
             //noinspection JSUnresolvedVariable
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
-            //check signature
-            //noinspection JSUnresolvedVariable
-            if (requireSignature && !(dataObject.stID.signatureEnforced && dataObject.stID.signatureEnforced)) {
-                log.error('Die Signatur der Sport Art ' + canDoSportObject.dataObject.name + ' konnte nicht überprüft werden, obwohl sie benüotigt wird..');
-                return undefined;
-            }
 
             // add measurement to general information
             if (canDoSportObject.dataObject !== undefined) {
@@ -115,13 +109,13 @@ export let Athletics = {
      * Returns whether an athlete is already finished.
      * @param log
      * @param athlete
-     * @param {object[]} acs              auth. codes
+     * @param {object[]} accounts              auth. codes
      * @param requireSignature
      * @returns {boolean}
      */
-    validate: function (log, athlete, acs, requireSignature) {
+    validate: function (log, athlete, accounts, requireSignature) {
         // collect data
-        const validData = this.getValidData(log, athlete, acs, requireSignature);
+        const validData = this.getValidData(log, athlete, accounts, requireSignature);
 
         // sort for categories
         const categories = [];
@@ -178,13 +172,13 @@ export let Athletics = {
      * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param log
      * @param athlete
-     * @param {object[]} acs              auth. codes
+     * @param {object[]} accounts              auth. codes
      * @param requireSignature
      * @returns {number}
      */
-    calculate: function (log, athlete, acs, requireSignature) {
+    calculate: function (log, athlete, accounts, requireSignature) {
         // collect data
-        const validData = this.getValidData(log, athlete, acs, requireSignature);
+        const validData = this.getValidData(log, athlete, accounts, requireSignature);
 
         // get best score for each category
         const scores = [0, 0, 0, 0];
@@ -233,8 +227,8 @@ export let Athletics = {
         return genderInfo[athlete.age];
     },
 
-    generateCertificate: function (log, athlete, acs, requireSignature) {
-        const score = this.calculate(log, athlete, acs, requireSignature);
+    generateCertificate: function (log, athlete, accounts, requireSignature) {
+        const score = this.calculate(log, athlete, accounts, requireSignature);
         const certificateInfo = this.getCertificateInfo(log, athlete);
 
         let certificate = -1;
