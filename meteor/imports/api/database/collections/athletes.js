@@ -11,4 +11,6 @@ Athletes.createMockData = function () {
     const ct = COMPETITION_TYPES[0].object;
     const ac = generateAC("potato", "pepper");
     this.handle.insert(new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct).encryptForDatabase(ac));
+    this.handle.insert(new Athlete(log, 'Klaus', 'Schmidt', 1999, true, 'Q#z', '0', ct.maxAge, ct).encryptForDatabase(ac));
+    this.handle.insert(new Athlete(log, 'Herbert', 'Gronewoldt', 1989, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(ac));
 };
