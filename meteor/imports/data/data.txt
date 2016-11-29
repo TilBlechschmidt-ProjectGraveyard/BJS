@@ -1,0 +1,104 @@
+./words_de.json
+
+    A list with german words!
+
+./start_classes
+
+
+    {
+        "<start_class_id>": {
+            "name": <start_class_name>,
+            "description": <description>
+        }
+    }
+
+
+./athletics/certificate_info.json
+
+    {
+        "<m/w>": {
+            "<age>": [
+                <min score for Siegerurkunde>,
+                <min score for Ehrenurkunde>
+            }
+        }
+    }
+
+
+./athletics/information.json
+
+    {
+        "name": <the name>,
+        "description": <description>,
+        "rating": <explain how o rate an athlete>
+    }
+
+./athletics/sports.json
+
+    [
+        {
+            "id": <the unique id>,
+            "name": <the name>,
+            "category": <the category; e.g. 0 for sprint>,
+            "unit": <the unit that should be used in the ui>,
+            "description": <short description for the ui>,
+            "<w/m>": {
+                "age": <list of ages; only athletes with one of these ages are allowed to do this sport>,
+                "scoreCalculation": {
+                    "a": <value to calculate the score>,
+                    "c": <value to calculate the score>,
+                    "d": <distance; used to calculate the score of sprint and endurance>,
+                    "conversionFactor": {
+                        "<start class>": <factor for multiplying the measurement>,
+                        ...
+                    }
+                }
+            }
+        },
+        ...
+    ]
+
+./swimming/information.json
+
+    {
+        "name": <the name>,
+        "description": <description>,
+        "rating": <explain how o rate an athlete>
+    }
+
+./swimming/sports.json
+
+    [
+        {
+            "id": <the unique id>,
+            "name": <the name>,
+            "category": <the category; e.g. 0 for sprint>,
+            "unit": <the unit that should be used in the ui>,
+            "description": <short description for the ui>,
+            "<w/m>": {
+                "age": <list of ages; only athletes with one of these ages are allowed to do this sport>,
+                "scoreCalculation": {
+                    "conversionFactor": {
+                        "<start class>": <factor for multiplying the measurement>,
+                        ...
+                    }
+                }
+            }
+        },
+        ...
+    ]
+
+./swimming/score_table.json
+
+    {
+        "<m/w>": {
+            "<age>": {
+                "<unique sport type id>": [
+                    <the measurement you have to achieve to get 15 points>,
+                    <the measurement you have to achieve to get 14 points>,
+                    <the measurement you have to achieve to get 13 points>,
+                    ...
+                }
+            }
+        }
+    }
