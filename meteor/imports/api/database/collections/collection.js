@@ -3,6 +3,8 @@ export function Collection(name, grounded, nonCompetitionDB) {
 
     col.name = name;
 
+    console.log("Init database " + name);
+
     col.handle = new Mongo.Collection(col.name, nonCompetitionDB ? {} : {_driver: Meteor.dbHandle});
 
     col.grounded = grounded;

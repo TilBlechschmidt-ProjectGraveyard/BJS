@@ -176,68 +176,68 @@ Athlete.prototype = {
         encrypted.data = this.data;
 
         return encrypted;
-    },
-
-    /**
-     * Decrypts the data from the database
-     * @param log
-     * @param data
-     * @param accounts
-     * @param require_signature
-     * @returns {*}
-     */
-    decryptFromDatabase: function (log, data, accounts, require_signature) {
-        const acs = getAcsFromAccounts(accounts);
-        const firstName = tryDecrypt(log, data.firstName, acs);
-        const lastName = tryDecrypt(log, data.lastName, acs);
-        const ageGroup = tryDecrypt(log, data.ageGroup, acs);
-        const isMale = tryDecrypt(log, data.isMale, acs);
-        const group = tryDecrypt(log, data.group, acs);
-        const handicap = tryDecrypt(log, data.handicap, acs);
-        const maxAge = tryDecrypt(log, data.maxAge, acs);
-        const sports = tryDecrypt(log, data.sports, acs);
-
-        if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
-
-            if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-                accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) {
-                log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-                return false;
-            }
-
-            if (require_signature && !(firstName.signatureEnforced &&
-                lastName.signatureEnforced &&
-                ageGroup.signatureEnforced &&
-                isMale.signatureEnforced &&
-                group.signatureEnforced &&
-                handicap.signatureEnforced &&
-                maxAge.signatureEnforced &&
-                sports.signatureEnforced)) {
-                log.error('Die Signatur des Athleten ' + firstName.data + ' ' + lastName.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
-                return false;
-            }
-
-            if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (isMale.signatureEnforced && accounts[isMale.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (group.signatureEnforced && accounts[group.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (handicap.signatureEnforced && accounts[handicap.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (maxAge.signatureEnforced && accounts[maxAge.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-                (sports.signatureEnforced && accounts[sports.usedACs.stationAC].group_permissions.indexOf(group.data) == -1)) {
-                log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-                return false;
-            }
-
-            return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data);
-        }
-        log.error('Die Daten konnten nicht entschlüsselt werden.');
-        return false;
     }
+};
+
+/**
+ * Decrypts the data from the database
+ * @param log
+ * @param data
+ * @param accounts
+ * @param require_signature
+ * @returns {*}
+ */
+Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
+    const acs = getAcsFromAccounts(accounts);
+    const firstName = tryDecrypt(log, data.firstName, acs);
+    const lastName = tryDecrypt(log, data.lastName, acs);
+    const ageGroup = tryDecrypt(log, data.ageGroup, acs);
+    const isMale = tryDecrypt(log, data.isMale, acs);
+    const group = tryDecrypt(log, data.group, acs);
+    const handicap = tryDecrypt(log, data.handicap, acs);
+    const maxAge = tryDecrypt(log, data.maxAge, acs);
+    const sports = tryDecrypt(log, data.sports, acs);
+
+    if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
+
+        if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) {
+            log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+            return false;
+        }
+
+        if (require_signature && !(firstName.signatureEnforced &&
+            lastName.signatureEnforced &&
+            ageGroup.signatureEnforced &&
+            isMale.signatureEnforced &&
+            group.signatureEnforced &&
+            handicap.signatureEnforced &&
+            maxAge.signatureEnforced &&
+            sports.signatureEnforced)) {
+            log.error('Die Signatur des Athleten ' + firstName.data + ' ' + lastName.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
+            return false;
+        }
+
+        if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (isMale.signatureEnforced && accounts[isMale.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (group.signatureEnforced && accounts[group.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (handicap.signatureEnforced && accounts[handicap.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (maxAge.signatureEnforced && accounts[maxAge.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
+            (sports.signatureEnforced && accounts[sports.usedACs.stationAC].group_permissions.indexOf(group.data) == -1)) {
+            log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+            return false;
+        }
+
+        return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data);
+    }
+    log.error('Die Daten konnten nicht entschlüsselt werden.');
+    return false;
 };

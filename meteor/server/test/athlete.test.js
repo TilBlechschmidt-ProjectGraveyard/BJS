@@ -4,6 +4,7 @@ import {chai} from "meteor/practicalmeteor:chai";
 import {COMPETITION_TYPES} from "../../imports/api/logic/competition_type";
 import {generateAC} from "../../imports/api/crypto/crypto";
 import {Account} from "../../imports/api/logic/account";
+
 chai.should();
 
 const ct = COMPETITION_TYPES[0].object;

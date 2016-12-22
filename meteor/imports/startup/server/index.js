@@ -1,4 +1,4 @@
-import {Generic} from '../../api/database/collections/generic.js';
+import {Generic} from "../../api/database/collections/generic.js";
 
 const initializeDB = require("../../api/database/collections/initialize");
 
@@ -17,9 +17,9 @@ export function onStartup() {
                 (genericEntries[0].hasOwnProperty('cleanDB') && genericEntries[0].cleanDB === true) &&
                 (genericEntries[0].hasOwnProperty('dbVersion') && genericEntries[0].dbVersion === Meteor.config.dbVersion)
             )) clearDatabase();
-
         initializeDB();
     }
+    require('../../api/database/db_example')();
 }
 
 function clearDatabase() {
