@@ -9,3 +9,5 @@ meteor/npm-debug.log
 
 # Typing type definition files to ignore. Webstorm uses type definitions for autocomplete even without typescript
 typings/*
+
+.DS_Store
