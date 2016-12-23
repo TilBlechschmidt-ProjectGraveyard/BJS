@@ -5,7 +5,7 @@ import {COMPETITION_TYPES} from "../logic/competition_type";
 import {generateAC} from "../crypto/crypto";
 import {Log} from "../log";
 import {Account} from "../logic/account";
-import {getAthletesOfAccounts} from "./dbacces";
+import {getAthletesOfAccounts} from "./db_access";
 
 module.exports = function () {
     const ct = COMPETITION_TYPES[0].object;
