@@ -33,3 +33,5 @@ jparker:crypto-aes
 dispatch:mocha
 practicalmeteor:mocha
 nobutakaoshiro:framework7-ios-material
+kadira:flow-router
+kadira:blaze-layout

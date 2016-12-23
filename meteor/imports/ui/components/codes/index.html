@@ -1,0 +1,85 @@
+<template name="codes">
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-hidden">
+            <div class="center sliding">Zugangscodes</div>
+        </div>
+    </div>
+    <!-- Page Content -->
+    <div class="page">
+        <div class="page-content">
+            <!-- Top Buttons -->
+            <div class="row">
+                <!-- Spacing -->
+                <div class="col-5"></div>
+                <!-- Quit to menu -->
+                <div class="col-45"><p><a href="#" id="button_menu" class="button button-fill color-red">Zum Hauptmenü</a></p></div>
+                <!-- Start server -->
+                <div class="col-45"><p><a href="#" id="button_start" class="button button-fill color-green">Server Starten</a></p></div>
+                <!-- Spacing -->
+                <div class="col-5"></div>
+            </div>
+            <!-- Split Codes/controls -->
+            <div class="row">
+                <!-- Codes -->
+                <div class="col-70">
+                    <div class="row">
+                        <!-- Spacing -->
+                        <div class="col-5"></div>
+                        <div class="col-90" id="printcontent">
+                            <!-- Codes in Spcing -->
+                            <div class="content-block-title">Zugangscodes</div>
+                            <div class="list-block">
+                                <ul>
+                                    <!-- Divider -->
+                                    <li class="item-divider">Stationslogins</li>
+                                    <!-- Iterated Code Access-->
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">STATIONSNAME</div>
+                                                <div class="item-after">Gallifrey666TARDIS</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- Divider -->
+                                    <li class="item-divider">Gruppenlogins</li>
+                                    <!-- Iterated Code Access -->
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">GRUPPENNAME</div>
+                                                <div class="item-after">Master4444Doktor</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Spacing -->
+                        <div class="col-5"></div>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <div class="col-30">
+                    <div class="row">
+                        <div class="col-5"></div>
+                        <div class="90">
+                            <!-- Button Print -->
+                            <p><a href="#" id="button_print" class="button button-fill button-big color-gray">Drucken</a></p>
+                            <!-- Button Export -->
+                            <p><a href="#" id="button_export" class="button button-fill button-big color-gray">als PDF Exportieren</a></p>
+                        </div>
+                        <div class="col-5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-inner">
+            <a href="" class="item-link" id="link_back">Zurück</a>
+        </div>
+    </div>
+</template>
