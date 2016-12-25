@@ -22,14 +22,14 @@ export function onStartup() {
 
     import {Meteor} from 'meteor/meteor';
     console.log("sub");
-    let a = Meteor.subscribe("Generic");
+    // let a = Meteor.subscribe("Generic");
     // while (!a.ready()) {console.log("Waiting");}
     import {Generic} from '../../api/database/collections/generic';
     console.log(Generic.handle.find({}).fetch());
     //
-    console.log(a.ready());
+    // console.log(a.ready());
     setTimeout(function () {
-        console.log(a.ready());
+        // console.log(a.ready());
         console.log(Generic.handle.find({}).fetch());
     }, 2000);
     // const initializeDB = require("../../api/database/collections/initialize");

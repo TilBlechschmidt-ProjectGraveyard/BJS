@@ -19,5 +19,7 @@ export function Collection(name, grounded, nonCompetitionDB) {
         Meteor.publish(col.name, function () {
             return col.handle.find({});
         });
+    } else {
+        Meteor.subscribe(col.name);
     }
 }
