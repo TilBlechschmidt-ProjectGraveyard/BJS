@@ -19,7 +19,7 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
             }
         };
 
-    if (Meteor.isClient && col.grounded) Ground.Collection(col.handle);
+    if (Meteor.isClient && col.grounded) col.ground = Ground.Collection(col.handle);
 
     if (Meteor.isClient) {
         Meteor.subscribe(col.name);

@@ -18,5 +18,9 @@ import "../../ui/components/codes";
 // Run things on startup
 export function onStartup() {
     console.log('Hi there from the client startup script!');
+    const COLLECTIONS = require('../../api/database/collections')();
+    COLLECTIONS.Athletes.ground.once('loaded', function () {
+        console.log("ITS READY!!");
+    });
 }
 
