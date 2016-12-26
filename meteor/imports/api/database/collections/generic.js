@@ -1,6 +1,6 @@
-import {Collection} from './collection';
+import {Collection} from "./collection";
 
-export let Generic = new Collection('Generic', false, true);
+export let Generic = new Collection('Generic', true, true);
 
 Generic.createMockData = function () {
     this.handle.insert({
