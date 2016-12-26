@@ -81,11 +81,12 @@ module.exports = function () {
         }
         setPrefix();
         Meteor.dbInitialized = true;
-    } else if (Meteor.isClient && !Meteor.dbInitialized) {
-        console.error("WARNING - Attempting to access collections before the database got initialized!");
-        console.error("This may or may not result in lost data, database corruption and or sudden death.");
-        console.error("You should not proceed without fixing this first since it breaks almost all db communication!");
     }
+    // else if (Meteor.isClient && !Meteor.dbInitialized) {
+    //     console.error("WARNING - Attempting to access collections before the database got initialized!");
+    //     console.error("This may or may not result in lost data, database corruption and or sudden death.");
+    //     console.error("You should not proceed without fixing this first since it breaks almost all db communication!");
+    // }
 
     return getCollections();
 };
