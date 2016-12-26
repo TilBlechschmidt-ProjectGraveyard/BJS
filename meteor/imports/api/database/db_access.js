@@ -1,7 +1,6 @@
 const COLLECTIONS = require('../../api/database/collections')();
 
 import {Athlete} from "../logic/athlete";
-import {promiseSubscribe} from "meteor/maximum:promise-subscribe";
 
 export function waitForReady(callback) {
 
