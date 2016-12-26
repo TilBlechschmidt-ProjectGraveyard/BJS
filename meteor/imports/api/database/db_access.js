@@ -1,4 +1,5 @@
-import {Athletes} from "./collections/collections";
+const Athletes = require("./collections")().Athletes;
+// import {Athletes} from "./collections";
 import {Athlete} from "../logic/athlete";
 
 
