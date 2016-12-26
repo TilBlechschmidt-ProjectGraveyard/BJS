@@ -1,4 +1,6 @@
 const Athletes = require("./collections")().Athletes;
+
+import {Meteor} from "meteor/meteor";
 // import {Athletes} from "./collections";
 import {Athlete} from "../logic/athlete";
 import {promiseSubscribe} from "meteor/maximum:promise-subscribe";
@@ -12,6 +14,7 @@ export function waitForReady(callback) {
         console.log("finished!");
         callback();
     });
+    setTimeout(callback, 100);//TODO find a better way of doing this
 }
 
 export function getAthletesOfAccounts(log, account, require_signature) {
