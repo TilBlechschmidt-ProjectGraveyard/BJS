@@ -1,18 +1,21 @@
 .view-left {
     float: left;
-    width: 320px;
+    width: 30%;
+    max-width: 320px;
     border-right: 1px solid #b2b2b2;
 }
 
 .view-main {
-    width: -webkit-calc(100% - 321px);
-    width: -moz-calc(100% - 321px);
-    width: -ms-calc(100% - 321px);
-    width: calc(100% - 321px);
+    max-width: 70%;
+    min-width: -webkit-calc(100% - 321px);
+    min-width: -moz-calc(100% - 321px);
+    min-width: -ms-calc(100% - 321px);
+    min-width: calc(100% - 321px);
 }
 .view-middle {
-    float: left;;
-    width: 320px;
+    float: left;
+    width: 100%;
+    /*width: 320px;*/
     border-right: 1px solid #b2b2b2;
 }
 .view-right {
