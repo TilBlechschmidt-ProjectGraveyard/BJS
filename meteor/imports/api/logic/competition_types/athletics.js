@@ -60,8 +60,8 @@ export let Athletics = {
     /**
      * Returns whether a given athlete can do the sport type with the id stID.
      * @public
-     * @param log
-     * @param athlete
+     * @param {Log} log
+     * @param {Athlete} athlete
      * @param {string} stID
      * @returns {{canDoSport, dataObject, log}}
      */
@@ -118,11 +118,11 @@ export let Athletics = {
     /**
      * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @private
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * * @param requireSignature
-     * * @returns {object[]}
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {object[]}
      */
     getValidData: function (log, athlete, accounts, requireSignature) {
         //get the plain data from the athlete (unencrypted)
@@ -152,10 +152,10 @@ export let Athletics = {
     /**
      * @summary Returns whether an athlete is already finished.
      * @public
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts              auth. codes
-     * @param requireSignature
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {boolean}
      */
     validate: function (log, athlete, accounts, requireSignature) {
