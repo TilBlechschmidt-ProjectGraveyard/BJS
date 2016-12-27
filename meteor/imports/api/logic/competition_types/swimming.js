@@ -18,7 +18,7 @@ export let Swimming = {
      */
 
     /**
-     * @summary Returns a list of sport types associated with the ct athletics.
+     * Returns a list of sport types associated with the ct athletics.
      * @returns {SwimmingSportData[]}
      */
     getSports: function () {
@@ -29,7 +29,7 @@ export let Swimming = {
         return require('./../../../data/swimming/score_table.json');
     },
     /**
-     * @summary Returns whether a given athlete can do the sport type with the id stID.
+     * Returns whether a given athlete can do the sport type with the id stID.
      * @param log
      * @param athlete
      * @param {string} stID
@@ -87,7 +87,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param log
      * @param athlete
      * @param {object[]} accounts
@@ -120,7 +120,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns whether an athlete is already finished.
+     * Returns whether an athlete is already finished.
      * @param log
      * @param athlete
      * @param {object[]} accounts
@@ -159,7 +159,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param log
      * @param athlete
      * @param {object[]} accounts
@@ -193,7 +193,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns information about the ct swimming.
+     * Returns information about the ct swimming.
      * @returns {object}
      */
     getInformation: function () {
@@ -201,7 +201,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns the min. score for the different certificates.
+     * Returns the min. score for the different certificates.
      * @param log
      * @param athlete
      * @returns {undefined|number[]}

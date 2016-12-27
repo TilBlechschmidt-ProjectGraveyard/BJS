@@ -116,7 +116,7 @@ export let Athletics = {
 
 
     /**
-     * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @private
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
@@ -150,7 +150,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns whether an athlete is already finished.
+     * Returns whether an athlete is already finished.
      * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
@@ -174,7 +174,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Calculates the score of one dataObject returned by the getValidData function.
+     * Calculates the score of one dataObject returned by the getValidData function.
      * @private
      * @param dataObject
      * @returns {number[]}
@@ -215,7 +215,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
+     * Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
      * @public
      * @param log
      * @param athlete
@@ -250,7 +250,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns information about the ct athletics.
+     * Returns information about the ct athletics.
      * @public
      * @returns {object}
      */
@@ -259,7 +259,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns the min. score for the different certificates.
+     * Returns the min. score for the different certificates.
      * @private
      * @param log
      * @param athlete
