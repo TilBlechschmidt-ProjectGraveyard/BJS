@@ -16,6 +16,8 @@ import "../../ui/components/input/table/left";
 import "../../ui/components/input/table/main";
 import "../../ui/components/login";
 
+import "../../ui/router";
+
 // Run things on startup
 export function onStartup() {
     console.log('Hi there from the client startup script!');
