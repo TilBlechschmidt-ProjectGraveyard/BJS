@@ -17,6 +17,7 @@ import "../../ui/components/input/table/main";
 import "../../ui/components/login";
 
 import "../../ui/router";
+import "../../ui/components/config/router";
 
 // Run things on startup
 export function onStartup() {
