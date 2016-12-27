@@ -8,9 +8,6 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
 
     col.grounded = grounded;
 
-    col.createMockData = function () {
-    };
-
     col.publish = publicationFunction ? publicationFunction : function () {
             if (Meteor.isServer) {
                 Meteor.publish(col.name, function () {
@@ -20,6 +17,30 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
         };
 
     if (Meteor.isClient && col.grounded) col.ground = Ground.Collection(col.handle);
+
+
+    col.createMockData = function () {
+    };
+
+    if (!Meteor.dbReady) {
+        Meteor.dbReady = {};
+    }
+
+    Meteor.dbReady[col.name] = false;
+    col.onReady = function (callback) {
+        if (Meteor.isClient && col.grounded) {
+            if (!Meteor.dbReady[col.name]) {
+                col.ground.once("loaded", callback);
+            } else {
+                callback();
+            }
+        } else {
+            callback();
+        }
+    };
+    col.onReady(function () {
+        console.log(col.name + " is now connected!");
+    });
 
     if (Meteor.isClient) {
         Meteor.subscribe(col.name);
