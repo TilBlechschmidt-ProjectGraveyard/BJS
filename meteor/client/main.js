@@ -4,12 +4,9 @@ onStartup();
 
 FlowRouter.route('/', {
     action: function() {
-        BlazeLayout.render('two_view', {
-            first: 'view_left',
-            second: 'view_main',
-            nested_left: 'home_left',
-            nested_main: 'home_main',
-        });
+        FlowRouter.go("/config");
+        //TODO: Check if it is already configured and run the following if that is the case:
+        //FlowRouter.go("/contest");
     }
 });
 
@@ -36,6 +33,17 @@ input.route('/login', {
 
 let config = FlowRouter.group({
    prefix: '/config'
+});
+
+config.route('/', {
+    action: function () {
+        BlazeLayout.render('two_view', {
+            first: 'view_left',
+            second: 'view_main',
+            nested_left: 'home_left',
+            nested_main: 'home_main',
+        });
+    }
 });
 
 config.route('/sports', {
