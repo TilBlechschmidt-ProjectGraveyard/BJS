@@ -84,7 +84,7 @@ export let Athletics = {
         //get the plain data from the athlete (unencrypted)
         const plain = athlete.getPlain(log, accounts, requireSignature);
 
-        //filter data with more then on point
+        //filter data with more then one point
         const tmpData = _.filter(plain, function (dataObject) {
             return _.max(dataObject.measurements.data) > 0;
         });
@@ -169,7 +169,7 @@ export let Athletics = {
     },
 
     /**
-     * @summary Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @summary Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param log
      * @param athlete
      * @param {object[]} accounts              auth. codes
