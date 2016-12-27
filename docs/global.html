@@ -90,18 +90,13 @@
     </ul>
     <h3>Global</h3>
     <ul>
-        <li><a href="global.html#checkSignature">checkSignature</a></li>
-        <li><a href="global.html#decrypt">decrypt</a></li>
         <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#generateAC">generateAC</a></li>
-        <li><a href="global.html#generateHMAC">generateHMAC</a></li>
-        <li><a href="global.html#generateSignature">generateSignature</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
-        <li><a href="global.html#wordsToHex">wordsToHex</a></li>
     </ul>
 </nav>
 
@@ -191,313 +186,6 @@
         <h3 class="subsection-title">Methods</h3>
 
 
-    <h4 class="name" id="checkSignature"><span class="type-signature"></span>checkSignature<span class="signature">(SED, data, groupAC, stationAC)</span><span
-            class="type-signature"> &rarr; {boolean}</span></h4>
-
-
-    <p class="summary">Checks the signature of a SED package.</p>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line59">line
-                    59</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-    <div class="description">
-        <p>Checks the signature of a SED package.</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-
-
-    <table class="params">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>SED</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#SED">SED</a></span>
-
-
-            </td>
-
-
-            <td class="description last"><p>the signed and encrypted data.</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>data</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">object</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The decrypted data. //TODO @TheMegaTB review type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>groupAC</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The GroupAC that will be used for checking.</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>stationAC</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The GroupAC that will be used for checking.</p></td>
-        </tr>
-
-
-        </tbody>
-    </table>
-
-
-    <h5>Returns:</h5>
-
-
-    <dl class="param-type">
-        <dt>
-            Type
-        </dt>
-        <dd>
-
-            <span class="param-type">boolean</span>
-
-
-        </dd>
-    </dl>
-
-
-    <h4 class="name" id="decrypt"><span class="type-signature"></span>decrypt<span class="signature">(SED, groupAC)</span><span class="type-signature"> &rarr; {boolean|Object}</span></h4>
-
-    
-    <p class="summary">Decrypt the signed data and check the signatures.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line70">line 70</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    <div class="description">
-        <p>Decrypt the signed data and check the signatures.</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>SED</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#SED">SED</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Encrypted and signed data to decrypt.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupAC</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Authentication code of the group used for encryption.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Either the decrypted data in case the encryption was successful or false if the signature verification
-        failed.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
     <h4 class="name" id="encrypt"><span class="type-signature"></span>encrypt<span class="signature">(data, groupAC, stationAC)</span><span class="type-signature"> &rarr; {boolean|Object}</span></h4>
 
 
@@ -512,7 +200,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line111">line 111</a>
+        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -826,7 +514,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line92">line 92</a>
+        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -987,185 +675,6 @@
 
     </dd>
 </dl>
-
-
-    <h4 class="name" id="generateHMAC"><span class="type-signature"></span>generateHMAC<span class="signature">(data, password)</span><span
-            class="type-signature"></span></h4>
-
-
-    <p class="summary">Create Hash-based message authentication code.</p>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line34">line
-                    34</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-    <div class="description">
-        <p>Create Hash-based message authentication code. //TODO @TheMegaTB review description</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-
-
-    <table class="params">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>data</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">object</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>//TODO @TheMegaTB review type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>password</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"></td>
-        </tr>
-
-
-        </tbody>
-    </table>
-
-
-    <h4 class="name" id="generateSignature"><span class="type-signature"></span>generateSignature<span
-            class="signature">(data, ac)</span><span class="type-signature"></span></h4>
-
-
-    <p class="summary">
-    <p>Generate the signature of data.//TODO @TheMegaTB review description</p>.</p>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line44">line
-                    44</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-    <div class="description">
-        <p>Generate the signature of data.//TODO @TheMegaTB review description</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-
-
-    <table class="params">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>data</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">object</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>//TODO @TheMegaTB review type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>ac</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            </td>
-
-
-            <td class="description last"></td>
-        </tr>
-
-
-        </tbody>
-    </table>
 
 
     <h4 class="name" id="genRandomCode"><span class="type-signature"></span>genRandomCode<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
@@ -1536,7 +1045,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line127">line 127</a>
+        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -1701,78 +1210,6 @@
 
     </dd>
 </dl>
-
-
-    <h4 class="name" id="wordsToHex"><span class="type-signature"></span>wordsToHex<span
-            class="signature">(words)</span><span class="type-signature"></span></h4>
-
-
-    <p class="summary">
-    <p>//TODO @TheMegaTB add description</p>.</p>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line23">line
-                    23</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-    <div class="description">
-        <p>//TODO @TheMegaTB add description</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-
-
-    <table class="params">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>words</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"></td>
-        </tr>
-
-
-        </tbody>
-    </table>
 
 
     <h3 class="subsection-title">Type Definitions</h3>
@@ -2661,8 +2098,7 @@
     <h4 class="name" id="SED">SED</h4>
 
 
-    <p class="summary">
-    <p>//TODO @TheMegaTB add properties</p>.</p>
+    <p class="summary">Collection of data and signatures that may be utilized to confirm the integrity of the data.</p>
 
 
     <dl class="details">
@@ -2711,13 +2147,13 @@
             <td class="type">
 
 
-                <span class="param-type">Object</span>
+                <span class="param-type"><a href="global.html#Signature">Signature</a></span>
 
 
             </td>
 
 
-            <td class="description last"><p>//TODO @TheMegaTB update type</p></td>
+            <td class="description last"><p>Signature created with the data and the group authentication code.</p></td>
         </tr>
 
 
@@ -2729,13 +2165,32 @@
             <td class="type">
 
 
-                <span class="param-type">Object</span>
+                <span class="param-type"><a href="global.html#Signature">Signature</a></span>
 
 
             </td>
 
 
-            <td class="description last"><p>//TODO @TheMegaTB update type</p></td>
+            <td class="description last"><p>Signature created with the data and the station authentication code.</p>
+            </td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>data</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">*</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Data the signatures are based on.</p></td>
         </tr>
 
 
@@ -2744,9 +2199,102 @@
 
 
     <div class="description">
-        <p>//TODO @TheMegaTB add properties</p>
+        <p>Collection of data and signatures that may be utilized to confirm the integrity of the data.</p>
     </div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+
+            <span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+    <h4 class="name" id="Signature">Signature</h4>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line20">line
+                    20</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+
+    <table class="props">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>signature</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Signature of the data generated with a specific authentication code.</p>
+            </td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>pubHash</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Public hash of the authentication code this signature was created with.</p>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
 
 
     <h5>Type:</h5>
@@ -3122,8 +2670,8 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 21:25:17
-    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Dec 27 2016 21:58:01
+    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
