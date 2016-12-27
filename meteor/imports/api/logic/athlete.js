@@ -12,8 +12,8 @@ import {getAcsFromAccounts} from "./account";
  * @param isMale {boolean} Whether or not the athlete is male
  * @param group {string} Identifier of the group this athlete is part of
  * @param handicap {integer} Handicap level of the athlete
- * @param maxAge {integer} Highest age of this athlete TODO Describe this better
- * @param ct {Object|Object[]} Competition type(s) this athlete takes part in
+ * @param maxAge {integer} The max age provided by the competition type (ct.maxAge)
+ * @param ct {String[]|object} List of sports the athlete can do or a competition type object
  * @constructor
  */
 export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct) {
@@ -45,11 +45,17 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
 Athlete.prototype = {
     /**
+     * @typedef {Object} ReturnPlainData
+     * @property {string} stID The Station ID
+     * @property {number[]} measurements The Measurements
+     */
+
+    /**
      * @summary Returns the data in plain text.
      * @param log {Log} Logger instance to use
      * @param accounts {object[]}
      * @param requireSignature
-     * @returns {{stID, measurements}[]}
+     * @returns {ReturnPlainData[]}
      */
     getPlain: function (log, accounts, requireSignature) {
         return this.data.getPlain(log, accounts, requireSignature, this.group);
