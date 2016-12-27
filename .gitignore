@@ -11,6 +11,6 @@ meteor/npm-debug.log
 typings/*
 
 # Documentation
-docs/
+doc/
 
 .DS_Store
