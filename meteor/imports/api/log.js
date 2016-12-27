@@ -12,7 +12,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new error.
-     * @param {string} message
+     * @param message {string} content of the message
      */
     error: function (message) {
         this.messages.push({
@@ -27,7 +27,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new warning.
-     * @param {string} message
+     * @param message {string} content of the message
      */
     warning: function (message) {
         this.messages.push({
@@ -42,7 +42,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new info message.
-     * @param {string} message
+     * @param message {string} content of the message
      */
     info: function (message) {
         this.messages.push({
@@ -54,8 +54,8 @@ Log.prototype = {
 
     /**
      * @summary Adds a new message with a custom level.
-     * @param {number} level
-     * @param {string} message
+     * @param level {number} custom log-level to use for the message
+     * @param message {string} content of the message
      */
     custom: function (level, message) {
         this.messages.push({
@@ -67,7 +67,7 @@ Log.prototype = {
 
     /**
      * @summary Merge another Log objects messages to this.messages.
-     * @param other
+     * @param other {Log} other Log object this should be merged onto
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
@@ -82,7 +82,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages as strings.
-     * @returns {Array}
+     * @returns {string[]}
      */
     getAsString: function () {
         return _.map(this.messages, function (message) {
@@ -93,7 +93,7 @@ Log.prototype = {
     /**
      * @summary Returns all messages with the given level as strings.
      * @param level
-     * @returns {Array}
+     * @returns {string[]}
      */
     getAsStringWithLevel: function (level) {
         return _.map(_.where(this.messages, {level: level}), function (message) {
@@ -104,7 +104,7 @@ Log.prototype = {
     /**
      * @summary Returns all messages with the given or higher level as strings.
      * @param level
-     * @returns {Array}
+     * @returns {string[]}
      */
     getAsStringWithMinLevel: function (level) {
         return _.map(_.filter(this.messages, function (message) {

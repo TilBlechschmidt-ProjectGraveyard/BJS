@@ -5,15 +5,15 @@ import {getAcsFromAccounts} from "./account";
 
 /**
  * @summary Creates a new Athlete with the given information.
- * @param log
- * @param firstName
- * @param lastName
- * @param ageGroup
- * @param isMale
- * @param group
- * @param handicap
- * @param maxAge
- * @param ct
+ * @param log {Log} Logger instance to use
+ * @param firstName {string} first-name of the athlete
+ * @param lastName {string} last-name of the athlete
+ * @param ageGroup {integer} Age category of the athlete
+ * @param isMale {boolean} Whether or not the athlete is male
+ * @param group {string} Identifier of the group this athlete is part of
+ * @param handicap {integer} Handicap level of the athlete
+ * @param maxAge {integer} Highest age of this athlete TODO Describe this better
+ * @param ct {Object|Object[]} Competition type(s) this athlete takes part in
  * @constructor
  */
 export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct) {
@@ -46,8 +46,8 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 Athlete.prototype = {
     /**
      * @summary Returns the data in plain text.
-     * @param log
-     * @param {object[]} accounts
+     * @param log {Log} Logger instance to use
+     * @param accounts {object[]}
      * @param requireSignature
      * @returns {{stID, measurements}[]}
      */
@@ -57,13 +57,13 @@ Athlete.prototype = {
 
 
     /**
-     * @summary Updates the data of a given stID.
-     * @param log
-     * @param {string} stID                the sport type of the data
-     * @param {number[]} newMeasurements      the new data
-     * @param groupAccount
-     * @param stationAccount
-     * @returns {boolean}
+     * @summary Updates the data of a given sport (stID).
+     * @param log {Log} Logger instance to use
+     * @param stID {string} Identifier of the sport that should get updated/new values
+     * @param newMeasurements {number[]} New measurements that should be inserted
+     * @param groupAccount {Account} Account of the group this athlete is part of
+     * @param stationAccount {Account} Account of the station responsible for this sport type
+     * @returns {boolean} A boolean value that describes whether or not the update was successful
      */
     update: function (log, stID, newMeasurements, groupAccount, stationAccount) {
 
@@ -146,7 +146,7 @@ Athlete.prototype = {
     },
     /**
      * @summary Sets the age of the athlete.
-     * @param newAge
+     * @param newAge {integer} New age of the athlete
      */
     set age(newAge) {
         this.ageGroup = new Date().getFullYear() - newAge;
@@ -154,9 +154,9 @@ Athlete.prototype = {
 
     /**
      * @summary Encrypts the athlete for the database
-     * @returns {*}
-     * @param groupAccount
-     * @param serverAccount
+     * @returns {Object}
+     * @param groupAccount {Account} Account of the group that this athlete is part of
+     * @param serverAccount {Account} Master account (?) TODO Describe this in a meaningful fashion
      */
     encryptForDatabase: function (groupAccount, serverAccount) {
         const encrypted = {};
@@ -178,11 +178,11 @@ Athlete.prototype = {
 
 /**
  * @summary Decrypts the data from the database
- * @param log
- * @param data
- * @param accounts
- * @param require_signature
- * @returns {*}
+ * @param log {Log} Logger instance to use
+ * @param data {Object} Encrypted athlete
+ * @param accounts {Account[]} List of accounts containing the one that was used for encryption
+ * @param require_signature {boolean} whether or not to enable signature enforcing
+ * @returns {Athlete}
  */
 Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
     const acs = getAcsFromAccounts(accounts);
