@@ -3,7 +3,7 @@ import {filterUndefined} from "./general";
 import {getAcsFromAccounts} from "./account";
 
 /**
- * @summary Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
+ * Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
  * @constructor
  */
 export function Data() {
@@ -20,7 +20,7 @@ Data.prototype = {
      */
 
     /**
-     * @summary Returns the data in plain text.
+     * Returns the data in plain text.
      * @param {Log} log - Logger instance to use
      * @param {Account[]} accounts - Accounts that should be used for decryption
      * @param {boolean} requireSignature - whether or not to enable signature enforcing
@@ -58,7 +58,7 @@ Data.prototype = {
     },
 
     /**
-     * @summary Finds and returns the dataObject with the given sport (stID).
+     * Finds and returns the dataObject with the given sport (stID).
      * @param {Log} log - Logger instance to use
      * @param {number} stID - Identifier of the sport the returned data should be part of
      * @param {AuthenticationCode[]} acs - List of authentication codes that should be used for decryption
@@ -72,7 +72,7 @@ Data.prototype = {
     },
 
     /**
-     * @summary Updates the data of a given stID.
+     * Updates the data of a given stID.
      * @param {Log} log - Logger instance to use
      * @param {number} stID - Identifier of the sport the returned data should be part of
      * @param {number[]} newMeasurements The measurements that should be inserted

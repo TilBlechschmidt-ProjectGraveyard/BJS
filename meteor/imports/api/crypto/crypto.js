@@ -62,7 +62,7 @@ function checkSignature(SED, data, groupAC, stationAC) {
 }
 
 /**
- * @summary Decrypt the signed data and check the signatures.
+ * Decrypt the signed data and check the signatures.
  * @param {SED} SED - Encrypted and signed data to decrypt
  * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption
  * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed
@@ -84,7 +84,7 @@ function decrypt(SED, groupAC) {
 // AC = authentication code = object of the hashes and the salt
 //noinspection JSUnresolvedVariable
 /**
- * @summary Generates a authentication code for
+ * Generates a authentication code for
  * @param password  {string}     Password to generate the authentication code from
  * @param salt      {string=}    Salt to recreate a specific authentication code
  * @returns {AuthenticationCode}   The resulting authentication code object
@@ -102,7 +102,7 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 }
 
 /**
- * @summary Encrypt data and sign it
+ * Encrypt data and sign it
  * @param data      {*}         Data to encrypt
  * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption
  * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption
@@ -118,7 +118,7 @@ export function encrypt(data, groupAC, stationAC) {
 }
 
 /**
- * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
+ * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
  * @param {Log} log - A log object
  * @param {SED} SED - Encrypted and signed data to decrypt
  * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with

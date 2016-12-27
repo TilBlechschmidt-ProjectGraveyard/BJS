@@ -17,7 +17,6 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
 
     if (Meteor.isClient && col.grounded) col.ground = Ground.Collection(col.handle);
 
-
     col.createMockData = function () {
     };
 

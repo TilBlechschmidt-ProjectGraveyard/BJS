@@ -1,7 +1,7 @@
 export {Log};
 
 /**
- * @summary A logging object to save errors, warnings and other messages for the user.
+ * A logging object to save errors, warnings and other messages for the user.
  * @public
  * @constructor
  */
@@ -13,7 +13,7 @@ function Log() {
 Log.prototype = {
 
     /**
-     * @summary Adds a new error.
+     * Adds a new error.
      * @public
      * @param message {string} Content of the message
      */
@@ -31,7 +31,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Adds a new warning.
+     * Adds a new warning.
      * @public
      * @param message {string} Content of the message
      */
@@ -49,7 +49,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Adds a new info message.
+     * Adds a new info message.
      * @public
      * @param message {string} Content of the message
      */
@@ -64,7 +64,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Adds a new message with a custom level.
+     * Adds a new message with a custom level.
      * @public
      * @param level {number} Custom log-level to use for the message
      * @param message {string} Content of the message
@@ -105,7 +105,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Clears the messages buffer
+     * Clears the messages buffer
      * @public
      */
     clear: function () {
@@ -113,7 +113,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages as strings.
+     * Returns all messages as strings.
      * @public
      * @returns {string[]}
      */
@@ -124,7 +124,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given level as strings.
+     * Returns all messages with the given level as strings.
      * @public
      * @param level {integer} Log level the returned messages should have
      * @returns {string[]}
@@ -136,7 +136,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given or higher level as strings.
+     * Returns all messages with the given or higher level as strings.
      * @public
      * @param level {integer} Least log level the returned messages should have
      * @returns {string[]}

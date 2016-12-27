@@ -7,7 +7,7 @@ export {genRandomCode, genRandomString};
 let words_de = require('./../../data/words_de.json');
 
 /**
- * @summary Generates a random string.
+ * Generates a random string.
  * @param {Number} length - The length of the random string.
  * @returns {String}
  */
@@ -21,7 +21,7 @@ function genRandomString(length) {
 }
 
 /**
- * @summary Generates a random table code.
+ * Generates a random table code.
  * @returns {String}
  */
 function genRandomCode() {
