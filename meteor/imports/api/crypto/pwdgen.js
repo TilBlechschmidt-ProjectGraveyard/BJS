@@ -21,7 +21,7 @@ function genRandomString(length) {
 }
 
 /**
- * @summary Generates a random login code.
+ * @summary Generates a random table code.
  * @returns {String}
  */
 function genRandomCode() {

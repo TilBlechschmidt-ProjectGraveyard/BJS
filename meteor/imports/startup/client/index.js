@@ -12,6 +12,8 @@ import "../../ui/components/config/athletes/left";
 import "../../ui/components/config/athletes/middle";
 import "../../ui/components/config/athletes/right";
 import "../../ui/components/config/codes";
+import "../../ui/components/input/table/left";
+import "../../ui/components/input/table/main";
 
 // Run things on startup
 export function onStartup() {
