@@ -60,9 +60,9 @@ export let Athletics = {
     /**
      * Returns whether a given athlete can do the sport type with the id stID.
      * @public
-     * @param log
-     * @param athlete
-     * @param {string} stID
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {string} stID - The string id of the sport type
      * @returns {{canDoSport, dataObject, log}}
      */
     canDoSportType: function (log, athlete, stID) {
@@ -118,11 +118,11 @@ export let Athletics = {
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @private
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * * @param requireSignature
-     * * @returns {object[]}
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {object[]}
      */
     getValidData: function (log, athlete, accounts, requireSignature) {
         //get the plain data from the athlete (unencrypted)
@@ -152,10 +152,10 @@ export let Athletics = {
     /**
      * Returns whether an athlete is already finished.
      * @public
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts              auth. codes
-     * @param requireSignature
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {boolean}
      */
     validate: function (log, athlete, accounts, requireSignature) {
@@ -176,7 +176,7 @@ export let Athletics = {
     /**
      * Calculates the score of one dataObject returned by the getValidData function.
      * @private
-     * @param dataObject
+     * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
      * @returns {number[]}
      */
     calculateOne: function (dataObject) {
@@ -217,10 +217,10 @@ export let Athletics = {
     /**
      * Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
      * @public
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts              auth. codes
-     * @param requireSignature
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {number}
      */
     calculate: function (log, athlete, accounts, requireSignature) {
@@ -250,7 +250,7 @@ export let Athletics = {
     },
 
     /**
-     * Returns information about the ct athletics.
+     * Returns information about the competition type athletics.
      * @public
      * @returns {object}
      */
@@ -261,8 +261,8 @@ export let Athletics = {
     /**
      * Returns the min. score for the different certificates.
      * @private
-     * @param log
-     * @param athlete
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
      * @returns {undefined|number[]}
      */
     getCertificateInfo: function (log, athlete) {
@@ -279,10 +279,10 @@ export let Athletics = {
     /**
      * Generates to certificate for an athlete
      * @public
-     * @param {Log} log
-     * @param {Athlete} athlete
-     * @param {Account[]} accounts
-     * @param {boolean} requireSignature
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {{score: number, certificate: number}}
      */
     generateCertificate: function (log, athlete, accounts, requireSignature) {
