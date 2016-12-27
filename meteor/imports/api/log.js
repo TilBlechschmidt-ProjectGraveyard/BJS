@@ -1,86 +1,111 @@
 export {Log};
 
 /**
- * @summary A logging object to save errors, warnings and other messages for the user.
+ * A logging object to save errors, warnings and other messages for the user.
  * @public
  * @constructor
  */
 function Log() {
     this.messages = [];
+    this.log_enabled = true;
 }
 
 Log.prototype = {
 
     /**
-     * @summary Adds a new error.
+     * Adds a new error.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     error: function (message) {
-        this.messages.push({
-            level: 2,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 2,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     err: function (message) {
         this.error(message);
     },
 
     /**
-     * @summary Adds a new warning.
+     * Adds a new warning.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     warning: function (message) {
-        this.messages.push({
-            level: 1,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 1,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     warn: function (message) {
         this.warning(message);
     },
 
     /**
-     * @summary Adds a new info message.
+     * Adds a new info message.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     info: function (message) {
-        this.messages.push({
-            level: 0,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 0,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
-     * @summary Adds a new message with a custom level.
+     * Adds a new message with a custom level.
      * @public
-     * @param level {number} Custom log-level to use for the message
-     * @param message {string} Content of the message
+     * @param level {number} Custom log-level to use for the message.
+     * @param message {string} Content of the message.
      */
     custom: function (level, message) {
-        this.messages.push({
-            level: level,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: level,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
-     * @summary Merge another Log objects messages to this.messages.
+     * Merge another Log objects messages to this.messages.
      * @public
-     * @param other {Log} Other Log object this should be merged onto
+     * @param other {Log} Other Log object this should be merged onto.
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
     },
 
     /**
-     * @summary Clears the messages buffer
+     * Enables all logs.
+     * @public
+     */
+    enable: function () {
+        this.log_enabled = true;
+    },
+
+    /**
+     * Disables all logs.
+     * @public
+     */
+    disable: function () {
+        this.log_enabled = false;
+    },
+
+    /**
+     * Clears the messages buffer.
      * @public
      */
     clear: function () {
@@ -88,7 +113,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages as strings.
+     * Returns all messages as strings.
      * @public
      * @returns {string[]}
      */
@@ -99,9 +124,9 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given level as strings.
+     * Returns all messages with the given level as strings.
      * @public
-     * @param level {integer} Log level the returned messages should have
+     * @param level {integer} Log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithLevel: function (level) {
@@ -111,9 +136,9 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given or higher level as strings.
+     * Returns all messages with the given or higher level as strings.
      * @public
-     * @param level {integer} Least log level the returned messages should have
+     * @param level {integer} Least log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithMinLevel: function (level) {

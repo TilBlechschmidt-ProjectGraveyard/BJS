@@ -4,7 +4,6 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
     col.name = name;
 
     col.handle = new Mongo.Collection(col.name, nonCompetitionDB ? {} : {_driver: Meteor.dbHandle});
-    console.log(nonCompetitionDB ? {} : {_driver: Meteor.dbHandle});
 
     col.grounded = grounded;
 
@@ -17,7 +16,6 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
         };
 
     if (Meteor.isClient && col.grounded) col.ground = Ground.Collection(col.handle);
-
 
     col.createMockData = function () {
     };

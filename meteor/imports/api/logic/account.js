@@ -1,8 +1,8 @@
 /**
- * @summary Object containing information about a specific account
- * @param {string[]} score_write_permissions
- * @param {string[]} group_permissions
- * @param {Object} ac
+ * Object containing information about a specific account.
+ * @param {string[]} score_write_permissions - List of sport type ids.
+ * @param {string[]} group_permissions - List of group names.
+ * @param {AuthenticationCode} ac
  * @constructor
  */
 export function Account(group_permissions, score_write_permissions, ac) {
@@ -13,9 +13,9 @@ export function Account(group_permissions, score_write_permissions, ac) {
 
 
 /**
- * @summary Return the ACs from all passed accounts
- * @param {Object[]} accounts
- * @returns {Object[]}
+ * Return the ACs from all passed accounts.
+ * @param {Account[]} accounts
+ * @returns {AuthenticationCode[]}
  */
 export function getAcsFromAccounts(accounts) {
     return _.map(accounts, function (account) {

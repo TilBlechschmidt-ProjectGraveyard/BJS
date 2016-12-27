@@ -48,6 +48,8 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Log.html#clear">clear</a></li>
                 <li data-type='method'><a href="Log.html#custom">custom</a></li>
+                <li data-type='method'><a href="Log.html#disable">disable</a></li>
+                <li data-type='method'><a href="Log.html#enable">enable</a></li>
                 <li data-type='method'><a href="Log.html#error">error</a></li>
                 <li data-type='method'><a href="Log.html#getAsString">getAsString</a></li>
                 <li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li>
@@ -63,10 +65,13 @@
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li>
                 <li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
         </li>
@@ -74,6 +79,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
                 <li data-type='method'><a href="Swimming.html#.canDoSportType">canDoSportType</a></li>
+                <li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li>
                 <li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li>
@@ -84,14 +90,18 @@
     </ul>
     <h3>Global</h3>
     <ul>
+        <li><a href="global.html#checkSignature">checkSignature</a></li>
         <li><a href="global.html#decrypt">decrypt</a></li>
         <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#generateAC">generateAC</a></li>
+        <li><a href="global.html#generateHMAC">generateHMAC</a></li>
+        <li><a href="global.html#generateSignature">generateSignature</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
+        <li><a href="global.html#wordsToHex">wordsToHex</a></li>
     </ul>
 </nav>
 
@@ -158,7 +168,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line169">line 169</a>
+                            <a href="logic_competition_types_swimming.js.html#line188">line 188</a>
                         </li>
                     </ul>
                 </dd>
@@ -200,10 +210,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A log object</p></td>
                 </tr>
 
 
@@ -214,10 +228,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The Athlete</p></td>
                 </tr>
 
 
@@ -229,13 +247,13 @@
                     <td class="type">
 
 
-                        <span class="param-type">Array.&lt;object></span>
+                        <span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
 
 
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A list of accounts used to decrypt</p></td>
                 </tr>
 
 
@@ -246,10 +264,15 @@
 
                     <td class="type">
 
+
+                        <span class="param-type">boolean</span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>Only decrypt data if the signature can be verified. Should be true
+                        for final certificate creation.</p></td>
                 </tr>
 
 
@@ -289,7 +312,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line38">line 38</a>
+                            <a href="logic_competition_types_swimming.js.html#line51">line 51</a>
                         </li>
                     </ul>
                 </dd>
@@ -330,10 +353,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A log object</p></td>
                 </tr>
 
 
@@ -344,10 +371,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The Athlete</p></td>
                 </tr>
 
 
@@ -365,7 +396,151 @@
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The string id of the sport type</p></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Object</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".generateCertificate"><span
+                    class="type-signature">(static) </span>generateCertificate<span class="signature">(log, athlete, accounts, requireSignature)</span><span
+                    class="type-signature"> &rarr; {Object}</span></h4>
+
+
+            <p class="summary">
+            <p>Generates to certificate for an athlete</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
+                            <a href="logic_competition_types_swimming.js.html#line245">line 245</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Generates to certificate for an athlete</p>
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>log</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>A log object</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>athlete</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>The Athlete</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>accounts</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>A list of accounts used to decrypt</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>requireSignature</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>Only decrypt data if the signature can be verified. Should be true
+                        for final certificate creation.</p></td>
                 </tr>
 
 
@@ -406,7 +581,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line209">line 209</a>
+                            <a href="logic_competition_types_swimming.js.html#line228">line 228</a>
                         </li>
                     </ul>
                 </dd>
@@ -447,10 +622,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A log object</p></td>
                 </tr>
 
 
@@ -461,10 +640,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The Athlete</p></td>
                 </tr>
 
 
@@ -506,7 +689,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line199">line 199</a>
+                            <a href="logic_competition_types_swimming.js.html#line218">line 218</a>
                         </li>
                     </ul>
                 </dd>
@@ -552,7 +735,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line24">line 24</a>
+                            <a href="logic_competition_types_swimming.js.html#line37">line 37</a>
                         </li>
                     </ul>
                 </dd>
@@ -584,7 +767,8 @@
 
 
             <h4 class="name" id=".getValidData"><span class="type-signature">(static) </span>getValidData<span
-                    class="signature">(log, athlete, accounts)</span><span class="type-signature"></span></h4>
+                    class="signature">(log, athlete, accounts, requireSignature)</span><span
+                    class="type-signature"></span></h4>
 
 
             <p class="summary">Validates the data of an athlete and adds more information to it.</p>
@@ -598,7 +782,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line97">line 97</a>
+                            <a href="logic_competition_types_swimming.js.html#line110">line 110</a>
                         </li>
                     </ul>
                 </dd>
@@ -640,10 +824,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A log object</p></td>
                 </tr>
 
 
@@ -654,10 +842,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The Athlete</p></td>
                 </tr>
 
 
@@ -669,15 +861,33 @@
                     <td class="type">
 
 
-                        <span class="param-type">Array.&lt;object></span>
+                        <span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
 
 
                     </td>
 
 
-                    <td class="description last">
+                    <td class="description last"><p>A list of accounts used to decrypt</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>requireSignature</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>Only decrypt data if the signature can be verified. Should be true
+                        for final certificate creation.</p>
                         <ul>
-                            <li>@param requireSignature</li>
                             <li>@returns {object[]}</li>
                         </ul>
                     </td>
@@ -704,7 +914,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>,
-                            <a href="logic_competition_types_swimming.js.html#line130">line 130</a>
+                            <a href="logic_competition_types_swimming.js.html#line143">line 143</a>
                         </li>
                     </ul>
                 </dd>
@@ -745,10 +955,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Log.html">Log</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A log object</p></td>
                 </tr>
 
 
@@ -759,10 +973,14 @@
 
                     <td class="type">
 
+
+                        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>The Athlete</p></td>
                 </tr>
 
 
@@ -774,13 +992,13 @@
                     <td class="type">
 
 
-                        <span class="param-type">Array.&lt;object></span>
+                        <span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
 
 
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>A list of accounts used to decrypt</p></td>
                 </tr>
 
 
@@ -791,10 +1009,15 @@
 
                     <td class="type">
 
+
+                        <span class="param-type">boolean</span>
+
+
                     </td>
 
 
-                    <td class="description last"></td>
+                    <td class="description last"><p>Only decrypt data if the signature can be verified. Should be true
+                        for final certificate creation.</p></td>
                 </tr>
 
 
@@ -828,8 +1051,8 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Dec 27 2016 19:29:04
-    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 21:25:17
+    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

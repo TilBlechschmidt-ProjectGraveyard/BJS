@@ -48,6 +48,8 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Log.html#clear">clear</a></li>
                 <li data-type='method'><a href="Log.html#custom">custom</a></li>
+                <li data-type='method'><a href="Log.html#disable">disable</a></li>
+                <li data-type='method'><a href="Log.html#enable">enable</a></li>
                 <li data-type='method'><a href="Log.html#error">error</a></li>
                 <li data-type='method'><a href="Log.html#getAsString">getAsString</a></li>
                 <li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li>
@@ -63,10 +65,13 @@
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li>
                 <li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
         </li>
@@ -85,14 +90,18 @@
     </ul>
     <h3>Global</h3>
     <ul>
+        <li><a href="global.html#checkSignature">checkSignature</a></li>
         <li><a href="global.html#decrypt">decrypt</a></li>
         <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#generateAC">generateAC</a></li>
+        <li><a href="global.html#generateHMAC">generateHMAC</a></li>
+        <li><a href="global.html#generateSignature">generateSignature</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
+        <li><a href="global.html#wordsToHex">wordsToHex</a></li>
     </ul>
 </nav>
 
@@ -114,7 +123,7 @@ import {getAcsFromAccounts} from "./account";
 
 
 /**
- * @summary Creates a new Athlete with the given information.
+ * Creates a new Athlete with the given information.
  * @param log {Log} Logger instance to use
  * @param firstName {string} first-name of the athlete
  * @param lastName {string} last-name of the athlete
@@ -155,7 +164,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
 Athlete.prototype = {
     /**
-     * @summary Returns the data in plain text.
+     * Returns the data in plain text.
      * @param log {Log} Logger instance to use
      * @param accounts {object[]}
      * @param requireSignature
@@ -167,7 +176,7 @@ Athlete.prototype = {
 
 
     /**
-     * @summary Updates the data of a given sport (stID).
+     * Updates the data of a given sport (stID).
      * @param log {Log} Logger instance to use
      * @param stID {string} Identifier of the sport that should get updated/new values
      * @param newMeasurements {number[]} New measurements that should be inserted
@@ -199,7 +208,7 @@ Athlete.prototype = {
     },
 
     /**
-     * @summary Checks whether the properties of the athlete are correct.
+     * Checks whether the properties of the athlete are correct.
      * @returns {boolean}
      */
     check: function (log) {
@@ -227,35 +236,35 @@ Athlete.prototype = {
         return result;
     },
     /**
-     * @summary Returns the full name (first name &amp; last name) of the athlete.
+     * Returns the full name (first name &amp; last name) of the athlete.
      * @returns {string}
      */
     getFullName: function () {
         return this.firstName + ' ' + this.lastName;
     },
     /**
-     * @summary Returns a short version of the athletes name (first name &amp; last initial).
+     * Returns a short version of the athletes name (first name &amp; last initial).
      * @returns {string}
      */
     getShortName: function () {
         return this.firstName + ' ' + this.lastName[0] + '.';
     },
     /**
-     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
      * @returns {number}
      */
     get age() {
         return new Date().getFullYear() - this.ageGroup;
     },
     /**
-     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
      * @returns {number}
      */
     get tableAge() {
         return Math.min(new Date().getFullYear() - this.ageGroup, this.maxAge);
     },
     /**
-     * @summary Sets the age of the athlete.
+     * Sets the age of the athlete.
      * @param newAge {integer} New age of the athlete
      */
     set age(newAge) {
@@ -263,7 +272,7 @@ Athlete.prototype = {
     },
 
     /**
-     * @summary Encrypts the athlete for the database
+     * Encrypts the athlete for the database
      * @returns {Object}
      * @param groupAccount {Account} Account of the group that this athlete is part of
      * @param serverAccount {Account} Master account (?) TODO Describe this in a meaningful fashion
@@ -287,12 +296,12 @@ Athlete.prototype = {
 };
 
 /**
- * @summary Decrypts the data from the database
+ * Decrypts the data from the database
  * @param log {Log} Logger instance to use
  * @param data {Object} Encrypted athlete
  * @param accounts {Account[]} List of accounts containing the one that was used for encryption
  * @param require_signature {boolean} whether or not to enable signature enforcing
- * @returns {Athlete}
+ * @returns {boolean|Athlete}
  */
 Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
     const acs = getAcsFromAccounts(accounts);
@@ -359,7 +368,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 19:41:28
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 21:25:17
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

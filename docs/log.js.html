@@ -48,6 +48,8 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Log.html#clear">clear</a></li>
                 <li data-type='method'><a href="Log.html#custom">custom</a></li>
+                <li data-type='method'><a href="Log.html#disable">disable</a></li>
+                <li data-type='method'><a href="Log.html#enable">enable</a></li>
                 <li data-type='method'><a href="Log.html#error">error</a></li>
                 <li data-type='method'><a href="Log.html#getAsString">getAsString</a></li>
                 <li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li>
@@ -63,10 +65,13 @@
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li>
                 <li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
         </li>
@@ -85,14 +90,18 @@
     </ul>
     <h3>Global</h3>
     <ul>
+        <li><a href="global.html#checkSignature">checkSignature</a></li>
         <li><a href="global.html#decrypt">decrypt</a></li>
         <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#generateAC">generateAC</a></li>
+        <li><a href="global.html#generateHMAC">generateHMAC</a></li>
+        <li><a href="global.html#generateSignature">generateSignature</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
+        <li><a href="global.html#wordsToHex">wordsToHex</a></li>
     </ul>
 </nav>
 
@@ -111,86 +120,111 @@
             <pre class="prettyprint source linenums"><code>export {Log};
 
 /**
- * @summary A logging object to save errors, warnings and other messages for the user.
+ * A logging object to save errors, warnings and other messages for the user.
  * @public
  * @constructor
  */
 function Log() {
     this.messages = [];
+    this.log_enabled = true;
 }
 
 Log.prototype = {
 
     /**
-     * @summary Adds a new error.
+     * Adds a new error.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     error: function (message) {
-        this.messages.push({
-            level: 2,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 2,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     err: function (message) {
         this.error(message);
     },
 
     /**
-     * @summary Adds a new warning.
+     * Adds a new warning.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     warning: function (message) {
-        this.messages.push({
-            level: 1,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 1,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     warn: function (message) {
         this.warning(message);
     },
 
     /**
-     * @summary Adds a new info message.
+     * Adds a new info message.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     info: function (message) {
-        this.messages.push({
-            level: 0,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 0,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
-     * @summary Adds a new message with a custom level.
+     * Adds a new message with a custom level.
      * @public
-     * @param level {number} Custom log-level to use for the message
-     * @param message {string} Content of the message
+     * @param level {number} Custom log-level to use for the message.
+     * @param message {string} Content of the message.
      */
     custom: function (level, message) {
-        this.messages.push({
-            level: level,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: level,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
-     * @summary Merge another Log objects messages to this.messages.
+     * Merge another Log objects messages to this.messages.
      * @public
-     * @param other {Log} Other Log object this should be merged onto
+     * @param other {Log} Other Log object this should be merged onto.
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
     },
 
     /**
-     * @summary Clears the messages buffer
+     * Enables all logs.
+     * @public
+     */
+    enable: function () {
+        this.log_enabled = true;
+    },
+
+    /**
+     * Disables all logs.
+     * @public
+     */
+    disable: function () {
+        this.log_enabled = false;
+    },
+
+    /**
+     * Clears the messages buffer.
      * @public
      */
     clear: function () {
@@ -198,7 +232,7 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages as strings.
+     * Returns all messages as strings.
      * @public
      * @returns {string[]}
      */
@@ -209,9 +243,9 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given level as strings.
+     * Returns all messages with the given level as strings.
      * @public
-     * @param level {integer} Log level the returned messages should have
+     * @param level {integer} Log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithLevel: function (level) {
@@ -221,9 +255,9 @@ Log.prototype = {
     },
 
     /**
-     * @summary Returns all messages with the given or higher level as strings.
+     * Returns all messages with the given or higher level as strings.
      * @public
-     * @param level {integer} Least log level the returned messages should have
+     * @param level {integer} Least log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithMinLevel: function (level) {
@@ -245,7 +279,7 @@ Log.prototype = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 19:41:28
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 21:25:17
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
