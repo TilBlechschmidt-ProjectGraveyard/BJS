@@ -19,7 +19,6 @@ let input = FlowRouter.group({
 
 input.route('/', {
     action: function () {
-        console.log("MEEEOOOOOW");
         BlazeLayout.render('two_view', {
             first: 'view_left',
             second: 'view_main',
