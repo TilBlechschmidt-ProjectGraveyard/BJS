@@ -145,14 +145,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Log.html">Log</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Logger instance to use</p></td>
         </tr>
 
     
@@ -163,14 +164,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">string</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>first-name of the athlete</p></td>
         </tr>
 
     
@@ -181,14 +183,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">string</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>last-name of the athlete</p></td>
         </tr>
 
     
@@ -199,14 +202,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">integer</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Age category of the athlete</p></td>
         </tr>
 
     
@@ -217,14 +221,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">boolean</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Whether or not the athlete is male</p></td>
         </tr>
 
     
@@ -235,14 +240,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">string</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Identifier of the group this athlete is part of</p></td>
         </tr>
 
     
@@ -253,14 +259,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">integer</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Handicap level of the athlete</p></td>
         </tr>
 
     
@@ -271,14 +278,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">integer</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Highest age of this athlete TODO Describe this better</p></td>
         </tr>
 
     
@@ -289,14 +297,18 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">Object</span>
+                |
+
+                <span class="param-type">Array.&lt;Object></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Competition type(s) this athlete takes part in</p></td>
         </tr>
 
     
@@ -523,12 +535,10 @@
     
         <h3 class="subsection-title">Methods</h3>
 
-        
-            
 
-    
-
-    <h4 class="name" id=".decryptFromDatabase"><span class="type-signature">(static) </span>decryptFromDatabase<span class="signature">(log, data, accounts, require_signature)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id=".decryptFromDatabase"><span class="type-signature">(static) </span>decryptFromDatabase<span
+            class="signature">(log, data, accounts, require_signature)</span><span class="type-signature"> &rarr; {<a
+            href="Athlete.html">Athlete</a>}</span></h4>
 
     
     <p class="summary">Decrypts the data from the database</p>
@@ -620,14 +630,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Log.html">Log</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Logger instance to use</p></td>
         </tr>
 
     
@@ -638,14 +649,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">Object</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Encrypted athlete</p></td>
         </tr>
 
     
@@ -656,14 +668,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>List of accounts containing the one that was used for encryption</p></td>
         </tr>
 
     
@@ -674,14 +687,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">boolean</span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>whether or not to enable signature enforcing</p></td>
         </tr>
 
     
@@ -711,8 +725,8 @@
         Type
     </dt>
     <dd>
-        
-<span class="param-type">*</span>
+
+        <span class="param-type"><a href="Athlete.html">Athlete</a></span>
 
 
     </dd>
@@ -818,15 +832,10 @@
     </dd>
 </dl>
 
-    
 
-
-        
-            
-
-    
-
-    <h4 class="name" id="encryptForDatabase"><span class="type-signature"></span>encryptForDatabase<span class="signature">(groupAccount, serverAccount)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id="encryptForDatabase"><span class="type-signature"></span>encryptForDatabase<span
+            class="signature">(groupAccount, serverAccount)</span><span class="type-signature"> &rarr; {Object}</span>
+    </h4>
 
     
     <p class="summary">Encrypts the athlete for the database</p>
@@ -918,14 +927,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Account of the group that this athlete is part of</p></td>
         </tr>
 
     
@@ -936,14 +946,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Master account (?) TODO Describe this in a meaningful fashion</p></td>
         </tr>
 
     
@@ -973,8 +984,8 @@
         Type
     </dt>
     <dd>
-        
-<span class="param-type">*</span>
+
+        <span class="param-type">Object</span>
 
 
     </dd>
@@ -1180,14 +1191,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Log.html">Log</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Logger instance to use</p></td>
         </tr>
 
     
@@ -1363,8 +1375,8 @@
 
     <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(log, stID, newMeasurements, groupAccount, stationAccount)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
-    
-    <p class="summary">Updates the data of a given stID.</p>
+
+    <p class="summary">Updates the data of a given sport (stID).</p>
     
 
 
@@ -1453,14 +1465,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Log.html">Log</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Logger instance to use</p></td>
         </tr>
 
     
@@ -1479,11 +1492,8 @@
             
             </td>
 
-            
 
-            
-
-            <td class="description last"><p>the sport type of the data</p></td>
+            <td class="description last"><p>Identifier of the sport that should get updated/new values</p></td>
         </tr>
 
     
@@ -1502,11 +1512,8 @@
             
             </td>
 
-            
 
-            
-
-            <td class="description last"><p>the new data</p></td>
+            <td class="description last"><p>New measurements that should be inserted</p></td>
         </tr>
 
     
@@ -1517,14 +1524,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Account of the group this athlete is part of</p></td>
         </tr>
 
     
@@ -1535,14 +1543,15 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Account of the station responsible for this sport type</p></td>
         </tr>
 
     
@@ -1564,10 +1573,13 @@
 
 <h5>Returns:</h5>
 
-        
+
+    <div class="param-desc">
+        <p>A boolean value that describes whether or not the update was successful</p>
+    </div>
 
 
-<dl class="param-type">
+    <dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1600,7 +1612,8 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Dec 27 2016 13:31:02 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Dec 27 2016 13:56:05
+    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
