@@ -7,7 +7,7 @@ import {getAcsFromAccounts} from "./account";
 
 
 /**
- * Creates a new Athlete with the given information.
+ * @summary Creates a new Athlete with the given information.
  * @param log
  * @param firstName
  * @param lastName
@@ -48,7 +48,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
 Athlete.prototype = {
     /**
-     * Returns the data in plain text.
+     * @summary Returns the data in plain text.
      * @param log
      * @param {object[]} accounts
      * @param requireSignature
@@ -60,7 +60,7 @@ Athlete.prototype = {
 
 
     /**
-     * Updates the data of a given stID.
+     * @summary Updates the data of a given stID.
      * @param log
      * @param {string} stID                the sport type of the data
      * @param {number[]} newMeasurements      the new data
@@ -92,7 +92,7 @@ Athlete.prototype = {
     },
 
     /**
-     * Checks whether the properties of the athlete are correct.
+     * @summary Checks whether the properties of the athlete are correct.
      * @returns {boolean}
      */
     check: function (log) {
@@ -120,35 +120,35 @@ Athlete.prototype = {
         return result;
     },
     /**
-     * Returns the full name (first name & last name) of the athlete.
+     * @summary Returns the full name (first name & last name) of the athlete.
      * @returns {string}
      */
     getFullName: function () {
         return this.firstName + ' ' + this.lastName;
     },
     /**
-     * Returns a short version of the athletes name (first name & last initial).
+     * @summary Returns a short version of the athletes name (first name & last initial).
      * @returns {string}
      */
     getShortName: function () {
         return this.firstName + ' ' + this.lastName[0] + '.';
     },
     /**
-     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
+     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
      * @returns {number}
      */
     get age() {
         return new Date().getFullYear() - this.ageGroup;
     },
     /**
-     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than 20, 20 is returned.
+     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than 20, 20 is returned.
      * @returns {number}
      */
     get tableAge() {
         return Math.min(new Date().getFullYear() - this.ageGroup, this.maxAge);
     },
     /**
-     * Sets the age of the athlete.
+     * @summary Sets the age of the athlete.
      * @param newAge
      */
     set age(newAge) {
@@ -156,7 +156,7 @@ Athlete.prototype = {
     },
 
     /**
-     * Encrypts the athlete for the database
+     * @summary Encrypts the athlete for the database
      * @returns {*}
      * @param groupAccount
      * @param serverAccount
@@ -180,7 +180,7 @@ Athlete.prototype = {
 };
 
 /**
- * Decrypts the data from the database
+ * @summary Decrypts the data from the database
  * @param log
  * @param data
  * @param accounts

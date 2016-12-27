@@ -1,5 +1,5 @@
 /**
- * filters all undefined from an array.
+ * @summary filters all undefined from an array.
  * @param data: {Array}
  * @returns {Array}
  */

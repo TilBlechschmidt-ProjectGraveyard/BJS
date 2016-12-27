@@ -8,7 +8,7 @@ let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json'
 export let Athletics = {
     maxAge: 20,
     /**
-     * Returns a list of sport types associated with the ct athletics.
+     * @summary Returns a list of sport types associated with the ct athletics.
      * @returns {{id: string, name: string, category: number, unit: string,  description: string, w: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
      */
     getSports: function () {
@@ -16,7 +16,7 @@ export let Athletics = {
     },
 
     /**
-     * Returns whether a given athlete can do the sport type with the id stID.
+     * @summary Returns whether a given athlete can do the sport type with the id stID.
      * @param log
      * @param athlete
      * @param {string} stID
@@ -73,7 +73,7 @@ export let Athletics = {
 
 
     /**
-     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
      * @param log
      * @param athlete
      * @param {object[]} accounts
@@ -106,7 +106,7 @@ export let Athletics = {
     },
 
     /**
-     * Returns whether an athlete is already finished.
+     * @summary Returns whether an athlete is already finished.
      * @param log
      * @param athlete
      * @param {object[]} accounts              auth. codes
@@ -129,7 +129,7 @@ export let Athletics = {
     },
 
     /**
-     * Calculates the score of one dataObject returned by the getValidData function.
+     * @summary Calculates the score of one dataObject returned by the getValidData function.
      * @param dataObject
      * @returns {number[]}
      */
@@ -169,7 +169,7 @@ export let Athletics = {
     },
 
     /**
-     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @summary Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param log
      * @param athlete
      * @param {object[]} accounts              auth. codes
@@ -203,7 +203,7 @@ export let Athletics = {
     },
 
     /**
-     * Returns information about the ct athletics.
+     * @summary Returns information about the ct athletics.
      * @returns {object}
      */
     getInformation: function () {
@@ -211,7 +211,7 @@ export let Athletics = {
     },
 
     /**
-     * Returns the min. score for the different certificates.
+     * @summary Returns the min. score for the different certificates.
      * @param log
      * @param athlete
      * @returns {undefined|number[]}

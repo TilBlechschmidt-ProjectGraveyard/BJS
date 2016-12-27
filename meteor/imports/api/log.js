@@ -1,7 +1,7 @@
 export {Log};
 
 /**
- * A logging object to save errors, warnings and other messages for the user.
+ * @summary A logging object to save errors, warnings and other messages for the user.
  * @constructor
  */
 function Log() {
@@ -11,7 +11,7 @@ function Log() {
 Log.prototype = {
 
     /**
-     * Adds a new error.
+     * @summary Adds a new error.
      * @param {string} message
      */
     error: function (message) {
@@ -26,7 +26,7 @@ Log.prototype = {
     },
 
     /**
-     * Adds a new warning.
+     * @summary Adds a new warning.
      * @param {string} message
      */
     warning: function (message) {
@@ -41,7 +41,7 @@ Log.prototype = {
     },
 
     /**
-     * Adds a new info message.
+     * @summary Adds a new info message.
      * @param {string} message
      */
     info: function (message) {
@@ -53,7 +53,7 @@ Log.prototype = {
     },
 
     /**
-     * Adds a new message with a custom level.
+     * @summary Adds a new message with a custom level.
      * @param {number} level
      * @param {string} message
      */
@@ -66,7 +66,7 @@ Log.prototype = {
     },
 
     /**
-     * Merge another Log objects messages to this.messages.
+     * @summary Merge another Log objects messages to this.messages.
      * @param other
      */
     merge: function (other) {
@@ -74,14 +74,14 @@ Log.prototype = {
     },
 
     /**
-     * Clears the messages buffer
+     * @summary Clears the messages buffer
      */
     clear: function () {
         this.messages = [];
     },
 
     /**
-     * Returns all messages as strings.
+     * @summary Returns all messages as strings.
      * @returns {Array}
      */
     getAsString: function () {
@@ -91,7 +91,7 @@ Log.prototype = {
     },
 
     /**
-     * Returns all messages with the given level as strings.
+     * @summary Returns all messages with the given level as strings.
      * @param level
      * @returns {Array}
      */
@@ -102,7 +102,7 @@ Log.prototype = {
     },
 
     /**
-     * Returns all messages with the given or higher level as strings.
+     * @summary Returns all messages with the given or higher level as strings.
      * @param level
      * @returns {Array}
      */

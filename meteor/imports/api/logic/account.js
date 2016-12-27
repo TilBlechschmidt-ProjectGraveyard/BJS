@@ -3,7 +3,7 @@
  */
 
 /**
- *
+ * @summary Object containing information about a specific account
  * @param {string[]} score_write_permissions
  * @param {string[]} group_permissions
  * @param {*} ac
@@ -17,7 +17,7 @@ export function Account(group_permissions, score_write_permissions, ac) {
 
 
 /**
- *
+ * @summary Return the ACs from all passed accounts
  * @param {*} accounts
  * @returns {Array}
  */

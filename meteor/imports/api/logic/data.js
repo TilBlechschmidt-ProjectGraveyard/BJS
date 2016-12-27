@@ -3,7 +3,7 @@ import {filterUndefined} from "./general";
 import {getAcsFromAccounts} from "./account";
 
 /**
- * Creates an empty Data object. The information in the Data object are encrypted. To read/write you always need the group_private_hash.
+ * @summary Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
  * @constructor
  */
 export function Data() {
@@ -14,7 +14,7 @@ export function Data() {
 
 Data.prototype = {
     /**
-     * Returns the data in plain text.
+     * @summary Returns the data in plain text.
      * @param log
      * @param {object[]} accounts
      * @param requireSignature
@@ -52,7 +52,7 @@ Data.prototype = {
     },
 
     /**
-     * Finds and returns the dataObject with the given stID.
+     * @summary Finds and returns the dataObject with the given stID.
      * @param log
      * @param stID     the sport type of the data
      * @param {object[]} acs              auth. codes
@@ -66,7 +66,7 @@ Data.prototype = {
     },
 
     /**
-     * Updates the data of a given stID.
+     * @summary Updates the data of a given stID.
      * @param log
      * @param {string} stID                the sport type of the data
      * @param {number[]} newMeasurements      the new data
