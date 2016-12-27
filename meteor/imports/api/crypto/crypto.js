@@ -28,7 +28,7 @@ function checkSignature(SED, data, groupAC, stationAC) {
 }
 
 /**
- * Decrypt the signed data and check the signatures.
+ * @summary Decrypt the signed data and check the signatures.
  * @param SED       encrypted and signed data
  * @param groupAC              auth. code of the group
  * @returns {boolean|object}    either the decrypted data or false if the signature verification failed
@@ -50,7 +50,7 @@ function decrypt(SED, groupAC) {
 // AC = authentication code = object of the hashes and the salt
 //noinspection JSUnresolvedVariable
 /**
- * Generates a authentication code for
+ * @summary Generates a authentication code for
  * @param password      passwd to generate the auth. code from
  * @param salt [random] optional salt to recreate a auth. code
  * @returns {{salt, pubHash, privHash}}   authentication code
@@ -68,7 +68,7 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 }
 
 /**
- * Encrypt data and sign it
+ * @summary Encrypt data and sign it
  * @param data          Data to encrypt
  * @param groupAC      Group auth. code
  * @param stationAC    Station auth. code
@@ -84,7 +84,7 @@ export function encrypt(data, groupAC, stationAC) {
 }
 
 /**
- * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
+ * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
  * @param log   Logger instance to use
  * @param SED   signed and encrypted data object
  * @param acs   array of authentication codes
