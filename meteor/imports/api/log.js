@@ -2,6 +2,7 @@ export {Log};
 
 /**
  * @summary A logging object to save errors, warnings and other messages for the user.
+ * @public
  * @constructor
  */
 function Log() {
@@ -12,6 +13,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new error.
+     * @public
      * @param message {string} Content of the message
      */
     error: function (message) {
@@ -27,6 +29,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new warning.
+     * @public
      * @param message {string} Content of the message
      */
     warning: function (message) {
@@ -42,6 +45,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new info message.
+     * @public
      * @param message {string} Content of the message
      */
     info: function (message) {
@@ -54,6 +58,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new message with a custom level.
+     * @public
      * @param level {number} Custom log-level to use for the message
      * @param message {string} Content of the message
      */
@@ -67,6 +72,7 @@ Log.prototype = {
 
     /**
      * @summary Merge another Log objects messages to this.messages.
+     * @public
      * @param other {Log} Other Log object this should be merged onto
      */
     merge: function (other) {
@@ -75,6 +81,7 @@ Log.prototype = {
 
     /**
      * @summary Clears the messages buffer
+     * @public
      */
     clear: function () {
         this.messages = [];
@@ -82,6 +89,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages as strings.
+     * @public
      * @returns {string[]}
      */
     getAsString: function () {
@@ -92,6 +100,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages with the given level as strings.
+     * @public
      * @param level {integer} Log level the returned messages should have
      * @returns {string[]}
      */
@@ -103,6 +112,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages with the given or higher level as strings.
+     * @public
      * @param level {integer} Least log level the returned messages should have
      * @returns {string[]}
      */

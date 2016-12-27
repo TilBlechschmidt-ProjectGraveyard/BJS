@@ -1,10 +1,25 @@
 import {filterUndefined} from "./../general";
 
+/**
+ * Object containing all information and functions required for Swimming contest.
+ * @public
+ * @namespace
+ */
 export let Swimming = {
     maxAge: 18,
+
+    /**
+     * @typedef {Object} SwimmingSportData
+     * @property {string} id The id of the sport type
+     * @property {string} name The human readable name for the sport type
+     * @property {number} category The category of the sport type (eg. sprinting)
+     * @property {string} unit The human readable unit for the measurements (eg. m (meter))
+     * @property {string} description A description of the sport type. It may contain information about how to measure in this sport type.
+     */
+
     /**
      * @summary Returns a list of sport types associated with the ct athletics.
-     * @returns {{id: string, name: string, category: number, unit: string, description: string}[]}
+     * @returns {SwimmingSportData[]}
      */
     getSports: function () {
         return require('./../../../data/swimming/sports.json');

@@ -85,7 +85,7 @@ export function encrypt(data, groupAC, stationAC) {
 
 /**
  * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
- * @param log   {Object}    Logger instance to use
+ * @param log   {Log}    Logger instance to use
  * @param SED   {Object}    Signed and encrypted data object
  * @param acs   {Object[]}  Array of authentication codes to attempt decryption with
  * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful

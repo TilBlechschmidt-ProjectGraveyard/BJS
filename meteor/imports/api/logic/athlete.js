@@ -45,17 +45,11 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
 Athlete.prototype = {
     /**
-     * @typedef {Object} ReturnPlainData
-     * @property {string} stID The Station ID
-     * @property {number[]} measurements The Measurements
-     */
-
-    /**
      * @summary Returns the data in plain text.
      * @param log {Log} Logger instance to use
      * @param accounts {object[]}
      * @param requireSignature
-     * @returns {ReturnPlainData[]}
+     * @returns {PlainData[]}
      */
     getPlain: function (log, accounts, requireSignature) {
         return this.data.getPlain(log, accounts, requireSignature, this.group);
