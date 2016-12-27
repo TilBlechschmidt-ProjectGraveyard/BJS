@@ -7,6 +7,7 @@ export {Log};
  */
 function Log() {
     this.messages = [];
+    this.log_enabled = true;
 }
 
 Log.prototype = {
@@ -17,11 +18,13 @@ Log.prototype = {
      * @param message {string} Content of the message
      */
     error: function (message) {
-        this.messages.push({
-            level: 2,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 2,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     err: function (message) {
         this.error(message);
@@ -33,11 +36,13 @@ Log.prototype = {
      * @param message {string} Content of the message
      */
     warning: function (message) {
-        this.messages.push({
-            level: 1,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 1,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
     warn: function (message) {
         this.warning(message);
@@ -49,11 +54,13 @@ Log.prototype = {
      * @param message {string} Content of the message
      */
     info: function (message) {
-        this.messages.push({
-            level: 0,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 0,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
@@ -63,20 +70,38 @@ Log.prototype = {
      * @param message {string} Content of the message
      */
     custom: function (level, message) {
-        this.messages.push({
-            level: level,
-            message: message,
-            timestamp: new Date()
-        });
+        if (this.log_enabled) {
+            this.messages.push({
+                level: level,
+                message: message,
+                timestamp: new Date()
+            });
+        }
     },
 
     /**
-     * @summary Merge another Log objects messages to this.messages.
+     * Merge another Log objects messages to this.messages.
      * @public
      * @param other {Log} Other Log object this should be merged onto
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
+    },
+
+    /**
+     * Enables all logs.
+     * @public
+     */
+    enable: function () {
+        this.log_enabled = true;
+    },
+
+    /**
+     * Disables all logs.
+     * @public
+     */
+    disable: function () {
+        this.log_enabled = false;
     },
 
     /**
