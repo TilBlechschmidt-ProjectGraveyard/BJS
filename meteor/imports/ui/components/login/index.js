@@ -31,7 +31,6 @@ Template.registerHelper('arrayify', function (obj) {
         new_obj.name = key;
         result.push(new_obj);
     }
-    console.log("HEY", result);
     return result;
 });
 
