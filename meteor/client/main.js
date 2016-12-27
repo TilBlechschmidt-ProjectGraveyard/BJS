@@ -13,11 +13,27 @@ FlowRouter.route('/', {
     }
 });
 
+let input = FlowRouter.group({
+    prefix: '/contest'
+});
+
+input.route('/', {
+    action: function () {
+        console.log("MEEEOOOOOW");
+        BlazeLayout.render('two_view', {
+            first: 'view_left',
+            second: 'view_main',
+            nested_left: 'table_left',
+            nested_main: 'table_main',
+        });
+    }
+});
+
 let config = FlowRouter.group({
    prefix: '/config'
 });
 
-config.route('/sports',{
+config.route('/sports', {
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_left',
@@ -28,7 +44,7 @@ config.route('/sports',{
     }
 });
 
-config.route('/athletes',{
+config.route('/athletes', {
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_left',
@@ -41,7 +57,7 @@ config.route('/athletes',{
     }
 });
 
-config.route('/codes',{
+config.route('/codes', {
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_full',
