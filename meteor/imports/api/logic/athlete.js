@@ -144,7 +144,7 @@ Athlete.prototype = {
         return new Date().getFullYear() - this.ageGroup;
     },
     /**
-     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than 20, 20 is returned.
+     * @summary Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
      * @returns {number}
      */
     get tableAge() {
