@@ -1,50 +1,67 @@
 <template name="table_main">
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="center sliding">Komischer Header von irgendeiner Input UI</div>
-        </div>
-    </div>
-    <!-- Page Content -->
-    <div class="page">
-        <div class="page-content">
-            <!-- Name -->
-            <div class="content-block-title">Was mache ich hier eigentlich?!</div>
-            <div class="list-block">
-                <ul>
-                    <!-- Activated? -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Kartoffeln!!</div>
-                                <label class="label-switch">
-                                    <input checked="checked" type="checkbox">
-                                    <div class="checkbox"></div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- Electronic Measurement? -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Grünkohl *puke*</div>
-                                <label class="label-switch">
-                                    <input type="checkbox">
-                                    <div class="checkbox"></div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    <div class="view navbar-through">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link">
+                        <i class="icon icon-back"></i>
+                        <span>Übersicht</span>
+                    </a>
+                </div>
+                <div class="center">Karl Mustermann</div>
             </div>
         </div>
-    </div>
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-inner">
-            <a></a>
-            <a href="" id="link_next" class="item-link">Weiter</a>
+        <!-- Page Content -->
+        <div class="page">
+            <div class="page-content">
+                <!-- Name -->
+                <div class="content-block-title">Weitsprung</div>
+                <div class="list-block">
+                    <ul>
+                        <!-- Result input -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Erster Versuch</div>
+                                    <div class="item input">
+                                        <input type="text" placeholder="Ergebnis in Metern">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Zweiter Versuch</div>
+                                    <div class="item input">
+                                        <input type="text" placeholder="Ergebnis in Metern">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Dritter Versuch</div>
+                                    <div class="item input">
+                                        <input type="text" placeholder="Ergebnis in Metern">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-inner">
+                <a></a>
+                <a href="" id="link_next" class="item-link">Nächster Teilnehmer</a>
+            </div>
         </div>
     </div>
 </template>

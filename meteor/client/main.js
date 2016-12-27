@@ -19,12 +19,7 @@ let input = FlowRouter.group({
 
 input.route('/', {
     action: function () {
-        BlazeLayout.render('two_view', {
-            first: 'view_left',
-            second: 'view_main',
-            nested_left: 'table_left',
-            nested_main: 'table_main',
-        });
+        BlazeLayout.render('table_main');
     }
 });
 
