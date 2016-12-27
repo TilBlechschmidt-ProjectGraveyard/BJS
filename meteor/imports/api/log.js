@@ -12,7 +12,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new error.
-     * @param message {string} content of the message
+     * @param message {string} Content of the message
      */
     error: function (message) {
         this.messages.push({
@@ -27,7 +27,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new warning.
-     * @param message {string} content of the message
+     * @param message {string} Content of the message
      */
     warning: function (message) {
         this.messages.push({
@@ -42,7 +42,7 @@ Log.prototype = {
 
     /**
      * @summary Adds a new info message.
-     * @param message {string} content of the message
+     * @param message {string} Content of the message
      */
     info: function (message) {
         this.messages.push({
@@ -54,8 +54,8 @@ Log.prototype = {
 
     /**
      * @summary Adds a new message with a custom level.
-     * @param level {number} custom log-level to use for the message
-     * @param message {string} content of the message
+     * @param level {number} Custom log-level to use for the message
+     * @param message {string} Content of the message
      */
     custom: function (level, message) {
         this.messages.push({
@@ -67,7 +67,7 @@ Log.prototype = {
 
     /**
      * @summary Merge another Log objects messages to this.messages.
-     * @param other {Log} other Log object this should be merged onto
+     * @param other {Log} Other Log object this should be merged onto
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
@@ -92,7 +92,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages with the given level as strings.
-     * @param level
+     * @param level {integer} Log level the returned messages should have
      * @returns {string[]}
      */
     getAsStringWithLevel: function (level) {
@@ -103,7 +103,7 @@ Log.prototype = {
 
     /**
      * @summary Returns all messages with the given or higher level as strings.
-     * @param level
+     * @param level {integer} Least log level the returned messages should have
      * @returns {string[]}
      */
     getAsStringWithMinLevel: function (level) {
