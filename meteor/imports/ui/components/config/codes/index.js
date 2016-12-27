@@ -1,6 +1,6 @@
 import {Template} from 'meteor/templating';
 import './index.html';
-import '../../layouts/views.css';
+import '../../../layouts/views.css';
 
 Template.codes.events({
     'click #link_back' (event,instance) {
