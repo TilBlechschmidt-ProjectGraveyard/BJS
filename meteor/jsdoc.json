@@ -1,6 +1,10 @@
 {
+  "tags": {
+    "allowUnknownTags": true
+  },
   "plugins": [
-    "plugins/markdown"
+    "plugins/markdown",
+    "plugins/summarize"
   ],
   "markdown": {
     "parser": "gfm"
@@ -12,5 +16,9 @@
       "node_modules"
     ],
     "includePattern": ".+\\.js(x|doc)?$"
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true
   }
 }
