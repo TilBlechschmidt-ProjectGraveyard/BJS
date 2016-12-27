@@ -1,6 +1,3 @@
-/**
- * Created by noah on 12/23/16.
- */
 import {COMPETITION_TYPES} from "../logic/competition_type";
 import {generateAC} from "../crypto/crypto";
 import {Log} from "../log";

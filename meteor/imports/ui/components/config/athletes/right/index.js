@@ -1,11 +1,11 @@
 import {Template} from 'meteor/templating';
 import './index.html';
-import '../../../../data/start_classes.json';
+import '../../../../../data/start_classes.json';
 
 export let myapp = new Framework7();
 
 let st_classes = [];
-let start_classes = require('../../../../data/start_classes.json');
+let start_classes = require('../../../../../data/start_classes.json');
 let counter=0;
 for (let st_class in start_classes) {
     st_classes[counter]=start_classes[st_class].name;

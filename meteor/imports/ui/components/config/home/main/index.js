@@ -1,14 +1,11 @@
-/**
- * Created by empty on 17-Nov-16.
- */
 import {Template} from "meteor/templating";
 import "./index.html";
-import {twoView} from "./../../two_view/index.js";
-import {COMPETITION_TYPES} from "../../../../api/logic/competition_type";
-import {waitForReady, getAthletesOfAccounts} from "../../../../api/database/db_access";
-import {Log} from "../../../../api/log";
-import {Account} from "../../../../api/logic/account";
-import {generateAC} from "../../../../api/crypto/crypto";
+import {twoView} from "../../../two_view/index.js";
+import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
+import {waitForReady, getAthletesOfAccounts} from "../../../../../api/database/db_access";
+import {Log} from "../../../../../api/log";
+import {Account} from "../../../../../api/logic/account";
+import {generateAC} from "../../../../../api/crypto/crypto";
 
 export let myapp = new Framework7();
 

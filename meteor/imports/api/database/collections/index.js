@@ -1,7 +1,3 @@
-/**
- * Created by themegatb on 12/25/16.
- */
-
 import {Generic} from './generic';
 
 function getCollections() {

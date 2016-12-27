@@ -1,5 +1,8 @@
 # BJS
 
+## Documentation
+The documentation for this project can be found at [https://themegatb.github.io/BJS/index.html](https://themegatb.github.io/BJS/index.html)
+
 ## Setup
 To setup the project enter the `meteor` directory and run `meteor npm install` followed by a `meteor` to run it.
 

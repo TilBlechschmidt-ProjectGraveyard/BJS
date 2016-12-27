@@ -29,9 +29,9 @@ function checkSignature(SED, data, groupAC, stationAC) {
 
 /**
  * @summary Decrypt the signed data and check the signatures.
- * @param SED       encrypted and signed data
- * @param groupAC              auth. code of the group
- * @returns {boolean|object}    either the decrypted data or false if the signature verification failed
+ * @param SED       {Object}    Encrypted and signed data to decrypt
+ * @param groupAC   {Object}    Authentication code of the group used for encryption
+ * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed
  */
 function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
@@ -51,9 +51,9 @@ function decrypt(SED, groupAC) {
 //noinspection JSUnresolvedVariable
 /**
  * @summary Generates a authentication code for
- * @param password      passwd to generate the auth. code from
- * @param salt [random] optional salt to recreate a auth. code
- * @returns {{salt, pubHash, privHash}}   authentication code
+ * @param password  {string}     Password to generate the authentication code from
+ * @param salt      {string=}    Salt to recreate a specific authentication code
+ * @returns {{salt, pubHash, privHash}}   The resulting authentication code object
  */
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
     if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
@@ -69,9 +69,9 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 
 /**
  * @summary Encrypt data and sign it
- * @param data          Data to encrypt
- * @param groupAC      Group auth. code
- * @param stationAC    Station auth. code
+ * @param data      {*}         Data to encrypt
+ * @param groupAC   {Object}    Group authentication code to use for encryption
+ * @param stationAC {Object}    Station authentication code to use for encryption
  * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
  */
 export function encrypt(data, groupAC, stationAC) {
@@ -85,10 +85,10 @@ export function encrypt(data, groupAC, stationAC) {
 
 /**
  * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
- * @param log   Logger instance to use
- * @param SED   signed and encrypted data object
- * @param acs   array of authentication codes
- * @returns {*|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
+ * @param log   {Object}    Logger instance to use
+ * @param SED   {Object}    Signed and encrypted data object
+ * @param acs   {Object[]}  Array of authentication codes to attempt decryption with
+ * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
  */
 export function tryDecrypt(log, SED, acs) {
 
