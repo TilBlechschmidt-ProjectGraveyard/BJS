@@ -8,7 +8,7 @@ let words_de = require('./../../data/words_de.json');
 
 /**
  * @summary Generates a random string.
- * @param {Number} length The length of the random string.
+ * @param {Number} length - The length of the random string.
  * @returns {String}
  */
 function genRandomString(length) {

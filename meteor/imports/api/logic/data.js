@@ -15,16 +15,16 @@ export function Data() {
 Data.prototype = {
     /**
      * @typedef {Object} PlainData
-     * @property {string} stID The id of the sport type
-     * @property {object[]} measurements The decrypted
+     * @property {string} stID - The id of the sport type
+     * @property {object[]} measurements - The decrypted
      */
 
     /**
      * @summary Returns the data in plain text.
-     * @param log {Log} Logger instance to use
-     * @param accounts {Account[]} Accounts that should be used for decryption
-     * @param requireSignature {boolean} whether or not to enable signature enforcing
-     * @param groupID {string} Identifier of the group this data is from
+     * @param {Log} log - Logger instance to use
+     * @param {Account[]} accounts - Accounts that should be used for decryption
+     * @param {boolean} requireSignature - whether or not to enable signature enforcing
+     * @param {string} groupID - Identifier of the group this data is from
      * @returns {PlainData[]}
      */
     getPlain: function (log, accounts, requireSignature, groupID) {
@@ -59,9 +59,9 @@ Data.prototype = {
 
     /**
      * @summary Finds and returns the dataObject with the given sport (stID).
-     * @param log {Log} Logger instance to use
-     * @param stID {integer}    Identifier of the sport the returned data should be part of
-     * @param acs {object[]}    List of authentication codes that should be used for decryption
+     * @param {Log} log - Logger instance to use
+     * @param {number} stID - Identifier of the sport the returned data should be part of
+     * @param {AuthenticationCode[]} acs - List of authentication codes that should be used for decryption
      * @returns {{groupSignature, stationSignature, data: {Array}}}
      */
     findEncrypted: function (log, stID, acs) {
@@ -73,11 +73,11 @@ Data.prototype = {
 
     /**
      * @summary Updates the data of a given stID.
-     * @param log {Log} Logger instance to use
-     * @param stID {string} Identifier of the sport the returned data should be part of
-     * @param newMeasurements {number[]} The measurements that should be inserted
-     * @param groupAC   {Object} Authentication code of the group
-     * @param stationAC {Object} Authentication code of the specified sport type
+     * @param {Log} log - Logger instance to use
+     * @param {number} stID - Identifier of the sport the returned data should be part of
+     * @param {number[]} newMeasurements The measurements that should be inserted
+     * @param {AuthenticationCode} groupAC - Authentication code of the group
+     * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
      */
     update: function (log, stID, newMeasurements, groupAC, stationAC) {
         const encryptedStID = encrypt(stID, groupAC, stationAC);

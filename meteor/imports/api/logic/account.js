@@ -2,7 +2,7 @@
  * @summary Object containing information about a specific account
  * @param {string[]} score_write_permissions
  * @param {string[]} group_permissions
- * @param {Object} ac
+ * @param {AuthenticationCode} ac
  * @constructor
  */
 export function Account(group_permissions, score_write_permissions, ac) {
@@ -15,7 +15,7 @@ export function Account(group_permissions, score_write_permissions, ac) {
 /**
  * @summary Return the ACs from all passed accounts
  * @param {Accounts[]} accounts
- * @returns {Object[]}
+ * @returns {AuthenticationCode[]}
  */
 export function getAcsFromAccounts(accounts) {
     return _.map(accounts, function (account) {

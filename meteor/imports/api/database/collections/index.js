@@ -1,5 +1,17 @@
-import {Generic} from './generic';
+import {Generic} from "./generic";
 
+/**
+ * @typedef {Object} Collections
+ * @property {Mongo.Collection} Generic - Database with general information about the server
+ * @property {Mongo.Collection} Accounts - Database with general information about the server
+ * @property {Mongo.Collection} Athletes - Database with general information about the server
+ */
+
+
+/**
+ * Returns a list of all relevant collections
+ * @returns {Collections}
+ */
 function getCollections() {
     import {Accounts} from './accounts';
     import {Athletes} from './athletes';
@@ -63,6 +75,10 @@ function setPrefix() {
     Meteor.dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + dbPrefix);
 }
 
+/**
+ * Returns a list of all relevant collections
+ * @returns {Collections}
+ */
 module.exports = function () {
     if (Meteor.isServer && !Meteor.dbInitialized) {
         if (!Meteor.isProduction) {

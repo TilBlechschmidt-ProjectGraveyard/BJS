@@ -12,6 +12,8 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
 
 /**
  * @typedef {Object} SED //TODO @TheMegaTB add properties
+ * @property {Object} groupSignature //TODO @TheMegaTB update type
+ * @property {Object} stationSignature //TODO @TheMegaTB update type
  */
 
 /**

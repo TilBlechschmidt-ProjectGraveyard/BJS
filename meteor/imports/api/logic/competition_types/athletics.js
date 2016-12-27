@@ -13,39 +13,28 @@ let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json'
 export let Athletics = {
     maxAge: 20,
     /**
-     * @typedef {Object} AthleticsConversionFactors
-     * @property {number} A1 Conversion Factor for start class 'A1'
-     * @property {number} A2 Conversion Factor for start class 'A2'
-     * @property {number} A3 Conversion Factor for start class 'A3'
-     * @property {number} A4 Conversion Factor for start class 'A4'
-     * @property {number} A5 Conversion Factor for start class 'A5'
-     * @property {number} A6 Conversion Factor for start class 'A6'
-     * @property {number} B1 Conversion Factor for start class 'B1'
-     * @property {number} B2 Conversion Factor for start class 'B2'
-     * @property {number} C1 Conversion Factor for start class 'C1'
-     * @property {number} C2 Conversion Factor for start class 'C2'
-     * @property {number} D Conversion Factor for start class 'D'
-     * @property {number} E Conversion Factor for start class 'E'
+     * @typedef {Object} AthleticsScoreCalculation
+     * @property {number} a - A sport type specific number required to calculate the score
+     * @property {number} c - A sport type specific number required to calculate the score
+     * @property {number} d - A sport type specific number required to calculate the score
+     * @property {ConversionFactors} conversionFactor An object containing information about conversion factors for all start classes
      */
 
     /**
      * @typedef {Object} AthleticsGenderData
-     * @property {number[]} age A list of ages which are allowed to participate
-     * @property {number} a A sport type specific number required to calculate the score
-     * @property {number} c A sport type specific number required to calculate the score
-     * @property {number} d A sport type specific number required to calculate the score
-     * @property {AthleticsConversionFactors} conversionFactor An object containing information about conversion factors for all start classes
+     * @property {number[]} age - A list of ages which are allowed to participate
+     * @property {AthleticsScoreCalculation} scoreCalculation - Information about the score calculation
      */
 
     /**
      * @typedef {Object} AthleticsSportData
-     * @property {string} id The id of the sport type
-     * @property {string} name The human readable name for the sport type
-     * @property {number} category The category of the sport type (eg. sprinting)
-     * @property {string} unit The human readable unit for the measurements (eg. m (meter))
-     * @property {string} description A description of the sport type. It may contain information about how to measure in this sport type.
-     * @property {AthleticsGenderData} w An object containing information about how to calculate the score for female participant
-     * @property {AthleticsGenderData} m An object containing information about how to calculate the score for male participant
+     * @property {string} id - The id of the sport type
+     * @property {string} name - The human readable name for the sport type
+     * @property {number} category - The category of the sport type (eg. sprinting)
+     * @property {string} unit - The human readable unit for the measurements (eg. m (meter))
+     * @property {string} description - A description of the sport type. It may contain information about how to measure in this sport type.
+     * @property {AthleticsGenderData} w - An object containing information about how to calculate the score for female participant
+     * @property {AthleticsGenderData} m - An object containing information about how to calculate the score for male participant
      */
 
     /**
@@ -117,7 +106,7 @@ export let Athletics = {
 
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @private
+     * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @param {Account[]} accounts - A list of accounts used to decrypt
@@ -175,7 +164,7 @@ export let Athletics = {
 
     /**
      * Calculates the score of one dataObject returned by the getValidData function.
-     * @private
+     * @public
      * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
      * @returns {number[]}
      */
@@ -260,7 +249,6 @@ export let Athletics = {
 
     /**
      * Returns the min. score for the different certificates.
-     * @private
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @returns {undefined|number[]}

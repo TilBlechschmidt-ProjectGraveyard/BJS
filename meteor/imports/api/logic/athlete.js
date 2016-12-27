@@ -182,7 +182,7 @@ Athlete.prototype = {
  * @param data {Object} Encrypted athlete
  * @param accounts {Account[]} List of accounts containing the one that was used for encryption
  * @param require_signature {boolean} whether or not to enable signature enforcing
- * @returns {Athlete}
+ * @returns {boolean|Athlete}
  */
 Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
     const acs = getAcsFromAccounts(accounts);

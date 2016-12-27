@@ -9,12 +9,25 @@ export let Swimming = {
     maxAge: 18,
 
     /**
+     * @typedef {Object} SwimmingCalculation
+     * @property {number} a - A sport type specific number required to calculate the score
+     * @property {number} c - A sport type specific number required to calculate the score
+     * @property {number} d - A sport type specific number required to calculate the score
+     * @property {ConversionFactors} conversionFactor - An object containing information about conversion factors for all start classes
+     */
+
+    /**
+     * @typedef {Object} SwimmingGenderData
+     * @property {SwimmingCalculation} scoreCalculation - Information about the score calculation
+     */
+
+    /**
      * @typedef {Object} SwimmingSportData
-     * @property {string} id The id of the sport type
-     * @property {string} name The human readable name for the sport type
-     * @property {number} category The category of the sport type (eg. sprinting)
-     * @property {string} unit The human readable unit for the measurements (eg. m (meter))
-     * @property {string} description A description of the sport type. It may contain information about how to measure in this sport type.
+     * @property {string} id - The id of the sport type
+     * @property {string} name - The human readable name for the sport type
+     * @property {number} category - The category of the sport type (eg. sprinting)
+     * @property {string} unit - The human readable unit for the measurements (eg. m (meter))
+     * @property {string} description - A description of the sport type. It may contain information about how to measure in this sport type.
      */
 
     /**
