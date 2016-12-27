@@ -1,6 +1,3 @@
-/**
- * Created by noah on 08/11/2016.
- */
 import {Data} from "./data";
 import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
 import {getAcsFromAccounts} from "./account";

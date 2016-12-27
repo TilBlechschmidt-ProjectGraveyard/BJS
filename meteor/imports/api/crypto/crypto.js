@@ -29,9 +29,9 @@ function checkSignature(SED, data, groupAC, stationAC) {
 
 /**
  * @summary Decrypt the signed data and check the signatures.
- * @param SED       encrypted and signed data
- * @param groupAC              auth. code of the group
- * @returns {boolean|object}    either the decrypted data or false if the signature verification failed
+ * @param SED       {Object}    encrypted and signed data
+ * @param groupAC   {Object}    auth. code of the group
+ * @returns {boolean|Object}    either the decrypted data or false if the signature verification failed
  */
 function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
@@ -51,8 +51,8 @@ function decrypt(SED, groupAC) {
 //noinspection JSUnresolvedVariable
 /**
  * @summary Generates a authentication code for
- * @param password      passwd to generate the auth. code from
- * @param salt [random] optional salt to recreate a auth. code
+ * @param password  {string}     passwd to generate the auth. code from
+ * @param salt      {string=}    salt to recreate a specific auth. code
  * @returns {{salt, pubHash, privHash}}   authentication code
  */
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
@@ -69,9 +69,9 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 
 /**
  * @summary Encrypt data and sign it
- * @param data          Data to encrypt
- * @param groupAC      Group auth. code
- * @param stationAC    Station auth. code
+ * @param data      {*}         Data to encrypt
+ * @param groupAC   {Object}    Group auth. code
+ * @param stationAC {Object}    Station auth. code
  * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
  */
 export function encrypt(data, groupAC, stationAC) {
@@ -85,10 +85,10 @@ export function encrypt(data, groupAC, stationAC) {
 
 /**
  * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
- * @param log   Logger instance to use
- * @param SED   signed and encrypted data object
- * @param acs   array of authentication codes
- * @returns {*|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
+ * @param log   {Object}    Logger instance to use
+ * @param SED   {Object}    signed and encrypted data object
+ * @param acs   {Object[]}  array of authentication codes
+ * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
  */
 export function tryDecrypt(log, SED, acs) {
 
