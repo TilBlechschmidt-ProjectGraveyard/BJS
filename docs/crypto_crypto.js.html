@@ -85,14 +85,18 @@
     </ul>
     <h3>Global</h3>
     <ul>
+        <li><a href="global.html#checkSignature">checkSignature</a></li>
         <li><a href="global.html#decrypt">decrypt</a></li>
         <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#generateAC">generateAC</a></li>
+        <li><a href="global.html#generateHMAC">generateHMAC</a></li>
+        <li><a href="global.html#generateSignature">generateSignature</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
+        <li><a href="global.html#wordsToHex">wordsToHex</a></li>
     </ul>
 </nav>
 
@@ -113,17 +117,42 @@
 const TYPE1_PEPPER = 'n+sbYWqp@D_E%eTg!ae$NEJ--HzkRze&amp;8MqbcfGA&amp;M^jw^tRZFPabB9SqmuZQd6KpAVZky5tjK^k=yf_4gk35rN7v2f?p&amp;Yq5=C5tRf&amp;#2g-8L@CYM?fkPM=jhMhWR_?sjYA=aj+9?EL+uKpb!BT5Pr&amp;#BTLgAf5h_*#QmVm&amp;cL!7YRaLDY+5#DnWdcq4gg_C+6!ub$!YjRfh^DE4D=xmQY^tBb6z=x6x=d4gW5Wqq+5zRj?Yf6GGc6whx$Xru_3qsVL6$Gj@c=N_fdn!nR8!MNj=wVRu-Fu=GpQ7zB!eS5T-+Z-XjJ9W==Z%uf5wZ85?YPVq6$XJAa*BdyV_pCs9faCx2pZ!8vjX#Df_t4k34q7frU&amp;#!P=ssE@9Z!&amp;cbzw9KcNGAxNDRATQ9b&amp;3n@=LgvZ&amp;gbujefX&amp;fd8yGgPYaZ7VR2SSpb%9sYa524a2nQNA%vmZ+qL-*6kRZyQGu!2rCu_xbmYv@acd8PAqc2Yz_v2ybR!4^XE3ZGPh3xC5GqHhY_MQrQ@enUTj@JhG^MtjKKqJTpc6T7A=xvxc5CGAc#HG9fN-Y#uvdZpa@&amp;SUdX!JuMk@$dm%5*h4LewLAE3!dCqjQm?k%%L=#X!udLQ-Dz#+KTrvGCe8&amp;YgxM-_-2&amp;26e=RJ?q8nJP&amp;23eA58HM7$Q4g58tp&amp;-Wzd$JgjUYyLns%hGC6PUA^Ug3Rzpf9C5nQ+_TM+9dTu-#mn6b^EzBh3Fm6F=P^2vxkNkbbgx8MYF-sLJf5QRZzHsex&amp;b&amp;$&amp;EQeA%GvLqb9cftYTHuh6KB^tfYan83FX^k&amp;avE=_jByy2YAprevKpT-A3-jffc$GgBZR@?C$L-24Fs=MnYuxv%=TQ^A$$8*CjdyjxJqh#5NfE8XC%7wN%b4Zcm9rJ9_h+s_*2LbevZ8qDUkTYW-V76g3F!pzj$yxCPadKV6^@K&amp;pF485JjG9E_F&amp;=7hSQEf!c_nB2!d@WbQa&amp;=wq8SXWqMYSsumX4=*a-Ud?+%-5a^ctAbw8VPTge9z^rC^@M%pS?m3K-*fm!DUEv5gHM9FrnWWuypj!4?rJyrmm$%p#Z$^42RqqK$BPm-ARANn?2*Ty!*T_j5-Bp36AMKS7Q%#xYgRP*YP6vD^7KFv4b5yHNFgQ-ZV*QVhcTA_XsDBtrSnk#AU*&amp;RyW$=mzJ5az=NndGTQZgzM++GUt*Qs=s_C5Urkw9W?T%Gq3ktnWqxJcrZzX#D-h_73gD#+kLR3TRPBRVCS!SrvB*v_y-$$M$dHfumkeasR#p!n2NP*hYL?=Rf4GQ^*6e@ft+qk#C6@67dmwDkcDJFaL5=!NmMGenGngVuftPxfbeRQ&amp;MEfbyC+8Q&amp;EG3p=arbB_4KhhWz#hgcMja%73wfuwdLvc^%XgAvqf8F+bMkTZmAuy_GF@=xrBpKfpTRw6ALhYAVfAYr9gvtzY#FM6??&amp;DPSzKsDfvpY8KQaL7uY-EyNQBhf9*q+ASGe3gV+JrH*xtD_4TR@DES#xnyFu9V3g2$&amp;K4Lu5CBg94M_sRRf#92jzmZu9GR&amp;6VynKmwUcPk3USg?Zj_-W7?AW-QKMzQX+2LD6GqkQsLWMEgG3rPHx3jvme^#ykC^_2pH@$$r^*Z@H%zJsSUK+3F2pNXvLW_DpZHPQDXdL^Wq7xnWb4+4A^5Rg9Z3YGw?mYZDsu9RKwN^6bu-Bw*HPu2hdL4EG_HE*Q57NZr!x9+bQRcTw*^8zxaq7uT#TaqFRnPBjVN#StQzbM2!fj2Qf4ZDUm_F$LL!?ua9@CEfM_WZEYBQ4wz@LFJ#ynpHYDYKMYyvNNXT7WVypknph#kqQ!wUcqQ4-QGJK566ag93wquGjawG8^yzvf98E=?=Lmh8^Sbm6tupMNJUD4W6#7T5K=J7LX2mr8^y4FW9k*b9#T9ajACpzvuxqg964ddD4YJ6wVcW=5B4ZWwyQ4_y-HaR2@jkguhB43L8$W?=#rpFZKpZUsGtJyqVwA+B_CAXcLP-8AqTqWhDcuRRfWf!Rr8GtFN4pJUfw6!aAc8jay5w&amp;9TEhgk$YDx5GbW!YyKP@rCuJDRzcM^R';
 const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$ruaHTT8QH*^Ty6eEL#P@zFLAaR9J7J#GQ3@A?3RBdMw8?=Lw9d?$y_Sw5kAnd&amp;xDk&amp;-=KJ3TA$SM*@FMtFGGy8w8?8Aj5n3C!DVLn*quqvGQpgcYAZd_Vku#Lb4J$RmH_=fKQREx&amp;gs%@ezyrLVQJUJZ*wUCFWM43T%6kH@J7@PLDeLbP!qN#6QuvS-TNK^emUBWGR@5EhEVz*NDM^%^PHSpKS5^#nj%6hJWtuK^*6rpFba8jFB=zWb&amp;BLbyfP9H8vSk^$+swj#mKkb^cf7SyPZB2%%v9uK+fbsrtYV8YKpUUBYdg9YnfUrMAL!?6tMzurDgS49mHkvK3%#g@*^vqz#zQzYg8-+&amp;%pXk49Bc$v$XQQ5a@zH@%p85TzMHP6uHQPjXeMU8CtHBWYf8u6g#4%+P@pH!JyDXS9=Bj#EegR^&amp;-xY^_7NX%8LNnMYph%7qv$YmhBDzA3TqDWJJC!V5fUeNV_$Qm=kdmzW8ZQT%q-7PCGKsPWH+5#*4UW@yKVZdtuqxkPC&amp;EpUwsns2d?VuB2XFc9puAg-&amp;jj@h?s*T8RXphK4HFd-n%N*vbVX8$WASC@v#4cu8ZYecy#duATyq5hQ_hK#hZ9eq6UzHzG++Gg4u?E*Vw8Bfp-XZ%SYRW$7pBxAqWU6A?595&amp;XqU#8L2q9kkZ7nWXXBeW4%L4PhXc@mG57kEX=A=kXHZkLZ28p&amp;34^pA6KM$t+rN#t6TLm!$S7t-77FQm3AZtsja#MYbW9Umd6F8h?w=jxhERWzJPY@q9kFA&amp;y^XUj=gZB#C%rvU8!J*nRU23@8N?L9N&amp;Z9K7bh5*y_47@AJsvpjvxup*G8Rry5v*DEunWKt#=fPWCfLBEkNt^2qQGL+cC3%*C+pSCJdbE_UQRQtLJ2N79xBp7ty#32nn2&amp;2e%2rjB2xkMsQ*fz2$BPZWMf&amp;prEffm4qM5D*_pN%7vuXub+Y#QR^J27DUQ!!Hu_@J3&amp;aUFTbv4-Ey@yQ7Zp_exUL*rAVBfZg%bAD@-xj-mvv6-*TP$MdRThr$2Uz!T8u4Wbz!DnYfTmcyERTxsKGfWcafyS*2F?2D9hRm!?NmWfnzN=mvu4-?hkqnJB#W-xq4U24SMM8bcE*GU7ZDEvS75FJTRbsuV46&amp;d^y4C3!cKVv%9^eJVDb8=DUQV-npzccqH?k#35hJd7PYm5xRCvqcnap2k!CJ-+*kq32nKKQyzXakuNJJrrnEs_Q&amp;PhWPs7PPtqaJ8*C#=JeN$m6STrsZh$H68pB^X&amp;V_%&amp;zsnyr^a-pq@Y6?gHntp5bvjx5V4+KHueMn#2aPKT2ewVF$^eU7cn!CUnyv@Khd_8pPCCfHuY=8KXF==*cNJz*9&amp;t_#p_Ssa^Cs!Rz6jv4WQGJRJZ9Nk3bRBZ8Af?Jg?C+d5fwQGP6a+wUT3rZ9dctvvrUkS!taJ!^ZMgHrUTdL++67nbh^!33T!3*Jt=PbRYF#nTSLdBVJMt*z*$?cv2?rfVSR_**YJe_AQ+4m6&amp;FjVvgX8+Zy7qC^uM4F!vvtth-!BrDv8nQw6x#=-&amp;b55BLjWRkHEYwcr$8B9GhPK$=8qm8MhMhUgs?wsBgEThdk7Uastf^kAzT2#J62r73aA6#ccNuG-qRE2FTfWMtD#%^73EHyHmeE%nP8Z=jKPwX&amp;y%SvrvhuSMfP57XXTM=jZaujv6UZjYUBH=J2t2%@kaK8ss!nZu_Zu+f6u_&amp;@UT?@zWp*?Q@huWX%eQh*^@CwWa8g7^HMAg^=qKrPtYg-HHu@X&amp;NL!!d7^Q%H_?mu$t2peM%YG%Dy*DLh&amp;c!HQk7aQ+EAZnCNy-v9nF*CBfV_^#?BeK%EzTB2awPYrm#wAFh$$6@H?Nq46zrzgc2zEJ=A#^nqS??aP-gC6YemWBtzVZE%3Sv@&amp;JGeD@hh$AcVB4GJJ5PkCzVCjRh_&amp;r_bKx2U3u3+hFzytSf9tSHdsdpZ#mtxeWJ4b&amp;UuTzB5WbTLW3bF%D&amp;?HPFR9LZpwkzsDJp9ZNv26rJQh';
 
+/**
+ * @typedef {Object} AuthenticationCode
+ * @property {string} salt
+ * @property {string} pubHash
+ * @property {string} privHash
+ */
+
+/**
+ * @typedef {Object} SED //TODO @TheMegaTB add properties
+ */
+
+/**
+ * //TODO @TheMegaTB add description
+ * @param {string} words
+ */
 function wordsToHex(words) {
     //noinspection JSUnresolvedVariable
     return CryptoJS.enc.Hex.stringify(words);
 }
 
-// Hash-based message authentication code
+//
+/**
+ * Create Hash-based message authentication code //TODO @TheMegaTB review description
+ * @param {object} data //TODO @TheMegaTB review type
+ * @param {string} password
+ */
 function generateHMAC(data, password) {
     //noinspection JSUnresolvedFunction
     return wordsToHex(CryptoJS.HmacSHA512(data, password));
 }
 
+/**
+ * Generate the signature of data//TODO @TheMegaTB review description
+ * @param {object} data //TODO @TheMegaTB review type
+ * @param {AuthenticationCode} ac
+ */
 function generateSignature(data, ac) {
     return {
         signature: generateHMAC(data, ac.privHash),
@@ -131,7 +160,14 @@ function generateSignature(data, ac) {
     };
 }
 
-// SED = signed &amp; encrypted data
+/**
+ * Checks the signature of a SED package
+ * @param {SED} SED - the signed and encrypted data
+ * @param {object} data - The decrypted data //TODO @TheMegaTB review type
+ * @param {AuthenticationCode} groupAC - The GroupAC that will be used for checking
+ * @param {AuthenticationCode} stationAC - The GroupAC that will be used for checking
+ * @returns {boolean}
+ */
 function checkSignature(SED, data, groupAC, stationAC) {
     return (groupAC.pubHash == SED.groupSignature.pubHash &amp;&amp; generateHMAC(data, groupAC.privHash) == SED.groupSignature.signature) &amp;&amp;
         ( typeof stationAC === 'object' ? (stationAC.pubHash == SED.stationSignature.pubHash &amp;&amp; generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
@@ -139,8 +175,8 @@ function checkSignature(SED, data, groupAC, stationAC) {
 
 /**
  * @summary Decrypt the signed data and check the signatures.
- * @param SED       {Object}    Encrypted and signed data to decrypt
- * @param groupAC   {Object}    Authentication code of the group used for encryption
+ * @param {SED} SED - Encrypted and signed data to decrypt
+ * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption
  * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed
  */
 function decrypt(SED, groupAC) {
@@ -163,7 +199,7 @@ function decrypt(SED, groupAC) {
  * @summary Generates a authentication code for
  * @param password  {string}     Password to generate the authentication code from
  * @param salt      {string=}    Salt to recreate a specific authentication code
- * @returns {{salt, pubHash, privHash}}   The resulting authentication code object
+ * @returns {AuthenticationCode}   The resulting authentication code object
  */
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
     if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
@@ -180,9 +216,9 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 /**
  * @summary Encrypt data and sign it
  * @param data      {*}         Data to encrypt
- * @param groupAC   {Object}    Group authentication code to use for encryption
- * @param stationAC {Object}    Station authentication code to use for encryption
- * @returns {boolean|{groupSignature, stationSignature, data: (string|*)}}
+ * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption
+ * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption
+ * @returns {boolean|{groupSignature: AuthenticationCode, stationSignature: AuthenticationCode, data: (string|*)}}
  */
 export function encrypt(data, groupAC, stationAC) {
     //noinspection JSUnresolvedVariable
@@ -195,9 +231,9 @@ export function encrypt(data, groupAC, stationAC) {
 
 /**
  * @summary Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
- * @param log   {Log}    Logger instance to use
- * @param SED   {Object}    Signed and encrypted data object
- * @param acs   {Object[]}  Array of authentication codes to attempt decryption with
+ * @param {Log} log - A log object
+ * @param {SED} SED - Encrypted and signed data to decrypt
+ * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with
  * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
  */
 export function tryDecrypt(log, SED, acs) {
@@ -251,7 +287,7 @@ export function tryDecrypt(log, SED, acs) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 19:41:28
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 20:23:04
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

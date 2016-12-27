@@ -14,7 +14,7 @@ export function Account(group_permissions, score_write_permissions, ac) {
 
 /**
  * @summary Return the ACs from all passed accounts
- * @param {Object[]} accounts
+ * @param {Accounts[]} accounts
  * @returns {Object[]}
  */
 export function getAcsFromAccounts(accounts) {
