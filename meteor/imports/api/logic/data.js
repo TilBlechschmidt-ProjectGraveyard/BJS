@@ -14,12 +14,18 @@ export function Data() {
 
 Data.prototype = {
     /**
+     * @typedef {Object} PlainData
+     * @property {string} stID The id of the sport type
+     * @property {object[]} measurements The decrypted
+     */
+
+    /**
      * @summary Returns the data in plain text.
      * @param log {Log} Logger instance to use
      * @param accounts {Account[]} Accounts that should be used for decryption
      * @param requireSignature {boolean} whether or not to enable signature enforcing
      * @param groupID {string} Identifier of the group this data is from
-     * @returns {{stID, measurements}[]}
+     * @returns {PlainData[]}
      */
     getPlain: function (log, accounts, requireSignature, groupID) {
         return filterUndefined(_.map(this.data, function (dataObject) {

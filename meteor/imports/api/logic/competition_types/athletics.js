@@ -5,21 +5,64 @@ import {filterUndefined} from "./../general";
 // let START_CLASSES = require('./../../../data/start_classes.json');
 let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json');
 
+/**
+ * Object containing all information and functions required for Athletics contest.
+ * @public
+ * @namespace
+ */
 export let Athletics = {
     maxAge: 20,
     /**
-     * @summary Returns a list of sport types associated with the ct athletics.
-     * @returns {{id: string, name: string, category: number, unit: string,  description: string, w: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}, m: {age: number[], a: number, c: number, d: number, conversionFactor: {A1: number, A2: number, A3: number, A4: number, A5: number, A6: number, B1: number, B2: number, C1: number, C2: number, D: number, E: number}}}[]}
+     * @typedef {Object} AthleticsConversionFactors
+     * @property {number} A1 Conversion Factor for start class 'A1'
+     * @property {number} A2 Conversion Factor for start class 'A2'
+     * @property {number} A3 Conversion Factor for start class 'A3'
+     * @property {number} A4 Conversion Factor for start class 'A4'
+     * @property {number} A5 Conversion Factor for start class 'A5'
+     * @property {number} A6 Conversion Factor for start class 'A6'
+     * @property {number} B1 Conversion Factor for start class 'B1'
+     * @property {number} B2 Conversion Factor for start class 'B2'
+     * @property {number} C1 Conversion Factor for start class 'C1'
+     * @property {number} C2 Conversion Factor for start class 'C2'
+     * @property {number} D Conversion Factor for start class 'D'
+     * @property {number} E Conversion Factor for start class 'E'
+     */
+
+    /**
+     * @typedef {Object} AthleticsGenderData
+     * @property {number[]} age A list of ages which are allowed to participate
+     * @property {number} a A sport type specific number required to calculate the score
+     * @property {number} c A sport type specific number required to calculate the score
+     * @property {number} d A sport type specific number required to calculate the score
+     * @property {AthleticsConversionFactors} conversionFactor An object containing information about conversion factors for all start classes
+     */
+
+    /**
+     * @typedef {Object} AthleticsSportData
+     * @property {string} id The id of the sport type
+     * @property {string} name The human readable name for the sport type
+     * @property {number} category The category of the sport type (eg. sprinting)
+     * @property {string} unit The human readable unit for the measurements (eg. m (meter))
+     * @property {string} description A description of the sport type. It may contain information about how to measure in this sport type.
+     * @property {AthleticsGenderData} w An object containing information about how to calculate the score for female participant
+     * @property {AthleticsGenderData} m An object containing information about how to calculate the score for male participant
+     */
+
+    /**
+     * Returns a list of sport types associated with the ct athletics.
+     * @public
+     * @returns {AthleticsSportData[]}
      */
     getSports: function () {
         return require('./../../../data/athletics/sports.json');
     },
 
     /**
-     * @summary Returns whether a given athlete can do the sport type with the id stID.
-     * @param log
-     * @param athlete
-     * @param {string} stID
+     * Returns whether a given athlete can do the sport type with the id stID.
+     * @public
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {string} stID - The string id of the sport type
      * @returns {{canDoSport, dataObject, log}}
      */
     canDoSportType: function (log, athlete, stID) {
@@ -73,12 +116,13 @@ export let Athletics = {
 
 
     /**
-     * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * * @param requireSignature
-     * * @returns {object[]}
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * @private
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {object[]}
      */
     getValidData: function (log, athlete, accounts, requireSignature) {
         //get the plain data from the athlete (unencrypted)
@@ -106,11 +150,12 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns whether an athlete is already finished.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts              auth. codes
-     * @param requireSignature
+     * Returns whether an athlete is already finished.
+     * @public
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {boolean}
      */
     validate: function (log, athlete, accounts, requireSignature) {
@@ -129,8 +174,9 @@ export let Athletics = {
     },
 
     /**
-     * @summary Calculates the score of one dataObject returned by the getValidData function.
-     * @param dataObject
+     * Calculates the score of one dataObject returned by the getValidData function.
+     * @private
+     * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
      * @returns {number[]}
      */
     calculateOne: function (dataObject) {
@@ -169,11 +215,12 @@ export let Athletics = {
     },
 
     /**
-     * @summary Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts              auth. codes
-     * @param requireSignature
+     * Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @public
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {number}
      */
     calculate: function (log, athlete, accounts, requireSignature) {
@@ -203,7 +250,8 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns information about the ct athletics.
+     * Returns information about the competition type athletics.
+     * @public
      * @returns {object}
      */
     getInformation: function () {
@@ -211,9 +259,10 @@ export let Athletics = {
     },
 
     /**
-     * @summary Returns the min. score for the different certificates.
-     * @param log
-     * @param athlete
+     * Returns the min. score for the different certificates.
+     * @private
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
      * @returns {undefined|number[]}
      */
     getCertificateInfo: function (log, athlete) {
@@ -227,6 +276,15 @@ export let Athletics = {
         return genderInfo[athlete.age];
     },
 
+    /**
+     * Generates to certificate for an athlete
+     * @public
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {{score: number, certificate: number}}
+     */
     generateCertificate: function (log, athlete, accounts, requireSignature) {
         const score = this.calculate(log, athlete, accounts, requireSignature);
         const certificateInfo = this.getCertificateInfo(log, athlete);

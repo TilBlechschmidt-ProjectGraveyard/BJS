@@ -1,10 +1,25 @@
 import {filterUndefined} from "./../general";
 
+/**
+ * Object containing all information and functions required for Swimming contest.
+ * @public
+ * @namespace
+ */
 export let Swimming = {
     maxAge: 18,
+
     /**
-     * @summary Returns a list of sport types associated with the ct athletics.
-     * @returns {{id: string, name: string, category: number, unit: string, description: string}[]}
+     * @typedef {Object} SwimmingSportData
+     * @property {string} id The id of the sport type
+     * @property {string} name The human readable name for the sport type
+     * @property {number} category The category of the sport type (eg. sprinting)
+     * @property {string} unit The human readable unit for the measurements (eg. m (meter))
+     * @property {string} description A description of the sport type. It may contain information about how to measure in this sport type.
+     */
+
+    /**
+     * Returns a list of sport types associated with the ct athletics.
+     * @returns {SwimmingSportData[]}
      */
     getSports: function () {
         return require('./../../../data/swimming/sports.json');
@@ -14,10 +29,10 @@ export let Swimming = {
         return require('./../../../data/swimming/score_table.json');
     },
     /**
-     * @summary Returns whether a given athlete can do the sport type with the id stID.
-     * @param log
-     * @param athlete
-     * @param {string} stID
+     * Returns whether a given athlete can do the sport type with the id stID.
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {string} stID - The string id of the sport type
      * @returns {{canDoSport, dataObject, log}}
      */
     canDoSportType: function (log, athlete, stID) {
@@ -72,11 +87,11 @@ export let Swimming = {
     },
 
     /**
-     * @summary Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * * @param requireSignature
+     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * * @returns {object[]}
      */
     getValidData: function (log, athlete, accounts, requireSignature) {
@@ -105,11 +120,11 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns whether an athlete is already finished.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * @param requireSignature
+     * Returns whether an athlete is already finished.
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {boolean}
      */
     validate: function (log, athlete, accounts, requireSignature) {
@@ -127,6 +142,12 @@ export let Swimming = {
             }).length;
     },
 
+    /**
+     * Calculates the score of one dataObject returned by the getValidData function.
+     * @private
+     * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
+     * @returns {number[]}
+     */
     calculateOne: function (dataObject) {
         return _.map(dataObject.measurements, function (measurement) {
             const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * measurement;
@@ -144,11 +165,11 @@ export let Swimming = {
     },
 
     /**
-     * @summary Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
-     * @param log
-     * @param athlete
-     * @param {object[]} accounts
-     * @param requireSignature
+     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
      * @returns {number}
      */
     calculate: function (log, athlete, accounts, requireSignature) {
@@ -178,7 +199,7 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns information about the ct swimming.
+     * Returns information about the ct swimming.
      * @returns {object}
      */
     getInformation: function () {
@@ -186,9 +207,9 @@ export let Swimming = {
     },
 
     /**
-     * @summary Returns the min. score for the different certificates.
-     * @param log
-     * @param athlete
+     * Returns the min. score for the different certificates.
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
      * @returns {undefined|number[]}
      */
     getCertificateInfo: function (log, athlete) {
@@ -199,12 +220,20 @@ export let Swimming = {
         return [15, 27];
     },
 
+    /**
+     * Generates to certificate for an athlete
+     * @public
+     * @param {Log} log - A log object
+     * @param {Athlete} athlete - The Athlete
+     * @param {Account[]} accounts - A list of accounts used to decrypt
+     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {{score: number, certificate: number}}
+     */
     generateCertificate: function (log, athlete, accounts, requireSignature) {
         const score = this.calculate(log, athlete, accounts, requireSignature);
         const certificateInfo = this.getCertificateInfo(log, athlete);
 
         let certificate = -1;
-
 
         if (certificateInfo !== undefined) {
             if (score >= certificateInfo[1]) {
