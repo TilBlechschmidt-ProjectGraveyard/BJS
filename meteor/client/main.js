@@ -23,6 +23,17 @@ input.route('/', {
     }
 });
 
+input.route('/login', {
+    action: function () {
+        BlazeLayout.render('login', {
+            login_fields: [
+                "Gruppenleiter",
+                "Station"
+            ]
+        });
+    }
+});
+
 let config = FlowRouter.group({
    prefix: '/config'
 });
