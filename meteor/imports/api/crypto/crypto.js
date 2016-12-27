@@ -5,9 +5,9 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
 
 /**
  * @typedef {Object} AuthenticationCode
- * @property {string} salt
- * @property {string} pubHash
- * @property {string} privHash
+ * @property {string} salt - The salt that is used to create the public and private hash
+ * @property {string} pubHash - The public Hash of the Code
+ * @property {string} privHash - The private Hash of the Code
  */
 
 /**
@@ -27,7 +27,7 @@ function wordsToHex(words) {
 
 //
 /**
- * Create Hash-based message authentication code //TODO @TheMegaTB review description
+ * Create Hash-based message authentication code. //TODO @TheMegaTB review description
  * @param {object} data //TODO @TheMegaTB review type
  * @param {string} password
  */
@@ -37,7 +37,7 @@ function generateHMAC(data, password) {
 }
 
 /**
- * Generate the signature of data//TODO @TheMegaTB review description
+ * Generate the signature of data.//TODO @TheMegaTB review description
  * @param {object} data //TODO @TheMegaTB review type
  * @param {AuthenticationCode} ac
  */
@@ -49,11 +49,11 @@ function generateSignature(data, ac) {
 }
 
 /**
- * Checks the signature of a SED package
- * @param {SED} SED - the signed and encrypted data
- * @param {object} data - The decrypted data //TODO @TheMegaTB review type
- * @param {AuthenticationCode} groupAC - The GroupAC that will be used for checking
- * @param {AuthenticationCode} stationAC - The GroupAC that will be used for checking
+ * Checks the signature of a SED package.
+ * @param {SED} SED - the signed and encrypted data.
+ * @param {object} data - The decrypted data. //TODO @TheMegaTB review type
+ * @param {AuthenticationCode} groupAC - The GroupAC that will be used for checking.
+ * @param {AuthenticationCode} stationAC - The GroupAC that will be used for checking.
  * @returns {boolean}
  */
 function checkSignature(SED, data, groupAC, stationAC) {
@@ -63,9 +63,9 @@ function checkSignature(SED, data, groupAC, stationAC) {
 
 /**
  * Decrypt the signed data and check the signatures.
- * @param {SED} SED - Encrypted and signed data to decrypt
- * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption
- * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed
+ * @param {SED} SED - Encrypted and signed data to decrypt.
+ * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption.
+ * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed.
  */
 function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
@@ -84,10 +84,10 @@ function decrypt(SED, groupAC) {
 // AC = authentication code = object of the hashes and the salt
 //noinspection JSUnresolvedVariable
 /**
- * Generates a authentication code for
- * @param password  {string}     Password to generate the authentication code from
- * @param salt      {string=}    Salt to recreate a specific authentication code
- * @returns {AuthenticationCode}   The resulting authentication code object
+ * Generates a authentication code for.
+ * @param password  {string}     Password to generate the authentication code from.
+ * @param salt      {string=}    Salt to recreate a specific authentication code.
+ * @returns {AuthenticationCode}   The resulting authentication code object.
  */
 export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
     if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
@@ -102,10 +102,10 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 }
 
 /**
- * Encrypt data and sign it
- * @param data      {*}         Data to encrypt
- * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption
- * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption
+ * Encrypt data and sign it.
+ * @param data {*} Data to encrypt.
+ * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption.
+ * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption.
  * @returns {boolean|{groupSignature: AuthenticationCode, stationSignature: AuthenticationCode, data: (string|*)}}
  */
 export function encrypt(data, groupAC, stationAC) {
@@ -118,11 +118,11 @@ export function encrypt(data, groupAC, stationAC) {
 }
 
 /**
- * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs
- * @param {Log} log - A log object
- * @param {SED} SED - Encrypted and signed data to decrypt
- * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with
- * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful
+ * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.
+ * @param {Log} log - A log object.
+ * @param {SED} SED - Encrypted and signed data to decrypt.
+ * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with.
+ * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful.
  */
 export function tryDecrypt(log, SED, acs) {
 

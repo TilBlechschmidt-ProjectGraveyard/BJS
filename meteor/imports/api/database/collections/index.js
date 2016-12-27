@@ -2,14 +2,14 @@ import {Generic} from "./generic";
 
 /**
  * @typedef {Object} Collections
- * @property {Mongo.Collection} Generic - Database with general information about the server
- * @property {Mongo.Collection} Accounts - Database with general information about the server
- * @property {Mongo.Collection} Athletes - Database with general information about the server
+ * @property {Mongo.Collection} Generic - Collection with general information about the server.
+ * @property {Mongo.Collection} Accounts - Collection with the accounts.
+ * @property {Mongo.Collection} Athletes - Collection with the athletes.
  */
 
 
 /**
- * Returns a list of all relevant collections
+ * Returns a list of all relevant collections.
  * @returns {Collections}
  */
 function getCollections() {
@@ -76,7 +76,7 @@ function setPrefix() {
 }
 
 /**
- * Returns a list of all relevant collections
+ * Returns a list of all relevant collections.
  * @returns {Collections}
  */
 module.exports = function () {

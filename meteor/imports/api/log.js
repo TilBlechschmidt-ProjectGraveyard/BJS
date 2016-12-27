@@ -15,7 +15,7 @@ Log.prototype = {
     /**
      * Adds a new error.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     error: function (message) {
         if (this.log_enabled) {
@@ -33,7 +33,7 @@ Log.prototype = {
     /**
      * Adds a new warning.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     warning: function (message) {
         if (this.log_enabled) {
@@ -51,7 +51,7 @@ Log.prototype = {
     /**
      * Adds a new info message.
      * @public
-     * @param message {string} Content of the message
+     * @param message {string} Content of the message.
      */
     info: function (message) {
         if (this.log_enabled) {
@@ -66,8 +66,8 @@ Log.prototype = {
     /**
      * Adds a new message with a custom level.
      * @public
-     * @param level {number} Custom log-level to use for the message
-     * @param message {string} Content of the message
+     * @param level {number} Custom log-level to use for the message.
+     * @param message {string} Content of the message.
      */
     custom: function (level, message) {
         if (this.log_enabled) {
@@ -82,7 +82,7 @@ Log.prototype = {
     /**
      * Merge another Log objects messages to this.messages.
      * @public
-     * @param other {Log} Other Log object this should be merged onto
+     * @param other {Log} Other Log object this should be merged onto.
      */
     merge: function (other) {
         this.messages = this.messages.concat(other.messages);
@@ -105,7 +105,7 @@ Log.prototype = {
     },
 
     /**
-     * Clears the messages buffer
+     * Clears the messages buffer.
      * @public
      */
     clear: function () {
@@ -126,7 +126,7 @@ Log.prototype = {
     /**
      * Returns all messages with the given level as strings.
      * @public
-     * @param level {integer} Log level the returned messages should have
+     * @param level {integer} Log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithLevel: function (level) {
@@ -138,7 +138,7 @@ Log.prototype = {
     /**
      * Returns all messages with the given or higher level as strings.
      * @public
-     * @param level {integer} Least log level the returned messages should have
+     * @param level {integer} Least log level the returned messages should have.
      * @returns {string[]}
      */
     getAsStringWithMinLevel: function (level) {
