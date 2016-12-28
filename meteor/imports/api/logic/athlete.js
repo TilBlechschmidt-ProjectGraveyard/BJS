@@ -14,9 +14,10 @@ import {getAcsFromAccounts} from "./account";
  * @param handicap {integer} Handicap level of the athlete
  * @param maxAge {integer} The max age provided by the competition type (ct.maxAge)
  * @param ct {String[]|object} List of sports the athlete can do or a competition type object
+ * @param {string} [id] - Mongo DB id
  * @constructor
  */
-export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct) {
+export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct, id) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.ageGroup = ageGroup;
@@ -24,6 +25,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
+    this.id = id;
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{id: 'st_sprint', measurement: 16}]
 
@@ -233,7 +235,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
             return false;
         }
 
-        return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data);
+        return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');
     return false;
