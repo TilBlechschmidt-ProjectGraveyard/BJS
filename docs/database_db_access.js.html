@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>logic/general.js - Documentation</title>
+    <title>database/db_access.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -111,31 +111,57 @@
 </nav>
 
 <div id="main">
-    
-    <h1 class="page-title">logic/general.js</h1>
-    
 
-    
+    <h1 class="page-title">database/db_access.js</h1>
 
 
-
-    
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * filters all undefined from an array.
- * @param data: {Array}
- * @returns {Array}
+            <pre class="prettyprint source linenums"><code>const COLLECTIONS = require('../../api/database/collections')();
+
+import {Athlete} from "../logic/athlete";
+
+/**
+ * Object containing all information and functions required for Swimming contest.
+ * @public
+ * @namespace
  */
-export function filterUndefined(data) {
-    return _.filter(data, function (dataObject) {
-        return dataObject !== undefined;
-    });
-}</code></pre>
+export let DBInterface = {
+    /**
+     * This function waits asynchronously until all collections are ready. Then it calls the callback.
+     * @param {function} callback - The callback
+     */
+    waitForReady: function (callback) {
+        COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
+            COLLECTIONS.Accounts.onReady(function () {
+                COLLECTIONS.Athletes.onReady(function () {
+                    callback();
+                });
+            });
+        });
+    },
+    /**
+     *
+     * @param {Log} log - A log object
+     * @param {Account[]} accounts - The account
+     * @param {boolean} require_signature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+     * @returns {Athlete[]}
+     */
+    getAthletesOfAccounts: function (log, accounts, require_signature) {
+        let result = [];
+        log.disable();
+        COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
+            const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
+            if (decrypted) {
+                result.push(decrypted);
+            }
+        });
+        log.enable();
+        return result;
+    }
+};</code></pre>
         </article>
     </section>
-
-
 
 
 </div>
