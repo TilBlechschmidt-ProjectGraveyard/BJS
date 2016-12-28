@@ -1,5 +1,5 @@
 <template name="login">
-    <div class="login-screen">
+    <div class="login-screen {{#if show_login}}modal-in{{/if}}">
         <div class="view">
             <div class="page">
                 <div class="page-content login-screen-content">
@@ -22,12 +22,15 @@
                         </ul>
                     </div>
                     <div class="list-block">
-                        <ul>
-                            <li>
-                                <a href="#" class="item-link list-button input-ui-button close-login-screen">Eingabe
-                                    starten</a>
-                            </li>
-                        </ul>
+                        {{#if input_permitted}}
+                            <ul>
+                                <li>
+                                    <a href="#" data-target="{{target}}"
+                                       class="item-link list-button submit-button close-login-screen">Eingabe
+                                        starten</a>
+                                </li>
+                            </ul>
+                        {{/if}}
                         <div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine
                             Änderungen an den Daten vorgenommen werden!
                         </div>
