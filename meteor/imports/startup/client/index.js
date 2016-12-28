@@ -1,3 +1,5 @@
+import "./accounts";
+
 import "../../ui/components/two_view";
 import "../../ui/components/config/home/left";
 import "../../ui/components/config/home/main";
@@ -18,6 +20,7 @@ import "../../ui/components/login";
 
 import "../../ui/router";
 import "../../ui/components/config/router";
+
 
 // Run things on startup
 export function onStartup() {

@@ -2,7 +2,7 @@ import {Template} from 'meteor/templating';
 import './index.html';
 import '../../../../../data/start_classes.json';
 
-export let myapp = new Framework7();
+Meteor.f7 = new Framework7();
 
 let st_classes = [];
 let start_classes = require('../../../../../data/start_classes.json');
@@ -12,7 +12,7 @@ for (let st_class in start_classes) {
     counter++;
 }
 
-let mypicker = myapp.picker({
+let mypicker = Meteor.f7.picker({
     input: '#pick-start_class',
     cols: [{
         values: st_classes,

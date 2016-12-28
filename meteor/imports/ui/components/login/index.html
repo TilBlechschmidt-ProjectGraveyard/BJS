@@ -1,33 +1,36 @@
 <template name="login">
-    <div class="view">
-        <div class="page">
-            <div class="page-content login-screen-content">
-                <div class="login-screen-title">runItEasy</div>
-                <div class="list-block">
-                    <ul>
-                        {{#each a in arrayify accounts}}
-                            <li class="item-content">
-                                <div class="item-inner">
-                                    {{#with a}}
-                                        {{#if logged_in}}
-                                            {{>logout_button name=name value=placeholder}}
-                                        {{else}}
-                                            {{>login_button name=name}}
-                                        {{/if}}
-                                    {{/with}}
-                                </div>
+    <div class="login-screen">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">runItEasy</div>
+                    <div class="list-block">
+                        <ul>
+                            {{#each a in arrayify accounts}}
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        {{#with a}}
+                                            {{#if logged_in}}
+                                                {{>logout_button name=name value=placeholder}}
+                                            {{else}}
+                                                {{>login_button name=name}}
+                                            {{/if}}
+                                        {{/with}}
+                                    </div>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <div class="list-block">
+                        <ul>
+                            <li>
+                                <a href="#" class="item-link list-button input-ui-button close-login-screen">Eingabe
+                                    starten</a>
                             </li>
-                        {{/each}}
-                    </ul>
-                </div>
-                <div class="list-block">
-                    <ul>
-                        <li>
-                            <a href="#" class="item-link list-button input-ui-button">Eingabe starten</a>
-                        </li>
-                    </ul>
-                    <div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine
-                        Änderungen an den Daten vorgenommen werden!
+                        </ul>
+                        <div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine
+                            Änderungen an den Daten vorgenommen werden!
+                        </div>
                     </div>
                 </div>
             </div>

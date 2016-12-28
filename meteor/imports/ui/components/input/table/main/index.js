@@ -4,6 +4,6 @@ import "./index.css";
 
 Template.table_main.events({
     'click .logout-button' () {
-        FlowRouter.go('/contest/login');
+        // FlowRouter.go('/contest/login');
     }
 });

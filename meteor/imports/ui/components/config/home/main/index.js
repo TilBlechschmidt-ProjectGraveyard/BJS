@@ -7,14 +7,14 @@ import {Log} from "../../../../../api/log";
 import {Account} from "../../../../../api/logic/account";
 import {generateAC} from "../../../../../api/crypto/crypto";
 
-export let myapp = new Framework7();
+Meteor.f7 = new Framework7();
 
 let comp_types = [];
 for (let competition_type in COMPETITION_TYPES) {
     comp_types[competition_type]=COMPETITION_TYPES[competition_type].object.getInformation().name;
 }
 
-let mypicker = myapp.picker({
+let mypicker = Meteor.f7.picker({
     input: '#pick-comp_type',
     cols: [{
         values: comp_types,

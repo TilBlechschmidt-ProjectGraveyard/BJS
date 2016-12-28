@@ -1,32 +1,11 @@
 import './index.html';
 
-let _deps = new Tracker.Dependency;
-
-Meteor.accounts = {
-    logged_in: [
-        ["Gruppenleiter", "Q2b"]
-    ],
-    logged_out: [
-        "Station"
-    ]
-};
-
-Meteor.accounts = {
-    "Gruppenleiter": {
-        account: undefined,
-        placeholder: ["Q2b"],
-        logged_in: true
-    },
-    "Station": {
-        account: undefined,
-        placeholder: ["Weitsprung"],
-        logged_in: false
-    }
-};
+let _deps = new Tracker.Dependency();
 
 Template.registerHelper('arrayify', function (obj) {
     let result = [];
-    for (const key in obj) {
+    for (let key in obj) {
+        if (!obj.hasOwnProperty(key)) continue;
         const new_obj = obj[key];
         new_obj.name = key;
         result.push(new_obj);
@@ -38,21 +17,13 @@ Template.login.helpers({
     "accounts": function () {
         _deps.depend();
         return Meteor.accounts;
-    },
-    "login": function () {
-        _deps.depend();
-        return Meteor.accounts.logged_out;
-    },
-    "logout": function () {
-        _deps.depend();
-        return Meteor.accounts.logged_in;
     }
 });
 
 Template.login.events({
     'click .input-ui-button': function (event) {
         event.preventDefault();
-        FlowRouter.go("/contest");
+        // FlowRouter.go("/contest");
     },
     'click .login-button': function (event) {
         event.preventDefault();
