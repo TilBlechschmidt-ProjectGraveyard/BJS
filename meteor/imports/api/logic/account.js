@@ -36,7 +36,7 @@ export function isStationAccount(account) {
  * @param {Account} account - The Account
  * @return {boolean}
  */
-export function viewResults(account) {
+export function canViewResults(account) {
     return account.canViewResults;
 }
 
