@@ -1,4 +1,4 @@
-import './index.html';
+import "./index.html";
 import {AccountManagement} from "../../../api/AccountManagement/index";
 
 let _deps = new Tracker.Dependency();
@@ -18,10 +18,17 @@ Template.login.helpers({
     "accounts": function () {
         _deps.depend();
         return AccountManagement.retrieveAccounts();
+    },
+    "input_permitted": function () {
+        _deps.depend();
+        return AccountManagement.inputPermitted();
     }
 });
 
 Template.login.events({
+    'submit-button': function (event) {
+        FlowRouter.go("/" + event.target.dataset.target);
+    },
     'click .login-button': function (event) {
         event.preventDefault();
 

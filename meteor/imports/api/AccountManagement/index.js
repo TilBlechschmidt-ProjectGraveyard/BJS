@@ -47,6 +47,10 @@ export let AccountManagement = {
         storage.setItem("accounts", JSON.stringify(data));
     },
 
+    inputPermitted: function () {
+        return AccountManagement.retrieveAccounts()["Gruppenleiter"].logged_in;
+    },
+
     login: function (type, passphrase, callback) {
         DBInterface.waitForReady(function () {
             // Check if the passphrase is valid

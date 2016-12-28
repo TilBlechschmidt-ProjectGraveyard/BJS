@@ -1,9 +1,10 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
+import {AccountManagement} from "../../../../../api/AccountManagement/index";
 
-Template.table_main.events({
-    'click .logout-button' () {
-        // FlowRouter.go('/contest/login');
-    }
-});
+export let input_onload = function () {
+    Template.login.helpers({
+        show_login: !AccountManagement.inputPermitted()
+    });
+};
