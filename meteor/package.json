@@ -1,5 +1,5 @@
 {
-  "name": "BJSbase",
+  "name": "RunItEasy",
   "private": true,
   "scripts": {
     "start": "meteor run"
