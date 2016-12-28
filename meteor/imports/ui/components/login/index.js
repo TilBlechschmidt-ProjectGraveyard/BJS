@@ -31,7 +31,6 @@ Template.registerHelper('arrayify', function (obj) {
         new_obj.name = key;
         result.push(new_obj);
     }
-    console.log("HEY", result);
     return result;
 });
 
@@ -62,6 +61,12 @@ Template.login.events({
         Meteor.accounts[name].logged_in = true;
 
         _deps.changed();
+        // lodash.remove(Meteor.accounts.logged_out, function (account) {
+        //     return account == name;
+        // });
+        // Meteor.accounts.logged_in.push([name, "SOMETHING"]);
+        // console.log(event.target.dataset.name);
+        // console.log("Login!");
     },
     'click .logout-button': function (event) {
         event.preventDefault();
@@ -70,5 +75,13 @@ Template.login.events({
         Meteor.accounts[name].logged_in = false;
 
         _deps.changed();
+        // const name = event.target.dataset.name;
+        // lodash.remove(Meteor.accounts.logged_in, function (account) {
+        //     return account[0] == name;
+        // });
+        // Meteor.accounts.logged_out.push(name);
+        // _deps.changed();
+        // console.log(event.target.dataset.name);
+        // console.log("Login!");
     }
 });

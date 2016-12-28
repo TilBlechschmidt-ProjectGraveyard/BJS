@@ -11,14 +11,22 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
  */
 
 /**
- * @typedef {Object} SED //TODO @TheMegaTB add properties
- * @property {Object} groupSignature //TODO @TheMegaTB update type
- * @property {Object} stationSignature //TODO @TheMegaTB update type
+ * @typedef {Object} SED - Collection of data and signatures that may be utilized to confirm the integrity of the data.
+ * @property {Signature} groupSignature - Signature created with the data and the group authentication code.
+ * @property {Signature} stationSignature - Signature created with the data and the station authentication code.
+ * @property {*} data - Data the signatures are based on.
  */
 
 /**
- * //TODO @TheMegaTB add description
- * @param {string} words
+ * @typedef {Object} Signature
+ * @property {string} signature - Signature of the data generated with a specific authentication code.
+ * @property {string} pubHash - Public hash of the authentication code this signature was created with.
+ */
+
+/**
+ * Converts a word list to hexadecimal values.
+ * @private
+ * @param {WordArray} words - Word list to convert into hexadecimal values.
  */
 function wordsToHex(words) {
     //noinspection JSUnresolvedVariable
@@ -27,9 +35,10 @@ function wordsToHex(words) {
 
 //
 /**
- * Create Hash-based message authentication code. //TODO @TheMegaTB review description
- * @param {object} data //TODO @TheMegaTB review type
- * @param {string} password
+ * Generate Hash-based message authentication code.
+ * @private
+ * @param {*} data - Arbitrary data to generate a HMAC for.
+ * @param {string} password - The key to use when hashing the data.
  */
 function generateHMAC(data, password) {
     //noinspection JSUnresolvedFunction
@@ -37,9 +46,11 @@ function generateHMAC(data, password) {
 }
 
 /**
- * Generate the signature of data.//TODO @TheMegaTB review description
- * @param {object} data //TODO @TheMegaTB review type
- * @param {AuthenticationCode} ac
+ * Sign the data with a passed authentication code.
+ * @private
+ * @param {*} data - Arbitrary data to sign.
+ * @param {AuthenticationCode} ac - Authentication to use when generating the signature.
+ * @returns {Signature} An Signature instance that contains both the generated signature and the public hash of the authentication code used for the signature.
  */
 function generateSignature(data, ac) {
     return {
@@ -50,8 +61,9 @@ function generateSignature(data, ac) {
 
 /**
  * Checks the signature of a SED package.
- * @param {SED} SED - the signed and encrypted data.
- * @param {object} data - The decrypted data. //TODO @TheMegaTB review type
+ * @private
+ * @param {SED} SED - The signed and encrypted data.
+ * @param {*} data - The decrypted data.
  * @param {AuthenticationCode} groupAC - The GroupAC that will be used for checking.
  * @param {AuthenticationCode} stationAC - The GroupAC that will be used for checking.
  * @returns {boolean}
@@ -63,6 +75,7 @@ function checkSignature(SED, data, groupAC, stationAC) {
 
 /**
  * Decrypt the signed data and check the signatures.
+ * @private
  * @param {SED} SED - Encrypted and signed data to decrypt.
  * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption.
  * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed.
@@ -81,10 +94,10 @@ function decrypt(SED, groupAC) {
     return data;
 }
 
-// AC = authentication code = object of the hashes and the salt
 //noinspection JSUnresolvedVariable
 /**
  * Generates a authentication code for.
+ * @public
  * @param password  {string}     Password to generate the authentication code from.
  * @param salt      {string=}    Salt to recreate a specific authentication code.
  * @returns {AuthenticationCode}   The resulting authentication code object.
@@ -103,6 +116,7 @@ export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 
 
 /**
  * Encrypt data and sign it.
+ * @public
  * @param data {*} Data to encrypt.
  * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption.
  * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption.
@@ -119,6 +133,7 @@ export function encrypt(data, groupAC, stationAC) {
 
 /**
  * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.
+ * @public
  * @param {Log} log - A log object.
  * @param {SED} SED - Encrypted and signed data to decrypt.
  * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with.
