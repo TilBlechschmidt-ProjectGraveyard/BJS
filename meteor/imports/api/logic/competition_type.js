@@ -36,8 +36,8 @@ export const COMPETITION_TYPES = [
  */
 export function getCompetitonTypeByID(id) {
     if (id === 0) {
-        return Athletics
+        return Athletics;
     } else {
-        return Swimming
+        return Swimming;
     }
 }
