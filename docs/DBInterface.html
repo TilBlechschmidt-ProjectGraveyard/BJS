@@ -70,6 +70,7 @@
                 <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
                 <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
                 <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
@@ -85,6 +86,11 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getContestGenericID">getContestGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
             </ul>
         </li>
@@ -107,6 +113,12 @@
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
+        <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getStationNames">getStationNames</a></li>
+        <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
+        <li><a href="global.html#isStationAccount">isStationAccount</a></li>
+        <li><a href="global.html#viewResults">viewResults</a></li>
     </ul>
 </nav>
 
@@ -138,7 +150,7 @@
                         <ul class="dummy">
                             <li>
                                 <a href="database_db_access.js.html">database/db_access.js</a>, <a
-                                    href="database_db_access.js.html#line10">line 10</a>
+                                    href="database_db_access.js.html#line11">line 11</a>
                             </li>
                         </ul>
                     </dd>
@@ -170,7 +182,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="database_db_access.js.html">database/db_access.js</a>, <a
-                                href="database_db_access.js.html#line31">line 31</a>
+                                href="database_db_access.js.html#line61">line 61</a>
                         </li>
                     </ul>
                 </dd>
@@ -274,6 +286,268 @@
             </dl>
 
 
+            <h4 class="name" id=".getCompetitionType"><span
+                    class="type-signature">(static) </span>getCompetitionType<span class="signature">()</span><span
+                    class="type-signature"> &rarr; {object}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns the current competition type</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="database_db_access.js.html">database/db_access.js</a>, <a
+                                href="database_db_access.js.html#line94">line 94</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the current competition type</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">object</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".getCompetitionTypeID"><span class="type-signature">(static) </span>getCompetitionTypeID<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns the current competition type id</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="database_db_access.js.html">database/db_access.js</a>, <a
+                                href="database_db_access.js.html#line86">line 86</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the current competition type id</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">number</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".getContestGenericID"><span
+                    class="type-signature">(static) </span>getContestGenericID<span class="signature">()</span><span
+                    class="type-signature"> &rarr; {string}</span></h4>
+
+
+            <p class="summary">Returns the id of the contest settings document.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="database_db_access.js.html">database/db_access.js</a>, <a
+                                href="database_db_access.js.html#line50">line 50</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the id of the contest settings document.</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                <p>The id</p>
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".getGenericID"><span class="type-signature">(static) </span>getGenericID<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+
+            <p class="summary">Returns the id of the server settings document.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="database_db_access.js.html">database/db_access.js</a>, <a
+                                href="database_db_access.js.html#line42">line 42</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the id of the server settings document.</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                <p>The id</p>
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".setCompetitionTypeID"><span class="type-signature">(static) </span>setCompetitionTypeID<span
+                    class="signature">(id)</span><span class="type-signature"></span></h4>
+
+
+            <p class="summary">
+            <p>Sets the current competition type id</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="database_db_access.js.html">database/db_access.js</a>, <a
+                                href="database_db_access.js.html#line78">line 78</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Sets the current competition type id</p>
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
             <h4 class="name" id=".waitForReady"><span class="type-signature">(static) </span>waitForReady<span
                     class="signature">(callback)</span><span class="type-signature"></span></h4>
 
@@ -289,7 +563,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="database_db_access.js.html">database/db_access.js</a>, <a
-                                href="database_db_access.js.html#line15">line 15</a>
+                                href="database_db_access.js.html#line16">line 16</a>
                         </li>
                     </ul>
                 </dd>
@@ -355,7 +629,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 14:16:58
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 17:11:02
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

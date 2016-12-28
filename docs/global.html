@@ -70,6 +70,7 @@
                 <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
                 <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
                 <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
@@ -85,6 +86,11 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getContestGenericID">getContestGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
             </ul>
         </li>
@@ -107,6 +113,12 @@
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
+        <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getStationNames">getStationNames</a></li>
+        <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
+        <li><a href="global.html#isStationAccount">isStationAccount</a></li>
+        <li><a href="global.html#viewResults">viewResults</a></li>
     </ul>
 </nav>
 
@@ -557,7 +569,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line20">line 20</a>
+        <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -677,6 +689,549 @@
 </dl>
 
 
+    <h4 class="name" id="getCompetitionTypeByID"><span class="type-signature"></span>getCompetitionTypeByID<span
+            class="signature">(id)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+
+    <p class="summary">Returns the competition type by a given id.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_competition_type.js.html">logic/competition_type.js</a>, <a
+                        href="logic_competition_type.js.html#line37">line 37</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns the competition type by a given id.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>id</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">number</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The id of the competition type. It matches the position in the Array
+                COMPETITION_TYPES;</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <div class="param-desc">
+        <p>The competition type (Athletics or Swimming)</p>
+    </div>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">object</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="getGroupNames"><span class="type-signature"></span>getGroupNames<span class="signature">(account)</span><span
+            class="type-signature"> &rarr; {string}</span></h4>
+
+
+    <p class="summary">Returns a comma separated list of the group names.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line48">line
+                    48</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns a comma separated list of the group names.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">string</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="getStationNames"><span class="type-signature"></span>getStationNames<span class="signature">(account, ct)</span><span
+            class="type-signature"> &rarr; {string}</span></h4>
+
+
+    <p class="summary">Returns a comma separated list of the human-readable station names.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line58">line
+                    58</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns a comma separated list of the human-readable station names.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>ct</code></td>
+
+
+            <td class="type">
+
+            </td>
+
+
+            <td class="description last"><p>The competition type. This parameter is required because the human-readable
+                station names are saved in the competition type namespace.</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">string</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="isGroupAccount"><span class="type-signature"></span>isGroupAccount<span class="signature">(account)</span><span
+            class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+    <p class="summary">Returns whether the account has permissions for at least one group.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line21">line
+                    21</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns whether the account has permissions for at least one group.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">boolean</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="isStationAccount"><span class="type-signature"></span>isStationAccount<span class="signature">(account)</span><span
+            class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+    <p class="summary">Returns whether the account has permissions for at least one station.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line30">line
+                    30</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns whether the account has permissions for at least one station.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">boolean</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="viewResults"><span class="type-signature"></span>viewResults<span
+            class="signature">(account)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+    <p class="summary">Returns whether the account has permissions to view the results.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line39">line
+                    39</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns whether the account has permissions to view the results.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">boolean</span>
+
+
+        </dd>
+    </dl>
+
+
     <h3 class="subsection-title">Type Definitions</h3>
 
 
@@ -689,7 +1244,7 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="logic_competition_types_athletics.js.html">logic/competition_types/athletics.js</a>, <a
-            href="logic_competition_types_athletics.js.html#line23">line 23</a>
+            href="logic_competition_types_athletics.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -809,7 +1364,7 @@
             <ul class="dummy">
                 <li>
                     <a href="logic_competition_types_athletics.js.html">logic/competition_types/athletics.js</a>, <a
-                        href="logic_competition_types_athletics.js.html#line15">line 15</a>
+                        href="logic_competition_types_athletics.js.html#line16">line 16</a>
                 </li>
             </ul>
         </dd>
@@ -938,7 +1493,7 @@
             <ul class="dummy">
                 <li>
                     <a href="logic_competition_types_athletics.js.html">logic/competition_types/athletics.js</a>, <a
-                        href="logic_competition_types_athletics.js.html#line29">line 29</a>
+                        href="logic_competition_types_athletics.js.html#line30">line 30</a>
                 </li>
             </ul>
         </dd>
@@ -1810,7 +2365,7 @@
             <ul class="dummy">
                 <li>
                     <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>, <a
-                        href="logic_competition_types_swimming.js.html#line11">line 11</a>
+                        href="logic_competition_types_swimming.js.html#line12">line 12</a>
                 </li>
             </ul>
         </dd>
@@ -1939,7 +2494,7 @@
             <ul class="dummy">
                 <li>
                     <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>, <a
-                        href="logic_competition_types_swimming.js.html#line19">line 19</a>
+                        href="logic_competition_types_swimming.js.html#line20">line 20</a>
                 </li>
             </ul>
         </dd>
@@ -2013,7 +2568,7 @@
             <ul class="dummy">
                 <li>
                     <a href="logic_competition_types_swimming.js.html">logic/competition_types/swimming.js</a>, <a
-                        href="logic_competition_types_swimming.js.html#line24">line 24</a>
+                        href="logic_competition_types_swimming.js.html#line25">line 25</a>
                 </li>
             </ul>
         </dd>
@@ -2161,7 +2716,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 14:16:58
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 17:11:02
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
