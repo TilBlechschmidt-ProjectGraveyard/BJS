@@ -118,6 +118,12 @@ export let DBInterface = {
      */
     createCompetition: function (competitionName, athletes, accounts) {
         //TODO implement
+
+        const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
+        const ContestGeneric = Collection('ContestGeneric', true, newDBHandler);
+        const Accounts = Collection('Accounts', true, newDBHandler);
+        const Athletes = Collection('Athletes', true, newDBHandler);
+
         let listOFCompetitions = DBInterface.listCompetition();
         listOFCompetitions.push(competitionName);
         COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});

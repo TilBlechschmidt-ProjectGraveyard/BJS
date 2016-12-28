@@ -41,7 +41,9 @@ export let new_competition_main_onLoad = function () {
             mypicker.open();
         },
         'click #link_back' (event, instance) {
-            FlowRouter.go('/config');
+            Meteor.f7.confirm('Beim Abbrechen gehen alle Einstellungen verloren.', 'Abbrechen ohne speichern', function () {
+                FlowRouter.go('/config');
+            });
         },
         'click #link_next' (event, instance) {
             FlowRouter.go('/config/sports');

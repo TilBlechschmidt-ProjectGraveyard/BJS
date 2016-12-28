@@ -3,7 +3,19 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
 
     col.name = name;
 
-    col.handle = new Mongo.Collection(col.name, nonCompetitionDB ? {} : {_driver: Meteor.dbHandle});
+
+    let handlerObject = {_driver: Meteor.dbHandle};
+
+    if (nonCompetitionDB) {
+        console.log(typeof(nonCompetitionDB));
+        if (typeof(nonCompetitionDB) === 'boolean') {
+            handlerObject = {};
+        } else {
+            handlerObject = {_driver: nonCompetitionDB};
+        }
+    }
+
+    col.handle = new Mongo.Collection(col.name, handlerObject);
 
     col.grounded = grounded;
 

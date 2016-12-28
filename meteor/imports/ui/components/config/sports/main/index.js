@@ -1,7 +1,10 @@
-import {Template} from 'meteor/templating';
-import './index.html';
+import {Template} from "meteor/templating";
+import "./index.html";
 
 Template.sports_main.events({
+    'click #link_back' (event, instance) {
+        FlowRouter.go('/config/new');
+    },
     'click #link_next' (event, instance) {
         FlowRouter.go('/config/athletes');
     },
