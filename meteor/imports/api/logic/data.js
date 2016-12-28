@@ -1,4 +1,4 @@
-import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
+import {Crypto} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
 import {getAcsFromAccounts} from "./account";
 
@@ -30,8 +30,8 @@ Data.prototype = {
     getPlain: function (log, accounts, requireSignature, groupID) {
         return filterUndefined(_.map(this.data, function (dataObject) {
             const acs = getAcsFromAccounts(accounts);
-            const stIDDecryptResult = tryDecrypt(log, dataObject.encryptedStID, acs);
-            const measurementsDecryptResult = tryDecrypt(log, dataObject.encryptedMeasurements, acs);
+            const stIDDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedStID, acs);
+            const measurementsDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedMeasurements, acs);
 
             if (requireSignature && !(stIDDecryptResult.signatureEnforced && measurementsDecryptResult.signatureEnforced)) {
                 log.error('Die Signatur der Sport Art mit der ID ' + stIDDecryptResult.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
@@ -66,7 +66,7 @@ Data.prototype = {
      */
     findEncrypted: function (log, stID, acs) {
         return _.find(this.data, function (dataObject) {
-            const decryptedData = tryDecrypt(log, dataObject.encryptedStID, acs);
+            const decryptedData = Crypto.tryDecrypt(log, dataObject.encryptedStID, acs);
             return decryptedData === stID;
         });
     },
@@ -80,8 +80,8 @@ Data.prototype = {
      * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
      */
     update: function (log, stID, newMeasurements, groupAC, stationAC) {
-        const encryptedStID = encrypt(stID, groupAC, stationAC);
-        const newEncryptedMeasurements = encrypt(newMeasurements, groupAC, stationAC);
+        const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
+        const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
         const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
 
         if (oldData) {

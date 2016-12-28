@@ -1,5 +1,5 @@
 import {Data} from "./data";
-import {encrypt, tryDecrypt} from "./../crypto/crypto.js";
+import {Crypto} from "./../crypto/crypto.js";
 import {getAcsFromAccounts} from "./account";
 
 
@@ -161,15 +161,15 @@ Athlete.prototype = {
     encryptForDatabase: function (groupAccount, serverAccount) {
         const encrypted = {};
 
-        encrypted.firstName = encrypt(this.firstName, groupAccount.ac, serverAccount.ac);
-        encrypted.lastName = encrypt(this.lastName, groupAccount.ac, serverAccount.ac);
-        encrypted.ageGroup = encrypt(this.ageGroup, groupAccount.ac, serverAccount.ac);
-        encrypted.isMale = encrypt(this.isMale, groupAccount.ac, serverAccount.ac);
-        encrypted.group = encrypt(this.group, groupAccount.ac, serverAccount.ac);
-        encrypted.handicap = encrypt(this.handicap, groupAccount.ac, serverAccount.ac);
-        encrypted.maxAge = encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
+        encrypted.firstName = Crypto.encrypt(this.firstName, groupAccount.ac, serverAccount.ac);
+        encrypted.lastName = Crypto.encrypt(this.lastName, groupAccount.ac, serverAccount.ac);
+        encrypted.ageGroup = Crypto.encrypt(this.ageGroup, groupAccount.ac, serverAccount.ac);
+        encrypted.isMale = Crypto.encrypt(this.isMale, groupAccount.ac, serverAccount.ac);
+        encrypted.group = Crypto.encrypt(this.group, groupAccount.ac, serverAccount.ac);
+        encrypted.handicap = Crypto.encrypt(this.handicap, groupAccount.ac, serverAccount.ac);
+        encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
-        encrypted.sports = encrypt(this.sports, groupAccount.ac, serverAccount.ac);
+        encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
         encrypted.data = this.data;
 
         return encrypted;
@@ -186,14 +186,14 @@ Athlete.prototype = {
  */
 Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
     const acs = getAcsFromAccounts(accounts);
-    const firstName = tryDecrypt(log, data.firstName, acs);
-    const lastName = tryDecrypt(log, data.lastName, acs);
-    const ageGroup = tryDecrypt(log, data.ageGroup, acs);
-    const isMale = tryDecrypt(log, data.isMale, acs);
-    const group = tryDecrypt(log, data.group, acs);
-    const handicap = tryDecrypt(log, data.handicap, acs);
-    const maxAge = tryDecrypt(log, data.maxAge, acs);
-    const sports = tryDecrypt(log, data.sports, acs);
+    const firstName = Crypto.tryDecrypt(log, data.firstName, acs);
+    const lastName = Crypto.tryDecrypt(log, data.lastName, acs);
+    const ageGroup = Crypto.tryDecrypt(log, data.ageGroup, acs);
+    const isMale = Crypto.tryDecrypt(log, data.isMale, acs);
+    const group = Crypto.tryDecrypt(log, data.group, acs);
+    const handicap = Crypto.tryDecrypt(log, data.handicap, acs);
+    const maxAge = Crypto.tryDecrypt(log, data.maxAge, acs);
+    const sports = Crypto.tryDecrypt(log, data.sports, acs);
 
     if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
 

@@ -94,88 +94,96 @@ function decrypt(SED, groupAC) {
     return data;
 }
 
+/**
+ * Object containing various cryptography related tasks like encryption, decryption and signature verification.
+ * @public
+ * @namespace
+ * @type {{generateAC: Crypto.generateAC, encrypt: Crypto.encrypt, tryDecrypt: Crypto.tryDecrypt}}
+ */
+export let Crypto = {
 //noinspection JSUnresolvedVariable
-/**
- * Generates a authentication code for.
- * @public
- * @param password  {string}     Password to generate the authentication code from.
- * @param salt      {string=}    Salt to recreate a specific authentication code.
- * @returns {AuthenticationCode}   The resulting authentication code object.
- */
-export function generateAC(password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
-    if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
-        salt = CryptoJS.enc.Hex.parse(salt);
-    }
-    //noinspection JSUnresolvedFunction
-    return {
-        salt: wordsToHex(salt),
-        pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-        privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-    };
-}
-
-/**
- * Encrypt data and sign it.
- * @public
- * @param data {*} Data to encrypt.
- * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption.
- * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption.
- * @returns {boolean|{groupSignature: AuthenticationCode, stationSignature: AuthenticationCode, data: (string|*)}}
- */
-export function encrypt(data, groupAC, stationAC) {
-    //noinspection JSUnresolvedVariable
-    return {
-        groupSignature: generateSignature(data, groupAC),
-        stationSignature: generateSignature(data, stationAC),
-        data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
-    };
-}
-
-/**
- * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.
- * @public
- * @param {Log} log - A log object.
- * @param {SED} SED - Encrypted and signed data to decrypt.
- * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with.
- * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful.
- */
-export function tryDecrypt(log, SED, acs) {
-
-    const loggerPresent = (typeof log === 'object' && typeof log.warning === 'function');
-    if (!SED || !log || !loggerPresent || !(typeof SED === 'object' && SED.hasOwnProperty('groupSignature') && SED.hasOwnProperty('stationSignature') && SED.hasOwnProperty('data'))
-    ) {
-        if (loggerPresent) log.error('Wrong parameters passed! (consult documentation)');
-        else throw new Error('Wrong parameters passed! (consult documentation)');
-        return false;
-    }
-
-    lodash.remove(acs, _.isUndefined);
-
-    const usedACs = {};
-
-    const groupAC = _.find(acs, function (ac, i) {
-        const match = SED.groupSignature.pubHash == ac.pubHash;
-        if (match) usedACs.groupAC = i;
-        return match;
-    });
-    if (!groupAC) {
-        log.error('GROUP AC NOT PROVIDED - FATAL - RETURNING');
-        return false;
-    }
-
-    const stationAC = _.find(acs, function (ac, i) {
-        const match = SED.stationSignature.pubHash == ac.pubHash;
-        if (match) usedACs.stationAC = i;
-        return match;
-    });
-    if (!stationAC) log.warning('STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK');
-
-    const data = decrypt(SED, groupAC);
-    if (data && checkSignature(SED, data, groupAC, stationAC))
+    /**
+     * Generates a authentication code for.
+     * @public
+     * @param password  {string}     Password to generate the authentication code from.
+     * @param salt      {string=}    Salt to recreate a specific authentication code.
+     * @returns {AuthenticationCode}   The resulting authentication code object.
+     */
+    generateAC: function (password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
         return {
-            data: data,
-            signatureEnforced: stationAC !== undefined,
-            usedACs: usedACs
+            salt: wordsToHex(salt),
+            pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+            privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
         };
-    return false;
-}
+    },
+
+    /**
+     * Encrypt data and sign it.
+     * @public
+     * @param data {*} Data to encrypt.
+     * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption.
+     * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption.
+     * @returns {{groupSignature: Signature, stationSignature: Signature, data: (string|*)}}
+     */
+    encrypt: function (data, groupAC, stationAC) {
+        //noinspection JSUnresolvedVariable
+        return {
+            groupSignature: generateSignature(data, groupAC),
+            stationSignature: generateSignature(data, stationAC),
+            data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
+        };
+    },
+
+    /**
+     * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.
+     * @public
+     * @param {Log} log - A log object.
+     * @param {SED} SED - Encrypted and signed data to decrypt.
+     * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with.
+     * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful.
+     */
+    tryDecrypt: function (log, SED, acs) {
+
+        const loggerPresent = (typeof log === 'object' && typeof log.warning === 'function');
+        if (!SED || !log || !loggerPresent || !(typeof SED === 'object' && SED.hasOwnProperty('groupSignature') && SED.hasOwnProperty('stationSignature') && SED.hasOwnProperty('data'))
+        ) {
+            if (loggerPresent) log.error('Wrong parameters passed! (consult documentation)');
+            else throw new Error('Wrong parameters passed! (consult documentation)');
+            return false;
+        }
+
+        lodash.remove(acs, _.isUndefined);
+
+        const usedACs = {};
+
+        const groupAC = _.find(acs, function (ac, i) {
+            const match = SED.groupSignature.pubHash == ac.pubHash;
+            if (match) usedACs.groupAC = i;
+            return match;
+        });
+        if (!groupAC) {
+            log.error('GROUP AC NOT PROVIDED - FATAL - RETURNING');
+            return false;
+        }
+
+        const stationAC = _.find(acs, function (ac, i) {
+            const match = SED.stationSignature.pubHash == ac.pubHash;
+            if (match) usedACs.stationAC = i;
+            return match;
+        });
+        if (!stationAC) log.warning('STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK');
+
+        const data = decrypt(SED, groupAC);
+        if (data && checkSignature(SED, data, groupAC, stationAC))
+            return {
+                data: data,
+                signatureEnforced: stationAC !== undefined,
+                usedACs: usedACs
+            };
+        return false;
+    }
+};
