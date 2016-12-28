@@ -40,5 +40,9 @@ export let DBInterface = {
         });
         log.enable();
         return result;
+    },
+
+    setCompetitonType: function (id) {
+
     }
 };
