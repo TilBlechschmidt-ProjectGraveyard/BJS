@@ -42,12 +42,13 @@ function removeData(driver) {
     });
 }
 
-function clearDatabase() {
+function clearDatabase(dbHandle) {
     console.log('-----------------------------------------------------');
     console.log('---------------------- WARNING ----------------------');
     console.log('-----------------------------------------------------');
     console.log('                  Database not clean                 ');
     console.log('Clearing database and adding mock data entries . . .');
+
 
     // Delete everything in the regular db
     removeData(MongoInternals.defaultRemoteCollectionDriver());
@@ -58,8 +59,12 @@ function clearDatabase() {
     // Set-up the remaining databases using the data from the generic DB
     setPrefix();
 
+    if (!dbHandle) {
+        dbHandle = Meteor.dbHandle;
+    }
+
     // Delete everything in the competition database
-    removeData(Meteor.dbHandle);
+    removeData(dbHandle);
 
     // Load 'em
     const COLLECTIONS = getCollections();

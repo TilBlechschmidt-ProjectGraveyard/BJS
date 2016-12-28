@@ -92,5 +92,44 @@ export let DBInterface = {
      */
     getCompetitionType: function () {
         return getCompetitionTypeByID(DBInterface.getCompetitionTypeID());
+    },
+
+    /**
+     * Lists all competition
+     * @returns {string[]}
+     */
+    listCompetition: function () {
+        return COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).contests;
+    },
+
+    /**
+     * Returns the current competition name
+     * @returns {string}
+     */
+    getCompetitionName: function () {
+        return COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
+    },
+
+    /**
+     * Creates a new competition
+     * @param {string} competitionName
+     * @param {Athletes[]} athletes
+     * @param {Accounts[]} accounts
+     */
+    createCompetition: function (competitionName, athletes, accounts) {
+        //TODO implement
+        let listOFCompetitions = DBInterface.listCompetition();
+        listOFCompetitions.push(competitionName);
+        COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
+        DBInterface.activateCompetition(competitionName);
+    },
+
+    /**
+     * Activates a competition with a given name
+     * @param {string} competitionName - The name of the competition
+     */
+    activateCompetition: function (competitionName) {
+        COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+        process.exit();
     }
 };

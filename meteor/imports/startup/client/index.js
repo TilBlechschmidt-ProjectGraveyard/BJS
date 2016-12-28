@@ -1,6 +1,7 @@
 import "../../ui/components/two_view";
 import "../../ui/components/config/home/left";
 import "../../ui/components/config/home/main";
+import "../../ui/components/config/new_competition/main";
 import "../../ui/components/views/main";
 import "../../ui/components/views/left";
 import "../../ui/components/config/sports/main";
