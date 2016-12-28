@@ -18,7 +18,7 @@ export let DBInterface = {
         for (let collection in COLLECTIONS)
             onReadyFunctions.push(collection.onReady);
 
-        async.parallel(onReadyFunctions, function (err, results) {
+        async.parallel(onReadyFunctions, function () {
             callback();
         });
     },
