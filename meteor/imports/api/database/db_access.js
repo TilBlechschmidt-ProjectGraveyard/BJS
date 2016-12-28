@@ -1,6 +1,7 @@
 const COLLECTIONS = require('../../api/database/collections')();
 
 import {Athlete} from "../logic/athlete";
+import {async} from "async";
 
 /**
  * Object containing all information and functions required for Swimming contest.
@@ -13,12 +14,12 @@ export let DBInterface = {
      * @param {function} callback - The callback
      */
     waitForReady: function (callback) {
-        COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            COLLECTIONS.Accounts.onReady(function () {
-                COLLECTIONS.Athletes.onReady(function () {
-                    callback();
-                });
-            });
+        let onReadyFunctions = [];
+        for (let collection in COLLECTIONS)
+            onReadyFunctions.push(collection.onReady);
+
+        async.parallel(onReadyFunctions, function (err, results) {
+            callback();
         });
     },
     /**
