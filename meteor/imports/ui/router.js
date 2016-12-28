@@ -1,4 +1,4 @@
-import {input_onload} from "./components/input/table/main/index";
+import {input_onload} from "./components/input/index";
 FlowRouter.route('/', {
     action: function () {
         FlowRouter.go("/config");
@@ -14,6 +14,6 @@ let input = FlowRouter.group({
 input.route('/', {
     triggersEnter: input_onload,
     action: function () {
-        BlazeLayout.render('table_main');
+        BlazeLayout.render('input');
     }
 });

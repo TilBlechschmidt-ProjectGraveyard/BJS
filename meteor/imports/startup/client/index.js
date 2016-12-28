@@ -12,7 +12,7 @@ import "../../ui/components/config/athletes/left";
 import "../../ui/components/config/athletes/middle";
 import "../../ui/components/config/athletes/right";
 import "../../ui/components/config/codes";
-import "../../ui/components/input/table/main";
+import "../../ui/components/input";
 import "../../ui/components/login";
 import "../../ui/router";
 import "../../ui/components/config/router";
