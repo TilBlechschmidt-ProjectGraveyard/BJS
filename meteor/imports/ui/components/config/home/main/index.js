@@ -1,8 +1,7 @@
 import {Template} from "meteor/templating";
 import "./index.html";
-import {twoView} from "../../../two_view/index.js";
 import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
-import {waitForReady, getAthletesOfAccounts} from "../../../../../api/database/db_access";
+import {DBInterface} from "../../../../../api/database/db_access";
 import {Log} from "../../../../../api/log";
 import {Account} from "../../../../../api/logic/account";
 import {generateAC} from "../../../../../api/crypto/crypto";
@@ -25,10 +24,10 @@ export let home_main_onLoad = function () {
         }
     });
 
-    waitForReady(function () {
+    DBInterface.waitForReady(function () {
         const groupAccount = new Account(['Q#z'], [], generateAC('1234567ljhfaljawf8', 'pepper'));
         const log = new Log();
-        let data = _.map(getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {
+        let data = _.map(DBInterface.getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {
             return athlete.getFullName();
         });
         console.log(data);
