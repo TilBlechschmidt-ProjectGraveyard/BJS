@@ -1,4 +1,5 @@
 import './index.html';
+import {AccountManagement} from "../../../api/AccountManagement/index";
 
 let _deps = new Tracker.Dependency();
 
@@ -16,43 +17,42 @@ Template.registerHelper('arrayify', function (obj) {
 Template.login.helpers({
     "accounts": function () {
         _deps.depend();
-        return Meteor.accounts;
+        return AccountManagement.retrieveAccounts();
     }
 });
 
 Template.login.events({
-    'click .input-ui-button': function (event) {
-        event.preventDefault();
-        // FlowRouter.go("/contest");
-    },
     'click .login-button': function (event) {
         event.preventDefault();
 
-        const name = event.target.dataset.name;
-        Meteor.accounts[name].logged_in = true;
+        const type = event.target.dataset.name;
+        const password_input = document.getElementById(type + "_pwd");
+        const password = password_input.value;
 
+        const accounts = AccountManagement.retrieveAccounts();
+        accounts[event.target.dataset.name].processing = true;
+        AccountManagement.storeAccounts(accounts);
         _deps.changed();
-        // lodash.remove(Meteor.accounts.logged_out, function (account) {
-        //     return account == name;
-        // });
-        // Meteor.accounts.logged_in.push([name, "SOMETHING"]);
-        // console.log(event.target.dataset.name);
-        // console.log("Login!");
+
+        setTimeout(function () {
+            AccountManagement.login(type, password, function (success, err) {
+                if (!success) {
+                    //TODO: Throw something at the user
+                    Meteor.f7.alert(err, "Fehler");
+                    password_input.value = "";
+                }
+                const accounts = AccountManagement.retrieveAccounts();
+                accounts[type].processing = false;
+                AccountManagement.storeAccounts(accounts);
+                _deps.changed();
+            });
+        }, 100);
     },
     'click .logout-button': function (event) {
         event.preventDefault();
 
-        const name = event.target.dataset.name;
-        Meteor.accounts[name].logged_in = false;
-
-        _deps.changed();
-        // const name = event.target.dataset.name;
-        // lodash.remove(Meteor.accounts.logged_in, function (account) {
-        //     return account[0] == name;
-        // });
-        // Meteor.accounts.logged_out.push(name);
-        // _deps.changed();
-        // console.log(event.target.dataset.name);
-        // console.log("Login!");
+        AccountManagement.logout(event.target.dataset.name, function () {
+            _deps.changed();
+        });
     }
 });

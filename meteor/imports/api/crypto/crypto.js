@@ -26,7 +26,7 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
 /**
  * Converts a word list to hexadecimal values.
  * @private
- * @param {WordArray} words - Word list to convert into hexadecimal values.
+ * @param {CryptoJS.lib.WordArray} words - Word list to convert into hexadecimal values.
  */
 function wordsToHex(words) {
     //noinspection JSUnresolvedVariable
@@ -101,7 +101,35 @@ function decrypt(SED, groupAC) {
  * @type {{generateAC: Crypto.generateAC, encrypt: Crypto.encrypt, tryDecrypt: Crypto.tryDecrypt}}
  */
 export let Crypto = {
-//noinspection JSUnresolvedVariable
+    /**
+     * Generate a private hash based on the password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generatePubHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 10}));
+    },
+
+    /**
+     * Generate a private hash based on the password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generatePrivHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000}));
+    },
+
+
     /**
      * Generates a authentication code for.
      * @public
@@ -116,8 +144,8 @@ export let Crypto = {
         //noinspection JSUnresolvedFunction
         return {
             salt: wordsToHex(salt),
-            pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-            privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+            pubHash: Crypto.generatePubHash(password, salt),
+            privHash: Crypto.generatePrivHash(password, salt)
         };
     },
 

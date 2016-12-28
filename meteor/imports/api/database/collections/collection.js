@@ -27,14 +27,18 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
 
     Meteor.dbReady[col.name] = false;
     col.onReady = function (callback) {
-        if (Meteor.isClient && col.grounded) {
+        const c = function () {
+            Meteor.dbReady[col.name] = true;
+            if (typeof callback === 'function') callback();
+        };
+        if (Meteor.isClient && col.grounded && !Meteor.dbReady[col.name]) {
             if (!Meteor.dbReady[col.name]) {
-                col.ground.once("loaded", callback);
+                col.ground.once("loaded", c);
             } else {
-                callback();
+                c();
             }
         } else {
-            callback();
+            c();
         }
     };
     col.onReady(function () {

@@ -11,9 +11,9 @@
                                     <div class="item-inner">
                                         {{#with a}}
                                             {{#if logged_in}}
-                                                {{>logout_button name=name value=placeholder}}
+                                                {{>logout_button name=name value=placeholder processing=processing}}
                                             {{else}}
-                                                {{>login_button name=name}}
+                                                {{>login_button name=name processing=processing}}
                                             {{/if}}
                                         {{/with}}
                                     </div>
@@ -41,9 +41,13 @@
 <template name="login_button">
     <div class="item-title label">{{name}}</div>
     <div class="item-input">
-        <input type="password" name="{{name}}_pwd" placeholder="{{name}}">
+        <input type="password" id="{{name}}_pwd" placeholder="{{name}}">
     </div>
-    <a href="#" class="item-link list-button login-button" data-name="{{name}}">Anmelden</a>
+    {{#if processing}}
+        <span style="width:42px; height:42px;" class="preloader"></span>
+    {{else}}
+        <a href="#" class="item-link list-button login-button" data-name="{{name}}">Anmelden</a>
+    {{/if}}
 </template>
 
 <template name="logout_button">
@@ -51,5 +55,9 @@
     <div class="item-input">
         <input type="text" value="{{value}}" disabled>
     </div>
-    <a href="#" class="item-link list-button color-red logout-button " data-name="{{name}}">Abmelden</a>
+    {{#if processing}}
+        <span style="width:42px; height:42px" class="preloader"></span>
+    {{else}}
+        <a href="#" class="item-link list-button color-red logout-button " data-name="{{name}}">Abmelden</a>
+    {{/if}}
 </template>
