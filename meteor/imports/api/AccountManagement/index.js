@@ -13,8 +13,15 @@ function storageAvailable(type) {
     }
 }
 
+function waitForDatabase() {
+
+}
+
 export let AccountManagement = {
 
+    login: function () {
+
+    },
 
     checkAvailability: function () {
         if (!storageAvailable('sessionStorage'))

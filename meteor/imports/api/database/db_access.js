@@ -1,7 +1,7 @@
 const COLLECTIONS = require('../../api/database/collections')();
 
 import {Athlete} from "../logic/athlete";
-import {async} from "async";
+import parallel from 'async/parallel';
 
 /**
  * Object containing all information and functions required for Swimming contest.
@@ -15,10 +15,13 @@ export let DBInterface = {
      */
     waitForReady: function (callback) {
         let onReadyFunctions = [];
-        for (let collection in COLLECTIONS)
+        for (let collection in COLLECTIONS) {
+            if (!COLLECTIONS.hasOwnProperty(collection)) continue;
+            collection = COLLECTIONS[collection];
             onReadyFunctions.push(collection.onReady);
+        }
 
-        async.parallel(onReadyFunctions, function () {
+        parallel(onReadyFunctions, function () {
             callback();
         });
     },
