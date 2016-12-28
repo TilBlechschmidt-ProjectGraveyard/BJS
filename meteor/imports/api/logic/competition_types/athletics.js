@@ -48,17 +48,28 @@ export let Athletics = {
     },
 
     /**
+     * Returns the SportType by its id
+     * @param {string} stID - The id of the sport type
+     * @return {object|undefined}
+     */
+    getSportType: function (stID) {
+        const data = Athletics.getSports();
+
+        for (let d in data) {
+            if (data[d].id === stID) return data[d];
+        }
+        return undefined;
+    },
+
+    /**
      * Returns the name of a SportType
      * @param {string} stID - The id of the sport type
      * @return {string}
      */
     getNameOfSportType: function (stID) {
-        const data = Athletics.getSports();
-
-        for (let d in data) {
-            if (data[d].id === stID) return data[d].name;
-        }
-        return "Unknown";
+        const sport_type = Athletics.getSportType(stID);
+        if (sport_type) return sport_type.name;
+        else return "Unknown";
     },
 
     /**

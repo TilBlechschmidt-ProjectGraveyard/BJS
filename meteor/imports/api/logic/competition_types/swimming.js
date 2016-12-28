@@ -39,6 +39,31 @@ export let Swimming = {
         return require('./../../../data/swimming/sports.json');
     },
 
+    /**
+     * Returns the SportType by its id
+     * @param {string} stID - The id of the sport type
+     * @return {object|undefined}
+     */
+    getSportType: function (stID) {
+        const data = Swimming.getSports();
+
+        for (let d in data) {
+            if (data[d].id === stID) return data[d];
+        }
+        return undefined;
+    },
+
+    /**
+     * Returns the name of a SportType
+     * @param {string} stID - The id of the sport type
+     * @return {string}
+     */
+    getNameOfSportType: function (stID) {
+        const sport_type = Swimming.getSportType(stID);
+        if (sport_type) return sport_type.name;
+        else return "Unknown";
+    },
+
     getScoreTable: function () {
         return require('./../../../data/swimming/score_table.json');
     },
