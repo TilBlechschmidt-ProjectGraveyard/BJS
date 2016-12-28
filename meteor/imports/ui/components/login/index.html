@@ -44,7 +44,7 @@
         <input type="password" id="{{name}}_pwd" placeholder="{{name}}">
     </div>
     {{#if processing}}
-        <span style="width:42px; height:42px;" class="preloader"></span>
+        {{>preloader}}
     {{else}}
         <a href="#" class="item-link list-button login-button" data-name="{{name}}">Anmelden</a>
     {{/if}}
@@ -56,8 +56,14 @@
         <input type="text" value="{{value}}" disabled>
     </div>
     {{#if processing}}
-        <span style="width:42px; height:42px" class="preloader"></span>
+        {{>preloader}}
     {{else}}
         <a href="#" class="item-link list-button color-red logout-button " data-name="{{name}}">Abmelden</a>
     {{/if}}
+</template>
+
+<template name="preloader">
+    <div style="width: 70%; height: 43px">
+        <span style="display: block; margin: auto; padding-top: 22px" class="preloader"></span>
+    </div>
 </template>
