@@ -10,7 +10,7 @@ Template.codes.events({
 
 Template.codes.events({
     'click #button_menu' (event,instance) {
-        FlowRouter.go('/');
+        FlowRouter.go('/config');
     },
 });
 
