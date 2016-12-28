@@ -50,15 +50,25 @@ export function getGroupNames(account) {
 }
 
 /**
+ * Returns a array of the human-readable station names.
+ * @param {Account} account - The Account
+ * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
+ * @return {string[]}
+ */
+export function getStationNamesAsArray(account, ct) {
+    return _.map(account.score_write_permissions, function (stID) {
+        return ct.getNameOfSportType(stID);
+    });
+}
+
+/**
  * Returns a comma separated list of the human-readable station names.
  * @param {Account} account - The Account
  * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
  * @return {string}
  */
 export function getStationNames(account, ct) {
-    return _.map(account.score_write_permissions, function (stID) {
-        return ct.getNameOfSportType(stID);
-    }).join(", ");
+    return getStationNamesAsArray(account, ct).join(", ");
 }
 
 /**
