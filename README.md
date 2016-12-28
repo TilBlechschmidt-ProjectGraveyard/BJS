@@ -1,6 +1,6 @@
 # RunItEasy
 
-![RunItEasy Logo](https://placehold.it/152)
+![RunItEasy Logo](https://raw.githubusercontent.com/TheMegaTB/BJS/master/meteor/client/icons/Logo512.png)
 
 ## Documentation
 The documentation for this project can be found at [https://themegatb.github.io/BJS/index.html](https://themegatb.github.io/BJS/index.html)
