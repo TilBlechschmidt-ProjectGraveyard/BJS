@@ -19,12 +19,7 @@ config.route('/', {
 
 config.route('/sports', {
     action: function () {
-        BlazeLayout.render('two_view', {
-            first: 'view_left',
-            second: 'view_main',
-            nested_left: 'sports_left',
-            nested_main: 'sports_main',
-        });
+        BlazeLayout.render('sports_main');
     }
 });
 
