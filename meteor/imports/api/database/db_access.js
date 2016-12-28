@@ -46,7 +46,7 @@ export let DBInterface = {
      * Returns the id of the contest settings document.
      * @returns {string} The id
      */
-    getContestGenericID: function () {
+    getContestID: function () {
         return COLLECTIONS.Contest.handle.find().fetch()[0]._id;
     },
 
@@ -75,7 +75,7 @@ export let DBInterface = {
      * @param id
      */
     setCompetitionTypeID: function (id) {
-        COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestGenericID()}, {$set: {contestType: id}});
+        COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestID()}, {$set: {contestType: id}});
     },
 
     /**
@@ -83,7 +83,7 @@ export let DBInterface = {
      * @returns {number}
      */
     getCompetitionTypeID: function () {
-        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestGenericID()}).contestType;
+        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).contestType;
     },
 
     /**
@@ -121,7 +121,7 @@ export let DBInterface = {
         //TODO implement
 
         const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
-        const ContestGeneric = Collection('Contest', true, newDBHandler);
+        const Contest = Collection('Contest', true, newDBHandler);
         const Accounts = Collection('Accounts', true, newDBHandler);
         const Athletes = Collection('Athletes', true, newDBHandler);
 
@@ -133,7 +133,7 @@ export let DBInterface = {
             Accounts.handle.insert(accounts[account]);
         }
 
-        ContestGeneric.handle.insert({contestType: competitionTypeID});
+        Contest.handle.insert({contestType: competitionTypeID});
 
 
         let listOFCompetitions = DBInterface.listCompetition();
