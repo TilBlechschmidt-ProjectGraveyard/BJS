@@ -14,13 +14,13 @@ import {Generic} from "./generic";
  * @returns {Collections}
  */
 function getCollections() {
-    import {ContestGeneric} from './contest_generic';
+    import {Contest} from './contest_generic';
     import {Accounts} from './accounts';
     import {Athletes} from './athletes';
 
     return {
         Generic: Generic,
-        ContestGeneric: ContestGeneric,
+        Contest: Contest,
         Accounts: Accounts,
         Athletes: Athletes
     };

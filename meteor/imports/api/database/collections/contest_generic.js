@@ -1,8 +1,8 @@
 import {Collection} from "./collection";
 
-export let ContestGeneric = new Collection('ContestGeneric', true);
+export let Contest = new Collection('Contest', true);
 
-ContestGeneric.createMockData = function () {
+Contest.createMockData = function () {
     this.handle.insert({
         contestType: 0
     });

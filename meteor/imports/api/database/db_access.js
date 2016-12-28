@@ -14,7 +14,7 @@ export let DBInterface = {
      */
     waitForReady: function (callback) {
         COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            COLLECTIONS.ContestGeneric.onReady(function () {
+            COLLECTIONS.Contest.onReady(function () {
                 COLLECTIONS.Accounts.onReady(function () {
                     COLLECTIONS.Athletes.onReady(function () {
                         callback();
@@ -47,7 +47,7 @@ export let DBInterface = {
      * @returns {string} The id
      */
     getContestGenericID: function () {
-        return COLLECTIONS.ContestGeneric.handle.find().fetch()[0]._id;
+        return COLLECTIONS.Contest.handle.find().fetch()[0]._id;
     },
 
     /**
@@ -75,7 +75,7 @@ export let DBInterface = {
      * @param id
      */
     setCompetitionTypeID: function (id) {
-        COLLECTIONS.ContestGeneric.handle.update({_id: DBInterface.getContestGenericID()}, {$set: {contestType: id}});
+        COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestGenericID()}, {$set: {contestType: id}});
     },
 
     /**
@@ -83,7 +83,7 @@ export let DBInterface = {
      * @returns {number}
      */
     getCompetitionTypeID: function () {
-        return COLLECTIONS.ContestGeneric.handle.findOne({_id: DBInterface.getContestGenericID()}).contestType;
+        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestGenericID()}).contestType;
     },
 
     /**
@@ -121,7 +121,7 @@ export let DBInterface = {
         //TODO implement
 
         const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
-        const ContestGeneric = Collection('ContestGeneric', true, newDBHandler);
+        const ContestGeneric = Collection('Contest', true, newDBHandler);
         const Accounts = Collection('Accounts', true, newDBHandler);
         const Athletes = Collection('Athletes', true, newDBHandler);
 
