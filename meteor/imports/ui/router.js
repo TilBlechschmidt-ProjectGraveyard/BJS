@@ -17,3 +17,12 @@ input.route('/', {
         BlazeLayout.render('input');
     }
 });
+
+input.route('/:athlete_id', {
+    triggersEnter: input_onload,
+    action: function (params) {
+        BlazeLayout.render('input', {
+            athlete_id: params.athlete_id
+        });
+    }
+});

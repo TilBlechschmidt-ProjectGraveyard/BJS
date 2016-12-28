@@ -1,7 +1,7 @@
 import "./index.html";
 import {AccountManagement} from "../../../api/AccountManagement/index";
 
-let _deps = new Tracker.Dependency();
+Meteor.login_deps = new Tracker.Dependency();
 
 Template.registerHelper('arrayify', function (obj) {
     let result = [];
@@ -16,18 +16,19 @@ Template.registerHelper('arrayify', function (obj) {
 
 Template.login.helpers({
     "accounts": function () {
-        _deps.depend();
+        Meteor.login_deps.depend();
         return AccountManagement.retrieveAccounts();
     },
     "input_permitted": function () {
-        _deps.depend();
+        Meteor.login_deps.depend();
         return AccountManagement.inputPermitted();
     }
 });
 
 Template.login.events({
-    'submit-button': function (event) {
-        FlowRouter.go("/" + event.target.dataset.target);
+    'click .submit-button': function (event) {
+        // console.log("RELOAD");
+        // FlowRouter.reload();
     },
     'click .login-button': function (event) {
         event.preventDefault();
@@ -39,7 +40,7 @@ Template.login.events({
         const accounts = AccountManagement.retrieveAccounts();
         accounts[event.target.dataset.name].processing = true;
         AccountManagement.storeAccounts(accounts);
-        _deps.changed();
+        Meteor.login_deps.changed();
 
         setTimeout(function () {
             AccountManagement.login(type, password, function (success, err) {
@@ -51,7 +52,7 @@ Template.login.events({
                 const accounts = AccountManagement.retrieveAccounts();
                 accounts[type].processing = false;
                 AccountManagement.storeAccounts(accounts);
-                _deps.changed();
+                Meteor.login_deps.changed();
             });
         }, 100);
     },
@@ -59,7 +60,7 @@ Template.login.events({
         event.preventDefault();
 
         AccountManagement.logout(event.target.dataset.name, function () {
-            _deps.changed();
+            Meteor.login_deps.changed();
         });
     }
 });

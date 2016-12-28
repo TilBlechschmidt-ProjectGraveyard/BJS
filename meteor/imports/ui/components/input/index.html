@@ -30,100 +30,35 @@
         <!-- Navbar -->
         <div class="navbar">
             <div class="navbar-inner">
-               <div class="left">
+                <div class="left">
                     <a href="#" class="link open-panel">
                         <i class="icon icon-bars"></i>
                         <span>Teilnehmer</span>
                     </a>
                 </div>
-                <div class="center">Karl Mustermann</div>
+                <div class="center">{{#with athleteByID athlete_id}}{{firstName}}&nbsp;{{lastName}}{{/with}}</div>
                 <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
             </div>
         </div>
-
-        <!-- Page Content -->
-        <div class="page">
-            <div class="page-content">
-                <!-- Name -->
-                <div class="content-block-title">Weitsprung</div>
-                <div class="list-block">
-                    <ul>
-                        <!-- Result input -->
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">1. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">2. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">3. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+        {{#if athlete_id}}
+            {{#with athleteByID athlete_id}}
+                <!-- Page Content -->
+                <div class="page">
+                    <div class="page-content">
+                        {{#each s in getSportTypes}}
+                            {{>attempts sportType=s}}
+                        {{/each}}
+                    </div>
                 </div>
-
-                <div class="content-block-title">Hochsprung</div>
-                <div class="list-block">
-                    <ul>
-                        <!-- Result input -->
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">1. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">2. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">3. Versuch</div>
-                                    <div class="item input">
-                                        <input type="number" placeholder="Ergebnis in cm">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+            {{/with}}
+        {{else}}
+            <div class="page">
+                <div class="page-content" style="width: 100%;">
+                    <span style="width:42px; height:42px; margin: auto; display: block; padding-top: 30px"
+                          class="preloader"></span>
                 </div>
             </div>
-        </div>
+        {{/if}}
         <!-- Toolbar -->
         <div class="toolbar">
             <div class="toolbar-inner">
@@ -132,4 +67,30 @@
             </div>
         </div>
     </div>
+</template>
+
+<template name="attempts">
+    {{#with sportType}}
+        <div class="content-block-title">{{name}}</div>
+        <div class="list-block">
+            <ul>
+                {{>attempt n=1 unit=unit}}
+                <!--{{>attempt n=2 unit=unit}}-->
+                <!--{{>attempt n=3 unit=unit}}-->
+            </ul>
+        </div>
+    {{/with}}
+</template>
+
+<template name="attempt">
+    <li>
+        <div class="item-content">
+            <div class="item-inner">
+                <div class="item-title label">{{n}}. Versuch</div>
+                <div class="item input">
+                    <input type="number" placeholder="Ergebnis in {{unit}}">
+                </div>
+            </div>
+        </div>
+    </li>
 </template>
