@@ -7,43 +7,40 @@ import {Log} from "../../../../../api/log";
 import {Account} from "../../../../../api/logic/account";
 import {generateAC} from "../../../../../api/crypto/crypto";
 
-Meteor.f7 = new Framework7();
 
-let comp_types = [];
-for (let competition_type in COMPETITION_TYPES) {
-    comp_types[competition_type]=COMPETITION_TYPES[competition_type].object.getInformation().name;
-}
-
-let mypicker = Meteor.f7.picker({
-    input: '#pick-comp_type',
-    cols: [{
-        values: comp_types,
-        textAlign: 'center'
-    }],
-    onChange: function(picker,values,displayValues) {
-        document.getElementById('pick-comp_type').value = displayValues;
+export let home_main_onLoad = function () {
+    let comp_types = [];
+    for (let competition_type in COMPETITION_TYPES) {
+        comp_types[competition_type] = COMPETITION_TYPES[competition_type].object.getInformation().name;
     }
-});
 
-waitForReady(function () {
-    const groupAccount = new Account(['Q#z'], [], generateAC('1234567ljhfaljawf8', 'pepper'));
-    const log = new Log();
-    let data = _.map(getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {
-        return athlete.getFullName();
+    let mypicker = Meteor.f7.picker({
+        input: '#pick-comp_type',
+        cols: [{
+            values: comp_types,
+            textAlign: 'center'
+        }],
+        onChange: function (picker, values, displayValues) {
+            document.getElementById('pick-comp_type').value = displayValues;
+        }
     });
-    console.log(data);
-});
 
+    waitForReady(function () {
+        const groupAccount = new Account(['Q#z'], [], generateAC('1234567ljhfaljawf8', 'pepper'));
+        const log = new Log();
+        let data = _.map(getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {
+            return athlete.getFullName();
+        });
+        console.log(data);
+    });
 
-Template.home_main.events({
-    'click #pick-comp_type'(event, instance) {
-        // increment the counter when button is clicked
-        mypicker.open();
-    },
-});
-
-Template.home_main.events({
-    'click #link_next' (event, instance) {
-        FlowRouter.go('/config/sports');
-    },
-});
+    Template.home_main.events({
+        'click #pick-comp_type'(event, instance) {
+            // increment the counter when button is clicked
+            mypicker.open();
+        },
+        'click #link_next' (event, instance) {
+            FlowRouter.go('/config/sports');
+        }
+    });
+};

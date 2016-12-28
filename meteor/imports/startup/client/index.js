@@ -24,5 +24,5 @@ import "../../ui/components/config/router";
 
 // Run things on startup
 export function onStartup() {
-    console.log('Hi there from the client startup script!');
+    // console.log('Hi there from the client startup script!');
 }
