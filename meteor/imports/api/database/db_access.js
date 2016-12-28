@@ -14,9 +14,11 @@ export let DBInterface = {
      */
     waitForReady: function (callback) {
         COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            COLLECTIONS.Accounts.onReady(function () {
-                COLLECTIONS.Athletes.onReady(function () {
-                    callback();
+            COLLECTIONS.ContestGeneric.onReady(function () {
+                COLLECTIONS.Accounts.onReady(function () {
+                    COLLECTIONS.Athletes.onReady(function () {
+                        callback();
+                    });
                 });
             });
         });
@@ -39,5 +41,9 @@ export let DBInterface = {
         });
         log.enable();
         return result;
+    },
+
+    setCompetitonType: function (id) {
+
     }
 };
