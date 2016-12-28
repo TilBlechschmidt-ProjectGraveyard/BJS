@@ -20,13 +20,13 @@ export let home_main_onLoad = function () {
             textAlign: 'center'
         }],
         onChange: function (picker, values, displayValues) {
-            document.getElementById('pick-comp_type').value = displayValues;
-            DBInterface.setCompetitionType(picker.cols[0].activeIndex);
+            document.getElementById('pick-comp_type').value = [displayValues];
+            DBInterface.setCompetitionTypeID(picker.cols[0].activeIndex);
         }
     });
 
     DBInterface.waitForReady(function () {
-        console.log(DBInterface.getCompetitionType() + " <- This is a TODO in ./meteor/imports/ui/components/config/home/main/index.js"); //TODO set value of picker
+        console.log(comp_types[DBInterface.getCompetitionTypeID()] + " <- This is a TODO in ./meteor/imports/ui/components/config/home/main/index.js"); //TODO set value of picker
         const groupAccount = new Account(['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8', 'pepper'));
         const log = new Log();
         let data = _.map(DBInterface.getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {

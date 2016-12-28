@@ -1,5 +1,5 @@
 const COLLECTIONS = require('../../api/database/collections')();
-
+import {getCompetitionTypeByID} from "../logic/competition_type";
 import {Athlete} from "../logic/athlete";
 
 /**
@@ -47,7 +47,6 @@ export let DBInterface = {
      * @returns {string} The id
      */
     getContestGenericID: function () {
-        console.log();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         return COLLECTIONS.ContestGeneric.handle.find().fetch()[0]._id;
     },
 
@@ -71,20 +70,27 @@ export let DBInterface = {
         return result;
     },
 
-
     /**
-     * Sets the current competition type
+     * Sets the current competition type id
      * @param id
      */
-    setCompetitionType: function (id) {
+    setCompetitionTypeID: function (id) {
         COLLECTIONS.ContestGeneric.handle.update({_id: DBInterface.getContestGenericID()}, {$set: {contestType: id}});
     },
 
     /**
-     * Returns the current competition type
+     * Returns the current competition type id
      * @returns {number}
      */
-    getCompetitionType: function () {
+    getCompetitionTypeID: function () {
         return COLLECTIONS.ContestGeneric.handle.findOne({_id: DBInterface.getContestGenericID()}).contestType;
+    },
+
+    /**
+     * Returns the current competition type
+     * @returns {object}
+     */
+    getCompetitionType: function () {
+        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID());
     }
 };

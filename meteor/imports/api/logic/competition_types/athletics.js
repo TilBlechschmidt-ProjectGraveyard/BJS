@@ -48,6 +48,20 @@ export let Athletics = {
     },
 
     /**
+     * Returns the name of a SportType
+     * @param {string} stID - The id of the sport type
+     * @return {string}
+     */
+    getNameOfSportType: function (stID) {
+        const data = Athletics.getSports();
+
+        for (let d in data) {
+            if (data[d].id === stID) return data[d].name;
+        }
+        return "Unknown";
+    },
+
+    /**
      * Returns whether a given athlete can do the sport type with the id stID.
      * @public
      * @param {Log} log - A log object

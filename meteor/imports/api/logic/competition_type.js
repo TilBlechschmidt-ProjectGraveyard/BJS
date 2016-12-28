@@ -34,7 +34,7 @@ export const COMPETITION_TYPES = [
  * @param {number} id - The id of the competition type. It matches the position in the Array COMPETITION_TYPES;
  * @returns {object} The competition type (Athletics or Swimming)
  */
-export function getCompetitonTypeByID(id) {
+export function getCompetitionTypeByID(id) {
     if (id === 0) {
         return Athletics;
     } else {
