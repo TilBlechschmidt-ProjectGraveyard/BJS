@@ -85,7 +85,7 @@ export let AccountManagement = {
                     callback(false, "Das Passwort gehört nicht einer Station an.");
                     return;
                 } else {
-                    accounts[type].placeholder = getStationNames(account, DBInterface.getCompetitionType());;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                    accounts[type].placeholder = getStationNames(account, DBInterface.getCompetitionType());
                 }
             }
 
