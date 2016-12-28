@@ -48,7 +48,7 @@ export let AccountManagement = {
     },
 
     inputPermitted: function () {
-        return AccountManagement.retrieveAccounts()['Gruppenleiter'].logged_in;
+        return AccountManagement.retrieveAccounts().Gruppenleiter.logged_in;
     },
 
     login: function (type, passphrase, callback) {
