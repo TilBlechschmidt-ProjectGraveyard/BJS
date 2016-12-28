@@ -102,11 +102,9 @@ export let AccountManagement = {
     logout: function (type, callback) {
         DBInterface.waitForReady(function () {
             const accounts = AccountManagement.retrieveAccounts();
-            console.log(type);
-            console.log(accounts);
+
             accounts[type].logged_in = false;
             accounts[type].account = undefined;
-            console.log(accounts);
 
             AccountManagement.storeAccounts(accounts);
             if (typeof callback === 'function') callback();
