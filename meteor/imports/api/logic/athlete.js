@@ -26,8 +26,6 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.handicap = handicap;
     this.maxAge = maxAge;
     this.id = id;
-    /// data is an array of objects with id (view getSports) and measurement
-    // example: [{id: 'st_sprint', measurement: 16}]
 
     if (ct.constructor == Array) {
         this.sports = ct;
@@ -42,6 +40,8 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
         }
     }
 
+    /// data is an array of objects with id (view getSports) and measurement
+    // example: [{id: 'st_sprint', measurement: 16}]
     this.data = new Data();
 }
 

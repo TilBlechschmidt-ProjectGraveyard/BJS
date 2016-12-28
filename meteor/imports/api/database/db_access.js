@@ -113,16 +113,28 @@ export let DBInterface = {
     /**
      * Creates a new competition
      * @param {string} competitionName
-     * @param {Athletes[]} athletes
+     * @param {number} competitionTypeID
+     * @param {object[]} encrypted_athletes
      * @param {Accounts[]} accounts
      */
-    createCompetition: function (competitionName, athletes, accounts) {
+    createCompetition: function (competitionName, competitionTypeID, encrypted_athletes, accounts) {
         //TODO implement
 
         const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
         const ContestGeneric = Collection('ContestGeneric', true, newDBHandler);
         const Accounts = Collection('Accounts', true, newDBHandler);
         const Athletes = Collection('Athletes', true, newDBHandler);
+
+        for (let athlete in encrypted_athletes) {
+            Athletes.handle.insert(encrypted_athletes[athlete].enc);
+        }
+
+        for (let account in accounts) {
+            Accounts.handle.insert(accounts[account]);
+        }
+
+        ContestGeneric.handle.insert({contestType: competitionTypeID});
+
 
         let listOFCompetitions = DBInterface.listCompetition();
         listOFCompetitions.push(competitionName);

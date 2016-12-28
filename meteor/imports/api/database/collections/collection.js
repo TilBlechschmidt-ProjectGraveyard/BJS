@@ -7,7 +7,6 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
     let handlerObject = {_driver: Meteor.dbHandle};
 
     if (nonCompetitionDB) {
-        console.log(typeof(nonCompetitionDB));
         if (typeof(nonCompetitionDB) === 'boolean') {
             handlerObject = {};
         } else {
