@@ -9,200 +9,21 @@
 
                 <div class="contacts-content">
                     <div class="list-block contacts-block">
-                        <div class="list-group">
-                            <ul>
-                                <li class="group-title">A</li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Aaron Mustermann</div>
+                        <ul>
+                            {{#each a in athletes}}
+                                {{#with a}}
+                                    <li data-id="{{id}}" class="athlete">
+                                        <div class="contact-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">{{name}}</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Abbie Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Adam Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Adele Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Agatha Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Agnes Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Albert Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Alexander Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list-group">
-                            <ul>
-                                <li class="group-title">B</li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Bailey Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Barclay Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Bartolo Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Bellamy Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Belle Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Benjamin Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="list-group">
-                            <ul>
-                                <li class="group-title">C</li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Caiden Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Calvin Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Candy Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Carl Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Cherilyn Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Chester Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Chloe Musterfrau</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="list-group">
-                            <ul>
-                                <li class="group-title">K</li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Karl Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="list-group">
-                            <ul>
-                                <li class="group-title">V</li>
-                                <li>
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">Vladimir Mustermann</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                                    </li>
+                                {{/with}}
+                            {{/each}}
+                        </ul>
                     </div>
                 </div>
-
-                <!-- Click on link with "close-panel" class will close panel -->
-                <p><a href="#" class="close-panel">Abbrechen</a></p>
             </div>
         </div>
 
