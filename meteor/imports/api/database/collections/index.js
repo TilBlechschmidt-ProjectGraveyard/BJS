@@ -3,7 +3,7 @@ import {Generic} from "./generic";
 /**
  * @typedef {Object} Collections
  * @property {Mongo.Collection} Generic - Collection with general information about the server.
- * @property {Mongo.Collection} ContestGeneric - Collection with general information about the current contest.
+ * @property {Mongo.Collection} Contest - Collection with general information about the current contest.
  * @property {Mongo.Collection} Accounts - Collection with the accounts.
  * @property {Mongo.Collection} Athletes - Collection with the athletes.
  */
@@ -14,13 +14,13 @@ import {Generic} from "./generic";
  * @returns {Collections}
  */
 function getCollections() {
-    import {ContestGeneric} from './contest_generic';
+    import {Contest} from './contest';
     import {Accounts} from './accounts';
     import {Athletes} from './athletes';
 
     return {
         Generic: Generic,
-        ContestGeneric: ContestGeneric,
+        Contest: Contest,
         Accounts: Accounts,
         Athletes: Athletes
     };

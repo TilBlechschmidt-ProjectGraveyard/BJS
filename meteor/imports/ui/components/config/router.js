@@ -1,13 +1,17 @@
 import {home_main_onLoad} from "./home/main";
 import {new_competition_main_onLoad} from "./new_competition/main";
 import {athletes_right_onLoad} from "./athletes/right";
+import {home_left_onLoad} from "./home/left";
 
 let config = FlowRouter.group({
     prefix: '/config'
 });
 
 config.route('/', {
-    triggersEnter: home_main_onLoad,
+    triggersEnter: function () {
+        home_main_onLoad();
+        home_left_onLoad();
+    },
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_left',

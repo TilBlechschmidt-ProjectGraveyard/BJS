@@ -72,6 +72,7 @@
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getSportType">getSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
@@ -80,16 +81,22 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
             </ul>
         </li>
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
+                <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.createCompetition">createCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getContestGenericID">getContestGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.listCompetition">listCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
             </ul>
@@ -101,7 +108,9 @@
                 <li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li>
                 <li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Swimming.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Swimming.html#.getSportType">getSportType</a></li>
                 <li data-type='method'><a href="Swimming.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Swimming.html#.validate">validate</a></li>
             </ul>
@@ -117,6 +126,7 @@
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
+        <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -656,7 +666,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line69">line 69</a>
+        <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -970,8 +980,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line58">line
-                    58</a>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line70">line
+                    70</a>
                 </li>
             </ul>
         </dd>
@@ -1052,6 +1062,108 @@
         <dd>
 
             <span class="param-type">string</span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="getStationNamesAsArray"><span class="type-signature"></span>getStationNamesAsArray<span
+            class="signature">(account, ct)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+
+
+    <p class="summary">Returns a array of the human-readable station names.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_account.js.html">logic/account.js</a>, <a href="logic_account.js.html#line58">line
+                    58</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns a array of the human-readable station names.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>ct</code></td>
+
+
+            <td class="type">
+
+            </td>
+
+
+            <td class="description last"><p>The competition type. This parameter is required because the human-readable
+                station names are saved in the competition type namespace.</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">Array.&lt;string></span>
 
 
         </dd>
@@ -2716,7 +2828,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 17:15:50
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Dec 29 2016 00:33:05
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

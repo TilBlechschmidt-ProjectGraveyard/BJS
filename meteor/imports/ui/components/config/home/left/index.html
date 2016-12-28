@@ -23,22 +23,17 @@
                             </div>
                         </div>
                     </a></li>
-                    <!-- List entry for saved competitions & Iteration -->
-                    <li><a href="/" class="item-link" data-page="main-view">
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">BJS OHG 2016</div>
-                            </div>
-                        </div>
-                    </a></li>
-                    <!-- List entry for a chosen file -->
-                    <li><a id="link-open_path" href="/" class="item-link" data-page="main-view">
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">BJS OHG 2015</div>
-                            </div>
-                        </div>
-                    </a></li>
+                    {{#each n in competitions}}
+                        <li>
+                            <a href="#" class="item-link link-activate_competition" data-page="main-view"
+                               data-competition_name="{{n}}">
+                                <div class="item-content" data-competition_name="{{n}}">
+                                    <div class="item-inner" data-competition_name="{{n}}">
+                                        <div class="item-title" data-competition_name="{{n}}">{{n}}</div>
+                                    </div>
+                                </div>
+                            </a></li>
+                    {{/each}}
                 </ul>
             </div>
         </div>

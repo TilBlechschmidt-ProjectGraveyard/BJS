@@ -2,9 +2,6 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
 import {DBInterface} from "../../../../../api/database/db_access";
-import {Log} from "../../../../../api/log";
-import {Account} from "../../../../../api/logic/account";
-import {Crypto} from "../../../../../api/crypto/crypto";
 
 
 export let new_competition_main_onLoad = function () {
@@ -25,19 +22,8 @@ export let new_competition_main_onLoad = function () {
         }
     });
 
-    DBInterface.waitForReady(function () {
-        console.log(comp_types[DBInterface.getCompetitionTypeID()] + " <- This is a TODO in ./meteor/imports/ui/components/config/new_competition/main/index.js"); //TODO set value of picker
-        const groupAccount = new Account(['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8', 'pepper'));
-        const log = new Log();
-        let data = _.map(DBInterface.getAthletesOfAccounts(log, [groupAccount], false), function (athlete) {
-            return athlete.getFullName();
-        });
-        console.log(data);
-    });
-
     Template.new_competition_main.events({
         'click #pick-comp_type'(event, instance) {
-            // increment the counter when button is clicked
             mypicker.open();
         },
         'click #link_back' (event, instance) {

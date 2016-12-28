@@ -7,5 +7,11 @@ export function onStartup() {
 
     const COLLECTIONS = require('../../api/database/collections')();
 
+    Meteor.methods({
+        'restart': function () {
+            process.exit();
+        }
+    });
+
     require('../../api/database/db_example')();
 }
