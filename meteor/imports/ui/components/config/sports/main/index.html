@@ -1,22 +1,25 @@
 <template name="sports_main">
+
+    <div class="view navbar-through">
     <!-- Navbar -->
     <div class="navbar">
         <div class="navbar-inner">
-            <div class="center sliding">Stationseinstellungen</div>
+            <div class="center sliding">Sportarteneinstellungen</div>
         </div>
     </div>
     <!-- Page Content -->
     <div class="page">
         <div class="page-content">
             <!-- Name -->
-            <div class="content-block-title">NAME DER STATION</div>
+            <div class="content-block-title">Auswahl der Sportarten</div>
             <div class="list-block">
                 <ul>
-                    <!-- Activated? -->
+
+
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
-                                <div class="item-title label">Aktiv</div>
+                                <div class="item-title label">Sprint 50m</div>
                                 <label class="label-switch">
                                     <input checked="checked" type="checkbox">
                                     <div class="checkbox"></div>
@@ -24,18 +27,21 @@
                             </div>
                         </div>
                     </li>
-                    <!-- Electronic Measurement? -->
+
+
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
-                                <div class="item-title label">Elektronische Messung</div>
+                                <div class="item-title label">Sprint 100m (elektronische Messung)</div>
                                 <label class="label-switch">
-                                    <input type="checkbox">
+                                    <input checked="checked" type="checkbox">
                                     <div class="checkbox"></div>
                                 </label>
                             </div>
                         </div>
                     </li>
+
+
                 </ul>
             </div>
         </div>
@@ -43,8 +49,9 @@
     <!-- Toolbar -->
     <div class="toolbar">
         <div class="toolbar-inner">
-            <a></a>
+            <a href="../" id="link_back" class="link">Zurück</a>
             <a href="" id="link_next" class="item-link">Weiter</a>
         </div>
+    </div>
     </div>
 </template>
