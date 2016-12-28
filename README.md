@@ -24,3 +24,13 @@ To test the project run either
 ## Framework7-Wrapper
 
 https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framework7-ios-material
+
+## Framework7 Icons Cheatsheet
+
+https://framework7.io/icons/
+
+##iOS WebApp Vorlage
+
+https://gist.github.com/tfausak/2222823
+
+We dont have to use the startup image because the website is cached and loads immediately.  
