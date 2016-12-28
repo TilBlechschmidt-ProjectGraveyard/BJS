@@ -1,0 +1,32 @@
+.panel-title {
+    font-size: 2em;
+    color: white;
+}
+.group-title {
+    padding-top: 8px;
+    padding-bottom: 7px;
+    background: #111111;
+    color: white;
+    font-weight: 500;
+    line-height: 22px;
+    height: 26px;
+}
+.contact-content {
+    box-sizing: border-box;
+    padding-left: 15px;
+    min-height: 44px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    color: white;
+    background-color: #111111;
+}
