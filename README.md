@@ -1,4 +1,6 @@
-# BJS
+# RunItEasy
+
+![RunItEasy Logo](https://placehold.it/152)
 
 ## Documentation
 The documentation for this project can be found at [https://themegatb.github.io/BJS/index.html](https://themegatb.github.io/BJS/index.html)
