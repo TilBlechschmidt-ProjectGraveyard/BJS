@@ -75,6 +75,13 @@
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
         </li>
+        <li><a href="Crypto.html">Crypto</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
+            </ul>
+        </li>
         <li><a href="Swimming.html">Swimming</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
@@ -90,13 +97,10 @@
     </ul>
     <h3>Global</h3>
     <ul>
-        <li><a href="global.html#encrypt">encrypt</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
-        <li><a href="global.html#generateAC">generateAC</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
-        <li><a href="global.html#tryDecrypt">tryDecrypt</a></li>
     </ul>
 </nav>
 
@@ -185,187 +189,6 @@
     
         <h3 class="subsection-title">Methods</h3>
 
-
-    <h4 class="name" id="encrypt"><span class="type-signature"></span>encrypt<span class="signature">(data, groupAC, stationAC)</span><span class="type-signature"> &rarr; {boolean|Object}</span></h4>
-
-
-    <p class="summary">Encrypt data and sign it.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line125">line 125</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    <div class="description">
-        <p>Encrypt data and sign it.</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Data to encrypt.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupAC</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Group authentication code to use for encryption.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stationAC</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Station authentication code to use for encryption.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
 
     <h4 class="name" id="filterUndefined"><span class="type-signature"></span>filterUndefined<span class="signature">(data:)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
@@ -495,182 +318,6 @@
     <dd>
         
 <span class="param-type">Array</span>
-
-
-    </dd>
-</dl>
-
-
-    <h4 class="name" id="generateAC"><span class="type-signature"></span>generateAC<span class="signature">(password, salt<span
-            class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a
-            href="global.html#AuthenticationCode">AuthenticationCode</a>}</span></h4>
-
-
-    <p class="summary">Generates a authentication code for.</p>
-
-
-    <dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    <div class="description">
-        <p>Generates a authentication code for.</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-
-
-            <td class="description last"><p>Password to generate the authentication code from.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>salt</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-
-
-            <td class="description last"><p>Salt to recreate a specific authentication code.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The resulting authentication code object.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-
-        <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
 
 
     </dd>
@@ -1023,29 +670,20 @@
     </dd>
 </dl>
 
-    
+
+    <h3 class="subsection-title">Type Definitions</h3>
 
 
-        
-            
-
-    
-
-    <h4 class="name" id="tryDecrypt"><span class="type-signature"></span>tryDecrypt<span class="signature">(log, SED, acs)</span><span class="type-signature"> &rarr; {Object|boolean}</span></h4>
+    <h4 class="name" id="AthleticsGenderData">AthleticsGenderData</h4>
 
 
-    <p class="summary">Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.</p>
-    
-
-
-
-
-<dl class="details">
+    <dl class="details">
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="crypto_crypto.js.html">crypto/crypto.js</a>, <a href="crypto_crypto.js.html#line142">line 142</a>
+        <a href="logic_competition_types_athletics.js.html">logic/competition_types/athletics.js</a>, <a
+            href="logic_competition_types_athletics.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -1079,160 +717,6 @@
 
     
 </dl>
-
-
-    <div class="description">
-        <p>Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>A log object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>SED</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type"><a href="global.html#SED">SED</a></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Encrypted and signed data to decrypt.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>acs</code></td>
-            
-
-            <td class="type">
-
-
-                <span class="param-type">Array.&lt;<a
-                        href="global.html#AuthenticationCode">AuthenticationCode</a>></span>
-
-
-            
-            </td>
-
-
-            <td class="description last"><p>Array of authentication codes to attempt decryption with.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Object containing the data and the signatureEnforced property (whether or not the data has been checked against
-        the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or
-        unsuccessful.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-
-    <h3 class="subsection-title">Type Definitions</h3>
-
-
-    <h4 class="name" id="AthleticsGenderData">AthleticsGenderData</h4>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="logic_competition_types_athletics.js.html">logic/competition_types/athletics.js</a>, <a
-                        href="logic_competition_types_athletics.js.html#line23">line 23</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
 
 
 
@@ -2235,6 +1719,7 @@
     </dl>
 
 
+
     <h5 class="subsection-title">Properties:</h5>
 
 
@@ -2670,7 +2155,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Dec 27 2016 21:58:01
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Wed Dec 28 2016 14:01:07
     GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

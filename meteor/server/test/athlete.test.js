@@ -2,15 +2,15 @@ import {Athlete} from "./../../imports/api/logic/athlete";
 import {Log} from "../../imports/api/log";
 import {chai} from "meteor/practicalmeteor:chai";
 import {COMPETITION_TYPES} from "../../imports/api/logic/competition_type";
-import {generateAC} from "../../imports/api/crypto/crypto";
+import {Crypto} from "../../imports/api/crypto/crypto";
 import {Account} from "../../imports/api/logic/account";
 
 chai.should();
 
 const ct = COMPETITION_TYPES[0].object;
 
-const groupAccount = new Account(['Q#z'], [], generateAC('1234567ljhfaljawf8'));
-const serverAccount = new Account(['Q#z'], [], generateAC('sdfjhsiufhuihr438ry34'));
+const groupAccount = new Account(['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
+const serverAccount = new Account(['Q#z'], [], Crypto.generateAC('sdfjhsiufhuihr438ry34'));
 
 describe('athlete', function () {
     it('changes the age of an athlete', function () {
