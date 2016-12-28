@@ -6,6 +6,7 @@ import {filterUndefined} from "./../general";
  * @namespace
  */
 export let Swimming = {
+    /** @constant {number} */
     maxAge: 18,
 
     /**

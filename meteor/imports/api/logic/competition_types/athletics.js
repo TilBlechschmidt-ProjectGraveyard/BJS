@@ -11,6 +11,7 @@ let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json'
  * @namespace
  */
 export let Athletics = {
+    /** @constant {number} */
     maxAge: 20,
     /**
      * @typedef {Object} AthleticsScoreCalculation

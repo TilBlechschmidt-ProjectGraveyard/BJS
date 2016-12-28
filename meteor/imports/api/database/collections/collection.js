@@ -24,6 +24,7 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
         Meteor.dbReady = {};
     }
 
+
     Meteor.dbReady[col.name] = false;
     col.onReady = function (callback) {
         if (Meteor.isClient && col.grounded) {
