@@ -6,7 +6,7 @@ let config = FlowRouter.group({
 });
 
 config.route('/', {
-    triggersEnter: [home_main_onLoad],
+    triggersEnter: home_main_onLoad,
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_left',
@@ -29,6 +29,7 @@ config.route('/sports', {
 });
 
 config.route('/athletes', {
+    triggersEnter: athletes_right_onLoad,
     action: function () {
         BlazeLayout.render('two_view', {
             first: 'view_left',
