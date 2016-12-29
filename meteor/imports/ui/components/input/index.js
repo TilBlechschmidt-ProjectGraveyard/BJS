@@ -9,6 +9,8 @@ import {arrayify} from "../../../startup/client/helpers";
 Meteor.input = {};
 Meteor.input.log = new Log();
 
+const input_deps = new Tracker.Dependency();
+
 function getAthletes() {
     const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;
     if (!group_account) return [];
@@ -61,6 +63,7 @@ export let input_onload = function (page) {
         },
         athleteByID: function (id) {
             Meteor.login_deps.depend();
+            input_deps.depend();
             let sportTypes = {};
             if (!AccountManagement.retrieveAccounts().Station.logged_in) {
                 // Return all sport types
@@ -105,9 +108,41 @@ export let input_onload = function (page) {
                 });
             }
 
+            // Insert the read-write data from the current session
+            if (sessionStorage.getItem("measurements")) {
+                const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
+                for (let sportType in measurements) {
+                    if (!measurements.hasOwnProperty(sportType)) continue;
+                    const data = lodash.map(measurements[sportType], function (entry) {
+                        return {read_only: false, value: entry};
+                    });
+                    athlete.sportType[sportType].measurements = athlete.sportType[sportType].measurements.concat(data);
+                }
+            }
+
             athlete.sportType = arrayify(athlete.sportType);
+            console.log(athlete);
 
             return athlete;
+        }
+    });
+
+    Template.attempts.helpers({
+        length: function (arr) {
+            return arr.length;
+        },
+        empty_measurement: {read_only: false, value: ""}
+    });
+
+    Template.attempt.helpers({
+        inc: function (i) {
+            return ++i;
+        },
+        isReadOnly: function (measurement) {
+            return measurement.read_only ? "disabled" : "";
+        },
+        athlete_id: function () {
+            return FlowRouter.getParam("athlete_id");
         }
     });
 
@@ -130,18 +165,40 @@ export let input_onload = function (page) {
         }
     });
 
+    function updateMeasurement(athleteID, stID, attempt, measurement) {
+        if (!athleteID || !stID || !attempt || !measurement) return;
+        console.log("Athlete:", athleteID, "stID:", stID, "Value:", measurement, "Attempt:", attempt);
+        if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
+
+        const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+        if (measurements[athleteID] === undefined) measurements[athleteID] = {};
+        if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
+        measurements[athleteID][stID][attempt] = measurement;
+
+        sessionStorage.setItem("measurements", JSON.stringify(measurements));
+        input_deps.changed();
+    }
+
+    Template.attempt.events({
+        'keypress input': function (event) {
+            if (event.keyCode == 13) {
+                const data = event.target.dataset;
+                updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
+                event.target.value = "";
+                event.stopPropagation();
+                return false;
+            }
+        },
+        'blur input': function (event) {
+            const data = event.target.dataset;
+            updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
+            event.target.value = "";
+        }
+    });
+
     Template.input.onRendered(function () {
         Meteor.f7 = new Framework7({
             swipePanel: 'left'
         });
-    });
-
-    Template.attempt.helpers({
-        inc: function (i) {
-            return ++i;
-        },
-        isReadOnly: function (measurement) {
-            return measurement.read_only ? "disabled" : "";
-        }
     });
 };
