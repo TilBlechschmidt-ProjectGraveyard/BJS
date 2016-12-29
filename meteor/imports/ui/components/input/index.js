@@ -109,7 +109,7 @@ export let input_onload = function (page) {
             }
 
             // Insert the read-write data from the current session
-            if (sessionStorage.getItem("measurements")) {
+            if (AccountManagement.retrieveAccounts().Station.account && sessionStorage.getItem("measurements")) {
                 const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
                 for (let sportType in measurements) {
                     if (!measurements.hasOwnProperty(sportType)) continue;
