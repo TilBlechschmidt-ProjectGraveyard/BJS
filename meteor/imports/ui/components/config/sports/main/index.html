@@ -1,61 +1,50 @@
 <template name="sports_main">
 
-    <div class="view navbar-through">
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left"></div>
-            <div class="center">Sportarteneinstellungen</div>
-            <div class="right"></div>
-        </div>
-    </div>
-    <!-- Page Content -->
-    <div class="page">
-        <div class="page-content">
-            <!-- Name -->
-            <div class="content-block-title">Auswahl der Sportarten</div>
-            <div class="list-block">
-                <ul>
-                    {{#each n in sport_type_data}}
-                        {{#with n}}
-                            <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title label">{{name}}</div>
-                                        <label class="label-switch">
-                                            <input {{checked}} type="checkbox" id="check_{{stID}}">
-                                            <div class="checkbox"></div>
-                                        </label>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"></div>
+                    <div class="center">Sportarteneinstellungen</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Name -->
+                <div class="content-block-title">Auswahl der Sportarten</div>
+                <div class="list-block">
+                    <ul>
+                        {{#each n in sport_type_data}}
+                            {{#with n}}
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title label">{{name}}</div>
+                                            <label class="label-switch">
+                                                <input {{checked}} type="checkbox" id="check_{{stID}}">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        {{/with}}
-                    {{/each}}
+                                </li>
+                            {{/with}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
 
 
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Sprint 100m (elektronische Messung)</div>
-                                <label class="label-switch">
-                                    <input checked="checked" type="checkbox">
-                                    <div class="checkbox"></div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-
-
-                </ul>
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="" id="link_back" class="link">Zurück</a>
+                    <a href="" id="link_next" class="item-link">Weiter</a>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-inner">
-            <a href="" id="link_back" class="link">Zurück</a>
-            <a href="" id="link_next" class="item-link">Weiter</a>
-        </div>
-    </div>
     </div>
 </template>

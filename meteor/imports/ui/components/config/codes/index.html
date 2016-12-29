@@ -1,77 +1,87 @@
 <template name="codes">
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left"></div>
-            <div class="center">Zugangscodes</div>
-            <div class="right"></div>
-        </div>
-    </div>
-    <!-- Page Content -->
-    <div class="page">
-        <div class="page-content">
-            <!-- Split Codes/controls -->
-            <div class="row">
-                <!-- Codes -->
-                <div class="col-70">
-                    <div class="row">
-                        <!-- Spacing -->
-                        <div class="col-5"></div>
-                        <div class="col-90" id="printcontent">
-                            <!-- Codes in Spcing -->
-                            <div class="content-block-title">Zugangscodes</div>
-                            <div class="list-block">
-                                <ul>
-                                    <!-- Divider -->
-                                    <li class="item-divider">Stationslogins</li>
-                                    <!-- Iterated Code Access-->
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title">STATIONSNAME</div>
-                                                <div class="item-after">Gallifrey666TARDIS</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Divider -->
-                                    <li class="item-divider">Gruppenlogins</li>
-                                    <!-- Iterated Code Access -->
-                                    <li>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title">GRUPPENNAME</div>
-                                                <div class="item-after">Master4444Doktor</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Spacing -->
-                        <div class="col-5"></div>
-                    </div>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"></div>
+                    <div class="center">Zugangscodes</div>
+                    <div class="right"></div>
                 </div>
-                <!-- Controls -->
-                <div class="col-30">
-                    <div class="row">
-                        <div class="col-5"></div>
-                        <div class="90">
-                            <!-- Button Print -->
-                            <p><a href="#" id="button_print" class="button button-fill button-big color-gray">Drucken</a></p>
-                            <!-- Button Export -->
-                            <p><a href="#" id="button_export" class="button button-fill button-big color-gray">als PDF Exportieren</a></p>
+            </div>
+
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Split Codes/controls -->
+                <div class="row">
+                    <!-- Codes -->
+                    <div class="col-70">
+                        <div class="row">
+                            <!-- Spacing -->
+                            <div class="col-5"></div>
+                            <div class="col-90" id="printcontent">
+                                <!-- Codes in Spcing -->
+                                <div class="content-block-title">Zugangscodes</div>
+                                <div class="list-block">
+                                    <ul>
+                                        <!-- Divider -->
+                                        <li class="item-divider">Stationslogins</li>
+                                        <!-- Iterated Code Access-->
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">STATIONSNAME</div>
+                                                    <div class="item-after">Gallifrey666TARDIS</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- Divider -->
+                                        <li class="item-divider">Gruppenlogins</li>
+                                        <!-- Iterated Code Access -->
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">GRUPPENNAME</div>
+                                                    <div class="item-after">Master4444Doktor</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Spacing -->
+                            <div class="col-5"></div>
                         </div>
-                        <div class="col-5"></div>
+                    </div>
+                    <!-- Controls -->
+                    <div class="col-30">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="90">
+                                <!-- Button Print -->
+                                <p><a href="#" id="button_print" class="button button-fill button-big color-gray">Drucken</a>
+                                </p>
+                                <!-- Button Export -->
+                                <p><a href="#" id="button_export" class="button button-fill button-big color-gray">als
+                                    PDF Exportieren</a></p>
+                            </div>
+                            <div class="col-5"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-inner">
-            <a href="" class="item-link" id="link_back">Zurück</a>
-            <a href="" class="item-link" id="link_save">Speichern</a>
+
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="" class="item-link" id="link_back">Zurück</a>
+                    <a href="" class="item-link" id="link_save">Speichern</a>
+                </div>
+            </div>
         </div>
     </div>
 </template>

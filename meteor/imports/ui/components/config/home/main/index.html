@@ -1,38 +1,44 @@
 <template name="home_main">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left"></div>
-            <div class="center">Aktueller Wettkampf</div>
-            <div class="right"></div>
-        </div>
-    </div>
-    <div class="page">
-        <div class="page-content">
-            <div class="content-block-title">Hier findest du Informationen über den aktuellen Wettampf</div>
-            <div class="list-block">
-                <ul>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Name</div>
-                                <div class="item-input" id="current-contest-name">
-                                    Loading...
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Wettkampfart</div>
-                                <div class="item-input" id="current-contest-type">
-                                    Loading...
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed">
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"></div>
+                    <div class="center">Aktueller Wettkampf</div>
+                    <div class="right"></div>
+                </div>
             </div>
+
+            <div class="page-content">
+                <div class="content-block-title">Hier findest du Informationen über den aktuellen Wettampf</div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Name</div>
+                                    <div class="item-input" id="current-contest-name">
+                                        Loading...
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Wettkampfart</div>
+                                    <div class="item-input" id="current-contest-type">
+                                        Loading...
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </template>
