@@ -78,7 +78,7 @@ export let input_onload = function (page) {
             }
 
             const athlete = getAthleteByID(id);
-            if (athlete == undefined) return {};
+            if (athlete === undefined) return {};
             // Add some fake measurements
             if (AccountManagement.retrieveAccounts().Station.account) {
                 athlete.addMeasurement(new Log(), "st_long_jump", [0.1, 2.2, 0.6], AccountManagement.retrieveAccounts().Gruppenleiter.account, AccountManagement.retrieveAccounts().Station.account);
@@ -143,5 +143,5 @@ export let input_onload = function (page) {
         isReadOnly: function (measurement) {
             return measurement.read_only ? "disabled" : "";
         }
-    })
+    });
 };
