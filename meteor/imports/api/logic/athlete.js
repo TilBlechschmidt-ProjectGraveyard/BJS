@@ -5,15 +5,15 @@ import {getAcsFromAccounts} from "./account";
 
 /**
  * Creates a new Athlete with the given information.
- * @param log {Log} Logger instance to use
- * @param firstName {string} first-name of the athlete
- * @param lastName {string} last-name of the athlete
- * @param ageGroup {integer} Age category of the athlete
- * @param isMale {boolean} Whether or not the athlete is male
- * @param group {string} Identifier of the group this athlete is part of
- * @param handicap {integer} Handicap level of the athlete
- * @param maxAge {integer} The max age provided by the competition type (ct.maxAge)
- * @param ct {String[]|object} List of sports the athlete can do or a competition type object
+ * @param {Log} log Logger instance to use
+ * @param {string} firstName first-name of the athlete
+ * @param {string} lastName last-name of the athlete
+ * @param {number} ageGroup Age category of the athlete
+ * @param {boolean} isMale Whether or not the athlete is male
+ * @param {string} group Identifier of the group this athlete is part of
+ * @param {string} handicap Handicap id of the athlete
+ * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
+ * @param {String[]|object} ct List of sports the athlete can do or a competition type object
  * @param {string} [id] - Mongo DB id
  * @constructor
  */
@@ -48,7 +48,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 Athlete.prototype = {
     /**
      * Returns the data in plain text.
-     * @param log {Log} Logger instance to use
+     * @param {Log} log Logger instance to use
      * @param {Account[]} accounts
      * @param {boolean} requireSignature
      * @returns {PlainData[]}
@@ -60,11 +60,11 @@ Athlete.prototype = {
 
     /**
      * Updates the data of a given sport (stID).
-     * @param log {Log} Logger instance to use
-     * @param stID {string} Identifier of the sport that should get updated/new values
-     * @param newMeasurements {number[]} New measurements that should be inserted
-     * @param groupAccount {Account} Account of the group this athlete is part of
-     * @param stationAccount {Account} Account of the station responsible for this sport type
+     * @param {Log} log Logger instance to use
+     * @param {string} stID Identifier of the sport that should get updated/new values
+     * @param {number[]} newMeasurements New measurements that should be inserted
+     * @param {Account} groupAccount Account of the group this athlete is part of
+     * @param {Account} stationAccount Account of the station responsible for this sport type
      * @returns {boolean} A boolean value that describes whether or not the update was successful
      */
     addMeasurement: function (log, stID, newMeasurements, groupAccount, stationAccount) {
@@ -92,6 +92,7 @@ Athlete.prototype = {
 
     /**
      * Checks whether the properties of the athlete are correct.
+     * @param {Log} log Logger instance to use
      * @returns {boolean}
      */
     check: function (log) {
@@ -148,7 +149,7 @@ Athlete.prototype = {
     },
     /**
      * Sets the age of the athlete.
-     * @param newAge {integer} New age of the athlete
+     * @param {integer} newAge - New age of the athlete
      */
     set age(newAge) {
         this.ageGroup = new Date().getFullYear() - newAge;
@@ -156,9 +157,9 @@ Athlete.prototype = {
 
     /**
      * Encrypts the athlete for the database
+     * @param {Account} groupAccount - Account of the group that this athlete is part of
+     * @param {Account} serverAccount - Master account (?) TODO Describe this in a meaningful fashion
      * @returns {Object}
-     * @param groupAccount {Account} Account of the group that this athlete is part of
-     * @param serverAccount {Account} Master account (?) TODO Describe this in a meaningful fashion
      */
     encryptForDatabase: function (groupAccount, serverAccount) {
         const encrypted = {};
@@ -180,10 +181,10 @@ Athlete.prototype = {
 
 /**
  * Decrypts the data from the database
- * @param log {Log} Logger instance to use
- * @param data {Object} Encrypted athlete
- * @param accounts {Account[]} List of accounts containing the one that was used for encryption
- * @param require_signature {boolean} whether or not to enable signature enforcing
+ * @param {Log} log Logger instance to use
+ * @param {Object} data Encrypted athlete
+ * @param {Account[]} accounts List of accounts containing the one that was used for encryption
+ * @param {boolean} require_signature whether or not to enable signature enforcing
  * @returns {boolean|Athlete}
  */
 Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
