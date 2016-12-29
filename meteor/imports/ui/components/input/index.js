@@ -30,13 +30,6 @@ function getAthleteByID(id) {
 }
 
 export let input_onload = function (page) {
-    if (!page.params.athlete_id) {
-        DBInterface.waitForReady(function () {
-            const athletes = lodash.sortBy(getAthletes(), 'lastName');
-            if (athletes[0])
-                FlowRouter.go('/contest/' + athletes[0].id);
-        });
-    }
 
     Template.login.helpers({
         show_login: !AccountManagement.inputPermitted()
@@ -127,6 +120,9 @@ export let input_onload = function (page) {
             athlete.sportType = arrayify(athlete.sportType);
 
             return athlete;
+        },
+        isEmpty: function (arr) {
+            return arr.length === 0;
         }
     });
 
@@ -202,6 +198,14 @@ export let input_onload = function (page) {
     Template.input.onRendered(function () {
         Meteor.f7 = new Framework7({
             swipePanel: 'left'
+        });
+
+        DBInterface.waitForReady(function () {
+            const athletes = lodash.sortBy(getAthletes(), 'lastName');
+            if ((!page.params.athlete_id && athletes[0]) || !lodash.find(athletes, function (athlete) {
+                    return athlete.id == page.params.athlete_id;
+                }))
+                FlowRouter.go('/contest/' + athletes[0].id);
         });
     });
 };
