@@ -122,7 +122,7 @@ export let input_onload = function (page) {
             return athlete;
         },
         isEmpty: function (arr) {
-            return arr.length == 0;
+            return arr.length === 0;
         }
     });
 
