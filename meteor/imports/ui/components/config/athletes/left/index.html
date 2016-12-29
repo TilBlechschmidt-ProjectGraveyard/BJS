@@ -16,9 +16,11 @@
                     <!-- Spacing -->
                     <div class="col-5"></div>
                     <!-- CSV import -->
-                    <div class="col-45"><p><a href="#" class="button button-fill color-gray">CSV öffnen</a></p></div>
+                    <div class="col-45"><p><a href="#" class="button button-fill color-gray" id="btn-open-csv">CSV
+                        öffnen</a></p></div>
                     <!-- neue gruppe anlegen -->
-                    <div class="col-45"><p><a href="#" class="button button-fill color-green">Neue Gruppe</a></p></div>
+                    <div class="col-45"><p><a href="#" class="button button-fill color-green" id="btn-new-group">Neue
+                        Gruppe</a></p></div>
                     <!-- Spacing -->
                     <div class="col-5"></div>
                 </div>
@@ -26,14 +28,20 @@
                 <div class="content-block-title">Verfügbare Gruppen</div>
                 <div class="list-block">
                     <ul>
-                        <!-- Iterated links -->
-                        <li><a class="item-link" href="">
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">BEISPIEL GRUPPE</div>
-                                </div>
-                            </div>
-                        </a></li>
+                        {{#each g in groups}}
+                            {{#with g}}
+                                <!-- Iterated links -->
+                                <li>
+                                    <a class="item-link" href="">
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">{{name}}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {{/with}}
+                        {{/each}}
                     </ul>
                 </div>
             </div>

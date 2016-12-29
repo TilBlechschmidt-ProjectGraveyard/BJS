@@ -3,6 +3,8 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 
+Session.keys = {};
+
 /**
  * Object containing all information and functions required for creating a new competition.
  * @public
@@ -11,22 +13,6 @@ import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 export let NewCompetition = {
     /** @constant {number} */
     prefix: "new_competition_",
-
-    /**
-     * Sets all default values for the configuration.
-     */
-    setDefaults: function () {
-        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");
-        Session.setDefault(NewCompetition.prefix + "competition_type", "0");
-
-        const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
-        Session.setDefault(
-            NewCompetition.prefix + "sport_types",
-            JSON.stringify(_.map(ct.getSports(), function (sportObj) {
-                return {stID: sportObj.id, activated: true};
-            }))
-        );
-    },
 
     /**
      * Resets sport types.
@@ -54,6 +40,7 @@ export let NewCompetition = {
      * @returns {string}
      */
     getName: function () {
+        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");
         return Session.get(NewCompetition.prefix + "name");
     },
 
@@ -71,6 +58,7 @@ export let NewCompetition = {
      * @returns {number}
      */
     getCompetitionTypeID: function () {
+        Session.setDefault(NewCompetition.prefix + "competition_type", "0");
         return parseInt(Session.get(NewCompetition.prefix + "competition_type"));
     },
 
@@ -101,6 +89,36 @@ export let NewCompetition = {
      * @returns {NewCompetitionSportTypes[]}
      */
     getSports: function () {
+        const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
+        Session.setDefault(
+            NewCompetition.prefix + "sport_types",
+            JSON.stringify(_.map(ct.getSports(), function (sportObj) {
+                return {stID: sportObj.id, activated: true};
+            }))
+        );
         return JSON.parse(Session.get(NewCompetition.prefix + "sport_types"));
+    },
+
+    /**
+     * @typedef {Object} AthleteGroup
+     * @property {string} name - The groups name.
+     * @property {Athlete[]} athletes - List of all athletes.
+     */
+
+    /**
+     * Sets the groups of athletes of the new competition.
+     * @param {AthleteGroup[]} groups - The new groups.
+     */
+    setGroups: function (groups) {
+        Session.set(NewCompetition.prefix + "groups", JSON.stringify(groups));
+    },
+
+    /**
+     * Returns the groups of athletes of the new competition.
+     * @returns {AthleteGroup[]}
+     */
+    getGroups: function () {
+        Session.setDefault(NewCompetition.prefix + "groups", JSON.stringify([]));
+        return JSON.parse(Session.get(NewCompetition.prefix + "groups"));
     }
 };

@@ -36,21 +36,21 @@
                         <span>Teilnehmer</span>
                     </a>
                 </div>
-                <div class="center">{{#with athleteByID athlete_id}}{{firstName}}&nbsp;{{lastName}}{{/with}}</div>
+                <div class="center">{{nameByID athlete_id}}</div>
                 <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
             </div>
         </div>
         {{#if athlete_id}}
-            {{#with athleteByID athlete_id}}
-                <!-- Page Content -->
-                <div class="page">
-                    <div class="page-content">
-                        {{#each s in getSportTypes}}
+            <!-- Page Content -->
+            <div class="page">
+                <div class="page-content">
+                    {{#with athleteByID athlete_id}}
+                        {{#each s in sportType}}
                             {{>attempts sportType=s}}
                         {{/each}}
-                    </div>
+                    {{/with}}
                 </div>
-            {{/with}}
+            </div>
         {{else}}
             <div class="page">
                 <div class="page-content" style="width: 100%;">
@@ -71,12 +71,12 @@
 
 <template name="attempts">
     {{#with sportType}}
-        <div class="content-block-title">{{name}}</div>
+        <div class="content-block-title">{{#with metadata}}{{name}}{{/with}}</div>
         <div class="list-block">
             <ul>
-                {{>attempt n=1 unit=unit}}
-                <!--{{>attempt n=2 unit=unit}}-->
-                <!--{{>attempt n=3 unit=unit}}-->
+                {{#each m in measurements}}
+                    {{>attempt n=@index measurement=m metadata=metadata}}
+                {{/each}}
             </ul>
         </div>
     {{/with}}
@@ -86,9 +86,13 @@
     <li>
         <div class="item-content">
             <div class="item-inner">
-                <div class="item-title label">{{n}}. Versuch</div>
+                <div class="item-title label">{{inc n}}. Versuch</div>
                 <div class="item input">
-                    <input type="number" placeholder="Ergebnis in {{unit}}">
+                    <input type="number"
+                           placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
+                           value="{{#with measurement}}{{value}}{{/with}}"
+                        {{isReadOnly measurement}}
+                    >
                 </div>
             </div>
         </div>

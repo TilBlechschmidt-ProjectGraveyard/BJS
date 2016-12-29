@@ -4,17 +4,6 @@ import {AccountManagement} from "../../../api/AccountManagement/index";
 Meteor.login_deps = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
 
-Template.registerHelper('arrayify', function (obj) {
-    let result = [];
-    for (let key in obj) {
-        if (!obj.hasOwnProperty(key)) continue;
-        const new_obj = obj[key];
-        new_obj.name = key;
-        result.push(new_obj);
-    }
-    return result;
-});
-
 Template.login.helpers({
     "accounts": function () {
         Meteor.login_deps.depend();

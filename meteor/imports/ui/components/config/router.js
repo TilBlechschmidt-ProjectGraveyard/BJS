@@ -2,7 +2,6 @@ import {home_main_onLoad} from "./home/main";
 import {new_competition_main_onLoad} from "./new_competition/main";
 import {athletes_right_onLoad} from "./athletes/right";
 import {home_left_onLoad} from "./home/left";
-import {sports_main_onLoad} from "./sports/main/index";
 
 let config = FlowRouter.group({
     prefix: '/config'
@@ -31,7 +30,6 @@ config.route('/new', {
 });
 
 config.route('/sports', {
-    triggersEnter: sports_main_onLoad,
     action: function () {
         BlazeLayout.render('sports_main');
     }
