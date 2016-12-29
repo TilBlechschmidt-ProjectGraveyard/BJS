@@ -25,6 +25,7 @@ describe('athlete', function () {
     it('encrypts and decrypts an athlete without serverAccount', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
+        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, serverAccount);
         const encrypted_p = p.encryptForDatabase(groupAccount, serverAccount);
         const decrypted_p = Athlete.decryptFromDatabase(log, encrypted_p, [groupAccount], false);
 

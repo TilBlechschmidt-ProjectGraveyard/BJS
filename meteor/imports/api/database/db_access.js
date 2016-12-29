@@ -59,15 +59,14 @@ export let DBInterface = {
      */
     getAthletesOfAccounts: function (log, accounts, require_signature) {
         let result = [];
-        log.disable();
+        // log.disable();
         COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
             const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
-            console.log(decrypted);
             if (decrypted) {
                 result.push(decrypted);
             }
         });
-        log.enable();
+        // log.enable();
         return result;
     },
 

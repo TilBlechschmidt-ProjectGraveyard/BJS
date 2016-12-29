@@ -85,7 +85,9 @@ Athlete.prototype = {
 
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
-            COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
+            if (this.id) {
+                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
+            }
             return true;
         } else {
             return false;
@@ -239,7 +241,8 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
         }
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
-        athlete.data = new Data(data.data);
+
+        athlete.data = new Data(data.data.data);
         return athlete;
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');
