@@ -146,7 +146,7 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: ""},
+        empty_measurement: {read_only: false, value: "", class: "add-attempt-input"},
         scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
             return metadata.write_permission;
@@ -186,46 +186,54 @@ export let input_onload = function (page) {
     });
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
-        if (!athleteID || !stID || !attempt || !measurement) return;
+        if (!athleteID || !stID || !attempt) return;
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
-        // if (measurement === "") {
-        //     console.log("EMPTY");
-        //     if (measurements[athleteID][stID].hasOwnProperty(attempt))
-        //         delete measurements[athleteID][stID][attempt];
-        //
-        //     const shifted_attempts = {};
-        //
-        //     let shifted_prop;
-        //     for (let prop in measurements[athleteID][stID])
-        //         if (measurements[athleteID][stID].hasOwnProperty(prop)) {
-        //             shifted_prop = prop;
-        //             if (prop > attempt)
-        //                 shifted_prop = shifted_prop - 1;
-        //             shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
-        //         }
-        //
-        //     measurements[athleteID][stID] = shifted_attempts;
-        // } else {
-            if (measurements[athleteID][stID][attempt] == measurement) return false;
+        if (measurements[athleteID][stID][attempt] == measurement) return false;
+
+        if (measurement === "") {
+            const attempts = measurements[athleteID][stID];
+            if (attempts.hasOwnProperty(attempt)) {
+                delete measurements[athleteID][stID][attempt];
+
+                const new_attempts = {};
+                let shifted_att;
+                for (let att in attempts) {
+                    if (!attempts.hasOwnProperty(att)) continue;
+                    if (parseFloat(att) > parseFloat(attempt)) {
+                        shifted_att = parseFloat(att) - 1;
+                    } else {
+                        shifted_att = parseFloat(att);
+                    }
+                    new_attempts[shifted_att] = attempts[att];
+                }
+                measurements[athleteID][stID] = new_attempts;
+            }
+        } else {
             measurements[athleteID][stID][attempt] = measurement;
-        // }
+        }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
 
         return true;
     }
 
+    function hasClass(element, cls) {
+        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+
     Template.attempt.events({
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
-                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
-                        event.target.value = "";
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
+                    event.target.value = "";
 
                 input_deps.changed();
                 event.stopPropagation();
@@ -234,8 +242,10 @@ export let input_onload = function (page) {
         },
         'blur input': function (event) {
             const data = event.target.dataset;
-            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
-                    event.target.value = "";
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
+                event.target.value = "";
             input_deps.changed();
         }
     });
