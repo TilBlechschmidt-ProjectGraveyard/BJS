@@ -48,6 +48,12 @@
                         {{#each s in sportType}}
                             {{>attempts sportType=s}}
                         {{/each}}
+                        {{#if isEmpty sportType}}
+                            <div class="content-block">
+                                <p style="text-align: center;">Wie es scheint haben wir bis jetzt keinerlei
+                                    Messdaten.</p>
+                            </div>
+                        {{/if}}
                     {{/with}}
                 </div>
             </div>
