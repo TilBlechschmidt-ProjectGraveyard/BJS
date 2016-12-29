@@ -54,15 +54,15 @@ export let input_onload = function (page) {
             input_deps.depend();
             let sportTypes = {};
 
-            // if (AccountManagement.retrieveAccounts().Station.logged_in) {
-            //     // Return all sport types that can be written to with the current station account
-            //     const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
-            //     for (let stID in stIDs) {
-            //         if (!stIDs.hasOwnProperty(stID)) continue;
-            //         stID = stIDs[stID];
-            //         sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
-            //     }
-            // }
+            if (AccountManagement.retrieveAccounts().Station.logged_in) {
+                // Return all sport types that can be written to with the current station account
+                const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+                for (let stID in stIDs) {
+                    if (!stIDs.hasOwnProperty(stID)) continue;
+                    stID = stIDs[stID];
+                    sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
+                }
+            }
 
             // Add all other sport types we don't have write permission for
             let all_sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(), DBInterface.getCompetitionType().getSportType);
@@ -193,27 +193,27 @@ export let input_onload = function (page) {
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
-        if (!measurement) {
-            if (measurements[athleteID][stID].hasOwnProperty(attempt))
-                delete measurements[athleteID][stID][attempt];
-
-            const shifted_attempts = {};
-
-            let shifted_prop;
-            for (let prop in measurements[athleteID][stID])
-                if (measurements[athleteID][stID].hasOwnProperty(prop)) {
-                    shifted_prop = prop;
-                    if (prop > attempt)
-                        shifted_prop = shifted_prop - 1;
-                    shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
-                }
-
-            measurements[athleteID][stID] = shifted_attempts;
-
-        } else {
+        // if (!measurement) {
+        //     if (measurements[athleteID][stID].hasOwnProperty(attempt))
+        //         delete measurements[athleteID][stID][attempt];
+        //
+        //     const shifted_attempts = {};
+        //
+        //     let shifted_prop;
+        //     for (let prop in measurements[athleteID][stID])
+        //         if (measurements[athleteID][stID].hasOwnProperty(prop)) {
+        //             shifted_prop = prop;
+        //             if (prop > attempt)
+        //                 shifted_prop = shifted_prop - 1;
+        //             shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
+        //         }
+        //
+        //     measurements[athleteID][stID] = shifted_attempts;
+        //
+        // } else {
             if (measurements[athleteID][stID][attempt] == measurement) return false;
             measurements[athleteID][stID][attempt] = measurement;
-        }
+        // }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
         input_deps.changed();
