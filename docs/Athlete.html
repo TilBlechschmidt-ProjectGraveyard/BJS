@@ -29,19 +29,19 @@
         <li><a href="Athlete.html">Athlete</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
                 <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
                 <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
-                <li data-type='method'><a href="Athlete.html#update">update</a></li>
             </ul>
         </li>
         <li><a href="Data.html">Data</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Data.html#findEncrypted">findEncrypted</a></li>
                 <li data-type='method'><a href="Data.html#getPlain">getPlain</a></li>
-                <li data-type='method'><a href="Data.html#update">update</a></li>
+                <li data-type='method'><a href="Data.html#push">push</a></li>
             </ul>
         </li>
         <li><a href="Log.html">Log</a>
@@ -906,13 +906,170 @@
     </dd>
 </dl>
 
-    
+
+    <h4 class="name" id="addMeasurement"><span class="type-signature"></span>addMeasurement<span class="signature">(log, stID, newMeasurements, groupAccount, stationAccount)</span><span
+            class="type-signature"> &rarr; {boolean}</span></h4>
 
 
-        
-            
+    <p class="summary">Updates the data of a given sport (stID).</p>
 
-    
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="logic_athlete.js.html">logic/athlete.js</a>, <a href="logic_athlete.js.html#line70">line
+                    70</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Updates the data of a given sport (stID).</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>log</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Log.html">Log</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Logger instance to use</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>stID</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Identifier of the sport that should get updated/new values</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>newMeasurements</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">Array.&lt;number></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>New measurements that should be inserted</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>groupAccount</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Account of the group this athlete is part of</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>stationAccount</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Account of the station responsible for this sport type</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <div class="param-desc">
+        <p>A boolean value that describes whether or not the update was successful</p>
+    </div>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">boolean</span>
+
+
+        </dd>
+    </dl>
+
 
     <h4 class="name" id="check"><span class="type-signature"></span>check<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
@@ -1478,252 +1635,7 @@
     </dd>
 </dl>
 
-    
 
-
-        
-            
-
-    
-
-    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(log, stID, newMeasurements, groupAccount, stationAccount)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-    <p class="summary">Updates the data of a given sport (stID).</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="logic_athlete.js.html">logic/athlete.js</a>, <a href="logic_athlete.js.html#line70">line 70</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    <div class="description">
-        <p>Updates the data of a given sport (stID).</p>
-    </div>
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the sport that should get updated/new values</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>newMeasurements</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>New measurements that should be inserted</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupAccount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Account.html">Account</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Account of the group this athlete is part of</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stationAccount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Account.html">Account</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Account of the station responsible for this sport type</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>A boolean value that describes whether or not the update was successful</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-    
-
-    
-
-    
 </article>
 
 </section>
@@ -1736,7 +1648,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Dec 29 2016 01:22:42
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Dec 29 2016 01:26:14
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
