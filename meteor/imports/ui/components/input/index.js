@@ -167,7 +167,6 @@ export let input_onload = function (page) {
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
         if (!athleteID || !stID || !attempt || !measurement) return;
-        console.log("Athlete:", athleteID, "stID:", stID, "Value:", measurement, "Attempt:", attempt);
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
