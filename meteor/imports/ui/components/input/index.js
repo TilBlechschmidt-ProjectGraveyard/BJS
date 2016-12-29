@@ -186,36 +186,36 @@ export let input_onload = function (page) {
     });
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
-        if (!athleteID || !stID || !attempt) return;
+        if (!athleteID || !stID || !attempt || !measurement) return;
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
-        if (measurement === "") {
-            if (measurements[athleteID][stID].hasOwnProperty(attempt))
-                delete measurements[athleteID][stID][attempt];
-
-            const shifted_attempts = {};
-
-            let shifted_prop;
-            for (let prop in measurements[athleteID][stID])
-                if (measurements[athleteID][stID].hasOwnProperty(prop)) {
-                    shifted_prop = prop;
-                    if (prop > attempt)
-                        shifted_prop = shifted_prop - 1;
-                    shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
-                }
-
-            measurements[athleteID][stID] = shifted_attempts;
-        } else {
+        // if (measurement === "") {
+        //     console.log("EMPTY");
+        //     if (measurements[athleteID][stID].hasOwnProperty(attempt))
+        //         delete measurements[athleteID][stID][attempt];
+        //
+        //     const shifted_attempts = {};
+        //
+        //     let shifted_prop;
+        //     for (let prop in measurements[athleteID][stID])
+        //         if (measurements[athleteID][stID].hasOwnProperty(prop)) {
+        //             shifted_prop = prop;
+        //             if (prop > attempt)
+        //                 shifted_prop = shifted_prop - 1;
+        //             shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
+        //         }
+        //
+        //     measurements[athleteID][stID] = shifted_attempts;
+        // } else {
             if (measurements[athleteID][stID][attempt] == measurement) return false;
             measurements[athleteID][stID][attempt] = measurement;
-        }
+        // }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
-        input_deps.changed();
 
         return true;
     }
@@ -225,9 +225,9 @@ export let input_onload = function (page) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
-                    window.setTimeout(function () {
                         event.target.value = "";
-                    }, 200);
+
+                input_deps.changed();
                 event.stopPropagation();
                 return false;
             }
@@ -235,9 +235,8 @@ export let input_onload = function (page) {
         'blur input': function (event) {
             const data = event.target.dataset;
             if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
-                window.setTimeout(function () {
                     event.target.value = "";
-                }, 200);
+            input_deps.changed();
         }
     });
 
