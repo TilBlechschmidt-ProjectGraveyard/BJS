@@ -69,16 +69,22 @@ export let NewCompetition = {
     },
 
     /**
-     * Sets the name of the new competition.
-     * @param {{stID: string, activated: boolean}[]} sports - The new name.
+     * @typedef {Object} NewCompetitionSportTypes
+     * @property {string} stID - The sport type id
+     * @property {boolean} activated - Sport type is activated or not
+     */
+
+    /**
+     * Sets the sport types of the new competition.
+     * @param {NewCompetitionSportTypes[]} sports - The new name.
      */
     setSports: function (sports) {
         Session.set(NewCompetition.prefix + "sport_types", JSON.stringify(sports));
     },
 
     /**
-     * Returns the name of the new competition.
-     * @returns {{stID: string, activated: boolean}[]}
+     * Returns the sport types of the new competition.
+     * @returns {NewCompetitionSportTypes[]}
      */
     getSports: function () {
         console.log("getSPorts");

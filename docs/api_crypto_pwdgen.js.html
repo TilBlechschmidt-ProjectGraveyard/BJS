@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>api/crypto/pwdgen.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -146,38 +146,44 @@
 
 <div id="main">
 
+    <h1 class="page-title">api/crypto/pwdgen.js</h1>
 
-    <section class="readme">
-        <article><h1>RunItEasy</h1>
-            <p><img src="https://raw.githubusercontent.com/TheMegaTB/BJS/master/meteor/public/icons/Logo512.png"
-                    alt="RunItEasy Logo"></p>
-            <h2>Documentation</h2>
-            <p>The documentation for this project can be found at <a href="https://themegatb.github.io/BJS/index.html">https://themegatb.github.io/BJS/index.html</a>
-            </p>
-            <h2>Setup</h2>
-            <p>To setup the project enter the <code>meteor</code> directory and run <code>meteor npm install</code>
-                followed by a <code>meteor</code> to run it.</p>
-            <h2>Unit testing</h2>
-            <h3>Executing tests</h3>
-            <p>To test the project run either</p>
-            <ul>
-                <li>Server only (CLI): <code>meteor test --driver-package dispatch:mocha</code></li>
-                <li>Both (WebUI): <code>meteor test --driver-package practicalmeteor:mocha</code> -&gt; <code>http://localhost:3000</code>
-                </li>
-            </ul>
-            <h3>Writing your own tests</h3>
-            <h2>Wordlist</h2>
-            <p><a href="http://wortschatz.uni-leipzig.de/Papers/top10000de.txt">http://www.byki.com/lists/german/greg%27s-german-nouns-part-1.html</a>
-            </p>
-            <p><a href="http://wortschatz.uni-leipzig.de/Papers/top10000de.txt">http://wortschatz.uni-leipzig.de/Papers/top1000de.txt</a>
-            </p>
-            <h2>Framework7-Wrapper</h2>
-            <p>https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framework7-ios-material</p>
-            <h2>Framework7 Icons Cheatsheet</h2>
-            <p>https://framework7.io/icons/</p>
-            <p>##iOS WebApp Vorlage</p>
-            <p>https://gist.github.com/tfausak/2222823</p>
-            <p>We dont have to use the startup image because the website is cached and loads immediately. </p></article>
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>function genRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export {genRandomCode, genRandomString};
+
+let words_de = require('./../../data/words_de.json');
+
+/**
+ * Generates a random string.
+ * @param {Number} length - The length of the random string.
+ * @returns {String}
+ */
+function genRandomString(length) {
+    let pass = '';
+    //noinspection JSUnusedLocalSymbols
+    for (let i in _.range(length)) { //TODO remove noinspection
+        pass += genRandomInt(33, 127);
+    }
+    return pass;
+}
+
+/**
+ * Generates a random table code.
+ * @returns {String}
+ */
+function genRandomCode() {
+    //noinspection JSUnresolvedVariable
+    return words_de[genRandomInt(0, words_de.length)] +
+        genRandomInt(0, 1000) +
+        words_de[genRandomInt(0, words_de.length)];
+}</code></pre>
+        </article>
     </section>
 
 

@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>api/log.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -146,38 +146,163 @@
 
 <div id="main">
 
+    <h1 class="page-title">api/log.js</h1>
 
-    <section class="readme">
-        <article><h1>RunItEasy</h1>
-            <p><img src="https://raw.githubusercontent.com/TheMegaTB/BJS/master/meteor/public/icons/Logo512.png"
-                    alt="RunItEasy Logo"></p>
-            <h2>Documentation</h2>
-            <p>The documentation for this project can be found at <a href="https://themegatb.github.io/BJS/index.html">https://themegatb.github.io/BJS/index.html</a>
-            </p>
-            <h2>Setup</h2>
-            <p>To setup the project enter the <code>meteor</code> directory and run <code>meteor npm install</code>
-                followed by a <code>meteor</code> to run it.</p>
-            <h2>Unit testing</h2>
-            <h3>Executing tests</h3>
-            <p>To test the project run either</p>
-            <ul>
-                <li>Server only (CLI): <code>meteor test --driver-package dispatch:mocha</code></li>
-                <li>Both (WebUI): <code>meteor test --driver-package practicalmeteor:mocha</code> -&gt; <code>http://localhost:3000</code>
-                </li>
-            </ul>
-            <h3>Writing your own tests</h3>
-            <h2>Wordlist</h2>
-            <p><a href="http://wortschatz.uni-leipzig.de/Papers/top10000de.txt">http://www.byki.com/lists/german/greg%27s-german-nouns-part-1.html</a>
-            </p>
-            <p><a href="http://wortschatz.uni-leipzig.de/Papers/top10000de.txt">http://wortschatz.uni-leipzig.de/Papers/top1000de.txt</a>
-            </p>
-            <h2>Framework7-Wrapper</h2>
-            <p>https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framework7-ios-material</p>
-            <h2>Framework7 Icons Cheatsheet</h2>
-            <p>https://framework7.io/icons/</p>
-            <p>##iOS WebApp Vorlage</p>
-            <p>https://gist.github.com/tfausak/2222823</p>
-            <p>We dont have to use the startup image because the website is cached and loads immediately. </p></article>
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>export {Log};
+
+/**
+ * A logging object to save errors, warnings and other messages for the user.
+ * @public
+ * @constructor
+ */
+function Log() {
+    this.messages = [];
+    this.log_enabled = true;
+}
+
+Log.prototype = {
+
+    /**
+     * Adds a new error.
+     * @public
+     * @param message {string} Content of the message.
+     */
+    error: function (message) {
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 2,
+                message: message,
+                timestamp: new Date()
+            });
+        }
+    },
+    err: function (message) {
+        this.error(message);
+    },
+
+    /**
+     * Adds a new warning.
+     * @public
+     * @param message {string} Content of the message.
+     */
+    warning: function (message) {
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 1,
+                message: message,
+                timestamp: new Date()
+            });
+        }
+    },
+    warn: function (message) {
+        this.warning(message);
+    },
+
+    /**
+     * Adds a new info message.
+     * @public
+     * @param message {string} Content of the message.
+     */
+    info: function (message) {
+        if (this.log_enabled) {
+            this.messages.push({
+                level: 0,
+                message: message,
+                timestamp: new Date()
+            });
+        }
+    },
+
+    /**
+     * Adds a new message with a custom level.
+     * @public
+     * @param level {number} Custom log-level to use for the message.
+     * @param message {string} Content of the message.
+     */
+    custom: function (level, message) {
+        if (this.log_enabled) {
+            this.messages.push({
+                level: level,
+                message: message,
+                timestamp: new Date()
+            });
+        }
+    },
+
+    /**
+     * Merge another Log objects messages to this.messages.
+     * @public
+     * @param other {Log} Other Log object this should be merged onto.
+     */
+    merge: function (other) {
+        this.messages = this.messages.concat(other.messages);
+    },
+
+    /**
+     * Enables all logs.
+     * @public
+     */
+    enable: function () {
+        this.log_enabled = true;
+    },
+
+    /**
+     * Disables all logs.
+     * @public
+     */
+    disable: function () {
+        this.log_enabled = false;
+    },
+
+    /**
+     * Clears the messages buffer.
+     * @public
+     */
+    clear: function () {
+        this.messages = [];
+    },
+
+    /**
+     * Returns all messages as strings.
+     * @public
+     * @returns {string[]}
+     */
+    getAsString: function () {
+        return _.map(this.messages, function (message) {
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
+        });
+    },
+
+    /**
+     * Returns all messages with the given level as strings.
+     * @public
+     * @param level {integer} Log level the returned messages should have.
+     * @returns {string[]}
+     */
+    getAsStringWithLevel: function (level) {
+        return _.map(_.where(this.messages, {level: level}), function (message) {
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
+        });
+    },
+
+    /**
+     * Returns all messages with the given or higher level as strings.
+     * @public
+     * @param level {integer} Least log level the returned messages should have.
+     * @returns {string[]}
+     */
+    getAsStringWithMinLevel: function (level) {
+        return _.map(_.filter(this.messages, function (message) {
+            return message.level >= level;
+        }), function (message) {
+            return message.timestamp.toLocaleString() + ' [' + message.level + ']: ' + message.message;
+        });
+    }
+};</code></pre>
+        </article>
     </section>
 
 
