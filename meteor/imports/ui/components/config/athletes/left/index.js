@@ -9,11 +9,16 @@ function save() {
     NewCompetition.setGroups(Meteor.groups);
 }
 
+function groupExists(name) {
+    for (let group in Meteor.groups) {
+        if (Meteor.groups[group].name === name) return true;
+    }
+    return false;
+}
+
 Template.athletes_left.helpers({
     "groups": function () {
         _groups_tracker.depend();
-        console.log("UI");
-        console.log(Meteor.groups);
         return Meteor.groups;
     }
 });
@@ -26,9 +31,13 @@ Template.athletes_left.events({
 
     'click #btn-new-group' (event, instance) {
         Meteor.f7.prompt('Bitte geben sie den Namen der Gruppe ein?', 'Gruppenname', function (value) {
-            Meteor.groups.push({name: value, athletes: []});
-            _groups_tracker.changed();
-            console.log(Meteor.groups);
+
+            if (groupExists(value)) {
+                Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".');
+            } else {
+                Meteor.groups.push({name: value, athletes: []});
+                _groups_tracker.changed();
+            }
         });
     }
 });
