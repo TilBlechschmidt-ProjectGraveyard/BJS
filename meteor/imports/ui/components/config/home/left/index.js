@@ -16,7 +16,8 @@ Template.home_left.helpers({
 
 Template.home_left.events({
     'click .link-activate_competition': function (event) {
-        const name = event.target.dataset.competition_name;
+        const name = event.target.closest(".link-activate_competition").dataset.competition_name;
+
         Meteor.f7.confirm('Um den Wettbewerb "' + name + '" zu starten wird der gesamte Server neu gestartet. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
             DBInterface.activateCompetition(name);
         });

@@ -27,8 +27,6 @@ Template.new_competition_main.events({
 });
 
 export let new_competition_main_onLoad = function () {
-    NewCompetition.setDefaults();
-
     let comp_types = [];
     for (let competition_type in COMPETITION_TYPES) {
         comp_types[competition_type] = COMPETITION_TYPES[competition_type].object.getInformation().name;

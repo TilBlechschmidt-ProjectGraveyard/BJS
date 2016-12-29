@@ -1,6 +1,13 @@
-import {Template} from 'meteor/templating';
-import './index.html';
-import '../../../../../data/start_classes.json';
+import {Template} from "meteor/templating";
+import "./index.html";
+import "../../../../../data/start_classes.json";
+import {NewCompetition} from "../../new_competition_helpers";
+
+Meteor.groups = NewCompetition.getGroups();
+
+function save() {
+    NewCompetition.setGroups(Meteor.groups);
+}
 
 export let athletes_right_onLoad = function () {
     let st_classes = [];
@@ -25,10 +32,10 @@ export let athletes_right_onLoad = function () {
 
     Template.athletes_right.events({
         'click #pick-start_class'(event, instance) {
-            // increment the counter when button is clicked
             mypicker.open();
         },
         'click #link_next'(event, instance) {
+            save();
             FlowRouter.go('/config/codes');
         }
     });
