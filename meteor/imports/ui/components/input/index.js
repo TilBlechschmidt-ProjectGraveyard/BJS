@@ -14,7 +14,7 @@ const input_deps = new Tracker.Dependency();
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
         return athlete.id;
-    });;;;;;;;;;;
+    });
 }
 
 function getAthleteByID(id) {
@@ -94,9 +94,12 @@ export let input_onload = function (page) {
                     athlete.sportType[stID] = {};
                     athlete.sportType[stID].metadata = sportTypes[stID];
                 }
-                athlete.sportType[stID].measurements = lodash.map(measurement_block.measurements.data, function (measurement) {
-                    return {read_only: true, value: measurement};
-                });
+                if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
+                athlete.sportType[stID].measurements = athlete.sportType[stID].measurements.concat(
+                    lodash.map(measurement_block.measurements.data, function (measurement) {
+                        return {read_only: true, value: measurement};
+                    })
+                );
             }
 
             // Insert the read-write data from the current session
@@ -176,11 +179,11 @@ export let input_onload = function (page) {
             if (measurements[athleteID][stID].hasOwnProperty(attempt))
                 delete measurements[athleteID][stID][attempt];
 
-            var shifted_attempts = {};
-            
-            for (var prop in measurements[athleteID][stID])
+            const shifted_attempts = {};
+
+            for (let prop in measurements[athleteID][stID])
                 if (measurements[athleteID][stID].hasOwnProperty(prop)) {
-                    var shifted_prop = prop;
+                    let shifted_prop = prop;
                     if (prop > attempt)
                         shifted_prop = shifted_prop - 1;
                     shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
