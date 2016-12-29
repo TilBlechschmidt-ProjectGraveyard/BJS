@@ -171,13 +171,33 @@ export let input_onload = function (page) {
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
         if (!athleteID || !stID || !attempt || !measurement) return;
+        console.log("Athlete:", athleteID, "stID:", stID, "Value:", measurement, "Attempt:", attempt);
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
-        if (measurements[athleteID][stID][attempt] == measurement) return false;
-        measurements[athleteID][stID][attempt] = measurement;
+       
+        if (measurement === "") {
+            if (measurements[athleteID][stID].hasOwnProperty(attempt))
+                delete measurements[athleteID][stID][attempt];
+
+            var shifted_attempts = {};
+            
+            for (var prop in measurements[athleteID][stID])
+                if (measurements[athleteID][stID].hasOwnProperty(prop)) {
+                    var shifted_prop = prop;
+                    if (prop > attempt)
+                        shifted_prop = shifted_prop - 1;
+                    shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
+                }
+
+            measurements[athleteID][stID] = shifted_attempts;
+
+        } else {
+            if (measurements[athleteID][stID][attempt] == measurement) return false;
+            measurements[athleteID][stID][attempt] = measurement;
+        }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
         input_deps.changed();
