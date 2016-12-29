@@ -1,7 +1,7 @@
-import {DBInterface} from "../database/db_access";
-import {Crypto} from "../crypto/crypto";
-import {isGroupAccount, isStationAccount, getGroupNames, getStationNames} from "../logic/account";
-const COLLECTIONS = require('../../api/database/collections')();
+import {DBInterface} from "./database/db_access";
+import {Crypto} from "./crypto/crypto";
+import {isGroupAccount, isStationAccount, getGroupNames, getStationNames} from "./logic/account";
+const COLLECTIONS = require('./database/collections')();
 const storage = window.sessionStorage;
 
 function storageAvailable(type) {

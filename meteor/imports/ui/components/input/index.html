@@ -75,8 +75,9 @@
         <div class="list-block">
             <ul>
                 {{#each m in measurements}}
-                    {{>attempt n=@index measurement=m metadata=metadata}}
+                    {{>attempt n=@index measurement=m metadata=metadata athlete_id=athlete_id}}
                 {{/each}}
+                {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata}}
             </ul>
         </div>
     {{/with}}
@@ -91,6 +92,9 @@
                     <input type="number"
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
                            value="{{#with measurement}}{{value}}{{/with}}"
+                           data-attempt="{{inc n}}"
+                           data-athlete-id="{{athlete_id}}"
+                           data-stID="{{#with metadata}}{{id}}{{/with}}"
                         {{isReadOnly measurement}}
                     >
                 </div>
