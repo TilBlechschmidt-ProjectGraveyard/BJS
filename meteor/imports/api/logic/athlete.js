@@ -49,8 +49,8 @@ Athlete.prototype = {
     /**
      * Returns the data in plain text.
      * @param log {Log} Logger instance to use
-     * @param accounts {object[]}
-     * @param requireSignature
+     * @param {Account[]} accounts
+     * @param {boolean} requireSignature
      * @returns {PlainData[]}
      */
     getPlain: function (log, accounts, requireSignature) {
