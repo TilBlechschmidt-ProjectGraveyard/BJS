@@ -32,7 +32,7 @@ Template.athletes_left.events({
         Meteor.f7.prompt('Bitte geben sie den Namen der Gruppe ein.', 'Gruppenname', function (value) {
 
             if (NewCompetition.groupExists(value)) {
-                Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".');
+                Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".', "Gruppenname");
             } else {
                 Meteor.groups.push({name: value, athletes: []});
                 Meteor._groups_tracker.changed();

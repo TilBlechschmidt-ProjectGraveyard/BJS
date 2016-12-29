@@ -36,7 +36,7 @@ Template.athletes_middle.events({
         Meteor.f7.prompt('Bitte geben sie den Namen der Gruppe ein.', 'Gruppen umbenennen', function (value) {
 
             if (NewCompetition.groupExists(value)) {
-                Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".');
+                Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".', "Gruppe umbenennen");
             } else {
                 Meteor.groups[Meteor._currentGroup].name = value;
                 Meteor._groups_tracker.changed();
@@ -45,7 +45,8 @@ Template.athletes_middle.events({
         });
     },
     'click #btn-delete-group' (event, instance) {
-        Meteor.f7.confirm('Sind sie sicher?', function () {
+        Meteor.f7.confirm('Sind sie sicher?', "Gruppe löschen", function () {
+            NewCompetition.selectAthlete(-1);
             Meteor.groups.splice(Meteor._currentGroup, 1);
             Meteor._currentGroup = -1;
             Meteor._groups_tracker.changed();

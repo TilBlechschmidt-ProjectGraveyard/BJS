@@ -11,33 +11,28 @@ function save() {
 }
 
 export let athletes_right_onLoad = function () {
-    let st_classes = [];
-    let start_classes = require('../../../../../data/start_classes.json');
-    let counter = 0;
-    for (let st_class in start_classes) {
-        st_classes[counter] = start_classes[st_class].name;
-        counter++;
-    }
 
-    let mypicker = Meteor.f7.picker({
-        input: '#pick-start_class',
-        cols: [{
-            values: st_classes,
-            textAlign: 'center',
-            width: '500px'
-        }],
-        onChange: function (picker, values, displayValues) {
-            document.getElementById('pick-start_class').value = displayValues;
+    Template.athletes_right.onRendered(function () {
+        let selector = document.getElementById("pick-start_class");
+        selector.innerHTML = "";
+        for (let st_class in NewCompetition.start_classes) {
+            selector.innerHTML += "<option>" +
+                "(" + NewCompetition.start_classes[st_class].stID + ") " +
+                NewCompetition.start_classes[st_class].name + "</option>";
         }
     });
 
     Template.athletes_right.events({
-        'click #pick-start_class'(event, instance) {
-            mypicker.open();
-        },
         'click #link_next'(event, instance) {
             save();
             FlowRouter.go('/config/codes');
+        },
+        'click #btn-delete-athlete' (event, instance) {
+            Meteor.f7.confirm('Sind sie sicher?', "Athlete löschen", function () {
+                NewCompetition.selectAthlete(-1);
+                Meteor.groups[Meteor._currentGroup].athletes.splice(Meteor._currentAthlete, 1);
+                Meteor._athletes_tracker.changed();
+            });
         }
     });
 };
