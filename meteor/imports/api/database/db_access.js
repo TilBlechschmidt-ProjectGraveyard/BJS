@@ -95,6 +95,14 @@ export let DBInterface = {
     },
 
     /**
+     * Returns the activated sport types of the current competition
+     * @returns {string[]}
+     */
+    getCompetitionSportTypes: function () {
+        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
+    },
+
+    /**
      * Lists all competition
      * @returns {string[]}
      */
@@ -112,12 +120,13 @@ export let DBInterface = {
 
     /**
      * Creates a new competition
-     * @param {string} competitionName
-     * @param {number} competitionTypeID
-     * @param {object[]} encrypted_athletes
-     * @param {Accounts[]} accounts
+     * @param {string} competitionName - The name of the competition
+     * @param {number} competitionTypeID - The type id of the competition
+     * @param {string[]} sportTypes - List of sport type ids which are used by the contest
+     * @param {object[]} encrypted_athletes - A list of encrypted athletes. To encrypt an athlete use athlete.encryptForDatabase([...])
+     * @param {Accounts[]} accounts - A list of accounts
      */
-    createCompetition: function (competitionName, competitionTypeID, encrypted_athletes, accounts) {
+    createCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts) {
         const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
         const Contest = Collection('Contest', true, newDBHandler);
         const Accounts = Collection('Accounts', true, newDBHandler);
@@ -131,7 +140,10 @@ export let DBInterface = {
             Accounts.handle.insert(accounts[account]);
         }
 
-        Contest.handle.insert({contestType: competitionTypeID});
+        Contest.handle.insert({
+            contestType: competitionTypeID,
+            sportTypes: sportTypes
+        });
 
 
         let listOFCompetitions = DBInterface.listCompetition();
