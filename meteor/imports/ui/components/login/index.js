@@ -84,7 +84,7 @@ Template.login.events({
     'click .logout-button': function (event) {
         event.preventDefault();
 
-        Meteor.f7.confirm('Die Daten können nachträglich nichtmehr editiert werden, wenn sie sich abmelden!', 'Hinweis',
+        Meteor.f7.confirm('Die Daten können nachträglich nicht mehr editiert werden, wenn Sie sich abmelden!', 'Hinweis',
             function () {
                 Meteor.f7.showPreloader('Speichere Daten');
 
