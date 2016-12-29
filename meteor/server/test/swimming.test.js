@@ -15,7 +15,7 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [7.33], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [7.33], groupAccount, stationAccount);
 
         p.data.data.length.should.be.equal(1);
     });
@@ -24,10 +24,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount], false).should.be.equal(true);
     });
@@ -36,10 +36,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount, stationAccount], false).should.be.equal(true);
     });
@@ -48,10 +48,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount, stationAccount], true).should.be.equal(true);
     });
@@ -60,10 +60,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount], true).should.be.equal(false);
     });
@@ -72,10 +72,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount], false).should.be.equal(26);
     });
@@ -84,10 +84,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], false).should.be.equal(26);
     });
@@ -96,10 +96,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], true).should.be.equal(26);
     });
@@ -108,10 +108,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount], true).should.be.equal(0);
     });
@@ -120,10 +120,10 @@ describe('swimming', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.update(log, 'st_face_up_100', [700], groupAccount, stationAccount);
-        p.update(log, 'st_diving', [13, 13], groupAccount, stationAccount);
-        p.update(log, 'st_crawl_100', [80], groupAccount, stationAccount);
-        p.update(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_face_up_100', [700], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_diving', [13, 13], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
+        p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
         const certificate = ct.generateCertificate(log, p, [groupAccount, stationAccount], true);
         certificate.score.should.be.equal(26);

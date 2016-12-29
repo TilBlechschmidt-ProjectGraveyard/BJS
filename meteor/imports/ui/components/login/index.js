@@ -54,7 +54,7 @@ Template.login.events({
                 AccountManagement.storeAccounts(accounts);
                 Meteor.login_deps.changed();
             });
-        }, 100);
+        }, 300);
     },
     'click .logout-button': function (event) {
         event.preventDefault();

@@ -67,7 +67,7 @@ Athlete.prototype = {
      * @param stationAccount {Account} Account of the station responsible for this sport type
      * @returns {boolean} A boolean value that describes whether or not the update was successful
      */
-    update: function (log, stID, newMeasurements, groupAccount, stationAccount) {
+    addMeasurement: function (log, stID, newMeasurements, groupAccount, stationAccount) {
 
         let canWrite = true;
 
@@ -83,7 +83,7 @@ Athlete.prototype = {
 
 
         if (canWrite) {
-            this.data.update(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
             return true;
         } else {
             return false;

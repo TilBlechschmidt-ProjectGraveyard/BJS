@@ -75,7 +75,7 @@ export let DBInterface = {
      * @param id
      */
     setCompetitionTypeID: function (id) {
-        COLLECTIONS.Contest.handle.update({_id: DBInterface.getGenericID()}, {$set: {contestType: id}});
+        COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestID()}, {$set: {contestType: id}});
     },
 
     /**
@@ -146,6 +146,6 @@ export let DBInterface = {
      */
     activateCompetition: function (competitionName) {
         COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
-        Meteor.call('restart');//TODO fix application
+        Meteor.call('restart');
     }
 };
