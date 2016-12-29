@@ -82,16 +82,16 @@ Data.prototype = {
     push: function (log, stID, newMeasurements, groupAC, stationAC) {
         const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
         const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
-        const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
-
-        if (oldData) {
-            oldData.encryptedStID = encryptedStID;
-            oldData.encryptedMeasurements = newEncryptedMeasurements;
-        } else {
-            this.data.push({
-                encryptedStID: encryptedStID,
-                encryptedMeasurements: newEncryptedMeasurements,
-            });
-        }
+        // const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
+        //
+        // if (oldData) {
+        //     oldData.encryptedStID = encryptedStID;
+        //     oldData.encryptedMeasurements = newEncryptedMeasurements;
+        // } else {
+        this.data.push({
+            encryptedStID: encryptedStID,
+            encryptedMeasurements: newEncryptedMeasurements,
+        });
+        // }
     }
 };
