@@ -43,7 +43,6 @@ function toggleFullScreen() {
     const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
     const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
-    //if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
     if (!isFullscreen()) {
         requestFullScreen.call(docEl);
     } else {
@@ -52,35 +51,45 @@ function toggleFullScreen() {
     fullscreen_deps.changed();
 }
 
+function login() {
+    const type = event.target.dataset.name;
+    const password_input = document.getElementById(type + "_pwd");
+    const password = password_input.value;
+
+    const accounts = AccountManagement.retrieveAccounts();
+    accounts[event.target.dataset.name].processing = true;
+    AccountManagement.storeAccounts(accounts);
+    Meteor.login_deps.changed();
+
+    setTimeout(function () {
+        AccountManagement.login(type, password, function (success, err) {
+            if (!success) {
+                //TODO: Throw something at the user
+                Meteor.f7.alert(err, "Fehler");
+                password_input.value = "";
+            }
+            const accounts = AccountManagement.retrieveAccounts();
+            accounts[type].processing = false;
+            AccountManagement.storeAccounts(accounts);
+            Meteor.login_deps.changed();
+        });
+    }, 300);
+}
+
 Template.login.events({
     'click .fullscreen-toggle': function () {
         toggleFullScreen();
     },
+    'keypress input': function (event) {
+        if (event.keyCode == 13) {
+            if (event.target.dataset.name) login(event);
+            event.stopPropagation();
+            return false;
+        }
+    },
     'click .login-button': function (event) {
         event.preventDefault();
-
-        const type = event.target.dataset.name;
-        const password_input = document.getElementById(type + "_pwd");
-        const password = password_input.value;
-
-        const accounts = AccountManagement.retrieveAccounts();
-        accounts[event.target.dataset.name].processing = true;
-        AccountManagement.storeAccounts(accounts);
-        Meteor.login_deps.changed();
-
-        setTimeout(function () {
-            AccountManagement.login(type, password, function (success, err) {
-                if (!success) {
-                    //TODO: Throw something at the user
-                    Meteor.f7.alert(err, "Fehler");
-                    password_input.value = "";
-                }
-                const accounts = AccountManagement.retrieveAccounts();
-                accounts[type].processing = false;
-                AccountManagement.storeAccounts(accounts);
-                Meteor.login_deps.changed();
-            });
-        }, 300);
+        login(event);
     },
     'click .logout-button': function (event) {
         event.preventDefault();
