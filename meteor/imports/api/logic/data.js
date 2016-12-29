@@ -4,12 +4,18 @@ import {getAcsFromAccounts} from "./account";
 
 /**
  * Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
+ * @param {object} [data]
  * @constructor
  */
-export function Data() {
+export function Data(data) {
     /// data is an array of objects with id (view getSports) and measurement
     // example: [{encryptedStID: object, encryptedMeasurements: object}]
-    this.data = [];
+    if (data) {
+        this.data = data;
+    } else {
+        this.data = [];
+    }
+
 }
 
 Data.prototype = {

@@ -238,7 +238,9 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
             return false;
         }
 
-        return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+        let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+        athlete.data = new Data(data.data);
+        return athlete;
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');
     return false;
