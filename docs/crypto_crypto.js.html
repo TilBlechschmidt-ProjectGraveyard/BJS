@@ -29,19 +29,19 @@
         <li><a href="Athlete.html">Athlete</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
                 <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
                 <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
-                <li data-type='method'><a href="Athlete.html#update">update</a></li>
             </ul>
         </li>
         <li><a href="Data.html">Data</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Data.html#findEncrypted">findEncrypted</a></li>
                 <li data-type='method'><a href="Data.html#getPlain">getPlain</a></li>
-                <li data-type='method'><a href="Data.html#update">update</a></li>
+                <li data-type='method'><a href="Data.html#push">push</a></li>
             </ul>
         </li>
         <li><a href="Log.html">Log</a>
@@ -72,6 +72,7 @@
                 <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
                 <li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getSportType">getSportType</a></li>
                 <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
             </ul>
@@ -80,16 +81,22 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
             </ul>
         </li>
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
+                <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.createCompetition">createCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getContestGenericID">getContestGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.listCompetition">listCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
             </ul>
@@ -101,7 +108,9 @@
                 <li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li>
                 <li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li>
                 <li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Swimming.html#.getNameOfSportType">getNameOfSportType</a></li>
                 <li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Swimming.html#.getSportType">getSportType</a></li>
                 <li data-type='method'><a href="Swimming.html#.getValidData">getValidData</a></li>
                 <li data-type='method'><a href="Swimming.html#.validate">validate</a></li>
             </ul>
@@ -117,6 +126,7 @@
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
+        <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -162,7 +172,7 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
 /**
  * Converts a word list to hexadecimal values.
  * @private
- * @param {WordArray} words - Word list to convert into hexadecimal values.
+ * @param {CryptoJS.lib.WordArray} words - Word list to convert into hexadecimal values.
  */
 function wordsToHex(words) {
     //noinspection JSUnresolvedVariable
@@ -237,7 +247,35 @@ function decrypt(SED, groupAC) {
  * @type {{generateAC: Crypto.generateAC, encrypt: Crypto.encrypt, tryDecrypt: Crypto.tryDecrypt}}
                 */
 export let Crypto = {
-//noinspection JSUnresolvedVariable
+    /**
+     * Generate a private hash based on the password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generatePubHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 10}));
+    },
+
+    /**
+     * Generate a private hash based on the password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generatePrivHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000}));
+    },
+
+
     /**
      * Generates a authentication code for.
      * @public
@@ -252,8 +290,8 @@ export let Crypto = {
         //noinspection JSUnresolvedFunction
         return {
             salt: wordsToHex(salt),
-            pubHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
-            privHash: wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000})),
+            pubHash: Crypto.generatePubHash(password, salt),
+            privHash: Crypto.generatePrivHash(password, salt)
         };
     },
 
@@ -334,7 +372,7 @@ export let Crypto = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Dec 28 2016 17:15:50
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Dec 29 2016 01:16:14
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
