@@ -4,18 +4,12 @@ import "./index.css";
 import {AccountManagement} from "../../../api/AccountManagement";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
-import {arrayify} from "../../../startup/client/helpers";
+import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
 
 const input_deps = new Tracker.Dependency();
-
-function getAthletes() {
-    const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;
-    if (!group_account) return [];
-    return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
-}
 
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
@@ -30,13 +24,6 @@ function getAthleteByID(id) {
 }
 
 export let input_onload = function (page) {
-    if (!page.params.athlete_id) {
-        DBInterface.waitForReady(function () {
-            const athletes = lodash.sortBy(getAthletes(), 'lastName');
-            if (athletes[0])
-                FlowRouter.go('/contest/' + athletes[0].id);
-        });
-    }
 
     Template.login.helpers({
         show_login: !AccountManagement.inputPermitted()
@@ -57,6 +44,7 @@ export let input_onload = function (page) {
             return athlete_list;
         },
         nameByID: function (id) {
+            Meteor.login_deps.depend();
             const athlete = getAthleteByID(id);
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();
@@ -65,12 +53,8 @@ export let input_onload = function (page) {
             Meteor.login_deps.depend();
             input_deps.depend();
             let sportTypes = {};
-            if (!AccountManagement.retrieveAccounts().Station.logged_in) {
-                // Return all sport types
-                //TODO Filter by ones that already have data
-                sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(),
-                    DBInterface.getCompetitionType().getSportType);
-            } else {
+
+            if (AccountManagement.retrieveAccounts().Station.logged_in) {
                 // Return all sport types that can be written to with the current station account
                 const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
                 for (let stID in stIDs) {
@@ -80,36 +64,47 @@ export let input_onload = function (page) {
                 }
             }
 
-            const athlete = getAthleteByID(id);
-            if (athlete === undefined) return {};
-            // Add some fake measurements
-            if (AccountManagement.retrieveAccounts().Station.account) {
-                athlete.addMeasurement(new Log(), "st_long_jump", [0.1, 2.2, 0.6], AccountManagement.retrieveAccounts().Gruppenleiter.account, AccountManagement.retrieveAccounts().Station.account);
-                athlete.addMeasurement(new Log(), "st_long_jump", [0.5, 5.5], AccountManagement.retrieveAccounts().Gruppenleiter.account, AccountManagement.retrieveAccounts().Station.account);
-                athlete.addMeasurement(new Log(), "st_ball_200", [0.5, 5.5], AccountManagement.retrieveAccounts().Gruppenleiter.account, AccountManagement.retrieveAccounts().Station.account);
+            // Add all other sport types we don't have write permission for
+            let all_sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(), DBInterface.getCompetitionType().getSportType);
+            for (let index in all_sportTypes) {
+                if (!all_sportTypes.hasOwnProperty(index)) continue;
+                stID = all_sportTypes[index];
+                sportTypes[stID.id] = stID;
             }
 
+            const athlete = getAthleteByID(id);
+            if (athlete === undefined) return {};
+
             // Fetch the measurements
-            const read_only_measurements = athlete.getPlain(new Log(), [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+            const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+
+            athlete.sportType = {};
+            let stID;
+
+            // Insert the metadata for the sportTypes
+            for (let index in sportTypes) {
+                stID = sportTypes[index].id;
+                if (!athlete.sportType[stID]) athlete.sportType[stID] = {};
+                athlete.sportType[stID].metadata = sportTypes[index];
+                athlete.sportType[stID].measurements = [];
+            }
 
             // Insert the read_only_measurements into the athlete object
-            athlete.sportType = {};
             for (let measurement_block in read_only_measurements) {
                 if (!read_only_measurements.hasOwnProperty(measurement_block)) continue;
                 measurement_block = read_only_measurements[measurement_block];
 
-                const stID = measurement_block.stID.data;
-                if (!athlete.sportType[stID]) {
-                    athlete.sportType[stID] = {};
-                    athlete.sportType[stID].metadata = sportTypes[stID];
-                }
-                athlete.sportType[stID].measurements = lodash.map(measurement_block.measurements.data, function (measurement) {
-                    return {read_only: true, value: measurement};
-                });
+                stID = measurement_block.stID.data;
+                if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
+                athlete.sportType[stID].measurements = athlete.sportType[stID].measurements.concat(
+                    lodash.map(measurement_block.measurements.data, function (measurement) {
+                        return {read_only: true, value: measurement};
+                    })
+                );
             }
 
             // Insert the read-write data from the current session
-            if (sessionStorage.getItem("measurements")) {
+            if (AccountManagement.retrieveAccounts().Station.account && sessionStorage.getItem("measurements")) {
                 const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
                 for (let sportType in measurements) {
                     if (!measurements.hasOwnProperty(sportType)) continue;
@@ -121,9 +116,29 @@ export let input_onload = function (page) {
             }
 
             athlete.sportType = arrayify(athlete.sportType);
-            console.log(athlete);
+
+            // Remove unused sportTypes (skipping the ones we have write permission for) and add a write_permission flag
+            let write_permissions = [];
+            if (AccountManagement.retrieveAccounts().Station.account)
+                write_permissions = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+
+            athlete.sportType = lodash.map(athlete.sportType, function (element) {
+                const write_permission = lodash.includes(write_permissions, element.metadata.id);
+                if (write_permission || element.measurements.length > 0) {
+                    element.metadata.write_permission = write_permission;
+                    return element;
+                }
+            });
+
+            athlete.sportType = lodash.remove(athlete.sportType, function (e) {
+                return e !== undefined;
+            });
 
             return athlete;
+        },
+        isEmpty: function (arr) {
+            if (arr === undefined) return true;
+            return arr.length === 0;
         }
     });
 
@@ -131,7 +146,12 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: ""}
+        empty_measurement: {read_only: false, value: ""},
+        scoreWritePermission: function (metadata) {
+            Meteor.login_deps.depend();
+            return metadata.write_permission;
+            // return AccountManagement.retrieveAccounts().Station.logged_in;
+        }
     });
 
     Template.attempt.helpers({
@@ -167,17 +187,35 @@ export let input_onload = function (page) {
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
         if (!athleteID || !stID || !attempt || !measurement) return;
-        console.log("Athlete:", athleteID, "stID:", stID, "Value:", measurement, "Attempt:", attempt);
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
-        if (measurements[athleteID][stID][attempt] == measurement) return false;
-        measurements[athleteID][stID][attempt] = measurement;
+
+        // if (measurement === "") {
+        //     console.log("EMPTY");
+        //     if (measurements[athleteID][stID].hasOwnProperty(attempt))
+        //         delete measurements[athleteID][stID][attempt];
+        //
+        //     const shifted_attempts = {};
+        //
+        //     let shifted_prop;
+        //     for (let prop in measurements[athleteID][stID])
+        //         if (measurements[athleteID][stID].hasOwnProperty(prop)) {
+        //             shifted_prop = prop;
+        //             if (prop > attempt)
+        //                 shifted_prop = shifted_prop - 1;
+        //             shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
+        //         }
+        //
+        //     measurements[athleteID][stID] = shifted_attempts;
+        // } else {
+            if (measurements[athleteID][stID][attempt] == measurement) return false;
+            measurements[athleteID][stID][attempt] = measurement;
+        // }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
-        input_deps.changed();
 
         return true;
     }
@@ -186,14 +224,19 @@ export let input_onload = function (page) {
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
-                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
+                        event.target.value = "";
+
+                input_deps.changed();
                 event.stopPropagation();
                 return false;
             }
         },
         'blur input': function (event) {
             const data = event.target.dataset;
-            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
+                    event.target.value = "";
+            input_deps.changed();
         }
     });
 
@@ -201,5 +244,7 @@ export let input_onload = function (page) {
         Meteor.f7 = new Framework7({
             swipePanel: 'left'
         });
+
+        selectDefaultAthlete();
     });
 };

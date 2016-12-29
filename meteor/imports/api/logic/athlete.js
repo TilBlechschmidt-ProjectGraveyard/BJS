@@ -1,6 +1,7 @@
 import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
 import {getAcsFromAccounts} from "./account";
+const COLLECTIONS = require("../database/collections")();
 
 
 /**
@@ -80,10 +81,11 @@ Athlete.prototype = {
             log.error('Der Stations Account hat keine Berechtigung');
             canWrite = false;
         }
-
-
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            if (this.id) {
+                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
+            }
             return true;
         } else {
             return false;
@@ -236,7 +238,10 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
             return false;
         }
 
-        return new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+        let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+
+        athlete.data = new Data(data.data.data);
+        return athlete;
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');
     return false;

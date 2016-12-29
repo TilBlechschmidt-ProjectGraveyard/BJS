@@ -3,7 +3,17 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 
-Session.keys = {};
+
+const start_classes_object = require('../../../data/start_classes.json');
+
+let start_classes = [];
+
+for (let stID in start_classes_object) {
+    start_classes.push({
+        stID: stID,
+        name: start_classes_object[stID].name
+    });
+}
 
 /**
  * Object containing all information and functions required for creating a new competition.
@@ -11,8 +21,85 @@ Session.keys = {};
  * @namespace
  */
 export let NewCompetition = {
+    start_classes: start_classes,
+
     /** @constant {number} */
     prefix: "new_competition_",
+
+    groupExists: function (name) {
+        for (let group in Meteor.groups) {
+            if (Meteor.groups[group].name === name) return true;
+        }
+        return false;
+    },
+
+    selectAthlete: function (athleteID) {
+        if (!document.getElementById("in-first-name")) {
+            Meteor._currentAthlete = -1;
+        } else {
+            if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
+                let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+                old_athlete.firstName = document.getElementById("in-first-name").value;
+                old_athlete.lastName = document.getElementById("in-last-name").value;
+                old_athlete.ageGroup = document.getElementById("in-year").value;
+                old_athlete.isMale = document.getElementById("pick-gender").selectedIndex === 0;
+                const handicapID = document.getElementById("pick-start_class").selectedIndex;
+                old_athlete.handicap = NewCompetition.start_classes[handicapID].stID;
+            }
+            Meteor._currentAthlete = athleteID;
+            if (athleteID != -1) {
+                const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+                document.getElementById("in-first-name").removeAttribute("disabled");
+                document.getElementById("in-last-name").removeAttribute("disabled");
+                document.getElementById("in-year").removeAttribute("disabled");
+                document.getElementById("pick-gender").removeAttribute("disabled");
+                document.getElementById("pick-start_class").removeAttribute("disabled");
+                document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+
+                document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
+
+                for (let id in start_classes) {
+                    if (start_classes[id].stID === new_athlete.handicap) {
+                        document.getElementById("pick-start_class").selectedIndex = id;
+                        break;
+                    }
+                }
+
+                document.getElementById("in-first-name").value = new_athlete.firstName;
+                document.getElementById("in-last-name").value = new_athlete.lastName;
+                document.getElementById("in-year").value = new_athlete.ageGroup;
+
+                // call it a second time because some browsers have problems with the placeholder
+                document.getElementById("in-first-name").value = new_athlete.firstName;
+                document.getElementById("in-last-name").value = new_athlete.lastName;
+                document.getElementById("in-year").value = new_athlete.ageGroup;
+            } else {
+
+                document.getElementById("in-first-name").setAttribute("value", "");
+                document.getElementById("in-last-name").setAttribute("value", "");
+                document.getElementById("in-year").setAttribute("value", "");
+
+                document.getElementById("in-first-name").setAttribute("disabled", "true");
+                document.getElementById("in-last-name").setAttribute("disabled", "true");
+                document.getElementById("in-year").setAttribute("disabled", "true");
+                document.getElementById("pick-gender").setAttribute("disabled", "true");
+                document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("pick-start_class").setAttribute("disabled", "true");
+
+                document.getElementById("pick-gender").selectedIndex = 0;
+                document.getElementById("pick-start_class").selectedIndex = 0;
+
+                document.getElementById("in-first-name").value = "";
+                document.getElementById("in-last-name").value = "";
+                document.getElementById("in-year").value = "";
+                // call it a second time because some browsers have problems with the placeholder
+                document.getElementById("in-first-name").value = "";
+                document.getElementById("in-last-name").value = "";
+                document.getElementById("in-year").value = "";
+            }
+        }
+        Meteor._athletes_tracker.changed();
+    },
 
     /**
      * Resets sport types.
@@ -100,9 +187,18 @@ export let NewCompetition = {
     },
 
     /**
+     * @typedef {Object} ConfigAthlete
+     * @property {string} firstName first-name of the athlete
+     * @property {string} lastName last-name of the athlete
+     * @property {number} ageGroup Age category of the athlete
+     * @property {boolean} isMale Whether or not the athlete is male
+     * @property {string} handicap Handicap id of the athlete
+     */
+
+    /**
      * @typedef {Object} AthleteGroup
      * @property {string} name - The groups name.
-     * @property {Athlete[]} athletes - List of all athletes.
+     * @property {ConfigAthlete[]} athletes - List of all athletes. It's not a normal athlete but a ConfigAthlete.
      */
 
     /**
