@@ -22,9 +22,9 @@ Template.athletes_middle.helpers({
             return group.athletes;
         } else {
             document.getElementById("btn-rename-group").innerHTML = "Keine Gruppe Ausgewählt";
-            document.getElementById("btn-rename-group").disabled = true;
-            document.getElementById("btn-delete-group").disabled = true;
-            document.getElementById("btn-add-athlete").disabled = true;
+            document.getElementById("btn-rename-group").setAttribute("disabled", "true");
+            document.getElementById("btn-delete-group").setAttribute("disabled", "true");
+            document.getElementById("btn-add-athlete").setAttribute("disabled", "true");
 
             return [];
         }
