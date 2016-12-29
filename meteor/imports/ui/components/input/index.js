@@ -224,14 +224,20 @@ export let input_onload = function (page) {
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
-                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
+                    window.setTimeout(function () {
+                        event.target.value = "";
+                    }, 200);
                 event.stopPropagation();
                 return false;
             }
         },
         'blur input': function (event) {
             const data = event.target.dataset;
-            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value))
+                window.setTimeout(function () {
+                    event.target.value = "";
+                }, 200);
         }
     });
 
