@@ -122,7 +122,6 @@ export let input_onload = function (page) {
             }
 
             athlete.sportType = arrayify(athlete.sportType);
-            console.log(athlete);
 
             return athlete;
         }
