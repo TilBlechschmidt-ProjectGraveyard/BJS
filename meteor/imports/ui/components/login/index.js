@@ -1,6 +1,7 @@
 import "./index.html";
 import {AccountManagement} from "../../../api/AccountManagement";
 import {DBInterface} from "../../../api/database/db_access";
+import {selectDefaultAthlete} from "../../../startup/client/helpers";
 
 Meteor.login_deps = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
@@ -61,6 +62,7 @@ function login(event) {
             const accounts = AccountManagement.retrieveAccounts();
             accounts[type].processing = false;
             AccountManagement.storeAccounts(accounts);
+            selectDefaultAthlete();
             Meteor.login_deps.changed();
         });
     }, 300);

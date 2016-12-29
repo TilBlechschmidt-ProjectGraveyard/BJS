@@ -4,23 +4,17 @@ import "./index.css";
 import {AccountManagement} from "../../../api/AccountManagement";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
-import {arrayify} from "../../../startup/client/helpers";
+import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
 
 const input_deps = new Tracker.Dependency();
 
-function getAthletes() {
-    const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;
-    if (!group_account) return [];
-    return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
-}
-
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
         return athlete.id;
-    });
+    });;;;;;;;;;;
 }
 
 function getAthleteByID(id) {
@@ -205,12 +199,6 @@ export let input_onload = function (page) {
             swipePanel: 'left'
         });
 
-        DBInterface.waitForReady(function () {
-            const athletes = lodash.sortBy(getAthletes(), 'lastName');
-            if (((!page.params.athlete_id && athletes[0]) || !lodash.find(athletes, function (athlete) {
-                    return athlete.id == page.params.athlete_id;
-                })) && athletes[0] !== undefined)
-                FlowRouter.go('/contest/' + athletes[0].id);
-        });
+        selectDefaultAthlete();
     });
 };
