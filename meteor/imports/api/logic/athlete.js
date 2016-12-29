@@ -1,6 +1,7 @@
 import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
 import {getAcsFromAccounts} from "./account";
+const COLLECTIONS = require("../database/collections")();
 
 
 /**
@@ -84,6 +85,7 @@ Athlete.prototype = {
 
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
             return true;
         } else {
             return false;

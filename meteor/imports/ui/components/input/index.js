@@ -84,8 +84,10 @@ export let input_onload = function (page) {
             const athlete = getAthleteByID(id);
             if (athlete === undefined) return {};
 
+            console.log("Athlete", athlete);
             // Fetch the measurements
-            const read_only_measurements = athlete.getPlain(new Log(), [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+            const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+            console.log("ROM", read_only_measurements);
 
             athlete.sportType = {};
             // Insert the metadata for the sportTypes
