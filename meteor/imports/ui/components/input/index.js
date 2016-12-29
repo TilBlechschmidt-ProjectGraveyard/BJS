@@ -173,26 +173,27 @@ export let input_onload = function (page) {
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
+        if (measurements[athleteID][stID][attempt] == measurement) return false;
         measurements[athleteID][stID][attempt] = measurement;
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
         input_deps.changed();
+
+        return true;
     }
 
     Template.attempt.events({
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
-                updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
-                event.target.value = "";
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
                 event.stopPropagation();
                 return false;
             }
         },
         'blur input': function (event) {
             const data = event.target.dataset;
-            updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
-            event.target.value = "";
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
         }
     });
 
