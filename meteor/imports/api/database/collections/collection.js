@@ -52,9 +52,7 @@ export function Collection(name, grounded, nonCompetitionDB, publicationFunction
             c();
         }
     };
-    col.onReady(function () {
-        console.log(col.name + " is now connected!");
-    });
+    col.onReady();
 
     if (Meteor.isClient) {
         Meteor.subscribe(col.name);
