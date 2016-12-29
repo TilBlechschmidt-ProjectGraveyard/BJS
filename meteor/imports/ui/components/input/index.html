@@ -1,48 +1,49 @@
 <template name="input">
-    <div class="view navbar-through">
+    <!-- Participant selection -->
+    <div class="panel-overlay"></div>
+    <div class="panel panel-left panel-cover">
+        <div class="content-block">
+            <p class="panel-title">Teilnehmer</p>
 
-        <!-- Participant selection -->
-        <div class="panel-overlay"></div>
-        <div class="panel panel-left panel-cover">
-            <div class="content-block">
-                <p class="panel-title">Teilnehmer</p>
-
-                <div class="contacts-content">
-                    <div class="list-block contacts-block">
-                        <ul>
-                            {{#each a in athletes}}
-                                {{#with a}}
-                                    <li data-id="{{id}}" class="athlete">
-                                        <div class="contact-content">
-                                            <div class="item-inner">
-                                                <div class="item-title">{{name}}</div>
-                                            </div>
+            <div class="contacts-content">
+                <div class="list-block contacts-block">
+                    <ul>
+                        {{#each a in athletes}}
+                            {{#with a}}
+                                <li data-id="{{id}}" class="athlete">
+                                    <div class="contact-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">{{name}}</div>
                                         </div>
-                                    </li>
-                                {{/with}}
-                            {{/each}}
-                        </ul>
-                    </div>
+                                    </div>
+                                </li>
+                            {{/with}}
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="left">
-                    <a href="#" class="link open-panel">
-                        <i class="icon icon-bars"></i>
-                        <span>Teilnehmer</span>
-                    </a>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link open-panel">
+                            <i class="icon icon-bars"></i>
+                            <span>Teilnehmer</span>
+                        </a>
+                    </div>
+                    <div class="center">{{nameByID athlete_id}}</div>
+                    <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
                 </div>
-                <div class="center">{{nameByID athlete_id}}</div>
-                <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
             </div>
-        </div>
-        {{#if athlete_id}}
-            <!-- Page Content -->
-            <div class="page">
+
+            {{#if athlete_id}}
+                <!-- Page Content -->
                 <div class="page-content">
                     {{#with athleteByID athlete_id}}
                         {{#each s in sportType}}
@@ -56,20 +57,18 @@
                         {{/if}}
                     {{/with}}
                 </div>
-            </div>
-        {{else}}
-            <div class="page">
+            {{else}}
                 <div class="page-content" style="width: 100%;">
                     <span style="width:42px; height:42px; margin: auto; display: block; padding-top: 30px"
                           class="preloader"></span>
                 </div>
-            </div>
-        {{/if}}
-        <!-- Toolbar -->
-        <div class="toolbar">
-            <div class="toolbar-inner">
-                <a href="" id="link_prev" class="item-link">Vorheriger</a>
-                <a href="" id="link_next" class="item-link">Nächster</a>
+            {{/if}}
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="" id="link_prev" class="item-link">Vorheriger</a>
+                    <a href="" id="link_next" class="item-link">Nächster</a>
+                </div>
             </div>
         </div>
     </div>
