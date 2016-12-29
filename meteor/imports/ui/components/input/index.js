@@ -4,18 +4,12 @@ import "./index.css";
 import {AccountManagement} from "../../../api/AccountManagement";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
-import {arrayify} from "../../../startup/client/helpers";
+import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
 
 const input_deps = new Tracker.Dependency();
-
-function getAthletes() {
-    const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;
-    if (!group_account) return [];
-    return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
-}
 
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
@@ -81,13 +75,14 @@ export let input_onload = function (page) {
             const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
 
             athlete.sportType = {};
+            let stID;
+
             // Insert the metadata for the sportTypes
-            if (AccountManagement.retrieveAccounts().Station.account) {
-                for (let sportType in sportTypes) {
-                    if (!athlete.sportType[sportType]) athlete.sportType[sportType] = {};
-                    athlete.sportType[sportType].metadata = sportTypes[sportType];
-                    athlete.sportType[sportType].measurements = [];
-                }
+            for (let index in sportTypes) {
+                stID = sportTypes[index].id;
+                if (!athlete.sportType[stID]) athlete.sportType[stID] = {};
+                athlete.sportType[stID].metadata = sportTypes[index];
+                athlete.sportType[stID].measurements = [];
             }
 
             // Insert the read_only_measurements into the athlete object
@@ -95,14 +90,13 @@ export let input_onload = function (page) {
                 if (!read_only_measurements.hasOwnProperty(measurement_block)) continue;
                 measurement_block = read_only_measurements[measurement_block];
 
-                const stID = measurement_block.stID.data;
-                if (!athlete.sportType[stID]) {
-                    athlete.sportType[stID] = {};
-                    athlete.sportType[stID].metadata = sportTypes[stID];
-                }
-                athlete.sportType[stID].measurements = lodash.map(measurement_block.measurements.data, function (measurement) {
-                    return {read_only: true, value: measurement};
-                });
+                stID = measurement_block.stID.data;
+                if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
+                athlete.sportType[stID].measurements = athlete.sportType[stID].measurements.concat(
+                    lodash.map(measurement_block.measurements.data, function (measurement) {
+                        return {read_only: true, value: measurement};
+                    })
+                );
             }
 
             // Insert the read-write data from the current session
@@ -118,6 +112,11 @@ export let input_onload = function (page) {
             }
 
             athlete.sportType = arrayify(athlete.sportType);
+
+            // Remove unused sportTypes
+            athlete.sportType = lodash.remove(athlete.sportType, function (element) {
+                return element.measurements.length > 0;
+            });
 
             return athlete;
         },
@@ -170,14 +169,33 @@ export let input_onload = function (page) {
     });
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
-        if (!athleteID || !stID || !attempt || !measurement) return;
+        if (!athleteID || !stID || !attempt) return;
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
-        if (measurements[athleteID][stID][attempt] == measurement) return false;
-        measurements[athleteID][stID][attempt] = measurement;
+
+        if (!measurement) {
+            if (measurements[athleteID][stID].hasOwnProperty(attempt))
+                delete measurements[athleteID][stID][attempt];
+
+            const shifted_attempts = {};
+
+            for (let prop in measurements[athleteID][stID])
+                if (measurements[athleteID][stID].hasOwnProperty(prop)) {
+                    let shifted_prop = prop;
+                    if (prop > attempt)
+                        shifted_prop = shifted_prop - 1;
+                    shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
+                }
+
+            measurements[athleteID][stID] = shifted_attempts;
+
+        } else {
+            if (measurements[athleteID][stID][attempt] == measurement) return false;
+            measurements[athleteID][stID][attempt] = measurement;
+        }
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
         input_deps.changed();
@@ -205,12 +223,6 @@ export let input_onload = function (page) {
             swipePanel: 'left'
         });
 
-        DBInterface.waitForReady(function () {
-            const athletes = lodash.sortBy(getAthletes(), 'lastName');
-            if (((!page.params.athlete_id && athletes[0]) || !lodash.find(athletes, function (athlete) {
-                    return athlete.id == page.params.athlete_id;
-                })) && athletes[0] !== undefined)
-                FlowRouter.go('/contest/' + athletes[0].id);
-        });
+        selectDefaultAthlete();
     });
 };
