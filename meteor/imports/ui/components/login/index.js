@@ -41,7 +41,7 @@ function toggleFullScreen() {
     fullscreen_deps.changed();
 }
 
-function login() {
+function login(event) {
     const type = event.target.dataset.name;
     const password_input = document.getElementById(type + "_pwd");
     const password = password_input.value;
