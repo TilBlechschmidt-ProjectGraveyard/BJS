@@ -86,6 +86,7 @@ Data.prototype = {
      * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
      */
     push: function (log, stID, newMeasurements, groupAC, stationAC) {
+
         const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
         const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
         // const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);

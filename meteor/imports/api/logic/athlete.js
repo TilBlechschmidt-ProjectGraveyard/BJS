@@ -81,8 +81,6 @@ Athlete.prototype = {
             log.error('Der Stations Account hat keine Berechtigung');
             canWrite = false;
         }
-
-
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
             if (this.id) {
