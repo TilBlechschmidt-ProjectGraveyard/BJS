@@ -131,7 +131,7 @@ export let input_onload = function (page) {
             });
 
             athlete.sportType = lodash.remove(athlete.sportType, function (e) {
-                return e !== undefined
+                return e !== undefined;
             });
 
             return athlete;
@@ -199,9 +199,10 @@ export let input_onload = function (page) {
 
             const shifted_attempts = {};
 
+            let shifted_prop;
             for (let prop in measurements[athleteID][stID])
                 if (measurements[athleteID][stID].hasOwnProperty(prop)) {
-                    let shifted_prop = prop;
+                    shifted_prop = prop;
                     if (prop > attempt)
                         shifted_prop = shifted_prop - 1;
                     shifted_attempts[shifted_prop] = measurements[athleteID][stID][prop];
