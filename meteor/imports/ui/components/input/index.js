@@ -53,19 +53,23 @@ export let input_onload = function (page) {
             Meteor.login_deps.depend();
             input_deps.depend();
             let sportTypes = {};
-            if (!AccountManagement.retrieveAccounts().Station.logged_in) {
-                // Return all sport types
-                //TODO Filter by ones that already have data
-                sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(),
-                    DBInterface.getCompetitionType().getSportType);
-            } else {
-                // Return all sport types that can be written to with the current station account
-                const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
-                for (let stID in stIDs) {
-                    if (!stIDs.hasOwnProperty(stID)) continue;
-                    stID = stIDs[stID];
-                    sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
-                }
+
+            // if (AccountManagement.retrieveAccounts().Station.logged_in) {
+            //     // Return all sport types that can be written to with the current station account
+            //     const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+            //     for (let stID in stIDs) {
+            //         if (!stIDs.hasOwnProperty(stID)) continue;
+            //         stID = stIDs[stID];
+            //         sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
+            //     }
+            // }
+
+            // Add all other sport types we don't have write permission for
+            let all_sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(), DBInterface.getCompetitionType().getSportType);
+            for (let index in all_sportTypes) {
+                if (!all_sportTypes.hasOwnProperty(index)) continue;
+                stID = all_sportTypes[index];
+                sportTypes[stID.id] = stID;
             }
 
             const athlete = getAthleteByID(id);
@@ -113,9 +117,21 @@ export let input_onload = function (page) {
 
             athlete.sportType = arrayify(athlete.sportType);
 
-            // Remove unused sportTypes
-            athlete.sportType = lodash.remove(athlete.sportType, function (element) {
-                return element.measurements.length > 0;
+            // Remove unused sportTypes (skipping the ones we have write permission for) and add a write_permission flag
+            let write_permissions = [];
+            if (AccountManagement.retrieveAccounts().Station.account)
+                write_permissions = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+
+            athlete.sportType = lodash.map(athlete.sportType, function (element) {
+                const write_permission = lodash.includes(write_permissions, element.metadata.id);
+                if (write_permission || element.measurements.length > 0) {
+                    element.metadata.write_permission = write_permission;
+                    return element;
+                }
+            });
+
+            athlete.sportType = lodash.remove(athlete.sportType, function (e) {
+                return e !== undefined
             });
 
             return athlete;
@@ -131,9 +147,10 @@ export let input_onload = function (page) {
             return arr.length;
         },
         empty_measurement: {read_only: false, value: ""},
-        scoreWritePermission: function () {
+        scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
-            return AccountManagement.retrieveAccounts().Station.logged_in;
+            return metadata.write_permission;
+            // return AccountManagement.retrieveAccounts().Station.logged_in;
         }
     });
 
