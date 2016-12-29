@@ -57,6 +57,7 @@ export let input_onload = function (page) {
             return athlete_list;
         },
         nameByID: function (id) {
+            Meteor.login_deps.depend();
             const athlete = getAthleteByID(id);
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();

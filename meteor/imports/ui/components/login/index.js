@@ -106,14 +106,14 @@ Template.login.events({
                                 // Add all measurements for the sport type to the athlete
                                 athlete.addMeasurement(Meteor.input.log, stID,
                                     lodash.map(measurements[athlete.id][stID], function (measurement) {
-                                        return measurement
+                                        return measurement;
                                     }),
                                     group_account, station_account);
                             }
                         }
                     }
 
-                    sessionStorage.setItem("measurements", {});
+                    sessionStorage.setItem("measurements", "{}");
                 }
 
                 AccountManagement.logout(event.target.dataset.name, function () {
