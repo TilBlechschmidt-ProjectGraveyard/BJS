@@ -47,12 +47,17 @@ export let NewCompetition = {
                 document.getElementById("in-last-name").value = new_athlete.lastName;
                 document.getElementById("in-year").value = new_athlete.ageGroup;
             } else {
-                document.getElementById("in-first-name").disabled = true;
-                document.getElementById("in-last-name").disabled = true;
-                document.getElementById("in-year").disabled = true;
-                document.getElementById("pick-gender").disabled = true;//TODO make working
-                document.getElementById("pick-start_class").disabled = true;//TODO make working
-                document.getElementById("btn-delete-athlete").disabled = true;//TODO make working
+
+                document.getElementById("in-first-name").setAttribute("value", "");
+                document.getElementById("in-last-name").setAttribute("value", "");
+                document.getElementById("in-year").setAttribute("value", "");
+
+                document.getElementById("in-first-name").setAttribute("disabled", "true");
+                document.getElementById("in-last-name").setAttribute("disabled", "true");
+                document.getElementById("in-year").setAttribute("disabled", "true");
+                document.getElementById("pick-gender").setAttribute("disabled", "true");
+                document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("pick-start_class").setAttribute("disabled", "true");
 
                 document.getElementById("in-first-name").value = "";
                 document.getElementById("in-last-name").value = "";
