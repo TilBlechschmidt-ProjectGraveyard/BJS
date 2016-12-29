@@ -3,8 +3,6 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 
-Session.keys = {};
-
 /**
  * Object containing all information and functions required for creating a new competition.
  * @public
@@ -13,6 +11,60 @@ Session.keys = {};
 export let NewCompetition = {
     /** @constant {number} */
     prefix: "new_competition_",
+
+    groupExists: function (name) {
+        for (let group in Meteor.groups) {
+            if (Meteor.groups[group].name === name) return true;
+        }
+        return false;
+    },
+
+    selectAthlete: function (athleteID) { //TODO Gender and start class
+        if (!document.getElementById("in-first-name")) {
+            Meteor._currentAthlete = -1;
+        } else {
+            if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
+                let new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+                new_athlete.firstName = document.getElementById("in-first-name").value;
+                new_athlete.lastName = document.getElementById("in-last-name").value;
+                new_athlete.ageGroup = document.getElementById("in-year").value;
+
+            }
+            Meteor._currentAthlete = athleteID;
+            if (athleteID != -1) {
+                const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+                document.getElementById("in-first-name").removeAttribute("disabled");
+                document.getElementById("in-last-name").removeAttribute("disabled");
+                document.getElementById("in-year").removeAttribute("disabled");
+                document.getElementById("pick-gender").removeAttribute("disabled");
+                document.getElementById("pick-start_class").removeAttribute("disabled");
+                document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                document.getElementById("in-first-name").value = new_athlete.firstName;
+                document.getElementById("in-last-name").value = new_athlete.lastName;
+                document.getElementById("in-year").value = new_athlete.ageGroup;
+                // call it a second time because some browsers have problems with the placeholder
+                document.getElementById("in-first-name").value = new_athlete.firstName;
+                document.getElementById("in-last-name").value = new_athlete.lastName;
+                document.getElementById("in-year").value = new_athlete.ageGroup;
+            } else {
+                document.getElementById("in-first-name").disabled = true;
+                document.getElementById("in-last-name").disabled = true;
+                document.getElementById("in-year").disabled = true;
+                document.getElementById("pick-gender").disabled = true;//TODO make working
+                document.getElementById("pick-start_class").disabled = true;//TODO make working
+                document.getElementById("btn-delete-athlete").disabled = true;//TODO make working
+
+                document.getElementById("in-first-name").value = "";
+                document.getElementById("in-last-name").value = "";
+                document.getElementById("in-year").value = "";
+                // call it a second time because some browsers have problems with the placeholder
+                document.getElementById("in-first-name").value = "";
+                document.getElementById("in-last-name").value = "";
+                document.getElementById("in-year").value = "";
+            }
+        }
+        Meteor._athletes_tracker.changed();
+    },
 
     /**
      * Resets sport types.
@@ -100,9 +152,18 @@ export let NewCompetition = {
     },
 
     /**
+     * @typedef {Object} ConfigAthlete
+     * @property {string} firstName first-name of the athlete
+     * @property {string} lastName last-name of the athlete
+     * @property {number} ageGroup Age category of the athlete
+     * @property {boolean} isMale Whether or not the athlete is male
+     * @property {string} handicap Handicap id of the athlete
+     */
+
+    /**
      * @typedef {Object} AthleteGroup
      * @property {string} name - The groups name.
-     * @property {Athlete[]} athletes - List of all athletes.
+     * @property {ConfigAthlete[]} athletes - List of all athletes. It's not a normal athlete but a ConfigAthlete.
      */
 
     /**

@@ -23,7 +23,7 @@ Template.home_left.events({
         });
     },
     'click #link-new_competition': function (event) {
-        Session.keys = {}; //clear any configuration
+        Session.keys = {}; //clear any previous configurations
         FlowRouter.go('/config/new');
     }
 });

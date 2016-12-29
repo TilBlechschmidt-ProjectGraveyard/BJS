@@ -20,9 +20,8 @@
                     <!-- Spacing -->
                     <div class="col-5"></div>
                     <!-- Delete Athlete -->
-                    <div class="col-45"><p><a href="#" class="button button-fill color-red">Athlet Löschen</a></p></div>
-                    <!-- Show Results -->
-                    <div class="col-45"><p><a href="#" class="button button-fill color-yellow">Ergebnisse</a></p></div>
+                    <div class="col-90"><p><a disabled id="btn-delete-athlete" href="#"
+                                              class="button button-fill color-red">Athlet Löschen</a></p></div>
                     <!-- Spacing -->
                     <div class="col-5"></div>
                 </div>
@@ -36,7 +35,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">Vorname</div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="Vorname">
+                                        <input type="text" disabled id="in-first-name" placeholder="Vorname">
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +46,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">Nachname</div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="Nachname">
+                                        <input type="text" disabled id="in-last-name" placeholder="Nachname">
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +57,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">Geb.-Jahr</div>
                                     <div class="item-input">
-                                        <input type="number" placeholder="Jahr">
+                                        <input type="number" disabled id="in-year" placeholder="Jahr">
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +67,7 @@
                             <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title label">Geschlecht</div>
-                                    <div class="item-input">
+                                    <div class="item-input" disabled id="pick-gender">
                                         <select>
                                             <option>Männlich</option>
                                             <option>Weiblich</option>
@@ -83,7 +82,8 @@
                                 <div class="item-inner">
                                     <div class="item-title label">Startklasse</div>
                                     <div class="item-input">
-                                        <input type="text" readonly placeholder="Behinderung" id="pick-start_class">
+                                        <input type="text" disabled readonly placeholder="Behinderung"
+                                               id="pick-start_class">
                                     </div>
                                 </div>
                             </div>

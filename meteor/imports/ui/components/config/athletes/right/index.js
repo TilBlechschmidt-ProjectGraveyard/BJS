@@ -7,6 +7,7 @@ Meteor.groups = NewCompetition.getGroups();
 
 function save() {
     NewCompetition.setGroups(Meteor.groups);
+    NewCompetition.selectAthlete(-1);
 }
 
 export let athletes_right_onLoad = function () {
