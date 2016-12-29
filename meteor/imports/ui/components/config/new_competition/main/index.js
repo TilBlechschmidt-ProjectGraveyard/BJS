@@ -1,7 +1,6 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
-import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition} from "../../new_competition_helpers";
 
 
@@ -16,9 +15,6 @@ Template.new_competition_main.onRendered(function () {
 });
 
 Template.new_competition_main.events({
-    'click #pick-comp_type'(event, instance) {
-        mypicker.open();
-    },
     'click #link_back' (event, instance) {
         Meteor.f7.confirm('Beim Abbrechen gehen alle Einstellungen verloren.', 'Abbrechen ohne speichern', function () {
             FlowRouter.go('/config');//TODO this is called multiple times after you left the new competition multiple times
@@ -46,7 +42,13 @@ export let new_competition_main_onLoad = function () {
         }],
         onChange: function (picker, values, displayValues) {
             document.getElementById('pick-comp_type').value = [displayValues];
-            DBInterface.setCompetitionTypeID(picker.cols[0].activeIndex);
+            NewCompetition.setCompetitionTypeID(picker.cols[0].activeIndex);
+        }
+    });
+
+    Template.new_competition_main.events({
+        'click #pick-comp_type'(event, instance) {
+            mypicker.open();
         }
     });
 };

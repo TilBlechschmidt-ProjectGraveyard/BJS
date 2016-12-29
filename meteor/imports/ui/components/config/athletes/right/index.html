@@ -1,106 +1,113 @@
 <template name="athletes_right">
-    <!--navbar -->
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left"></div>
-            <div class="center">Einstellungen des Athleten</div>
-            <div class="right"></div>
-        </div>
-    </div>
-    <!-- Page Content -->
-    <div class="page">
-        <div class="page-content">
-            <!-- Top Buttons -->
-            <div class="row ">
-                <!-- Spacing -->
-                <div class="col-5"></div>
-                <!-- Delete Athlete -->
-                <div class="col-45"><p><a href="#" class="button button-fill color-red">Athlet Löschen</a></p></div>
-                <!-- Show Results -->
-                <div class="col-45"><p><a href="#" class="button button-fill color-yellow">Ergebnisse</a></p></div>
-                <!-- Spacing -->
-                <div class="col-5"></div>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+
+            <!--navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"></div>
+                    <div class="center">Einstellungen des Athleten</div>
+                    <div class="right"></div>
+                </div>
             </div>
-            <!-- Entry Form -->
-            <div class="content-block-title">Konfiguration</div>
-            <div class="list-block">
-                <ul>
-                    <!-- First name -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Vorname</div>
-                                <div class="item-input">
-                                    <input type="text" placeholder="Vorname">
+
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Top Buttons -->
+                <div class="row ">
+                    <!-- Spacing -->
+                    <div class="col-5"></div>
+                    <!-- Delete Athlete -->
+                    <div class="col-45"><p><a href="#" class="button button-fill color-red">Athlet Löschen</a></p></div>
+                    <!-- Show Results -->
+                    <div class="col-45"><p><a href="#" class="button button-fill color-yellow">Ergebnisse</a></p></div>
+                    <!-- Spacing -->
+                    <div class="col-5"></div>
+                </div>
+                <!-- Entry Form -->
+                <div class="content-block-title">Konfiguration</div>
+                <div class="list-block">
+                    <ul>
+                        <!-- First name -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Vorname</div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="Vorname">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <!-- Family name -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Nachname</div>
-                                <div class="item-input">
-                                    <input type="text" placeholder="Nachname">
+                        </li>
+                        <!-- Family name -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Nachname</div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="Nachname">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <!-- birthyear -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Geb.-Jahr</div>
-                                <div class="item-input">
-                                    <input type="number" placeholder="Jahr">
+                        </li>
+                        <!-- birthyear -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Geb.-Jahr</div>
+                                    <div class="item-input">
+                                        <input type="number" placeholder="Jahr">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <!-- gender -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Geschlecht</div>
-                                <div class="item-input">
-                                    <select>
-                                        <option>Männlich</option>
-                                        <option>Weiblich</option>
-                                    </select>
+                        </li>
+                        <!-- gender -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Geschlecht</div>
+                                    <div class="item-input">
+                                        <select>
+                                            <option>Männlich</option>
+                                            <option>Weiblich</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <!-- start_class -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Startklasse</div>
-                                <div class="item-input">
-                                    <input type="text" readonly placeholder="Behinderung" id="pick-start_class">
+                        </li>
+                        <!-- start_class -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Startklasse</div>
+                                    <div class="item-input">
+                                        <input type="text" readonly placeholder="Behinderung" id="pick-start_class">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Submit Button -->
+                <div class="row">
+                    <!-- Spacing -->
+                    <div class="col-10"></div>
+                    <!-- Submit button -->
+                    <div class="col-80"><p><a href="#" class="button button-fill color-green">Athlet hinzufügen</a></p>
+                    </div>
+                    <!-- Spacing -->
+                    <div class="col-10"></div>
+                </div>
             </div>
-            <!-- Submit Button -->
-            <div class="row">
-                <!-- Spacing -->
-                <div class="col-10"></div>
-                <!-- Submit button -->
-                <div class="col-80"><p><a href="#" class="button button-fill color-green">Athlet hinzufügen</a></p></div>
-                <!-- Spacing -->
-                <div class="col-10"></div>
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a></a>
+                    <a href="" class="item-link" id="link_next">Weiter</a>
+                </div>
             </div>
-        </div>
-    </div>
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-inner">
-            <a></a>
-            <a href="" class="item-link" id="link_next">Weiter</a>
         </div>
     </div>
 </template>

@@ -1,42 +1,44 @@
 <template name="athletes_middle">
-    <!-- navbar -->
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="left"></div>
-            <div class="center">Athleten</div>
-            <div class="left"></div>
-        </div>
-    </div>
-    <!-- Page Content -->
-    <div class="page">
-        <div class="page-content">
-            <!-- Top Buttons-->
-            <div class="row ">
-                <!-- Spacing -->
-                <div class="col-5"></div>
-                <!-- Delete Group -->
-                <div class="col-45"><p><a href="#" class="button button-fill color-red">Gruppe Löschen</a></p></div>
-                <!-- Create Athlete -->
-                <div class="col-45"><p><a href="#" class="button button-fill color-green">Neuer Athlet</a></p></div>
-                <!-- Spacing -->
-                <div class="col-5"></div>
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+            <!-- navbar -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"></div>
+                    <div class="center">Athleten</div>
+                    <div class="left"></div>
+                </div>
             </div>
-            <!-- AThletes-->
-            <div class="content-block-title">Verfügbare Athleten</div>
-            <div class="list-block">
-                <ul>
-                    <!-- Iterated Athlete Link -->
-                    <li><a href="" class="item-link">
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">BEISPIEL ATHLET</div>
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Top Buttons-->
+                <div class="row ">
+                    <!-- Spacing -->
+                    <div class="col-5"></div>
+                    <!-- Delete Group -->
+                    <div class="col-45"><p><a href="#" class="button button-fill color-red">Gruppe Löschen</a></p></div>
+                    <!-- Create Athlete -->
+                    <div class="col-45"><p><a href="#" class="button button-fill color-green">Neuer Athlet</a></p></div>
+                    <!-- Spacing -->
+                    <div class="col-5"></div>
+                </div>
+                <!-- Athletes-->
+                <div class="content-block-title">Verfügbare Athleten</div>
+                <div class="list-block">
+                    <ul>
+                        <!-- Iterated Athlete Link -->
+                        <li><a href="" class="item-link">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">BEISPIEL ATHLET</div>
+                                </div>
                             </div>
-                        </div>
-                    </a></li>
-                </ul>
+                        </a></li>
+                    </ul>
+                </div>
             </div>
+            <!-- Toolbar -->
+            <div class="toolbar"></div>
         </div>
     </div>
-    <!-- Toolbar -->
-    <div class="toolbar"></div>
 </template>

@@ -13,7 +13,7 @@ export let NewCompetition = {
     prefix: "new_competition_",
 
     /**
-     * Sets all default values for the configuration
+     * Sets all default values for the configuration.
      */
     setDefaults: function () {
         Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");
@@ -21,6 +21,19 @@ export let NewCompetition = {
 
         const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
         Session.setDefault(
+            NewCompetition.prefix + "sport_types",
+            JSON.stringify(_.map(ct.getSports(), function (sportObj) {
+                return {stID: sportObj.id, activated: true};
+            }))
+        );
+    },
+
+    /**
+     * Resets sport types.
+     */
+    resetSportTypes: function () {
+        const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
+        Session.set(
             NewCompetition.prefix + "sport_types",
             JSON.stringify(_.map(ct.getSports(), function (sportObj) {
                 return {stID: sportObj.id, activated: true};
@@ -50,6 +63,7 @@ export let NewCompetition = {
      */
     setCompetitionTypeID: function (id) {
         Session.set(NewCompetition.prefix + "competition_type", id.toString());
+        NewCompetition.resetSportTypes();
     },
 
     /**
@@ -70,8 +84,8 @@ export let NewCompetition = {
 
     /**
      * @typedef {Object} NewCompetitionSportTypes
-     * @property {string} stID - The sport type id
-     * @property {boolean} activated - Sport type is activated or not
+     * @property {string} stID - The sport type id.
+     * @property {boolean} activated - Sport type is activated or not.
      */
 
     /**
@@ -87,8 +101,6 @@ export let NewCompetition = {
      * @returns {NewCompetitionSportTypes[]}
      */
     getSports: function () {
-        console.log("getSPorts");
-        console.log(Session.get(NewCompetition.prefix + "sport_types"));
         return JSON.parse(Session.get(NewCompetition.prefix + "sport_types"));
     }
 };

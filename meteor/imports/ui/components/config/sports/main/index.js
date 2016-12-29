@@ -4,13 +4,14 @@ import {NewCompetition} from "../../new_competition_helpers";
 
 Template.sports_main.helpers({
     "sport_type_data": function () {
+        NewCompetition.setDefaults();
         const ct = NewCompetition.getCompetitionType();
         return _.map(NewCompetition.getSports(), function (sportTypeObj) {
             return {
                 name: ct.getNameOfSportType(sportTypeObj.stID),
                 stID: sportTypeObj.stID,
                 checked: sportTypeObj.activated ? "checked" : ""
-            }
+            };
         });
     }
 });
@@ -21,7 +22,7 @@ function save() {
             return {
                 stID: sportTypeObj.stID,
                 activated: document.getElementById('check_' + sportTypeObj.stID).checked,
-            }
+            };
         })
     );
 }
