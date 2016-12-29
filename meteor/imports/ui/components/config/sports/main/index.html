@@ -16,17 +16,21 @@
             <div class="content-block-title">Auswahl der Sportarten</div>
             <div class="list-block">
                 <ul>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">Sprint 50m</div>
-                                <label class="label-switch">
-                                    <input checked="checked" type="checkbox">
-                                    <div class="checkbox"></div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
+                    {{#each n in sport_type_data}}
+                        {{#with n}}
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">{{name}}</div>
+                                        <label class="label-switch">
+                                            <input {{checked}} type="checkbox" id="check_{{stID}}">
+                                            <div class="checkbox"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </li>
+                        {{/with}}
+                    {{/each}}
 
 
                     <li>

@@ -20,6 +20,10 @@ Template.home_left.events({
         Meteor.f7.confirm('Um den Wettbewerb "' + name + '" zu starten wird der gesamte Server neu gestartet. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
             DBInterface.activateCompetition(name);
         });
+    },
+    'click #link-new_competition': function (event) {
+        Session.keys = {}; //clear any configuration
+        FlowRouter.go('/config/new');
     }
 });
 

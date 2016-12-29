@@ -12,10 +12,9 @@ export let home_main_onLoad = function () {
 
 
     DBInterface.waitForReady(function () {
-
         Template.home_main.onRendered(function () {
             document.getElementById('current-contest-name').innerHTML = DBInterface.getCompetitionName();
             document.getElementById('current-contest-type').innerHTML = DBInterface.getCompetitionType().getInformation().name;
-        }, 2000);
+        });
     });
 };
