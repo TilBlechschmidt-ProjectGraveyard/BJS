@@ -57,6 +57,7 @@ export let input_onload = function (page) {
             return athlete_list;
         },
         nameByID: function (id) {
+            Meteor.login_deps.depend();
             const athlete = getAthleteByID(id);
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();
@@ -109,7 +110,7 @@ export let input_onload = function (page) {
             }
 
             // Insert the read-write data from the current session
-            if (sessionStorage.getItem("measurements")) {
+            if (AccountManagement.retrieveAccounts().Station.account && sessionStorage.getItem("measurements")) {
                 const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
                 for (let sportType in measurements) {
                     if (!measurements.hasOwnProperty(sportType)) continue;
@@ -121,7 +122,6 @@ export let input_onload = function (page) {
             }
 
             athlete.sportType = arrayify(athlete.sportType);
-            console.log(athlete);
 
             return athlete;
         }
@@ -167,32 +167,32 @@ export let input_onload = function (page) {
 
     function updateMeasurement(athleteID, stID, attempt, measurement) {
         if (!athleteID || !stID || !attempt || !measurement) return;
-        console.log("Athlete:", athleteID, "stID:", stID, "Value:", measurement, "Attempt:", attempt);
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
+        if (measurements[athleteID][stID][attempt] == measurement) return false;
         measurements[athleteID][stID][attempt] = measurement;
 
         sessionStorage.setItem("measurements", JSON.stringify(measurements));
         input_deps.changed();
+
+        return true;
     }
 
     Template.attempt.events({
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
-                updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
-                event.target.value = "";
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
                 event.stopPropagation();
                 return false;
             }
         },
         'blur input': function (event) {
             const data = event.target.dataset;
-            updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value);
-            event.target.value = "";
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value)) event.target.value = "";
         }
     });
 

@@ -1,5 +1,6 @@
 import "./index.html";
 import {AccountManagement} from "../../../api/AccountManagement";
+import {DBInterface} from "../../../api/database/db_access";
 
 Meteor.login_deps = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
@@ -83,8 +84,43 @@ Template.login.events({
     'click .logout-button': function (event) {
         event.preventDefault();
 
-        AccountManagement.logout(event.target.dataset.name, function () {
-            Meteor.login_deps.changed();
-        });
+        Meteor.f7.confirm('Die Daten können nachträglich nichtmehr editiert werden, wenn sie sich abmelden!', 'Hinweis',
+            function () {
+                Meteor.f7.showPreloader('Speichere Daten');
+
+                const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;
+                const station_account = AccountManagement.retrieveAccounts().Station.account;
+                const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+
+                if (sessionStorage.getItem("measurements")) {
+                    const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+                    // Loop through all athletes
+                    for (let athlete in athletes) {
+                        if (!athletes.hasOwnProperty(athlete)) continue;
+                        athlete = athletes[athlete];
+                        // Check if there is some data for the athlete in the session storage
+                        if (measurements[athlete.id]) {
+                            // Loop through the sport types
+                            for (let stID in measurements[athlete.id]) {
+                                if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
+                                // Add all measurements for the sport type to the athlete
+                                athlete.addMeasurement(Meteor.input.log, stID,
+                                    lodash.map(measurements[athlete.id][stID], function (measurement) {
+                                        return measurement;
+                                    }),
+                                    group_account, station_account);
+                            }
+                        }
+                    }
+
+                    sessionStorage.setItem("measurements", "{}");
+                }
+
+                AccountManagement.logout(event.target.dataset.name, function () {
+                    Meteor.login_deps.changed();
+                    setTimeout(Meteor.f7.hidePreloader, 500);
+                });
+            }
+        );
     }
 });
