@@ -83,7 +83,9 @@
                 {{#each m in measurements}}
                     {{>attempt n=@index measurement=m metadata=metadata athlete_id=athlete_id}}
                 {{/each}}
-                {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata}}
+                {{#if scoreWritePermission}}
+                    {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata}}
+                {{/if}}
             </ul>
         </div>
     {{/with}}

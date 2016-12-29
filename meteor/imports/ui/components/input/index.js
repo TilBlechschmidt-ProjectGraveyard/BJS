@@ -77,10 +77,8 @@ export let input_onload = function (page) {
             const athlete = getAthleteByID(id);
             if (athlete === undefined) return {};
 
-            console.log("Athlete", athlete);
             // Fetch the measurements
             const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
-            console.log("ROM", read_only_measurements);
 
             athlete.sportType = {};
             // Insert the metadata for the sportTypes
@@ -98,6 +96,10 @@ export let input_onload = function (page) {
                 measurement_block = read_only_measurements[measurement_block];
 
                 const stID = measurement_block.stID.data;
+                if (!athlete.sportType[stID]) {
+                    athlete.sportType[stID] = {};
+                    athlete.sportType[stID].metadata = sportTypes[stID];
+                }
                 athlete.sportType[stID].measurements = lodash.map(measurement_block.measurements.data, function (measurement) {
                     return {read_only: true, value: measurement};
                 });
@@ -115,13 +117,12 @@ export let input_onload = function (page) {
                 }
             }
 
-            console.log(athlete);
-
             athlete.sportType = arrayify(athlete.sportType);
 
             return athlete;
         },
         isEmpty: function (arr) {
+            if (arr === undefined) return true;
             return arr.length === 0;
         }
     });
@@ -130,7 +131,11 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: ""}
+        empty_measurement: {read_only: false, value: ""},
+        scoreWritePermission: function () {
+            Meteor.login_deps.depend();
+            return AccountManagement.retrieveAccounts().Station.logged_in;
+        }
     });
 
     Template.attempt.helpers({
@@ -202,9 +207,9 @@ export let input_onload = function (page) {
 
         DBInterface.waitForReady(function () {
             const athletes = lodash.sortBy(getAthletes(), 'lastName');
-            if ((!page.params.athlete_id && athletes[0]) || !lodash.find(athletes, function (athlete) {
+            if (((!page.params.athlete_id && athletes[0]) || !lodash.find(athletes, function (athlete) {
                     return athlete.id == page.params.athlete_id;
-                }))
+                })) && athletes[0] !== undefined)
                 FlowRouter.go('/contest/' + athletes[0].id);
         });
     });
