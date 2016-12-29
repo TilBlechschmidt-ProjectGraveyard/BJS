@@ -1,3 +1,46 @@
 <template name="output">
+    <div class="view navbar-through">
+
+        <!-- Participant selection -->
+        <div class="panel-overlay"></div>
+        <div class="panel panel-left panel-cover">
+            <div class="content-block">
+                <p class="panel-title">Teilnehmer</p>
+
+                <div class="contacts-content">
+                    <div class="list-block contacts-block">
+                        <ul>
+                            {{#each a in athletes}}
+                                {{#with a}}
+                                    <li data-id="{{id}}" class="athlete">
+                                        <div class="contact-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">{{name}}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {{/with}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link">
+                        <i class="icon icon-bars"></i>
+                        <span>Teilnehmer</span>
+                    </a>
+                </div>
+                <div class="center">Teilnehmername</div>
+                <div class="right">
+                    <a href="#" class="link">Abmelden</a>
+                </div>
+            </div>
+        </div>
 
 </template>
