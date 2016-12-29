@@ -1,7 +1,7 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
-import {AccountManagement} from "../../../api/AccountManagement/index";
+import {AccountManagement} from "../../../api/AccountManagement";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify} from "../../../startup/client/helpers";

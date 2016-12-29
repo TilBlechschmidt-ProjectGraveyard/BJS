@@ -1,5 +1,5 @@
 import "./index.html";
-import {AccountManagement} from "../../../api/AccountManagement/index";
+import {AccountManagement} from "../../../api/AccountManagement";
 
 Meteor.login_deps = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
