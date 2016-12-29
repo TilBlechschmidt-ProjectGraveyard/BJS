@@ -33,7 +33,7 @@ export let NewCompetition = {
         return false;
     },
 
-    selectAthlete: function (athleteID) { //TODO Gender and start class
+    selectAthlete: function (athleteID) {
         if (!document.getElementById("in-first-name")) {
             Meteor._currentAthlete = -1;
         } else {
