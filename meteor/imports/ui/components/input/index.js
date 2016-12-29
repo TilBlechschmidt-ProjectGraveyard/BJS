@@ -226,8 +226,10 @@ export let input_onload = function (page) {
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
+                event.preventDefault();
+                event.stopImmediatePropagation();
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && event.target == document.getElementById("add-attempt-input"))
-                        event.target.value = "";
+                    event.target.value = "";
 
                 input_deps.changed();
                 event.stopPropagation();
@@ -236,8 +238,10 @@ export let input_onload = function (page) {
         },
         'blur input': function (event) {
             const data = event.target.dataset;
+            event.preventDefault();
+            event.stopImmediatePropagation();
             if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && event.target == document.getElementById("add-attempt-input"))
-                    event.target.value = "";
+                event.target.value = "";
             input_deps.changed();
         }
     });
