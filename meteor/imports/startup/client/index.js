@@ -16,6 +16,7 @@ import "../../ui/components/input";
 import "../../ui/components/login";
 import "../../ui/router";
 import "../../ui/components/config/router";
+import "../../ui/components/output"
 
 
 // Run things on startup
