@@ -2,6 +2,7 @@ import "./index.html";
 import {AccountManagement} from "../../../api/AccountManagement/index";
 
 Meteor.login_deps = new Tracker.Dependency();
+fullscreen_deps = new Tracker.Dependency();
 
 Template.registerHelper('arrayify', function (obj) {
     let result = [];
@@ -22,13 +23,38 @@ Template.login.helpers({
     "input_permitted": function () {
         Meteor.login_deps.depend();
         return AccountManagement.inputPermitted();
+    },
+    "fullscreen": function () {
+        fullscreen_deps.depend();
+        return isFullscreen();
     }
 });
 
+function isFullscreen() {
+    var doc = window.document;
+
+    return !(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement);
+}
+
+function toggleFullScreen() {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+    //if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    if (!isFullscreen()) {
+        requestFullScreen.call(docEl);
+    } else {
+        cancelFullScreen.call(doc);
+    }
+    fullscreen_deps.changed();
+}
+
 Template.login.events({
-    'click .submit-button': function (event) {
-        // console.log("RELOAD");
-        // FlowRouter.reload();
+    'click .fullscreen-toggle': function () {
+        toggleFullScreen();
     },
     'click .login-button': function (event) {
         event.preventDefault();
