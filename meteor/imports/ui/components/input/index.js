@@ -146,7 +146,7 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: "", id: "add-attempt-input"},
+        empty_measurement: {read_only: false, value: "", class: "add-attempt-input"},
         scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
             return metadata.write_permission;
@@ -222,13 +222,17 @@ export let input_onload = function (page) {
         return true;
     }
 
+    function hasClass(element, cls) {
+        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+
     Template.attempt.events({
         'keypress input': function (event) {
             if (event.keyCode == 13) {
                 const data = event.target.dataset;
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && event.target == document.getElementById("add-attempt-input"))
+                if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                     event.target.value = "";
 
                 input_deps.changed();
@@ -240,7 +244,7 @@ export let input_onload = function (page) {
             const data = event.target.dataset;
             event.preventDefault();
             event.stopImmediatePropagation();
-            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && event.target == document.getElementById("add-attempt-input"))
+            if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                 event.target.value = "";
             input_deps.changed();
         }
