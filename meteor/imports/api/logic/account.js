@@ -1,7 +1,7 @@
 /**
  * Object containing information about a specific account.
- * @param {string[]} score_write_permissions - List of sport type ids.
  * @param {string[]} group_permissions - List of group names.
+ * @param {string[]} score_write_permissions - List of sport type ids.
  * @param {AuthenticationCode} ac
  * @param {boolean=} canViewResults - Specifies whether the account has permissions to view the results.
  * @constructor

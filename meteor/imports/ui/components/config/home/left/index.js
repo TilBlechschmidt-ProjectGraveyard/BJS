@@ -23,7 +23,8 @@ Template.home_left.events({
         });
     },
     'click #link-new_competition': function (event) {
-        Session.keys = {}; //clear any previous configurations
+        Session.keys = {};
+        Meteor.groups = [];
         FlowRouter.go('/config/new');
     }
 });

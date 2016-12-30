@@ -33,5 +33,19 @@
 {
     body * { visibility: hidden; }
     #printcontent * { visibility: visible; }
-    #printcontent { position: absolute; top: 40px; left: 30px; }
+
+    #printcontent {
+        position: absolute;
+        top: 40px;
+        left: 30px;
+    }
+
+    body, html, #wrapper {
+        display: block;
+        width: 100%;
+    }
+
+    * {
+        float: none !important;
+    }
 }

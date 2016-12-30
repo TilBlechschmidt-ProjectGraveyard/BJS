@@ -1,6 +1,6 @@
-import {Collection} from "./collection";
+import {ContestCollection} from "./collection";
 
-export let Contest = new Collection('Contest', true);
+export let Contest = new ContestCollection('Contest');
 
 Contest.createMockData = function () {
     this.handle.insert({

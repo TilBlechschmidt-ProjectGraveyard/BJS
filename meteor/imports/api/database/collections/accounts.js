@@ -1,8 +1,8 @@
 import {Account} from "../../logic/account";
 import {Crypto} from "../../crypto/crypto";
-import {Collection} from "./collection";
+import {ContestCollection} from "./collection";
 
-export let Accounts = new Collection('Accounts', true);
+export let Accounts = new ContestCollection('Accounts');
 
 Accounts.createMockData = function () {
     for (let i = 0; i < 100; i++) {

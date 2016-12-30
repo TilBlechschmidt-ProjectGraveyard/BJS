@@ -6,7 +6,10 @@ import {NewCompetition} from "../../new_competition_helpers";
 
 function save() {
     console.log(document.getElementById("pick-comp_type").selectedIndex);
-    NewCompetition.setCompetitionTypeID(document.getElementById("pick-comp_type").selectedIndex);
+    const newCompetitionID = document.getElementById("pick-comp_type").selectedIndex;
+    if (NewCompetition.getCompetitionTypeID() != newCompetitionID) {
+        NewCompetition.setCompetitionTypeID(newCompetitionID);
+    }
     NewCompetition.setName(document.getElementById('text-comp_name').value);
 }
 

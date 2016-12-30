@@ -47,6 +47,8 @@ export let DBInterface = {
      * @returns {string} The id
      */
     getContestID: function () {
+        // console.log(COLLECTIONS.Contest);
+        // console.log(COLLECTIONS.Contest.handle.findOne());
         return COLLECTIONS.Contest.handle.find().fetch()[0]._id;
     },
 
@@ -127,29 +129,7 @@ export let DBInterface = {
      * @param {Accounts[]} accounts - A list of accounts
      */
     createCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts) {
-        const newDBHandler = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competitionName);
-        const Contest = Collection('Contest', true, newDBHandler);
-        const Accounts = Collection('Accounts', true, newDBHandler);
-        const Athletes = Collection('Athletes', true, newDBHandler);
-
-        for (let athlete in encrypted_athletes) {
-            Athletes.handle.insert(encrypted_athletes[athlete].enc);
-        }
-
-        for (let account in accounts) {
-            Accounts.handle.insert(accounts[account]);
-        }
-
-        Contest.handle.insert({
-            contestType: competitionTypeID,
-            sportTypes: sportTypes
-        });
-
-
-        let listOFCompetitions = DBInterface.listCompetition();
-        listOFCompetitions.push(competitionName);
-        COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
-        DBInterface.activateCompetition(competitionName);
+        Meteor.call('createCompetition', competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts);
     },
 
     /**
@@ -157,7 +137,6 @@ export let DBInterface = {
      * @param {string} competitionName - The name of the competition
      */
     activateCompetition: function (competitionName) {
-        COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
-        Meteor.call('restart');
+        Meteor.call('activateCompetition', competitionName);
     }
 };

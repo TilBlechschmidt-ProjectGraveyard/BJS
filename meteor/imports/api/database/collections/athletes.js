@@ -2,10 +2,10 @@ import {COMPETITION_TYPES} from "../../logic/competition_type";
 import {Athlete} from "../../logic/athlete";
 import {Log} from "../../log";
 import {Crypto} from "../../crypto/crypto";
-import {Collection} from "./collection";
+import {ContestCollection} from "./collection";
 import {Account} from "../../logic/account";
 
-export let Athletes = new Collection('Athletes', true);
+export let Athletes = new ContestCollection('Athletes');
 
 Athletes.createMockData = function () {
     const log = new Log();

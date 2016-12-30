@@ -2,10 +2,10 @@ import {Generic} from "./generic";
 
 /**
  * @typedef {Object} Collections
- * @property {Mongo.Collection} Generic - Collection with general information about the server.
- * @property {Mongo.Collection} Contest - Collection with general information about the current contest.
- * @property {Mongo.Collection} Accounts - Collection with the accounts.
- * @property {Mongo.Collection} Athletes - Collection with the athletes.
+ * @property {Collection} Generic - Collection with general information about the server.
+ * @property {ContestCollection} Contest - Collection with general information about the current contest.
+ * @property {ContestCollection} Accounts - Collection with the accounts.
+ * @property {ContestCollection} Athletes - Collection with the athletes.
  */
 
 
@@ -56,16 +56,6 @@ function clearDatabase(dbHandle) {
     // Initialize the generic database first
     Generic.createMockData();
 
-    // Set-up the remaining databases using the data from the generic DB
-    setPrefix();
-
-    if (!dbHandle) {
-        dbHandle = Meteor.dbHandle;
-    }
-
-    // Delete everything in the competition database
-    removeData(dbHandle);
-
     // Load 'em
     const COLLECTIONS = getCollections();
 
@@ -78,35 +68,27 @@ function clearDatabase(dbHandle) {
     console.log('-----------------------------------------------------');
 }
 
-function setPrefix() {
-    const dbPrefix = Generic.handle.find({}).fetch()[0].activeContest;
-    Meteor.dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + dbPrefix);
-}
-
 /**
  * Returns a list of all relevant collections.
  * @returns {Collections}
  */
 module.exports = function () {
-    if (Meteor.isServer && !Meteor.dbInitialized) {
-        if (!Meteor.isProduction) {
-            // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
-            let genericEntries = Generic.handle.find({}).fetch();
-            //noinspection JSUnresolvedVariable
-            if (!(
-                    genericEntries.length > 0 &&
-                    (genericEntries[0].hasOwnProperty('cleanDB') && genericEntries[0].cleanDB === true) &&
-                    (genericEntries[0].hasOwnProperty('dbVersion') && genericEntries[0].dbVersion === Meteor.config.dbVersion)
-                )) clearDatabase();
-        }
-        setPrefix();
-        Meteor.dbInitialized = true;
-    }
-    // else if (Meteor.isClient && !Meteor.dbInitialized) {
-    //     console.error("WARNING - Attempting to access collections before the database got initialized!");
-    //     console.error("This may or may not result in lost data, database corruption and or sudden death.");
-    //     console.error("You should not proceed without fixing this first since it breaks almost all db communication!");
-    // }
+    // load databases
+    if (!Meteor.db) {
+        Meteor.db = {};
 
+        if (Meteor.isServer) {
+            if (!Meteor.isProduction) {
+                // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
+                let genericEntries = Generic.handle.findOne();
+                // noinspection JSUnresolvedVariable
+                if (!(
+                        genericEntries &&
+                        (genericEntries.hasOwnProperty('cleanDB') && genericEntries.cleanDB === true) &&
+                        (genericEntries.hasOwnProperty('dbVersion') && genericEntries.dbVersion === Meteor.config.dbVersion)
+                    )) clearDatabase();
+            }
+        }
+    }
     return getCollections();
 };
