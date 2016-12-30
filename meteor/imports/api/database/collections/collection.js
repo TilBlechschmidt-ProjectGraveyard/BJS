@@ -7,6 +7,19 @@ export function Collection(name, publicationFunction) {
 
     col.publish = publicationFunction ? publicationFunction : function () {
             if (Meteor.isServer) {
+                // deny all writing access
+                col.handle.deny({
+                    insert() {
+                        return true;
+                    },
+                    update() {
+                        return true;
+                    },
+                    remove() {
+                        return true;
+                    },
+                });
+
                 Meteor.publish(col.name, function () {
                     return col.handle.find({});
                 });

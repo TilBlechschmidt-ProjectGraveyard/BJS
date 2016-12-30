@@ -23,7 +23,9 @@ function initDatabase() {
         if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionName) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionName) || !Meteor.COLLECTIONS.Contest.handles.hasOwnProperty(competitionName)) {
             return false;
         }
-        Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+        if (Meteor.isServer) {
+            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+        }
         Meteor.COLLECTIONS.Accounts.switch(competitionName);
         Meteor.COLLECTIONS.Athletes.switch(competitionName);
         Meteor.COLLECTIONS.Contest.switch(competitionName);
