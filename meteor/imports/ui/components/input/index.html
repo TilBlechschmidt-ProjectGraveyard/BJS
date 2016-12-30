@@ -37,7 +37,7 @@
                             <span>Teilnehmer</span>
                         </a>
                     </div>
-                    <div class="center">{{nameByID athlete_id}}</div>
+                    <div class="center" style="overflow-x: auto; overflow-y: hidden">{{nameByID athlete_id}}</div>
                     <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                            data-attempt="{{inc n}}"
                            data-athlete-id="{{athlete_id}}"
                            data-stID="{{#with metadata}}{{id}}{{/with}}"
-                           id="{{#with measurement}}{{id}}{{/with}}"
+                           class="{{#with measurement}}{{class}}{{/with}}"
                         {{isReadOnly measurement}}
                     >
                 </div>
