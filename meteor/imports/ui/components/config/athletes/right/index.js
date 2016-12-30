@@ -33,6 +33,13 @@ export let athletes_right_onLoad = function () {
                 Meteor.groups[Meteor._currentGroup].athletes.splice(Meteor._currentAthlete, 1);
                 Meteor._athletes_tracker.changed();
             });
+        },
+        'click #link_save' (event, instance) {
+            Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
+                NewCompetition.selectAthlete(Meteor._currentAthlete);
+                save();
+                NewCompetition.save();
+            });
         }
     });
 };

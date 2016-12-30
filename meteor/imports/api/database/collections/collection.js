@@ -103,10 +103,6 @@ export function ContestCollection(name, publicationFunction) {
 
         if (Meteor.isClient) col.ground = Ground.Collection(handle);
 
-        col.onReady(function () {
-            console.log(col.name + " is ready");
-        });
-
         if (Meteor.isClient) {
             col.handle = handle;
             Meteor.subscribe(col.name);
@@ -121,6 +117,10 @@ export function ContestCollection(name, publicationFunction) {
                 });
             }
         }
+
+        col.onReady(function () {
+            console.log(col.name + " is ready");
+        });
     };
 
     col.switch = function (competition_name) {

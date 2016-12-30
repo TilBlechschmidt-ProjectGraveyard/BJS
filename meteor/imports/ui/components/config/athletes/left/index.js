@@ -8,8 +8,6 @@ Meteor._athletes_tracker = new Tracker.Dependency();
 Meteor._currentGroup = -1;
 Meteor._currentAthlete = -1;
 
-Meteor.groups = NewCompetition.getGroups();
-
 function save() {
     NewCompetition.setGroups(Meteor.groups);
     NewCompetition.selectAthlete(-1);

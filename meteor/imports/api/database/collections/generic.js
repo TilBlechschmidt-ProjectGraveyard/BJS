@@ -8,7 +8,8 @@ export function initGeneric() {
             dbVersion: Meteor.config.dbVersion,
             cleanDB: true,
             activeContest: "bjs2016",
-            contests: ["bjs2016"]
+            contests: ["bjs2016"],
+            editContests: []
         });
     };
 }

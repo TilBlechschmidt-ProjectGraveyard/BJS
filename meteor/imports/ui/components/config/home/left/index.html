@@ -16,7 +16,25 @@
             <!-- Page Content -->
             <div class="page-content">
                 <!-- Headline -->
-                <div class="content-block-title">Datei wählen</div>
+                <div class="content-block-title">Fertige Wettkämpfe</div>
+                <div class="list-block">
+                    <!-- File List -->
+                    <ul>
+                        {{#each n in competitions}}
+                            <li>
+                                <a href="#" class="item-link link-activate_competition" data-page="main-view"
+                                   data-competition_name="{{n}}">
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">{{n}}</div>
+                                        </div>
+                                    </div>
+                                </a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                <div class="content-block-title">Bearbeitbare Wettkämpfe</div>
                 <div class="list-block">
                     <!-- File List -->
                     <ul>
@@ -28,9 +46,9 @@
                                 </div>
                             </div>
                         </a></li>
-                        {{#each n in competitions}}
+                        {{#each n in editCompetitions}}
                             <li>
-                                <a href="#" class="item-link link-activate_competition" data-page="main-view"
+                                <a href="#" class="item-link link-edit_competition" data-page="main-view"
                                    data-competition_name="{{n}}">
                                     <div class="item-content">
                                         <div class="item-inner">

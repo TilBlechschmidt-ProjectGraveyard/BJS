@@ -54,13 +54,13 @@ export let DBInterface = {
     },
 
     /**
-     * Returns the id of the contest settings document.
+     * Returns the id of the current or a given contest settings document.
+     * @param {Mongo.Collection} [dbHandle] - Handle of the db
      * @returns {string} The id
      */
-    getContestID: function () {
-        // console.log(COLLECTIONS.Contest);
-        // console.log(COLLECTIONS.Contest.handle.findOne());
-        return Meteor.COLLECTIONS.Contest.handle.findOne()._id;
+    getContestID: function (dbHandle) {
+        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
+        return dbHandle.findOne()._id;
     },
 
     /**
@@ -83,48 +83,59 @@ export let DBInterface = {
         return result;
     },
 
-    // /**
-    //  * Sets the current competition type id
-    //  * @param id
-    //  */
-    // setCompetitionTypeID: function (id) {
-    //     COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestID()}, {$set: {contestType: id}});
-    // },
-
-    getActivatedSports: function () {
-        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
-    },
-
     /**
-     * Returns the current competition type id
-     * @returns {number}
-     */
-    getCompetitionTypeID: function () {
-        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).contestType;
-    },
-
-    /**
-     * Returns the current competition type
-     * @returns {object}
-     */
-    getCompetitionType: function () {
-        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID());
-    },
-
-    /**
-     * Returns the activated sport types of the current competition
+     * Returns a list of the activated sports of the current competition
      * @returns {string[]}
      */
-    getCompetitionSportTypes: function () {
-        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
+    getActivatedSports: function (dbHandle) {
+        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
+        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).sportTypes;
+    },
+
+    /**
+     * Returns the current or a given competition type id
+     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @returns {number}
+     */
+    getCompetitionTypeID: function (dbHandle) {
+        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
+        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).contestType;
+    },
+
+    /**
+     * Returns the current or a given competition type
+     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @returns {object}
+     */
+    getCompetitionType: function (dbHandle) {
+        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
+        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID(dbHandle));
+    },
+
+    /**
+     * Returns the activated sport types of the current or a given competition
+     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @returns {string[]}
+     */
+    getCompetitionSportTypes: function (dbHandle) {
+        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
+        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).sportTypes;
     },
 
     /**
      * Lists all competition
      * @returns {string[]}
      */
-    listCompetition: function () {
+    listCompetitions: function () {
         return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).contests;
+    },
+
+    /**
+     * Lists all editable competition
+     * @returns {string[]}
+     */
+    listEditCompetitions: function () {
+        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).editContests;
     },
 
     /**
@@ -141,10 +152,10 @@ export let DBInterface = {
      * @param {number} competitionTypeID - The type id of the competition
      * @param {string[]} sportTypes - List of sport type ids which are used by the contest
      * @param {object[]} encrypted_athletes - A list of encrypted athletes. To encrypt an athlete use athlete.encryptForDatabase([...])
-     * @param {Accounts[]} accounts - A list of accounts
+     * @param {Account[]} accounts - A list of accounts
      */
-    createCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts) {
-        Meteor.call('createCompetition', competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts);
+    writeCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
+        Meteor.call('writeCompetition', competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
     },
 
     /**

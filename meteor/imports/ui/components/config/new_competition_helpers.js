@@ -2,9 +2,22 @@
  * Created by noah on 12/29/16.
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
+import {Account} from "../../../api/logic/account";
+import {Crypto} from "../../../api/crypto/crypto";
+import {Log} from "../../../api/log";
+import {Athlete} from "../../../api/logic/athlete";
+import {DBInterface} from "../../../api/database/db_access";
 
+if (!Meteor.inEditMode) {
+    if (window.location.href.includes("/config/")) {
+        FlowRouter.redirect('/config');
+    }
+}
 
 const start_classes_object = require('../../../data/start_classes.json');
+
+//TODO replace with login
+Meteor.adminAccount = new Account([], [], Crypto.generateAC('1234', 'chilli'));
 
 let start_classes = [];
 
@@ -25,6 +38,63 @@ export let NewCompetition = {
 
     /** @constant {number} */
     prefix: "new_competition_",
+
+
+    /**
+     * Saves the current configuration
+     * @param {Account[]} [accounts] - All generated accounts. undefined will save the competition editable
+     */
+    save: function (accounts) {
+        const log = new Log();
+        const ct = NewCompetition.getCompetitionType();
+
+        const sportTypes = _.map(_.filter(NewCompetition.getSports(), function (obj) {
+            return obj.activated;
+        }), function (obj) {
+            return obj.stID;
+        });
+
+        // undefined -> false
+        const final = !!accounts;
+
+        if (!final) {
+            accounts = [Meteor.adminAccount];
+        }
+
+        let encryptedAthletes = [];
+
+        let groupToEncryptedAthletes = function (group) {
+            return _.map(Meteor.groups[group].athletes, function (athlete) {
+
+                let account = final ? Meteor.groups[group].account : Meteor.adminAccount;
+
+                return new Athlete(
+                    log,
+                    athlete.firstName,
+                    athlete.lastName,
+                    athlete.ageGroup,
+                    athlete.isMale,
+                    Meteor.groups[group].name,
+                    athlete.handicap,
+                    ct.maxAge,
+                    ct
+                ).encryptForDatabase(account, account);
+            });
+        };
+
+        for (let group in Meteor.groups) {
+            encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
+        }
+
+        DBInterface.writeCompetition(
+            NewCompetition.getName(),
+            NewCompetition.getCompetitionTypeID(),
+            sportTypes,
+            encryptedAthletes,
+            accounts,
+            final
+        );
+    },
 
     groupExists: function (name) {
         for (let group in Meteor.groups) {
@@ -127,7 +197,7 @@ export let NewCompetition = {
      * @returns {string}
      */
     getName: function () {
-        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");
+        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");//TODO find unused
         return Session.get(NewCompetition.prefix + "name");
     },
 
@@ -207,6 +277,7 @@ export let NewCompetition = {
      */
     setGroups: function (groups) {
         Session.set(NewCompetition.prefix + "groups", JSON.stringify(groups));
+        Meteor.groups = groups;
     },
 
     /**
@@ -218,3 +289,5 @@ export let NewCompetition = {
         return JSON.parse(Session.get(NewCompetition.prefix + "groups"));
     }
 };
+
+Meteor.groups = NewCompetition.getGroups();

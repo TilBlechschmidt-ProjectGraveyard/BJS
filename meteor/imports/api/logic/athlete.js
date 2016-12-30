@@ -88,6 +88,12 @@ Athlete.prototype = {
             log.error('Der Stations Account hat keine Berechtigung');
             canWrite = false;
         }
+
+        if (this.sports.indexOf(stID) == -1) {
+            log.error('Der Athlete kann diese Sportartn nicht ausführen');
+            canWrite = false;
+        }
+
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
             // write to db
@@ -201,9 +207,10 @@ Athlete.prototype = {
  * @param {Object} data Encrypted athlete
  * @param {Account[]} accounts List of accounts containing the one that was used for encryption
  * @param {boolean} require_signature whether or not to enable signature enforcing
+ * @param {boolean} require_group_check whether or not to enable group permission check
  * @returns {boolean|Athlete}
  */
-Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
+Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, require_group_check = true) {
     const acs = getAcsFromAccounts(accounts);
     const firstName = Crypto.tryDecrypt(log, data.firstName, acs);
     const lastName = Crypto.tryDecrypt(log, data.lastName, acs);
@@ -216,6 +223,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
 
     if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
 
+        if (require_group_check)
         if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
             accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
             accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
@@ -240,6 +248,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
             return false;
         }
 
+        if (require_group_check)
         if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
             (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
             (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||

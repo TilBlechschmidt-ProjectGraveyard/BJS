@@ -10,14 +10,13 @@ function initDatabase() {
     initContest();
 
     Meteor.COLLECTIONS.connect = function (competitionName) {
-        let listOFCompetitions = DBInterface.listCompetition();
-        if (listOFCompetitions.indexOf(competitionName) == -1) {
-            listOFCompetitions.push(competitionName);
-            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
+        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionName) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionName) || Meteor.COLLECTIONS.Contest.handles.hasOwnProperty(competitionName)) {
+            return false;
         }
         Meteor.COLLECTIONS.Accounts.connect(competitionName);
         Meteor.COLLECTIONS.Athletes.connect(competitionName);
         Meteor.COLLECTIONS.Contest.connect(competitionName);
+        return true;
     };
 
     Meteor.COLLECTIONS.switch = function (competitionName) {
@@ -43,8 +42,9 @@ function initDatabase() {
         });
     } else {
         const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        for (let nameID in genericData.contests) {
-            Meteor.COLLECTIONS.connect(genericData.contests[nameID]);
+        const allNames = genericData.contests.concat(genericData.editContests);
+        for (let nameID in allNames) {
+            Meteor.COLLECTIONS.connect(allNames[nameID]);
         }
         Meteor.COLLECTIONS.switch(genericData.activeContest);
     }

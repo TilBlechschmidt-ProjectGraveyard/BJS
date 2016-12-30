@@ -35,4 +35,10 @@ Template.sports_main.events({
         save();
         FlowRouter.go('/config/athletes');
     },
+    'click #link_save' (event, instance) {
+        Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
+            save();
+            NewCompetition.save();
+        });
+    }
 });

@@ -5,9 +5,6 @@ import {NewCompetition} from "../new_competition_helpers";
 import {genRandomCode} from "../../../../api/crypto/pwdgen";
 import {Account} from "../../../../api/logic/account";
 import {Crypto} from "../../../../api/crypto/crypto";
-import {DBInterface} from "../../../../api/database/db_access";
-import {Athlete} from "../../../../api/logic/athlete";
-import {Log} from "../../../../api/log";
 
 let loginStations = [];
 let loginGroups = [];
@@ -31,58 +28,27 @@ Template.codes.events({
         loginGroups = [];
         FlowRouter.go('/config/athletes');
     },
-    'click #link_save' (event, instance) {
+    'click #link_start' (event, instance) {
         if (loginGroups.length != Meteor.groups.length) {
             Meteor.f7.alert("Sie müssen erst Zugangscodes erstellen.", "Hinweiß");
             return;
         }
 
-        Meteor.f7.confirm('Nach dem Speichern könne keine Änderungen mehr vorgenommen werden. Der neue Wettkampf wird automatisch aktiviert.', 'Entgültig speichern', function () {
-            const log = new Log();
-            const ct = NewCompetition.getCompetitionType();
+        //TODO option to reset password and remove confirms
+        Meteor.f7.confirm('Nach dem Starten könne keine Änderungen mehr vorgenommen werden. Der neue Wettkampf wird automatisch aktiviert.', 'BJS starten', function () {
+            Meteor.f7.confirm('Haben Sie alle Zugangscodes am Besten zwei mal gespeichert? Dafür kann man diese Ausdrucken, als PDF speichern oder abschreiben.', 'BJS starten', function () {
+                Meteor.f7.confirm('Nach dem Starten können die Zugangscodes nicht erneut angezeigt werden. Stellen Sie sicher, dass Sie ohne "RunItEasy" Zugriff auf die Zugangscodes haben. Ansonsten müssen Sie einen neuen Wettkampf einrichten!', 'BJS starten', function () {
+                    Meteor.f7.confirm('Jetzt starten?', 'BJS starten', function () {
+                        const accounts = _.map(loginGroups.concat(loginStations), function (obj) {
+                            return obj.account;
+                        });
 
-            const sportTypes = _.map(_.filter(NewCompetition.getSports(), function (obj) {
-                return obj.activated;
-            }), function (obj) {
-                return obj.stID;
-            });
+                        NewCompetition.save(accounts);
 
-            const accounts = _.map(loginGroups.concat(loginStations), function (obj) {
-                return obj.account;
-            });
-
-            let encryptedAthletes = [];
-
-            let groupToEncryptedAthletes = function (group) {
-                return _.map(Meteor.groups[group].athletes, function (athlete) {
-
-                    return new Athlete(
-                        log,
-                        athlete.firstName,
-                        athlete.lastName,
-                        athlete.ageGroup,
-                        athlete.isMale,
-                        Meteor.groups[group].name,
-                        athlete.handicap,
-                        ct.maxAge,
-                        ct
-                    ).encryptForDatabase(Meteor.groups[group].account, Meteor.groups[group].account);
+                        FlowRouter.go('/config');
+                    });
                 });
-            };
-
-            for (let group in Meteor.groups) {
-                encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
-            }
-
-            DBInterface.createCompetition(
-                NewCompetition.getName(),
-                NewCompetition.getCompetitionTypeID(),
-                sportTypes,
-                encryptedAthletes,
-                accounts
-            );
-            // TODO implement create new competition
-            // FlowRouter.go('/config');
+            });
         });
     },
     'click #btn-print' (event, instance) {
@@ -92,7 +58,7 @@ Template.codes.events({
         document.getElementById("btn-new-codes").setAttribute("disabled", "true");
         document.getElementById("btn-print").setAttribute("disabled", "true");
         document.getElementById("link_back").setAttribute("disabled", "true");
-        document.getElementById("link_save").setAttribute("disabled", "true");
+        document.getElementById("link_start").setAttribute("disabled", "true");
 
         // Load UI elements
         const progressBar = document.getElementById("progress-bar");
@@ -144,7 +110,7 @@ Template.codes.events({
                 document.getElementById("btn-new-codes").removeAttribute("disabled");
                 document.getElementById("btn-print").removeAttribute("disabled");
                 document.getElementById("link_back").removeAttribute("disabled");
-                document.getElementById("link_save").removeAttribute("disabled");
+                document.getElementById("link_start").removeAttribute("disabled");
             }
         };
 

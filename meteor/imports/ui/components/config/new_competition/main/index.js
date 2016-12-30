@@ -8,7 +8,9 @@ import {DBInterface} from "../../../../../api/database/db_access";
 function save() {
     const newName = document.getElementById('text-comp_name').value;
 
-    if (DBInterface.listCompetition().indexOf(newName) != -1) {
+    const allCompetitions = DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions());
+
+    if (allCompetitions.indexOf(newName) != -1 && newName != NewCompetition.getName()) {
         Meteor.f7.alert("Es gibt bereits einen Wettbewerb mit dem gewählten Namen.", "Name");
         return false;
     } else {
@@ -36,11 +38,39 @@ Template.new_competition_main.onRendered(function () {
 
 Template.new_competition_main.events({
     'click #link_back' (event, instance) {
-        Meteor.f7.confirm('Beim Abbrechen gehen alle Einstellungen verloren.', 'Abbrechen ohne speichern', function () {
-            FlowRouter.go('/config');
+        Meteor.f7.modal({
+            title: 'Speichern',
+            text: 'Wollen Sie alle Änderungen speichern',
+            verticalButtons: true,
+            buttons: [
+                {
+                    text: 'Ja',
+                    onClick: function () {
+                        NewCompetition.save();
+                        FlowRouter.go('/config');
+                    }
+                },
+                {
+                    text: 'Nein',
+                    onClick: function () {
+                        FlowRouter.go('/config');
+                    }
+                },
+                {
+                    text: 'Abbrechen',
+                    onClick: function () {
+                    }
+                },
+            ]
         });
     },
     'click #link_next' (event, instance) {
         if (save()) FlowRouter.go('/config/sports');
+    },
+    'click #link_save' (event, instance) {
+        Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
+            save();
+            NewCompetition.save();
+        });
     }
 });
