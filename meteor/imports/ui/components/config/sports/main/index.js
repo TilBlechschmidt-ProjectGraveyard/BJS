@@ -3,7 +3,7 @@ import "./index.html";
 import {NewCompetition} from "../../new_competition_helpers";
 
 Template.sports_main.helpers({
-    "sport_type_data": function () {
+    sport_type_data: function () {
         const ct = NewCompetition.getCompetitionType();
         return _.map(NewCompetition.getSports(), function (sportTypeObj) {
             return {

@@ -8,7 +8,7 @@ let competitions = [];
 
 
 Template.home_left.helpers({
-    "competitions": function () {
+    competitions: function () {
         _deps.depend();
         return competitions;
     }

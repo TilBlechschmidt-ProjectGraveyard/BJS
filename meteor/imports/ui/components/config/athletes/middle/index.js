@@ -5,7 +5,7 @@ Meteor.groups = NewCompetition.getGroups();
 
 
 Template.athletes_middle.helpers({
-    "athletes": function () {
+    athletes: function () {
         Meteor._athletes_tracker.depend();
 
         // Page is not ready

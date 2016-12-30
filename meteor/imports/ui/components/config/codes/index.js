@@ -15,11 +15,11 @@ let loginGroups = [];
 let _login_tracker = new Tracker.Dependency();
 
 Template.codes.helpers({
-    "login_stations": function () {
+    login_stations: function () {
         _login_tracker.depend();
         return loginStations;
     },
-    "login_groups": function () {
+    login_groups: function () {
         _login_tracker.depend();
         return loginGroups;
     }

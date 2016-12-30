@@ -16,7 +16,7 @@ function save() {
 }
 
 Template.athletes_left.helpers({
-    "groups": function () {
+    groups: function () {
         Meteor._groups_tracker.depend();
         return Meteor.groups;
     }

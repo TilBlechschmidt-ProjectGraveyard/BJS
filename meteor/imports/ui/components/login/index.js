@@ -7,15 +7,15 @@ Meteor.login_deps = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
 
 Template.login.helpers({
-    "accounts": function () {
+    accounts: function () {
         Meteor.login_deps.depend();
         return AccountManagement.retrieveAccounts();
     },
-    "input_permitted": function () {
+    input_permitted: function () {
         Meteor.login_deps.depend();
         return AccountManagement.inputPermitted();
     },
-    "fullscreen": function () {
+    fullscreen: function () {
         fullscreen_deps.depend();
         return isFullscreen();
     }
