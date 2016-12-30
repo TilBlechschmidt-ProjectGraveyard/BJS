@@ -59,10 +59,8 @@ export function ContestCollection(name, publicationFunction) {
     const col = this;
 
     col.basename = name;
-    col.grounded = true;
 
     col.handles = {};
-    col.grounds = {};
 
     col.handle = undefined;
     col.ground = undefined;
@@ -125,23 +123,10 @@ export function ContestCollection(name, publicationFunction) {
         }
     };
 
-    col.select = function (competition_name) {
+    col.switch = function (competition_name) {
         if (Meteor.isServer) {
             col.handle = col.handles[competition_name];
             console.log("connected to " + competition_name);
         }
     };
-
-    if (Meteor.isClient) {
-        Meteor.COLLECTIONS.Generic.onReady(function () {
-            const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-            col.connect(genericData.activeContest);
-        });
-    } else {
-        const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        for (let nameID in genericData.contests) {
-            col.connect(genericData.contests[nameID]);
-        }
-        col.select(genericData.activeContest);
-    }
 }

@@ -2,15 +2,23 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
 import {NewCompetition} from "../../new_competition_helpers";
+import {DBInterface} from "../../../../../api/database/db_access";
 
 
 function save() {
-    console.log(document.getElementById("pick-comp_type").selectedIndex);
-    const newCompetitionID = document.getElementById("pick-comp_type").selectedIndex;
-    if (NewCompetition.getCompetitionTypeID() != newCompetitionID) {
-        NewCompetition.setCompetitionTypeID(newCompetitionID);
+    const newName = document.getElementById('text-comp_name').value;
+
+    if (DBInterface.listCompetition().indexOf(newName) != -1) {
+        Meteor.f7.alert("Es gibt bereits einen Wettbewerb mit dem gewählten Namen.", "Name");
+        return false;
+    } else {
+        const newCompetitionID = document.getElementById("pick-comp_type").selectedIndex;
+        if (NewCompetition.getCompetitionTypeID() != newCompetitionID) {
+            NewCompetition.setCompetitionTypeID(newCompetitionID);
+        }
+        NewCompetition.setName(newName);
+        return true;
     }
-    NewCompetition.setName(document.getElementById('text-comp_name').value);
 }
 
 Template.new_competition_main.onRendered(function () {
@@ -33,7 +41,6 @@ Template.new_competition_main.events({
         });
     },
     'click #link_next' (event, instance) {
-        save();
-        FlowRouter.go('/config/sports');
+        if (save()) FlowRouter.go('/config/sports');
     }
 });

@@ -1,9 +1,9 @@
 import {input_onload} from "./components/input/index";
 FlowRouter.route('/', {
     action: function () {
-        FlowRouter.go("/config");
+        // FlowRouter.go("/config");
         //TODO: Check if it is already configured and run the following if that is the case:
-        //FlowRouter.go("/contest");
+        FlowRouter.go("/contest");
     }
 });
 
