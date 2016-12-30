@@ -1,4 +1,5 @@
 export function Collection(name, publicationFunction) {
+    console.log("created " + name);
     const col = this;
 
     col.name = name;
@@ -98,7 +99,7 @@ export function ContestCollection(name, publicationFunction) {
     col.connect = function (competition_name) {
         Meteor.dbReady[col.basename] = false;
         col.name = competition_name.replace(/ /g, '') + "_" + col.basename;
-        console.log("connectiong to " + col.name);
+        console.log("connecting to " + col.name);
 
         let handle = new Mongo.Collection(col.name, {});
 
@@ -131,16 +132,13 @@ export function ContestCollection(name, publicationFunction) {
         }
     };
 
-    import {Generic} from "./generic";
-
-
     if (Meteor.isClient) {
-        Generic.onReady(function () {
-            const genericData = Generic.handle.findOne();
+        Meteor.COLLECTIONS.Generic.onReady(function () {
+            const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
             col.connect(genericData.activeContest);
         });
     } else {
-        const genericData = Generic.handle.findOne();
+        const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
         for (let nameID in genericData.contests) {
             col.connect(genericData.contests[nameID]);
         }

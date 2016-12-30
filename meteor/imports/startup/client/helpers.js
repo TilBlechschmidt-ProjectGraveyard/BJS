@@ -1,5 +1,9 @@
+import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/db_access";
 import {AccountManagement} from "../../api/AccountManagement";
+
+initCollections();
+
 
 export let getAthletes = function getAthletes() {
     const group_account = AccountManagement.retrieveAccounts().Gruppenleiter.account;

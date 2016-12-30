@@ -1,54 +1,52 @@
+import {DBInterface} from "../../api/database/db_access";
+import {initCollections} from "../../api/database/collections/index";
+
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../../../config.json');
+    initCollections();
 
     if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
-
-    const COLLECTIONS = require('../../api/database/collections')();
 
     Meteor.methods({
         'activateCompetition': function (competitionName) {
             import {DBInterface} from "../../api/database/db_access";
-            COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
-            COLLECTIONS.Accounts.select(competitionName);
-            COLLECTIONS.Athletes.select(competitionName);
-            COLLECTIONS.Contest.select(competitionName);
+            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+            Meteor.COLLECTIONS.Accounts.select(competitionName);
+            Meteor.COLLECTIONS.Athletes.select(competitionName);
+            Meteor.COLLECTIONS.Contest.select(competitionName);
         },
         'createCompetition': function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts) {
             console.log("creationg new competition");
 
-            import {DBInterface} from "../../api/database/db_access";
-            import {Collection} from "../../api/database/collections/collection";
 
-            const dbPrefix = competitionName.replace(/ /g, '') + '_';
-
-            COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
-            COLLECTIONS.Accounts.connect(competitionName);
-            COLLECTIONS.Athletes.connect(competitionName);
-            COLLECTIONS.Contest.connect(competitionName);
-            COLLECTIONS.Accounts.select(competitionName);
-            COLLECTIONS.Athletes.select(competitionName);
-            COLLECTIONS.Contest.select(competitionName);
+            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+            Meteor.COLLECTIONS.Accounts.connect(competitionName);
+            Meteor.COLLECTIONS.Athletes.connect(competitionName);
+            Meteor.COLLECTIONS.Contest.connect(competitionName);
+            Meteor.COLLECTIONS.Accounts.select(competitionName);
+            Meteor.COLLECTIONS.Athletes.select(competitionName);
+            Meteor.COLLECTIONS.Contest.select(competitionName);
 
             console.log("insert athletes");
             for (let athlete in encrypted_athletes) {
-                COLLECTIONS.Athletes.handle.insert(encrypted_athletes[athlete]);
+                Meteor.COLLECTIONS.Athletes.handle.insert(encrypted_athletes[athlete]);
             }
 
             console.log("insert accounts");
             for (let account in accounts) {
-                COLLECTIONS.Accounts.handle.insert(accounts[account]);
+                Meteor.COLLECTIONS.Accounts.handle.insert(accounts[account]);
             }
 
             console.log("insert general");
-            COLLECTIONS.Contest.handle.insert({
+            Meteor.COLLECTIONS.Contest.handle.insert({
                 contestType: competitionTypeID,
                 sportTypes: sportTypes
             });
 
             let listOFCompetitions = DBInterface.listCompetition();
             listOFCompetitions.push(competitionName);
-            COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
+            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
         }
     });
 

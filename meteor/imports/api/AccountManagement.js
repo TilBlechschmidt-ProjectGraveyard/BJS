@@ -1,8 +1,8 @@
 import {DBInterface} from "./database/db_access";
 import {Crypto} from "./crypto/crypto";
 import {isGroupAccount, isStationAccount, getGroupNames, getStationNames} from "./logic/account";
-const COLLECTIONS = require('./database/collections')();
 const storage = window.sessionStorage;
+
 
 function storageAvailable(type) {
     try {
@@ -54,7 +54,7 @@ export let AccountManagement = {
     login: function (type, passphrase, callback) {
         DBInterface.waitForReady(function () {
             // Check if the passphrase is valid
-            const remoteAccounts = COLLECTIONS.Accounts.handle.find({}).fetch();
+            const remoteAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
             let account = null;
             for (let remoteAccount in remoteAccounts) {
                 if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;

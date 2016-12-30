@@ -1,29 +1,12 @@
-import {Generic} from "./generic";
+import {initGeneric} from "./generic";
+import {initContest} from "./contest";
+import {initAccounts} from "./accounts";
+import {initAthletes} from "./athletes";
 
-/**
- * @typedef {Object} Collections
- * @property {Collection} Generic - Collection with general information about the server.
- * @property {ContestCollection} Contest - Collection with general information about the current contest.
- * @property {ContestCollection} Accounts - Collection with the accounts.
- * @property {ContestCollection} Athletes - Collection with the athletes.
- */
-
-
-/**
- * Returns a list of all relevant collections.
- * @returns {Collections}
- */
-function getCollections() {
-    import {Contest} from './contest';
-    import {Accounts} from './accounts';
-    import {Athletes} from './athletes';
-
-    return {
-        Generic: Generic,
-        Contest: Contest,
-        Accounts: Accounts,
-        Athletes: Athletes
-    };
+function initDatabase() {
+    initAccounts();
+    initAthletes();
+    initContest();
 }
 
 function removeData(driver) {
@@ -53,15 +36,14 @@ function clearDatabase(dbHandle) {
     // Delete everything in the regular db
     removeData(MongoInternals.defaultRemoteCollectionDriver());
 
-    // Initialize the generic database first
-    Generic.createMockData();
+    Meteor.COLLECTIONS.Generic.createMockData();
 
-    // Load 'em
-    const COLLECTIONS = getCollections();
+    // init Data
+    initDatabase();
 
-    // Fill 'em with (fake) data
-    for (let collection in COLLECTIONS)
-        if (COLLECTIONS.hasOwnProperty(collection) && collection !== 'Generic') COLLECTIONS[collection].createMockData();
+    Meteor.COLLECTIONS.Contest.createMockData();
+    Meteor.COLLECTIONS.Accounts.createMockData();
+    Meteor.COLLECTIONS.Athletes.createMockData();
 
     console.log('-----------------------------------------------------');
     console.log('------------------------ DONE -----------------------');
@@ -69,26 +51,34 @@ function clearDatabase(dbHandle) {
 }
 
 /**
- * Returns a list of all relevant collections.
- * @returns {Collections}
+ * Creates all collections.
  */
-module.exports = function () {
+export function initCollections() {
     // load databases
-    if (!Meteor.db) {
-        Meteor.db = {};
+    if (!Meteor.COLLECTIONS) {
+        Meteor.COLLECTIONS = {};
+
+        let clearDB = false;
+        console.log("init database");
+        initGeneric();
 
         if (Meteor.isServer) {
             if (!Meteor.isProduction) {
                 // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
-                let genericEntries = Generic.handle.findOne();
+                let genericEntries = Meteor.COLLECTIONS.Generic.handle.findOne();
                 // noinspection JSUnresolvedVariable
                 if (!(
                         genericEntries &&
                         (genericEntries.hasOwnProperty('cleanDB') && genericEntries.cleanDB === true) &&
                         (genericEntries.hasOwnProperty('dbVersion') && genericEntries.dbVersion === Meteor.config.dbVersion)
-                    )) clearDatabase();
+                    )) clearDB = true;
             }
         }
+
+        if (clearDB) {
+            clearDatabase();
+        } else {
+            initDatabase();
+        }
     }
-    return getCollections();
-};
+}

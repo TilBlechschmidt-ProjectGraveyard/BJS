@@ -1,4 +1,3 @@
-const COLLECTIONS = require('../../api/database/collections')();
 import {getCompetitionTypeByID} from "../logic/competition_type";
 import {Athlete} from "../logic/athlete";
 
@@ -14,10 +13,10 @@ export let DBInterface = {
      * @return {boolean}
      */
     isReady: function () {
-        return COLLECTIONS.Generic.isReady() &&
-            COLLECTIONS.Contest.isReady() &&
-            COLLECTIONS.Accounts.isReady() &&
-            COLLECTIONS.Athletes.isReady();
+        return Meteor.COLLECTIONS.Generic.isReady() &&
+            Meteor.COLLECTIONS.Contest.isReady() &&
+            Meteor.COLLECTIONS.Accounts.isReady() &&
+            Meteor.COLLECTIONS.Athletes.isReady();
     },
 
     /**
@@ -25,10 +24,10 @@ export let DBInterface = {
      * @param {function} callback - The callback
      */
     waitForReady: function (callback) {
-        COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            COLLECTIONS.Contest.onReady(function () {
-                COLLECTIONS.Accounts.onReady(function () {
-                    COLLECTIONS.Athletes.onReady(function () {
+        Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
+            Meteor.COLLECTIONS.Contest.onReady(function () {
+                Meteor.COLLECTIONS.Accounts.onReady(function () {
+                    Meteor.COLLECTIONS.Athletes.onReady(function () {
                         callback();
                     });
                 });
@@ -51,7 +50,7 @@ export let DBInterface = {
      * @returns {string} The id
      */
     getGenericID: function () {
-        return COLLECTIONS.Generic.handle.find().fetch()[0]._id;
+        return Meteor.COLLECTIONS.Generic.handle.find().fetch()[0]._id;
     },
 
     /**
@@ -61,7 +60,7 @@ export let DBInterface = {
     getContestID: function () {
         // console.log(COLLECTIONS.Contest);
         // console.log(COLLECTIONS.Contest.handle.findOne());
-        return COLLECTIONS.Contest.handle.find().fetch()[0]._id;
+        return Meteor.COLLECTIONS.Contest.handle.findOne()._id;
     },
 
     /**
@@ -74,7 +73,7 @@ export let DBInterface = {
     getAthletesOfAccounts: function (log, accounts, require_signature) {
         let result = [];
         log.disable();
-        COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
+        Meteor.COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
             const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
             if (decrypted) {
                 result.push(decrypted);
@@ -84,12 +83,16 @@ export let DBInterface = {
         return result;
     },
 
-    /**
-     * Sets the current competition type id
-     * @param id
-     */
-    setCompetitionTypeID: function (id) {
-        COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestID()}, {$set: {contestType: id}});
+    // /**
+    //  * Sets the current competition type id
+    //  * @param id
+    //  */
+    // setCompetitionTypeID: function (id) {
+    //     COLLECTIONS.Contest.handle.update({_id: DBInterface.getContestID()}, {$set: {contestType: id}});
+    // },
+
+    getActivatedSports: function () {
+        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
     },
 
     /**
@@ -97,7 +100,7 @@ export let DBInterface = {
      * @returns {number}
      */
     getCompetitionTypeID: function () {
-        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).contestType;
+        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).contestType;
     },
 
     /**
@@ -113,7 +116,7 @@ export let DBInterface = {
      * @returns {string[]}
      */
     getCompetitionSportTypes: function () {
-        return COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
+        return Meteor.COLLECTIONS.Contest.handle.findOne({_id: DBInterface.getContestID()}).sportTypes;
     },
 
     /**
@@ -121,7 +124,7 @@ export let DBInterface = {
      * @returns {string[]}
      */
     listCompetition: function () {
-        return COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).contests;
+        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).contests;
     },
 
     /**
@@ -129,7 +132,7 @@ export let DBInterface = {
      * @returns {string}
      */
     getCompetitionName: function () {
-        return COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
+        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
     },
 
     /**

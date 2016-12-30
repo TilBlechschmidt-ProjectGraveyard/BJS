@@ -2,7 +2,7 @@ import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
 import {genUUID} from "./../crypto/pwdgen";
 import {getAcsFromAccounts} from "./account";
-const COLLECTIONS = require("../database/collections")();
+import {DBInterface} from "../database/db_access";
 
 
 /**
@@ -34,10 +34,16 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     } else {
         this.sports = [];
 
+        let sportTypes;
+        if (DBInterface.isReady()) sportTypes = DBInterface.getActivatedSports();
+
         const allSports = ct.getSports();
         for (let sport in allSports) {
             if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
-                this.sports.push(allSports[sport].id);
+                const stID = allSports[sport].id;
+                if (!sportTypes || sportTypes.indexOf(stID) > 0) {
+                    this.sports.push(stID);
+                }
             }
         }
     }
@@ -84,10 +90,11 @@ Athlete.prototype = {
         }
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            // write to db
             if (this.id) {
                 let writeObject = {};
                 writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
-                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
             }
             return true;
         } else {
