@@ -1,5 +1,6 @@
 import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
+import {genUUID} from "./../crypto/pwdgen";
 import {getAcsFromAccounts} from "./account";
 const COLLECTIONS = require("../database/collections")();
 
@@ -84,7 +85,9 @@ Athlete.prototype = {
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
             if (this.id) {
-                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
+                let writeObject = {};
+                writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
+                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
             }
             return true;
         } else {
@@ -175,7 +178,11 @@ Athlete.prototype = {
         encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
         encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
-        encrypted.data = this.data;
+
+
+        for (let dataGroupID in this.data.data) {
+            encrypted["m_" + genUUID()] = this.data[dataGroupID];
+        }
 
         return encrypted;
     }
@@ -240,7 +247,16 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
 
-        athlete.data = new Data(data.data.data);
+        let measureData = [];
+
+        for (let memberName in data) {
+            if (memberName.substr(0, 2) === "m_") {
+                measureData.push(data[memberName]);
+            }
+        }
+
+
+        athlete.data = new Data(measureData);
         return athlete;
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');

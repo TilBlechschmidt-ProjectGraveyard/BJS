@@ -8,6 +8,18 @@ import {Athlete} from "../logic/athlete";
  * @namespace
  */
 export let DBInterface = {
+
+    /**
+     * Returns whether all collections are ready.
+     * @return {boolean}
+     */
+    isReady: function () {
+        return COLLECTIONS.Generic.isReady() &&
+            COLLECTIONS.Contest.isReady() &&
+            COLLECTIONS.Accounts.isReady() &&
+            COLLECTIONS.Athletes.isReady();
+    },
+
     /**
      * This function waits asynchronously until all collections are ready. Then it calls the callback.
      * @param {function} callback - The callback

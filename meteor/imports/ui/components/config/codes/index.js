@@ -169,10 +169,5 @@ Template.codes.events({
         };
 
         generateNextStationLogin();
-
-        // for (let group in groups) {
-        //     counter++;
-        //     progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
-        // }
     }
 });

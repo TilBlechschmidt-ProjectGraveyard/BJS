@@ -50,6 +50,10 @@ export let input_onload = function (page) {
             return getAthleteByID(id).getFullName();
         },
         athleteByID: function (id) {
+            if (!DBInterface.isReady()) { //TODO wait for ready
+                return {};
+            }
+
             Meteor.login_deps.depend();
             input_deps.depend();
             let sportTypes = {};

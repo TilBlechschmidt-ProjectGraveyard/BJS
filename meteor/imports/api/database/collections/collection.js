@@ -23,6 +23,11 @@ export function Collection(name, publicationFunction) {
 
 
     Meteor.dbReady[col.name] = false;
+
+    col.isReady = function () {
+        return Meteor.isServer || Meteor.dbReady[col.name];
+    };
+
     col.onReady = function (callback) {
         const c = function () {
             Meteor.dbReady[col.name] = true;
@@ -69,6 +74,11 @@ export function ContestCollection(name, publicationFunction) {
         Meteor.dbReady = {};
     }
     Meteor.dbReady[col.basename] = false;
+
+    col.isReady = function () {
+        return Meteor.isServer || Meteor.dbReady[col.basename];
+    };
+
     col.onReady = function (callback) {
         const c = function () {
             Meteor.dbReady[col.basename] = true;
