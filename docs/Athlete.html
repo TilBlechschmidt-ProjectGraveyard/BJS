@@ -89,7 +89,7 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
-                <li data-type='method'><a href="DBInterface.html#.createCompetition">createCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionSportTypes">getCompetitionSportTypes</a>
@@ -98,20 +98,24 @@
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.listCompetition">listCompetition</a></li>
-                <li data-type='method'><a href="DBInterface.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
+                <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
+                <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
         </li>
         <li><a href="NewCompetition.html">NewCompetition</a>
             <ul class='methods'>
                 <li data-type='method'><a href="NewCompetition.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="NewCompetition.html#.getGroups">getGroups</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.getName">getName</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.getSports">getSports</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.resetSportTypes">resetSportTypes</a></li>
+                <li data-type='method'><a href="NewCompetition.html#.save">save</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.setCompetitionTypeID">setCompetitionTypeID</a></li>
-                <li data-type='method'><a href="NewCompetition.html#.setDefaults">setDefaults</a></li>
+                <li data-type='method'><a href="NewCompetition.html#.setGroups">setGroups</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.setName">setName</a></li>
                 <li data-type='method'><a href="NewCompetition.html#.setSports">setSports</a></li>
             </ul>
@@ -137,11 +141,13 @@
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
         <li><a href="global.html#genRandomString">genRandomString</a></li>
+        <li><a href="global.html#genUUID">genUUID</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
+        <li><a href="global.html#initCollections">initCollections</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -187,8 +193,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line20">line
-        20</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line22">line
+        22</a>
     </li></ul></dd>
     
 
@@ -553,6 +559,61 @@
 <h4 class="name" id="age"><span class="type-signature"></span>age<span class="type-signature"></span></h4>
 
 
+    <p class="summary">Sets the age of the athlete.</p>
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line172">line
+        172</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    <div class="description">
+        <p>Sets the age of the athlete.</p>
+    </div>
+
+
+    <h4 class="name" id="age"><span class="type-signature"></span>age<span class="type-signature"></span></h4>
+
+
     <p class="summary">Returns the age of the athlete.</p>
 
 
@@ -563,8 +624,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line140">line
-        140</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line158">line
+        158</a>
     </li></ul></dd>
     
 
@@ -606,61 +667,6 @@
     </div>
 
 
-    <h4 class="name" id="age"><span class="type-signature"></span>age<span class="type-signature"></span></h4>
-
-
-    <p class="summary">Sets the age of the athlete.</p>
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line154">line
-        154</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    <div class="description">
-        <p>Sets the age of the athlete.</p>
-    </div>
-
-
     <h4 class="name" id="tableAge"><span class="type-signature"></span>tableAge<span class="type-signature"></span></h4>
 
 
@@ -674,8 +680,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line147">line
-        147</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line165">line
+        165</a>
     </li></ul></dd>
     
 
@@ -721,8 +727,8 @@
 
 
     <h4 class="name" id=".decryptFromDatabase"><span class="type-signature">(static) </span>decryptFromDatabase<span
-            class="signature">(log, data, accounts, require_signature)</span><span class="type-signature"> &rarr;
-        {boolean|<a href="Athlete.html">Athlete</a>}</span></h4>
+            class="signature">(log, data, accounts, require_signature, require_group_check)</span><span
+            class="type-signature"> &rarr; {boolean|<a href="Athlete.html">Athlete</a>}</span></h4>
 
 
     <p class="summary">
@@ -734,8 +740,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line190">line
-        190</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line213">line
+        213</a>
     </li></ul></dd>
     
 
@@ -889,7 +895,25 @@
             <td class="description last"><p>whether or not to enable signature enforcing</p></td>
         </tr>
 
-    
+
+        <tr>
+
+            <td class="name"><code>require_group_check</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">boolean</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>whether or not to enable group permission check</p></td>
+        </tr>
+
+
     </tbody>
 </table>
 
@@ -942,7 +966,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a
-                        href="api_logic_athlete.js.html#line70">line 70</a>
+                        href="api_logic_athlete.js.html#line78">line 78</a>
                 </li>
             </ul>
         </dd>
@@ -1106,8 +1130,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line98">line
-        98</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line116">line
+        116</a>
     </li></ul></dd>
     
 
@@ -1230,8 +1254,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line164">line
-        164</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line182">line
+        182</a>
     </li></ul></dd>
     
 
@@ -1395,8 +1419,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line126">line
-        126</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line144">line
+        144</a>
     </li></ul></dd>
     
 
@@ -1470,8 +1494,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line56">line
-        56</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line64">line
+        64</a>
     </li></ul></dd>
     
 
@@ -1648,8 +1672,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line133">line
-        133</a>
+        <a href="api_logic_athlete.js.html">api/logic/athlete.js</a>, <a href="api_logic_athlete.js.html#line151">line
+        151</a>
     </li></ul></dd>
     
 
@@ -1720,7 +1744,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Dec 29 2016 15:11:01
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:55
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
