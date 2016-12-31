@@ -29,23 +29,26 @@
     width: -ms-calc(100% - 642px);
     width: calc(100% - 642px);
 }
+
+.print-password-title {
+    font-size: larger;
+}
+
+.printcontent {
+    visibility: hidden;
+}
+
 @media print
 {
     body * { visibility: hidden; }
-    #printcontent * { visibility: visible; }
 
-    #printcontent {
+    .printcontent * {
+        visibility: visible;
+    }
+
+    .printcontent {
         position: absolute;
         top: 40px;
         left: 30px;
-    }
-
-    body, html, #wrapper {
-        display: block;
-        width: 100%;
-    }
-
-    * {
-        float: none !important;
     }
 }
