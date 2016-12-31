@@ -1,7 +1,23 @@
 import {ContestCollection} from "./collection";
 
 export function initContest() {
-    Meteor.COLLECTIONS.Contest = new ContestCollection('Contest');
+    Meteor.COLLECTIONS.Contest = new ContestCollection('Contest', function (name, handle) {
+        handle.deny({
+            insert() {
+                return true;
+            },
+            update() {
+                return true;
+            },
+            remove() {
+                return true;
+            },
+        });
+
+        Meteor.publish(name, function () {
+            return handle.find({});
+        });
+    });
 
     Meteor.COLLECTIONS.Contest.createMockData = function () {
         this.handle.insert({

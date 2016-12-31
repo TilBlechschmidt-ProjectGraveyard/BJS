@@ -107,37 +107,37 @@ export function ContestCollection(name, publicationFunction) {
         }
     };
 
+    col.publish = publicationFunction ? publicationFunction : function (name, handle) {
+            Meteor.publish(col.name, function () {
+                return handle.find({});
+            });
+        };
+
     col.connect = function (competition_name) {
         Meteor.dbReady[col.basename] = false;
-        col.name = competition_name.replace(/ /g, '') + "_" + col.basename;
-        console.log("connecting to " + col.name);
+        let name = competition_name.replace(/ /g, '') + "_" + col.basename;
+        console.log("connecting to " + name);
 
-        let handle = new Mongo.Collection(col.name, {});
+        let handle = new Mongo.Collection(name, {});
 
         if (Meteor.isClient) col.ground = Ground.Collection(handle);
 
         if (Meteor.isClient) {
             col.handle = handle;
-            Meteor.subscribe(col.name);
+            Meteor.subscribe(name);
         } else {
             col.handles[competition_name] = handle;
-
-            if (publicationFunction) {
-                publicationFunction(handle);
-            } else {
-                Meteor.publish(col.name, function () { //TODO only subscibe current handle
-                    return handle.find({});
-                });
-            }
+            col.publish(name, handle);
         }
 
         col.onReady(function () {
-            console.log(col.name + " is ready");
+            console.log(name + " is ready");
         });
     };
 
     col.switch = function (competition_name) {
         if (Meteor.isServer) {
+            col.name = competition_name.replace(/ /g, '') + "_" + col.basename;
             col.handle = col.handles[competition_name];
             console.log("connected to " + competition_name);
         }

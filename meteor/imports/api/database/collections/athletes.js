@@ -7,7 +7,11 @@ import {Account} from "../../logic/account";
 import {DBInterface} from "../db_access";
 
 export function initAthletes() {
-    Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes');
+    Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes', function (name, handle) {
+        Meteor.publish(name, function () {
+            return handle.find({});
+        });
+    });
 
     Meteor.COLLECTIONS.Athletes.createMockData = function () {
         const log = new Log();

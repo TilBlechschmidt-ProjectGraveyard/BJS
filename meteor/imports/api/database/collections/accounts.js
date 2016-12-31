@@ -4,7 +4,27 @@ import {ContestCollection} from "./collection";
 
 
 export function initAccounts() {
-    Meteor.COLLECTIONS.Accounts = new ContestCollection('Accounts');
+    Meteor.COLLECTIONS.Accounts = new ContestCollection('Accounts', function (name, handle) {
+        handle.deny({
+            insert() {
+                return true;
+            },
+            update() {
+                return true;
+            },
+            remove() {
+                return true;
+            },
+        });
+
+        Meteor.publish(name, function () {
+            return handle.find({}, {
+                fields: {
+                    'ac.privHash': false
+                }
+            });
+        });
+    });
 
     Meteor.COLLECTIONS.Accounts.createMockData = function () {
         // for (let i = 0; i < 100; i++) {
