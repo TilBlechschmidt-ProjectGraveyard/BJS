@@ -26,7 +26,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
-    if (id.constructor == Array) {
+    if (id && id.constructor == Array) {
         this.id = undefined;
     } else {
         this.id = id;
@@ -38,7 +38,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
         this.sports = [];
 
         let sportTypes;
-        if (id.constructor == Array) sportTypes = id;
+        if (id && id.constructor == Array) sportTypes = id;
 
         const allSports = ct.getSports();
         for (let sport in allSports) {
