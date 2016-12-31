@@ -1,0 +1,5 @@
+.btn-select-custom, .btn-select-custom * {
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+}

@@ -58,6 +58,69 @@
                                                 </li>
                                             {{/with}}
                                         {{/each}}
+                                        <!-- Divider -->
+                                        <li class="item-divider">Eigene Logins</li>
+                                        <!-- Iterated Code Access -->
+                                        {{#each l in login_custom}}
+                                            {{#with l}}
+                                                {{#let account_index=@index}}
+                                                    <li class="accordion-item">
+                                                        <a href="" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title">{{name}}</div>
+                                                                <div class="item-after">{{password}}</div>
+                                                            </div>
+                                                        </a>
+                                                        <div class="accordion-item-content">
+                                                            <div style="margin-left: 10%; width: 85%">
+                                                                <div class="list-block">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <div class="item-content">
+                                                                                <div class="item-inner">
+                                                                                    <div class="item-title label">Name
+                                                                                    </div>
+                                                                                    <div class="item-input">
+                                                                                        <input data-account_index="{{account_index}}"
+                                                                                               value="{{name}}"
+                                                                                               type="text"
+                                                                                               class="in-custom-name"
+                                                                                               placeholder="Name">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Single chekbox item -->
+                                                                        {{#each s in sports}}
+                                                                            {{#with s}}
+                                                                                <li>
+                                                                                    <label class="label-checkbox item-content">
+                                                                                        <input type="checkbox" {{checked}}
+                                                                                               class="permission-input"
+                                                                                               data-account_index="{{account_index}}"
+                                                                                               id="custom-select-{{stID}}-{{account_index}}">
+                                                                                        <div class="item-media">
+                                                                                            <i class="icon icon-form-checkbox"></i>
+                                                                                        </div>
+                                                                                        <div class="item-inner">
+                                                                                            <div class="item-title">{{name}}</div>
+                                                                                        </div>
+                                                                                    </label>
+                                                                                </li>
+                                                                            {{/with}}
+                                                                        {{/each}}
+                                                                    </ul>
+                                                                </div>
+                                                                <p><a href="#" data-account_index="{{account_index}}"
+                                                                      class="btn-remove-account button button-fill button-big color-red">"{{name}}
+                                                                    " löschen</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {{/let}}
+                                            {{/with}}
+                                        {{/each}}
                                     </ul>
                                 </div>
                             </div>
@@ -72,7 +135,7 @@
                             <div class="90">
                                 <!-- Button New -->
                                 <p><a href="#" id="btn-new-codes" class="button button-fill button-big color-green">
-                                    Neu Codes erstellen</a></p>
+                                    Zugangsodes automatisch erstellen</a></p>
                                 <div style="text-align: center;">
                                     <span id="progress-text">No accounts</span>
                                 </div>
@@ -81,11 +144,19 @@
                                     <span id="progress-bar" data-progress="10" class="progressbar"></span>
                                 </p>
                                 <!-- Button Print -->
+                                <p><a href="#" id="btn-add-account"
+                                      class="button button-fill button-big color-green">Eigenen Zugangscode
+                                    erstellen</a>
+                                </p>
+                                <!-- Button Print -->
                                 <p><a href="#" id="btn-print"
                                       class="button button-fill button-big color-gray">Drucken</a>
                                 </p>
+
+
                             </div>
                             <div class="col-5"></div>
+
                         </div>
                     </div>
                 </div>
@@ -103,40 +174,29 @@
                         {{/with}}
                     {{/each}}
                 </table>
-                >
+                <div class="print-password-title">Gruppenlogins</div>
+                <table class="print-password-table">
+                    {{#each l in login_groups}}
+                        {{#with l}}
+                            <tr>
+                                <td class="print-password-field">{{name}}</td>
+                                <td class="print-password-field">{{password}}</td>
+                            </tr>
+                        {{/with}}
+                    {{/each}}
+                </table>
+                <div class="print-password-title">Eigene Logins</div>
+                <table class="print-password-table">
+                    {{#each l in login_custom}}
+                        {{#with l}}
+                            <tr>
+                                <td class="print-password-field">{{name}}</td>
+                                <td class="print-password-field">{{password}}</td>
+                            </tr>
+                        {{/with}}
+                    {{/each}}
+                </table>
             </div>
-            >
-            <!--<tr>-->
-            <!--<td>Alfreds Futterkiste</td>-->
-            <!--<td>Maria Anders</td>-->
-            <!--<td>Germany</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td>Centro comercial Moctezuma</td>-->
-            <!--<td>Francisco Chang</td>-->
-            <!--<td>Mexico</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td>Ernst Handel</td>-->
-            <!--<td>Roland Mendel</td>-->
-            <!--<td>Austria</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td>Island Trading</td>-->
-            <!--<td>Helen Bennett</td>-->
-            <!--<td>UK</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td>Laughing Bacchus Winecellars</td>-->
-            <!--<td>Yoshi Tannamuri</td>-->
-            <!--<td>Canada</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td>Magazzini Alimentari Riuniti</td>-->
-            <!--<td>Giovanni Rovelli</td>-->
-            <!--<td>Italy</td>-->
-            <!--</tr>-->
-            <!--</table>-->
 
 
             <!-- Toolbar -->

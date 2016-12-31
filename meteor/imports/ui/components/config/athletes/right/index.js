@@ -6,8 +6,8 @@ import {NewCompetition} from "../../new_competition_helpers";
 Meteor.groups = NewCompetition.getGroups();
 
 function save() {
+    Meteor._currentAthlete = -1;
     NewCompetition.setGroups(Meteor.groups);
-    NewCompetition.selectAthlete(-1);
 }
 
 export let athletes_right_onLoad = function () {
@@ -29,17 +29,24 @@ export let athletes_right_onLoad = function () {
         },
         'click #btn-delete-athlete' (event, instance) {
             Meteor.f7.confirm('Sind sie sicher?', "Athlete löschen", function () {
-                NewCompetition.selectAthlete(-1);
+                Meteor._currentAthlete = -1;
                 Meteor.groups[Meteor._currentGroup].athletes.splice(Meteor._currentAthlete, 1);
                 Meteor._athletes_tracker.changed();
             });
         },
         'click #link_save' (event, instance) {
             Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
-                NewCompetition.selectAthlete(Meteor._currentAthlete);
-                save();
+                NewCompetition.setGroups(Meteor.groups);
                 NewCompetition.save();
             });
+        },
+        'change .athlete-input' (event, instance) {
+            NewCompetition.selectAthlete(Meteor._currentAthlete);
+            Meteor._athletes_tracker.changed();
+        },
+        'input .athlete-input' (event, instance) {
+            NewCompetition.selectAthlete(Meteor._currentAthlete);
+            Meteor._athletes_tracker.changed();
         }
     });
 };

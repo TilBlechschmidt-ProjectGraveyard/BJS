@@ -12,6 +12,27 @@ export function onStartup() {
         'activateCompetition': function (competitionName) {
             Meteor.COLLECTIONS.switch(competitionName);
         },
+        'removeCompetition': function (competitionName) {
+            let listOFEditCompetitions = DBInterface.listEditCompetitions();
+            let listOFCompetitions = DBInterface.listCompetitions();
+            if (listOFEditCompetitions.indexOf(competitionName) != -1) {
+                Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {
+                    $set: {
+                        editContests: _.filter(listOFEditCompetitions, function (name) {
+                            return name != competitionName;
+                        })
+                    }
+                });
+            } else if (listOFCompetitions.indexOf(competitionName) != -1) {
+                Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {
+                    $set: {
+                        contests: _.filter(listOFCompetitions, function (name) {
+                            return name != competitionName;
+                        })
+                    }
+                });
+            }
+        },
         'writeCompetition': function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
 
             // update index in Generic
@@ -92,7 +113,6 @@ export function onStartup() {
                 sportTypes: sportTypes,
                 encryptedAthletes: encryptedAthletes
             };
-
         }
     });
 

@@ -28,12 +28,17 @@ Template.home_left.events({
 
         Meteor.f7.confirm('Nach dem Starten des Wettbewerbs "' + name + '" müssen alle Geräte erneut eine Verbindung zum Server aufbauen. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
             DBInterface.activateCompetition(name);
+            Meteor.f7.showPreloader('Daten laden...');
+            setTimeout(function () {
+                location.reload();
+            }, 1500);
         });
     },
     'click #link-new_competition': function (event) {
         Session.keys = {};
         Meteor.groups = [];
-        Meteor.inEditMode = true;
+        Meteor.oldName = "Unbenannt";
+        NewCompetition.setName("Unbenannt");
         FlowRouter.go('/config/new');
     },
     'click .link-edit_competition': function (event) {
@@ -51,6 +56,7 @@ Template.home_left.events({
             } else {
 
                 NewCompetition.setName(name);
+                Meteor.oldName = name;
                 NewCompetition.setCompetitionTypeID(data.competitionTypeID);
 
                 const sports = NewCompetition.getSports();
@@ -91,7 +97,6 @@ Template.home_left.events({
                 console.log(NewCompetition.getGroups());
 
                 Meteor.f7.hidePreloader();
-                Meteor.inEditMode = true;
                 FlowRouter.go('/config/new');
             }
         });

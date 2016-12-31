@@ -8,11 +8,13 @@ import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
 
-if (!Meteor.inEditMode) {
-    if (window.location.href.includes("/config/")) {
-        FlowRouter.redirect('/config');
-    }
-}
+
+//TODO include
+// if (!Meteor.oldName) {
+//     if (window.location.href.includes("/config/")) {
+//         FlowRouter.redirect('/config');
+//     }
+// }
 
 const start_classes_object = require('../../../data/start_classes.json');
 
@@ -85,6 +87,12 @@ export let NewCompetition = {
 
         for (let group in Meteor.groups) {
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
+        }
+
+        if (Meteor.oldName != NewCompetition.getName()) {
+            console.log("renamed");
+            DBInterface.removeCompetition(Meteor.oldName);
+            Meteor.oldName = NewCompetition.getName();
         }
 
         DBInterface.writeCompetition(

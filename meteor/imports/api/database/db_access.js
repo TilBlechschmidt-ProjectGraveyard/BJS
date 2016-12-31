@@ -164,5 +164,13 @@ export let DBInterface = {
      */
     activateCompetition: function (competitionName) {
         Meteor.call('activateCompetition', competitionName);
+    },
+
+    /**
+     * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
+     * @param {string} competitionName - The name of the competition
+     */
+    removeCompetition: function (competitionName) {
+        Meteor.call('removeCompetition', competitionName);
     }
 };
