@@ -89,6 +89,9 @@ export let NewCompetition = {
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
+        console.log(NewCompetition.getName());
+        console.log(Meteor.oldName);
+
         if (Meteor.oldName != NewCompetition.getName()) {
             console.log("renamed");
             DBInterface.removeCompetition(Meteor.oldName);

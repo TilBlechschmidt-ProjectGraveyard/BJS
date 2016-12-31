@@ -4,6 +4,7 @@ import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition} from "../../new_competition_helpers";
 import {Athlete} from "../../../../../api/logic/athlete";
 import {Log} from "../../../../../api/log";
+import {genUUID} from "../../../../../api/crypto/pwdgen";
 
 let _deps = new Tracker.Dependency();
 
@@ -37,8 +38,9 @@ Template.home_left.events({
     'click #link-new_competition': function (event) {
         Session.keys = {};
         Meteor.groups = [];
-        Meteor.oldName = "Unbenannt";
-        NewCompetition.setName("Unbenannt");
+        let name = "Unbenannt-" + genUUID();
+        Meteor.oldName = name;
+        NewCompetition.setName(name);
         FlowRouter.go('/config/new');
     },
     'click .link-edit_competition': function (event) {
@@ -103,11 +105,10 @@ Template.home_left.events({
     }
 });
 
-
-export let home_left_onLoad = function () {
+Template.home_left.onRendered(function () {
     DBInterface.waitForReady(function () {
         competitions = DBInterface.listCompetitions();
         editCompetitions = DBInterface.listEditCompetitions();
         _deps.changed();
     });
-};
+});

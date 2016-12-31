@@ -46,8 +46,10 @@ Template.new_competition_main.events({
                 {
                     text: 'Ja',
                     onClick: function () {
-                        NewCompetition.save();
-                        FlowRouter.go('/config');
+                        if (save()) {
+                            NewCompetition.save();
+                            FlowRouter.go('/config');
+                        }
                     }
                 },
                 {
@@ -71,6 +73,12 @@ Template.new_competition_main.events({
         Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
             save();
             NewCompetition.save();
+        });
+    },
+    'click #btn-remove-competition' (event, instance) {
+        Meteor.f7.confirm('Wollen Sie den Wettkampf wirklich löschen?', 'Löschen?', function () {
+            DBInterface.removeCompetition(Meteor.oldName); //use old name. The name saved in NewCompetition may be changed already.
+            FlowRouter.go('/config');
         });
     }
 });

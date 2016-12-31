@@ -13,6 +13,7 @@ export function onStartup() {
             Meteor.COLLECTIONS.switch(competitionName);
         },
         'removeCompetition': function (competitionName) {
+            console.log('remove ' + competitionName);
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             let listOFCompetitions = DBInterface.listCompetitions();
             if (listOFEditCompetitions.indexOf(competitionName) != -1) {
