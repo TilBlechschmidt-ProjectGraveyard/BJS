@@ -10,6 +10,8 @@ Meteor.input = {};
 Meteor.input.log = new Log();
 
 const input_deps = new Tracker.Dependency();
+let canNotDoSportType = [];
+const canNotDoSportType_deps = new Tracker.Dependency();
 
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
@@ -49,6 +51,14 @@ export let input_onload = function (page) {
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();
         },
+        showCanNotDoSportType: function () {
+            canNotDoSportType_deps.depend();
+            return canNotDoSportType.length > 0;
+        },
+        canNotDoSportType: function () {
+            canNotDoSportType_deps.depend();
+            return canNotDoSportType;
+        },
         athleteByID: function (id) {
             Meteor.login_deps.depend();
             input_deps.depend();
@@ -61,26 +71,32 @@ export let input_onload = function (page) {
             }
             let sportTypes = {};
 
-            if (AccountManagement.retrieveAccounts().Station.logged_in) {
-                // Return all sport types that can be written to with the current station account
-                const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
-                for (let stID in stIDs) {
-                    if (!stIDs.hasOwnProperty(stID)) continue;
-                    stID = stIDs[stID];
-                    sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
-                }
-            }
-
-            // Add all other sport types we don't have write permission for
-            let all_sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(), DBInterface.getCompetitionType().getSportType);
-            for (let index in all_sportTypes) {
-                if (!all_sportTypes.hasOwnProperty(index)) continue;
-                stID = all_sportTypes[index];
-                sportTypes[stID.id] = stID;
-            }
-
+            //load data
             const athlete = getAthleteByID(id);
             if (athlete === undefined) return {};
+
+            const stationAccount = AccountManagement.retrieveAccounts().Station;
+            const ct = DBInterface.getCompetitionType();
+
+
+            canNotDoSportType = [];
+            if (stationAccount) {
+                for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
+                    let sportType = stationAccount.account.score_write_permissions[sportTypeIndex];
+                    if (athlete.sports.indexOf(sportType) == -1) {
+                        canNotDoSportType.push(ct.getSportType(sportType).name);
+                    }
+                }
+            }
+            canNotDoSportType_deps.changed();
+
+            // Add all other sport types we don't have write permission for
+            let all_sportTypes = lodash.map(athlete.sports, ct.getSportType);
+            for (let index in all_sportTypes) {
+                if (!all_sportTypes.hasOwnProperty(index)) continue;
+                let sportType = all_sportTypes[index];
+                sportTypes[sportType.id] = sportType;
+            }
 
             // Fetch the measurements
             const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
@@ -111,7 +127,7 @@ export let input_onload = function (page) {
             }
 
             // Insert the read-write data from the current session
-            if (AccountManagement.retrieveAccounts().Station.account && sessionStorage.getItem("measurements")) {
+            if (stationAccount.account && sessionStorage.getItem("measurements")) {
                 const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
                 for (let sportType in measurements) {
                     if (!measurements.hasOwnProperty(sportType)) continue;
@@ -126,8 +142,8 @@ export let input_onload = function (page) {
 
             // Remove unused sportTypes (skipping the ones we have write permission for) and add a write_permission flag
             let write_permissions = [];
-            if (AccountManagement.retrieveAccounts().Station.account)
-                write_permissions = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+            if (stationAccount.account)
+                write_permissions = stationAccount.account.score_write_permissions;
 
             athlete.sportType = lodash.map(athlete.sportType, function (element) {
                 const write_permission = lodash.includes(write_permissions, element.metadata.id);
@@ -157,7 +173,6 @@ export let input_onload = function (page) {
         scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
             return metadata.write_permission;
-            // return AccountManagement.retrieveAccounts().Station.logged_in;
         }
     });
 

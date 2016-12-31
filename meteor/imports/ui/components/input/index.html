@@ -55,6 +55,20 @@
                                     Messdaten.</p>
                             </div>
                         {{/if}}
+                        {{#if showCanNotDoSportType}}
+                            <div class="content-block">
+                                <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an dieser
+                                    Station nicht durchführen:
+                                </div>
+                                {{#each n in canNotDoSportType}}
+                                    <div style="text-align: center;">{{n}}</div>
+                                {{/each}}
+                                <br>
+                                <div style="text-align: center;">Dies liegt an dem Alter, dem Geschlecht oder der
+                                    Startklasse.
+                                </div>
+                            </div>
+                        {{/if}}
                     {{/with}}
                 </div>
             {{else}}
