@@ -36,3 +36,27 @@ https://framework7.io/icons/
 https://gist.github.com/tfausak/2222823
 
 We dont have to use the startup image because the website is cached and loads immediately.  
+
+##App Icon Resizer
+ 
+ https://resizeappicon.com
+ 
+###Sizes
+
+####Ios
+
+Original: white background
+* 57
+* 72
+* 76
+* 114
+* 120
+* 144
+* 152
+* 512
+
+####Android
+
+Original: transparent background
+* 192
+* 512
