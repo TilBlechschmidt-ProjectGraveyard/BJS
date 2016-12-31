@@ -2,7 +2,6 @@ import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
 import {genUUID} from "./../crypto/pwdgen";
 import {getAcsFromAccounts} from "./account";
-import {DBInterface} from "../database/db_access";
 
 
 /**
@@ -16,7 +15,7 @@ import {DBInterface} from "../database/db_access";
  * @param {string} handicap Handicap id of the athlete
  * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
  * @param {String[]|object} ct List of sports the athlete can do or a competition type object
- * @param {string} [id] - Mongo DB id
+ * @param {string|string[]} [id] - Mongo DB id or list of activated sports
  * @constructor
  */
 export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct, id) {
@@ -27,7 +26,11 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
-    this.id = id;
+    if (id.constructor == Array) {
+        this.id = undefined;
+    } else {
+        this.id = id;
+    }
 
     if (ct.constructor == Array) {
         this.sports = ct;
@@ -35,7 +38,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
         this.sports = [];
 
         let sportTypes;
-        if (DBInterface.isReady()) sportTypes = DBInterface.getActivatedSports();
+        if (id.constructor == Array) sportTypes = id;
 
         const allSports = ct.getSports();
         for (let sport in allSports) {

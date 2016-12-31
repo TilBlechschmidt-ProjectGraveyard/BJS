@@ -77,7 +77,8 @@ export let NewCompetition = {
                     Meteor.groups[group].name,
                     athlete.handicap,
                     ct.maxAge,
-                    ct
+                    ct,
+                    sportTypes
                 ).encryptForDatabase(account, account);
             });
         };
