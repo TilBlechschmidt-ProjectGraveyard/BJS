@@ -23,6 +23,18 @@ function setProcessingState(type, state) {
 
 export let AccountManagement = {
 
+    /**
+     * @typedef {Object} LoginStatus
+     * @property {Account} account - The account.
+     * @property {string} placeholder //TODO add explanation
+     * @property {boolean} logged_in //TODO add explanation
+     * @property {boolean} processing //TODO add explanation
+     */
+
+
+    /**
+     * @returns {{Gruppenleiter: LoginStatus, Station: LoginStatus}}
+     */
     retrieveAccounts: function() {
         if (!storage.getItem("accounts")) {
             storage.setItem("accounts", JSON.stringify({
@@ -47,8 +59,12 @@ export let AccountManagement = {
         storage.setItem("accounts", JSON.stringify(data));
     },
 
-    inputPermitted: function () {
+    viewPermitted: function () {
         return AccountManagement.retrieveAccounts().Gruppenleiter.logged_in;
+    },
+
+    inputPermitted: function () {
+        return AccountManagement.retrieveAccounts().Gruppenleiter.logged_in && AccountManagement.retrieveAccounts().Station.logged_in;
     },
 
     login: function (type, passphrase, callback) {

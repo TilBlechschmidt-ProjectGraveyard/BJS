@@ -11,6 +11,10 @@ Template.login.helpers({
         Meteor.login_deps.depend();
         return AccountManagement.retrieveAccounts();
     },
+    view_permitted: function () {
+        Meteor.login_deps.depend();
+        return AccountManagement.viewPermitted() && !AccountManagement.inputPermitted();
+    },
     input_permitted: function () {
         Meteor.login_deps.depend();
         return AccountManagement.inputPermitted();

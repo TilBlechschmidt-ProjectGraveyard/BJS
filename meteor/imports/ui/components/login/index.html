@@ -39,9 +39,17 @@
                                 </li>
                             </ul>
                         {{/if}}
-                        <div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine
-                            Änderungen an den Daten vorgenommen werden!
-                        </div>
+                        {{#if view_permitted}}
+                            <ul>
+                                <li>
+                                    <a href="#" data-target="{{target}}"
+                                       class="item-link list-button submit-button close-login-screen">Daten einsehen</a>
+                                </li>
+                            </ul>
+                        {{/if}}
+                        <!--<div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine-->
+                        <!--Änderungen an den Daten vorgenommen werden!-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
