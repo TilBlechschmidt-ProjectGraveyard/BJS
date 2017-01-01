@@ -5,6 +5,31 @@ import {isGroupAccount, isStationAccount} from "../logic/account";
 const storage = window.sessionStorage;
 
 
+/**
+ *
+ * @param {string} passphrase - The login passphrase entered by the user.
+ * @param callback
+ * @returns {?Account}
+ */
+export function getAccountByPassphrase(passphrase, callback) {
+    DBInterface.waitForReady(function () {
+        const remoteAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        let account = null;
+        for (let remoteAccount in remoteAccounts) {
+            if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
+
+            remoteAccount = remoteAccounts[remoteAccount];
+
+            if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
+                account = remoteAccount;
+                account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
+                break;
+            }
+        }
+        if (typeof callback === 'function') callback(account);
+    });
+}
+
 export function AccountManager(name) {
     this.name = name;
     this.storageID = "account" + name;
@@ -44,20 +69,7 @@ AccountManager.prototype = {
         this.setProcessing(true);
         let thisAccountManager = this;
         setTimeout(function () { //TODO remove timeout. its just for preloader testing
-            DBInterface.waitForReady(function () {
-                const remoteAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
-                let account = null;
-                for (let remoteAccount in remoteAccounts) {
-                    if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
-
-                    remoteAccount = remoteAccounts[remoteAccount];
-
-                    if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
-                        account = remoteAccount;
-                        account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
-                        break;
-                    }
-                }
+            getAccountByPassphrase(passphrase, function (account) {
                 if (account === null && typeof callback === 'function') {
                     thisAccountManager.setProcessing(false);
                     callback(false, "Ungültiges Passwort.");
