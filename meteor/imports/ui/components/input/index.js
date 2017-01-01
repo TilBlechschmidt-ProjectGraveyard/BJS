@@ -82,6 +82,7 @@ export let input_onload = function (page) {
             canNotDoSportType = [];
             if (stationAccount.account) {
                 for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
+                    if (!stationAccount.account.score_write_permissions.hasOwnProperty(sportTypeIndex)) continue;
                     let sportType = stationAccount.account.score_write_permissions[sportTypeIndex];
                     if (athlete.sports.indexOf(sportType) == -1) {
                         canNotDoSportType.push(ct.getSportType(sportType).name);
@@ -89,6 +90,16 @@ export let input_onload = function (page) {
                 }
             }
             canNotDoSportType_deps.changed();
+
+            if (stationAccount.logged_in) {
+                // Return all sport types that can be written to with the current station account
+                const stIDs = stationAccount.account.score_write_permissions;
+                for (let stID in stIDs) {
+                    if (!stIDs.hasOwnProperty(stID)) continue;
+                    stID = stIDs[stID];
+                    sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
+                }
+            }
 
             // Add all other sport types we don't have write permission for
             let all_sportTypes = lodash.map(athlete.sports, ct.getSportType);
