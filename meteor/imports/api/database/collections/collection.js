@@ -64,7 +64,6 @@ export function ContestCollection(name, publicationFunction) {
     col.handle = undefined;
     col.ground = undefined;
 
-
     col.createMockData = function () {
     };
 

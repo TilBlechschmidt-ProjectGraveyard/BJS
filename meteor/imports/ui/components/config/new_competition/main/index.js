@@ -1,16 +1,14 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import {COMPETITION_TYPES} from "../../../../../api/logic/competition_type";
-import {NewCompetition} from "../../new_competition_helpers";
+import {NewCompetition, nameExists} from "../../new_competition_helpers";
 import {DBInterface} from "../../../../../api/database/db_access";
 
 
 function save() {
     const newName = document.getElementById('text-comp_name').value;
 
-    const allCompetitions = DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions());
-
-    if (allCompetitions.indexOf(newName) != -1 && newName != NewCompetition.getName()) {
+    if (nameExists(newName) && newName != Meteor.oldName) {
         Meteor.f7.alert("Es gibt bereits einen Wettbewerb mit dem gewählten Namen.", "Name");
         return false;
     } else {

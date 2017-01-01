@@ -1,10 +1,9 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import {DBInterface} from "../../../../../api/database/db_access";
-import {NewCompetition} from "../../new_competition_helpers";
+import {NewCompetition, nameExists} from "../../new_competition_helpers";
 import {Athlete} from "../../../../../api/logic/athlete";
 import {Log} from "../../../../../api/log";
-import {genUUID} from "../../../../../api/crypto/pwdgen";
 import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
 import {getLoginObject} from "../../../../../api/logic/account";
 
@@ -51,7 +50,14 @@ Template.home_left.events({
     'click #link-new_competition': function (event) {
         Session.keys = {};
         Meteor.groups = [];
-        let name = "Unbenannt-" + genUUID();
+        let counter = 1;
+        let name = "BJS " + new Date().getFullYear();
+
+        while (nameExists(name)) {
+            counter++;
+            name = "BJS " + new Date().getFullYear() + " " + counter;
+        }
+
         Meteor.oldName = name;
         NewCompetition.setName(name);
         FlowRouter.go('/config/new');

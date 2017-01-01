@@ -29,7 +29,7 @@ export function onStartup() {
 
     initCollections();
 
-    const ac = Crypto.generateAC(Meteor.config.adminPassword);
+    const ac = Crypto.generateAC(Meteor.config.adminPassword, Meteor.config.adminSalt);
     const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true);
     Meteor.COLLECTIONS.Generic.handle.update(
         {_id: DBInterface.getGenericID()},

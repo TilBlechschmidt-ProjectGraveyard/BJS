@@ -25,6 +25,15 @@ for (let stID in start_classes_object) {
     });
 }
 
+
+export function nameExists(name) {
+    const name_without_whitespaces = name.replace(/ /g, '');
+    const allCompetitions = _.map(DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions()), function (n) {
+        return n.replace(/ /g, '');
+    });
+    return allCompetitions.indexOf(name_without_whitespaces) != -1 && name_without_whitespaces != NewCompetition.getName();
+}
+
 /**
  * Object containing all information and functions required for creating a new competition.
  * @public
