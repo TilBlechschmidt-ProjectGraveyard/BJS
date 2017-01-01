@@ -49,8 +49,9 @@ export let NewCompetition = {
     /**
      * Saves the current configuration
      * @param {Account[]} [accounts] - All generated accounts. undefined will save the competition editable
+     * @param [callback] optional callback
      */
-    save: function (accounts) {
+    save: function (accounts, callback) {
         const log = new Log();
         const ct = NewCompetition.getCompetitionType();
 
@@ -106,7 +107,14 @@ export let NewCompetition = {
             sportTypes,
             encryptedAthletes,
             accounts,
-            final
+            final,
+            function (result) {
+                if (!result) {
+                    Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                    if (typeof callback === 'function') callback(false);
+                }
+                if (typeof callback === 'function') callback(true);
+            }
         );
     },
 

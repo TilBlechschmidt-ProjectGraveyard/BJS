@@ -45,8 +45,9 @@ Template.new_competition_main.events({
                     text: 'Ja',
                     onClick: function () {
                         if (save()) {
-                            NewCompetition.save();
-                            FlowRouter.go('/config');
+                            NewCompetition.save(function (result) {
+                                if (result) FlowRouter.go('/config');
+                            });
                         }
                     }
                 },
@@ -75,8 +76,14 @@ Template.new_competition_main.events({
     },
     'click #btn-remove-competition' (event, instance) {
         Meteor.f7.confirm('Wollen Sie den Wettkampf wirklich löschen?', 'Löschen?', function () {
-            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName); //use old name. The name saved in NewCompetition may be changed already.
-            FlowRouter.go('/config');
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName, function (result) { //use old name. The name saved in NewCompetition may be changed already.
+                if (!result) {
+                    Meteor.f7.alert("Es gab einen Fehler während des Löschens. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                    if (typeof callback === 'function') callback(false);
+                } else {
+                    FlowRouter.go('/config');
+                }
+            });
         });
     }
 });

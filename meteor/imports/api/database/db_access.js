@@ -161,26 +161,35 @@ export let DBInterface = {
      * @param {object[]} encrypted_athletes - A list of encrypted athletes. To encrypt an athlete use athlete.encryptForDatabase([...])
      * @param {Account[]} accounts - A list of accounts
      * @param final
+     * @param [callback] optional callback
      */
-    writeCompetition: function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-        Meteor.call('writeCompetition', loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
+    writeCompetition: function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final, callback) {
+        Meteor.call('writeCompetition', loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final, function (err, data) {
+            if (typeof callback === 'function') callback(data);
+        });
     },
 
     /**
      * Activates a competition with a given name
      * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
+     * @param [callback] - optional callback
      */
-    activateCompetition: function (loginObject, competitionName) {
-        Meteor.call('activateCompetition', loginObject, competitionName);
+    activateCompetition: function (loginObject, competitionName, callback) {
+        Meteor.call('activateCompetition', loginObject, competitionName, function (err, data) {
+            if (typeof callback === 'function') callback(data);
+        });
     },
 
     /**
      * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
      * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
+     * @param [callback] - optional callback
      */
-    removeCompetition: function (loginObject, competitionName) {
-        Meteor.call('removeCompetition', loginObject, competitionName);
+    removeCompetition: function (loginObject, competitionName, callback) {
+        Meteor.call('removeCompetition', loginObject, competitionName, function (err, data) {
+            if (typeof callback === 'function') callback(data);
+        });
     }
 };

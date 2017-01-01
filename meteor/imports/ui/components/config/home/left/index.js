@@ -39,11 +39,18 @@ Template.home_left.events({
         const name = event.target.closest(".link-activate_competition").dataset.competition_name;
 
         Meteor.f7.confirm('Nach dem Starten des Wettbewerbs "' + name + '" müssen alle Geräte erneut eine Verbindung zum Server aufbauen. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
-            DBInterface.activateCompetition(Meteor.adminLoginObject, name);
             Meteor.f7.showPreloader('Daten laden...');
-            setTimeout(function () {
-                location.reload();
-            }, 1500);
+            DBInterface.activateCompetition(Meteor.adminLoginObject, name, function (result) {
+                if (!result) {
+                    Meteor.f7.alert("Es gab einen Fehler während des Ladens. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                } else {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1500);
+                }
+            });
+
+
         });
     },
     'click #link-new_competition': function (event) {
@@ -72,7 +79,7 @@ Template.home_left.events({
             if (err) {
                 console.log(err);
                 Meteor.f7.hidePreloader();
-                Meteor.f7.alert("Fehler beim Laden der Daten! Bitte wenden sie sich an den Softwarespezialisten ihres Vertrauens.", "Fehler"); //TODO replace error message
+                Meteor.f7.alert("Fehler beim Laden der Daten! Versuchen Sie es erneut oder wenden sie sich an den Softwarespezialisten ihres Vertrauens.", "Fehler"); //TODO replace error message
             } else {
 
                 NewCompetition.setName(name);
