@@ -1,0 +1,10 @@
+import "../single_login";
+import "./athletes/left";
+import "./athletes/middle";
+import "./athletes/right";
+import "./codes";
+import "./sports/main";
+import "./home/left";
+import "./home/main";
+import "./new_competition/main";
+import "./router";

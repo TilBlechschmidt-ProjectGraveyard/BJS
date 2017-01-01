@@ -1,6 +1,7 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
+import "./login";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
