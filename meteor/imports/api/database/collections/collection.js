@@ -5,32 +5,12 @@ export function Collection(name, publicationFunction) {
     col.name = name;
     col.handle = new Mongo.Collection(col.name, {});
 
-    col.publish = publicationFunction ? publicationFunction : function () {
-            if (Meteor.isServer) {
-                // deny all writing access
-                col.handle.deny({
-                    insert() {
-                        return true;
-                    },
-                    update() {
-                        return true;
-                    },
-                    remove() {
-                        return true;
-                    },
-                });
-
-                Meteor.publish(col.name, function () {
-                    return col.handle.find({}, {
-                        fields: {
-                            'adminAccount.ac.privHash': false,
-                            'cleanDB': false,
-                            'dbVersion': false
-                        }
-                    });
-                });
-            }
+    col.publish = publicationFunction ? publicationFunction : function (name, handle) {
+            Meteor.publish(name, function () {
+                return handle.find({}, {});
+            });
         };
+
 
     if (Meteor.isClient) col.ground = Ground.Collection(col.handle);
 
@@ -68,7 +48,7 @@ export function Collection(name, publicationFunction) {
     if (Meteor.isClient) {
         Meteor.subscribe(col.name);
     } else {
-        col.publish();
+        col.publish(col.name, col.handle);
     }
 }
 
