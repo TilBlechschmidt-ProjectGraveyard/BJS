@@ -140,9 +140,9 @@
             <div class="item-inner">
                 <div class="item-title label">{{inc n}}. Versuch</div>
                 <div class="item input">
-                    <input type="number"
+                    <input type="{{#with metadata}}{{inputType}}{{/with}}"
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
-                           value="{{#with measurement}}{{value}}{{/with}}"
+                           value="{{#with measurement}}{{strValue}}{{/with}}"
                            data-attempt="{{inc n}}"
                            data-athlete-id="{{athlete_id}}"
                            data-stID="{{#with metadata}}{{id}}{{/with}}"

@@ -157,6 +157,27 @@ export let input_onload = function (page) {
                 return e !== undefined;
             });
 
+            athlete.sportType = _.map(athlete.sportType, function (element) {
+                if (element.metadata.unit === "min:s") {
+                    element.metadata.inputType = "text";
+                    for (let m in element.measurements) {
+                        const min = Math.floor(element.measurements[m].value / 60);
+                        const s = element.measurements[m].value - min * 60;
+                        if (s < 10) {
+                            element.measurements[m].strValue = min + ":0" + s;
+                        } else {
+                            element.measurements[m].strValue = min + ":" + s;
+                        }
+                    }
+                } else {
+                    element.metadata.inputType = "number";
+                    for (let m in element.measurements) {
+                        element.measurements[m].strValue = element.measurements[m].value.toString();
+                    }
+                }
+                return element;
+            });
+
             console.log(athlete.sportType);
 
             return athlete;
@@ -171,7 +192,7 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: "", class: "add-attempt-input"},
+        empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input"},
         scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
             return metadata.write_permission;
@@ -209,7 +230,7 @@ export let input_onload = function (page) {
         }
     });
 
-    function updateMeasurement(athleteID, stID, attempt, measurement) {
+    function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
         if (!athleteID || !stID || !attempt) return;
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
@@ -217,9 +238,26 @@ export let input_onload = function (page) {
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
+        const ct = DBInterface.getCompetitionType();
+
+        const sportTypeData = ct.getSportType(stID);
+        const strDotMeasurement = strMeasurement.replace(/,/g, ".");
+
+        let measurement = 0;
+        if (sportTypeData.unit === "min:s") {
+            const res = strDotMeasurement.split(':');
+            if (res.length >= 2) {
+                measurement = parseFloat(res[0]) * 60 + parseFloat(res[1]);
+            } else if (res.length == 1) {
+                measurement = parseFloat(strDotMeasurement);
+            }
+        } else {
+            measurement = parseFloat(strDotMeasurement);
+        }
+
         if (measurements[athleteID][stID][attempt] == measurement) return false;
 
-        if (measurement === "") {
+        if (strMeasurement === "") {
             const attempts = measurements[athleteID][stID];
             if (attempts.hasOwnProperty(attempt)) {
                 delete measurements[athleteID][stID][attempt];
@@ -256,6 +294,7 @@ export let input_onload = function (page) {
                 const data = event.target.dataset;
                 event.preventDefault();
                 event.stopImmediatePropagation();
+                console.log(event.target.value);
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                     event.target.value = "";
 
