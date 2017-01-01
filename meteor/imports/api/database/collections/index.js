@@ -102,7 +102,6 @@ export function initCollections() {
         Meteor.COLLECTIONS = {};
 
         let clearDB = false;
-        console.log("init database");
         initGeneric();
 
         if (Meteor.isServer) {

@@ -17,7 +17,6 @@ getAccountByPassphrase('supersecret', function (account) {
     if (account) {
         Meteor.adminAccount = account;
         Meteor.adminLoginObject = getLoginObject(account);
-        console.log("Admin logged in");
     } else {
         alert("Wrong admin password");
     }
@@ -114,8 +113,6 @@ Template.home_left.events({
                 }
 
                 NewCompetition.setGroups(groups);
-
-                console.log(NewCompetition.getGroups());
 
                 Meteor.f7.hidePreloader();
                 FlowRouter.go('/config/new');

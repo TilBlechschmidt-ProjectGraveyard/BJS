@@ -1,5 +1,4 @@
 export function Collection(name, publicationFunction) {
-    console.log("created " + name);
     const col = this;
 
     col.name = name;
@@ -53,8 +52,6 @@ export function Collection(name, publicationFunction) {
 }
 
 export function ContestCollection(name, publicationFunction) {
-    console.log("created " + name);
-
     const col = this;
 
     col.basename = name;
@@ -102,7 +99,6 @@ export function ContestCollection(name, publicationFunction) {
         Meteor.dbReady[col.basename] = false;
         let competition_name_without_whitespaces = competition_name.replace(/ /g, '');
         let name = competition_name_without_whitespaces + "_" + col.basename;
-        console.log("connecting to " + name);
 
         // let dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competition_name_without_whitespaces);
         // let handle = new Mongo.Collection(name, {_driver: dbHandle});
@@ -119,7 +115,6 @@ export function ContestCollection(name, publicationFunction) {
         }
 
         col.onReady(function () {
-            console.log(name + " is ready");
         });
     };
 
@@ -127,7 +122,6 @@ export function ContestCollection(name, publicationFunction) {
         if (Meteor.isServer) {
             col.name = competition_name.replace(/ /g, '') + "_" + col.basename;
             col.handle = col.handles[competition_name];
-            console.log("connected to " + competition_name);
         }
     };
 }

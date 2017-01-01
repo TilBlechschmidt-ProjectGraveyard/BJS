@@ -190,8 +190,6 @@ export let input_onload = function (page) {
                 return element;
             });
 
-            console.log(athlete.sportType);
-
             return athlete;
         },
         isEmpty: function (arr) {
@@ -306,7 +304,6 @@ export let input_onload = function (page) {
                 const data = event.target.dataset;
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                console.log(event.target.value);
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                     event.target.value = "";
 

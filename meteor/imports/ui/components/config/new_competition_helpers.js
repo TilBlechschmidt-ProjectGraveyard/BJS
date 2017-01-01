@@ -93,11 +93,8 @@ export let NewCompetition = {
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
-        console.log(NewCompetition.getName());
-        console.log(Meteor.oldName);
 
         if (Meteor.oldName != NewCompetition.getName()) {
-            console.log("renamed");
             DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
@@ -125,8 +122,6 @@ export let NewCompetition = {
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
-                console.log(Meteor._currentAthlete);
-                console.log(Meteor._currentGroup);
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
