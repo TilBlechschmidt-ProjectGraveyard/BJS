@@ -8,15 +8,13 @@ Meteor._athletes_tracker = new Tracker.Dependency();
 Meteor._currentGroup = -1;
 Meteor._currentAthlete = -1;
 
-Meteor.groups = NewCompetition.getGroups();
-
 function save() {
+    Meteor._currentAthlete = -1;
     NewCompetition.setGroups(Meteor.groups);
-    NewCompetition.selectAthlete(-1);
 }
 
 Template.athletes_left.helpers({
-    "groups": function () {
+    groups: function () {
         Meteor._groups_tracker.depend();
         return Meteor.groups;
     }
@@ -34,8 +32,11 @@ Template.athletes_left.events({
             if (NewCompetition.groupExists(value)) {
                 Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".', "Gruppenname");
             } else {
+                NewCompetition.selectAthlete(-1);
+                Meteor._currentGroup = Meteor.groups.length;
                 Meteor.groups.push({name: value, athletes: []});
                 Meteor._groups_tracker.changed();
+                Meteor._athletes_tracker.changed();
             }
         });
     },

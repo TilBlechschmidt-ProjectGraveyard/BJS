@@ -9,8 +9,8 @@ chai.should();
 
 const ct = COMPETITION_TYPES[0].object;
 
-const groupAccount = new Account(['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
-const serverAccount = new Account(['Q#z'], [], Crypto.generateAC('sdfjhsiufhuihr438ry34'));
+const groupAccount = new Account('Q#z', ['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
+const serverAccount = new Account('Q#z', ['Q#z'], [], Crypto.generateAC('sdfjhsiufhuihr438ry34'));
 
 describe('athlete', function () {
     it('changes the age of an athlete', function () {

@@ -5,7 +5,7 @@ Meteor.groups = NewCompetition.getGroups();
 
 
 Template.athletes_middle.helpers({
-    "athletes": function () {
+    athletes: function () {
         Meteor._athletes_tracker.depend();
 
         // Page is not ready
@@ -46,8 +46,8 @@ Template.athletes_middle.events({
     },
     'click #btn-delete-group' (event, instance) {
         Meteor.f7.confirm('Sind sie sicher?', "Gruppe löschen", function () {
-            NewCompetition.selectAthlete(-1);
             Meteor.groups.splice(Meteor._currentGroup, 1);
+            Meteor._currentAthlete = -1;
             Meteor._currentGroup = -1;
             Meteor._groups_tracker.changed();
             Meteor._athletes_tracker.changed();
@@ -62,6 +62,7 @@ Template.athletes_middle.events({
             handicap: "0",
         });
         Meteor._athletes_tracker.changed();
+        NewCompetition.selectAthlete(Meteor.groups[Meteor._currentGroup].athletes.length - 1);
     },
     'click .link-open-athlete': function (event) {
         NewCompetition.selectAthlete(event.target.closest(".link-open-athlete").dataset.athlete_index);

@@ -29,4 +29,11 @@
     align-items: center;
     color: white;
     background-color: #111111;
+    cursor: pointer;
+}
+
+.link-open-st-info {
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
 }

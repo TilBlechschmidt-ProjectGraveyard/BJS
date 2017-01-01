@@ -3,7 +3,7 @@ import "./index.html";
 import {NewCompetition} from "../../new_competition_helpers";
 
 Template.sports_main.helpers({
-    "sport_type_data": function () {
+    sport_type_data: function () {
         const ct = NewCompetition.getCompetitionType();
         return _.map(NewCompetition.getSports(), function (sportTypeObj) {
             return {
@@ -35,4 +35,10 @@ Template.sports_main.events({
         save();
         FlowRouter.go('/config/athletes');
     },
+    'click #link_save' (event, instance) {
+        Meteor.f7.confirm('Wollen Sie alle Änderungen speichern?', 'Speichern?', function () {
+            save();
+            NewCompetition.save();
+        });
+    }
 });

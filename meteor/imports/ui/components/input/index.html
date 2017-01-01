@@ -37,7 +37,7 @@
                             <span>Teilnehmer</span>
                         </a>
                     </div>
-                    <div class="center">{{nameByID athlete_id}}</div>
+                    <div class="center" style="overflow-x: auto; overflow-y: hidden">{{nameByID athlete_id}}</div>
                     <div class="right"><a href="#" class="logout-button open-login-screen">Abmelden</a></div>
                 </div>
             </div>
@@ -53,6 +53,20 @@
                             <div class="content-block">
                                 <p style="text-align: center;">Wie es scheint haben wir bis jetzt keinerlei
                                     Messdaten.</p>
+                            </div>
+                        {{/if}}
+                        {{#if showCanNotDoSportType}}
+                            <div class="content-block">
+                                <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an dieser
+                                    Station nicht durchführen:
+                                </div>
+                                {{#each n in canNotDoSportType}}
+                                    <div style="text-align: center;">{{n}}</div>
+                                {{/each}}
+                                <br>
+                                <div style="text-align: center;">Dies liegt an dem Alter, dem Geschlecht oder der
+                                    Startklasse.
+                                </div>
                             </div>
                         {{/if}}
                     {{/with}}
@@ -72,11 +86,41 @@
             </div>
         </div>
     </div>
+
+    <!--TODO create function for the meteor stuff below-->
+    {{#if athlete_id}}
+        {{#with athleteByID athlete_id}}
+            {{#each s in sportType}}
+                {{#with s}}
+                    <div class="popup popup-{{name}}">
+                        <div class="content-block">
+                            {{#with metadata}}
+                                <p>{{name}}</p>
+                                <p><a href="#" class="close-popup">Close popup</a></p>
+                                <p>Einheit: {{unit}}</p>
+                                <p>{{{description}}}</p><!--Three { are required for html Tags!-->
+                                {{#with m}}
+                                    {{#each a in age}}
+                                        {{a}}
+                                    {{/each}}
+                                {{/with}}
+                            {{/with}}
+                        </div>
+                    </div>
+                {{/with}}
+            {{/each}}
+        {{/with}}
+    {{/if}}
+
 </template>
 
 <template name="attempts">
     {{#with sportType}}
-        <div class="content-block-title">{{#with metadata}}{{name}}{{/with}}</div>
+        <div class="content-block-title">
+            <a href="#" data-popup=".popup-{{name}}" class="link-open-st-info open-popup">
+                {{#with metadata}}{{name}}{{/with}}
+            </a>
+        </div>
         <div class="list-block">
             <ul>
                 {{#each m in measurements}}
@@ -96,9 +140,9 @@
             <div class="item-inner">
                 <div class="item-title label">{{inc n}}. Versuch</div>
                 <div class="item input">
-                    <input type="number"
+                    <input type="{{#with metadata}}{{inputType}}{{/with}}"
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
-                           value="{{#with measurement}}{{value}}{{/with}}"
+                           value="{{#with measurement}}{{strValue}}{{/with}}"
                            data-attempt="{{inc n}}"
                            data-athlete-id="{{athlete_id}}"
                            data-stID="{{#with metadata}}{{id}}{{/with}}"

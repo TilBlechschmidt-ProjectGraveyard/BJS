@@ -18,6 +18,9 @@ import "../../ui/router";
 import "../../ui/components/config/router";
 import "../../ui/components/output"
 
+import "../../ui/components/views";
+import "../../ui/components/config";
+import "../../ui/components/input";
 import {arrayify} from "./helpers";
 
 // Run things on startup

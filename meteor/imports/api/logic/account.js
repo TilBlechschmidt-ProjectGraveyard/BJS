@@ -1,12 +1,16 @@
+import {Crypto} from "./../crypto/crypto";
+
 /**
  * Object containing information about a specific account.
- * @param {string[]} score_write_permissions - List of sport type ids.
+ * @param {string} name - Name of the account
  * @param {string[]} group_permissions - List of group names.
+ * @param {string[]} score_write_permissions - List of sport type ids.
  * @param {AuthenticationCode} ac
  * @param {boolean=} canViewResults - Specifies whether the account has permissions to view the results.
  * @constructor
  */
-export function Account(group_permissions, score_write_permissions, ac, canViewResults = false) {
+export function Account(name, group_permissions, score_write_permissions, ac, canViewResults = false) {
+    this.name = name;
     this.score_write_permissions = score_write_permissions;
     this.group_permissions = group_permissions;
     this.ac = ac;
@@ -47,6 +51,47 @@ export function canViewResults(account) {
  */
 export function getGroupNames(account) {
     return account.group_permissions.join(", ");
+}
+
+/**
+ * Returns a login token used for Meteor.call.
+ * @param {Account} account - The Account
+ * @return {string}
+ */
+export function getLoginToken(account) {
+    return Crypto.generateLoginToken(account.ac.privHash, account.ac.salt);
+}
+
+/**
+ * @typedef {Object} LoginObject
+ * @property {string} pubHash - The public Hash of the Code
+ * @property {string} loginToken - The loginToken generated
+ */
+
+/**
+ * Returns a login object used for Meteor.call.
+ * @param {Account} account - The Account
+ * @return {LoginObject}
+ */
+export function getLoginObject(account) {
+    return {
+        pubHash: account.ac.pubHash,
+        loginToken: getLoginToken(account)
+    };
+}
+
+/**
+ * Returns a login object used for Meteor.call.
+ * @param {Account} account - The Account
+ * @param {LoginObject} loginObject - The long object
+ * @return {boolean}
+ */
+export function checkLogin(account, loginObject) {
+    if (loginObject.pubHash !== account.ac.pubHash) return false;
+
+    const loginToken = getLoginToken(account);
+
+    return loginObject.loginToken === loginToken;
 }
 
 /**

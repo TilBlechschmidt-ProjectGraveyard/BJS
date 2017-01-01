@@ -1,12 +1,38 @@
 import {Collection} from "./collection";
 
-export let Generic = new Collection('Generic', true, true);
+export function initGeneric() {
+    Meteor.COLLECTIONS.Generic = new Collection('Generic', function (name, handle) {
+        // deny all writing access
+        handle.deny({
+            insert() {
+                return true;
+            },
+            update() {
+                return true;
+            },
+            remove() {
+                return true;
+            },
+        });
 
-Generic.createMockData = function () {
-    this.handle.insert({
-        dbVersion: Meteor.config.dbVersion,
-        cleanDB: true,
-        activeContest: "bjs2016",
-        contests: ["bjs2016"]
+        Meteor.publish(name, function () {
+            return handle.find({}, {
+                fields: {
+                    'adminAccount.ac.privHash': false,
+                    'cleanDB': false,
+                    'dbVersion': false
+                }
+            });
+        });
     });
-};
+
+    Meteor.COLLECTIONS.Generic.createMockData = function () {
+        this.handle.insert({
+            dbVersion: Meteor.config.dbVersion,
+            cleanDB: true,
+            activeContest: "Beispiel Konfiguration",
+            contests: ["Beispiel Konfiguration"],
+            editContests: []
+        });
+    };
+}

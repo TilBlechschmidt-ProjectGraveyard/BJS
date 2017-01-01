@@ -22,7 +22,7 @@
                         <div class="row">
                             <!-- Spacing -->
                             <div class="col-5"></div>
-                            <div class="col-90" id="printcontent">
+                            <div class="col-90">
                                 <!-- Codes in Spcing -->
                                 <div class="content-block-title">Zugangscodes</div>
                                 <div class="list-block">
@@ -30,25 +30,102 @@
                                         <!-- Divider -->
                                         <li class="item-divider">Stationslogins</li>
                                         <!-- Iterated Code Access-->
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title">STATIONSNAME</div>
-                                                    <div class="item-after">Gallifrey666TARDIS</div>
-                                                </div>
-                                            </div>
-                                        </li>
+
+                                        {{#each l in login_stations}}
+                                            {{#with l}}
+                                                <li>
+                                                    <div class="item-content">
+                                                        <div class="item-inner">
+                                                            <div class="item-title">{{#with
+                                                                    account}}{{name}}{{/with}}</div>
+                                                            <div class="item-after">{{password}}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {{/with}}
+                                        {{/each}}
                                         <!-- Divider -->
                                         <li class="item-divider">Gruppenlogins</li>
                                         <!-- Iterated Code Access -->
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title">GRUPPENNAME</div>
-                                                    <div class="item-after">Master4444Doktor</div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        {{#each l in login_groups}}
+                                            {{#with l}}
+                                                <li>
+                                                    <div class="item-content">
+                                                        <div class="item-inner">
+                                                            <div class="item-title">{{#with
+                                                                    account}}{{name}}{{/with}}</div>
+                                                            <div class="item-after">{{password}}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {{/with}}
+                                        {{/each}}
+                                        <!-- Divider -->
+                                        <li class="item-divider">Eigene Logins</li>
+                                        <!-- Iterated Code Access -->
+                                        {{#each l in login_custom}}
+                                            {{#with l}}
+                                                {{#let account_index=@index}}
+                                                    <li class="accordion-item">
+                                                        <a href="" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title">{{#with
+                                                                        account}}{{name}}{{/with}}</div>
+                                                                <div class="item-after">{{password}}</div>
+                                                            </div>
+                                                        </a>
+                                                        <div class="accordion-item-content">
+                                                            <div style="margin-left: 10%; width: 85%">
+                                                                <div class="list-block">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <div class="item-content">
+                                                                                <div class="item-inner">
+                                                                                    <div class="item-title label">Name
+                                                                                    </div>
+                                                                                    <div class="item-input">
+                                                                                        <input data-account_index="{{account_index}}"
+                                                                                               value="{{#with
+                                                                                                       account}}{{name}}{{/with}}"
+                                                                                               type="text"
+                                                                                               class="in-custom-name"
+                                                                                               placeholder="Name">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Single chekbox item -->
+                                                                        {{#each s in sports}}
+                                                                            {{#with s}}
+                                                                                <li>
+                                                                                    <label class="label-checkbox item-content">
+                                                                                        <input type="checkbox" {{checked}}
+                                                                                               class="permission-input"
+                                                                                               data-account_index="{{account_index}}"
+                                                                                               id="custom-select-{{stID}}-{{account_index}}">
+                                                                                        <div class="item-media">
+                                                                                            <i class="icon icon-form-checkbox"></i>
+                                                                                        </div>
+                                                                                        <div class="item-inner">
+                                                                                            <div class="item-title">{{name}}</div>
+                                                                                        </div>
+                                                                                    </label>
+                                                                                </li>
+                                                                            {{/with}}
+                                                                        {{/each}}
+                                                                    </ul>
+                                                                </div>
+                                                                <p><a href="#" data-account_index="{{account_index}}"
+                                                                      class="btn-remove-account button button-fill button-big color-red">"{{#with
+                                                                        account}}{{name}}{{/with}}
+                                                                    " löschen</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {{/let}}
+                                            {{/with}}
+                                        {{/each}}
                                     </ul>
                                 </div>
                             </div>
@@ -61,16 +138,71 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="90">
-                                <!-- Button Print -->
-                                <p><a href="#" id="button_print" class="button button-fill button-big color-gray">Drucken</a>
+                                <!-- Button New -->
+                                <p><a href="#" id="btn-new-codes" class="button button-fill button-big color-green">
+                                    Zugangsodes automatisch erstellen</a></p>
+                                <div style="text-align: center;">
+                                    <span id="progress-text">No accounts</span>
+                                </div>
+
+                                <p>
+                                    <span id="progress-bar" data-progress="10" class="progressbar"></span>
                                 </p>
-                                <!-- Button Export -->
-                                <p><a href="#" id="button_export" class="button button-fill button-big color-gray">als
-                                    PDF Exportieren</a></p>
+                                <!-- Button Print -->
+                                <p><a href="#" id="btn-add-account"
+                                      class="button button-fill button-big color-green">Eigenen Zugangscode
+                                    erstellen</a>
+                                </p>
+                                <!-- Button Print -->
+                                <p><a href="#" id="btn-print"
+                                      class="button button-fill button-big color-gray">Drucken</a>
+                                </p>
+
+
                             </div>
                             <div class="col-5"></div>
+
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="printcontent">
+                <div class="printcontent-content">
+                    <h1>{{get_competition_name}}: Zugangscodes</h1>
+                    <div class="print-password-title">Stationslogins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_stations}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
+                    <div class="print-password-title">Gruppenlogins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_groups}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
+                    <div class="print-password-title">Eigene Logins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_custom}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
                 </div>
             </div>
 
@@ -79,7 +211,7 @@
             <div class="toolbar">
                 <div class="toolbar-inner">
                     <a href="" class="item-link" id="link_back">Zurück</a>
-                    <a href="" class="item-link" id="link_save">Speichern</a>
+                    <a href="" class="item-link" id="link_start">Bundesjugendspiele starten</a>
                 </div>
             </div>
         </div>

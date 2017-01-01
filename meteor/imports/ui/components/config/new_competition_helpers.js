@@ -2,7 +2,17 @@
  * Created by noah on 12/29/16.
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
+import {Account} from "../../../api/logic/account";
+import {Log} from "../../../api/log";
+import {Athlete} from "../../../api/logic/athlete";
+import {DBInterface} from "../../../api/database/db_access";
 
+//TODO include
+// if (!Meteor.oldName) {
+//     if (window.location.href.includes("/config/")) {
+//         FlowRouter.redirect('/config');
+//     }
+// }
 
 const start_classes_object = require('../../../data/start_classes.json');
 
@@ -26,6 +36,74 @@ export let NewCompetition = {
     /** @constant {number} */
     prefix: "new_competition_",
 
+
+    /**
+     * Saves the current configuration
+     * @param {Account[]} [accounts] - All generated accounts. undefined will save the competition editable
+     */
+    save: function (accounts) {
+        const log = new Log();
+        const ct = NewCompetition.getCompetitionType();
+
+        const sportTypes = _.map(_.filter(NewCompetition.getSports(), function (obj) {
+            return obj.activated;
+        }), function (obj) {
+            return obj.stID;
+        });
+
+        // undefined -> false
+        const final = !!accounts;
+
+        if (!final) {
+            accounts = [Meteor.adminAccount];
+        }
+
+        let encryptedAthletes = [];
+
+        let groupToEncryptedAthletes = function (group) {
+            return _.map(Meteor.groups[group].athletes, function (athlete) {
+
+                let account = final ? Meteor.groups[group].account : Meteor.adminAccount;
+
+                return new Athlete(
+                    log,
+                    athlete.firstName,
+                    athlete.lastName,
+                    athlete.ageGroup,
+                    athlete.isMale,
+                    Meteor.groups[group].name,
+                    athlete.handicap,
+                    ct.maxAge,
+                    ct,
+                    sportTypes
+                ).encryptForDatabase(account, account);
+            });
+        };
+
+        for (let group in Meteor.groups) {
+            encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
+        }
+
+        console.log(NewCompetition.getName());
+        console.log(Meteor.oldName);
+
+        if (Meteor.oldName != NewCompetition.getName()) {
+            console.log("renamed");
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
+            Meteor.oldName = NewCompetition.getName();
+        }
+
+        DBInterface.writeCompetition(
+            Meteor.adminLoginObject,
+            NewCompetition.getName(),
+            NewCompetition.getCompetitionTypeID(),
+            sportTypes,
+            encryptedAthletes,
+            accounts,
+            final
+        );
+    },
+
     groupExists: function (name) {
         for (let group in Meteor.groups) {
             if (Meteor.groups[group].name === name) return true;
@@ -38,6 +116,8 @@ export let NewCompetition = {
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
+                console.log(Meteor._currentAthlete);
+                console.log(Meteor._currentGroup);
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
@@ -55,6 +135,7 @@ export let NewCompetition = {
                 document.getElementById("pick-gender").removeAttribute("disabled");
                 document.getElementById("pick-start_class").removeAttribute("disabled");
                 document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
 
                 document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
 
@@ -84,6 +165,7 @@ export let NewCompetition = {
                 document.getElementById("in-year").setAttribute("disabled", "true");
                 document.getElementById("pick-gender").setAttribute("disabled", "true");
                 document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("btn-add-athlete2").setAttribute("disabled", "true");
                 document.getElementById("pick-start_class").setAttribute("disabled", "true");
 
                 document.getElementById("pick-gender").selectedIndex = 0;
@@ -127,7 +209,7 @@ export let NewCompetition = {
      * @returns {string}
      */
     getName: function () {
-        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");
+        Session.setDefault(NewCompetition.prefix + "name", "Unbenannt");//TODO find unused
         return Session.get(NewCompetition.prefix + "name");
     },
 
@@ -207,6 +289,7 @@ export let NewCompetition = {
      */
     setGroups: function (groups) {
         Session.set(NewCompetition.prefix + "groups", JSON.stringify(groups));
+        Meteor.groups = groups;
     },
 
     /**
@@ -218,3 +301,5 @@ export let NewCompetition = {
         return JSON.parse(Session.get(NewCompetition.prefix + "groups"));
     }
 };
+
+Meteor.groups = NewCompetition.getGroups();

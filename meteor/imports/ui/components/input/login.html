@@ -4,9 +4,9 @@
             <div class="page">
                 <div class="page-content login-screen-content">
                     {{#if fullscreen}}
-                        <i class="f7-icons fullscreen-toggle" style="position: absolute; top: 10px; right: 15px">chevron_down</i>
+                        <i class="f7-icons fullscreen-toggle" style="position: absolute; top: 10px; right: 15px; cursor: pointer">chevron_down</i>
                     {{else}}
-                        <i class="f7-icons fullscreen-toggle" style="position: absolute; top: 10px; right: 15px">chevron_up</i>
+                        <i class="f7-icons fullscreen-toggle" style="position: absolute; top: 10px; right: 15px; cursor: pointer">chevron_up</i>
                     {{/if}}
                     <div style="text-align: center;">
                         <img src="/icons/Logo512.png" style="width: 50%; max-width: 300px;">
@@ -19,9 +19,9 @@
                                     <div class="item-inner">
                                         {{#with a}}
                                             {{#if logged_in}}
-                                                {{>logout_button name=name value=placeholder processing=processing}}
+                                                {{>logout_button description=description name=name value=placeholder processing=processing}}
                                             {{else}}
-                                                {{>login_button name=name processing=processing}}
+                                                {{>login_button description=description name=name processing=processing}}
                                             {{/if}}
                                         {{/with}}
                                     </div>
@@ -39,9 +39,14 @@
                                 </li>
                             </ul>
                         {{/if}}
-                        <div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine
-                            Änderungen an den Daten vorgenommen werden!
-                        </div>
+                        {{#if view_permitted}}
+                            <ul>
+                                <li>
+                                    <a href="#" data-target="{{target}}"
+                                       class="item-link list-button submit-button close-login-screen">Daten einsehen</a>
+                                </li>
+                            </ul>
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -50,9 +55,9 @@
 </template>
 
 <template name="login_button">
-    <div class="item-title label">{{name}}</div>
+    <div class="item-title label">{{description}}</div>
     <div class="item-input">
-        <input type="password" id="{{name}}_pwd" placeholder="{{name}}" data-name="{{name}}">
+        <input type="password" id="{{name}}_pwd" placeholder="Passwort" data-name="{{name}}">
     </div>
     {{#if processing}}
         {{>preloader}}
@@ -62,7 +67,7 @@
 </template>
 
 <template name="logout_button">
-    <div class="item-title label">{{name}}</div>
+    <div class="item-title label">{{description}}</div>
     <div class="item-input">
         <input type="text" value="{{value}}" disabled>
     </div>

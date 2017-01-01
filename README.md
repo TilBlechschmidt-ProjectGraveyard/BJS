@@ -31,8 +31,30 @@ https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framewor
 
 https://framework7.io/icons/
 
-##iOS WebApp Vorlage
+##App Icon Resizer
+ 
+ https://resizeappicon.com
+ 
+###Sizes
 
-https://gist.github.com/tfausak/2222823
+####Ios
 
-We dont have to use the startup image because the website is cached and loads immediately.  
+Original: white background
+* 57
+* 72
+* 76
+* 114
+* 120
+* 144
+* 152
+* 512
+
+Sources: https://gist.github.com/tfausak/2222823
+
+####Android
+
+Original: transparent background
+* 192
+* 512
+
+Sources: https://developer.chrome.com/multidevice/android/installtohomescreen

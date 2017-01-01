@@ -1,15 +1,18 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
-import {AccountManagement} from "../../../api/AccountManagement";
+import "./login";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
+import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
 
 const input_deps = new Tracker.Dependency();
+let canNotDoSportType = [];
+const canNotDoSportType_deps = new Tracker.Dependency();
 
 function getAthleteIDs() {
     return lodash.map(lodash.sortBy(getAthletes(), 'lastName'), function (athlete) {
@@ -26,7 +29,7 @@ function getAthleteByID(id) {
 export let input_onload = function (page) {
 
     Template.login.helpers({
-        show_login: !AccountManagement.inputPermitted()
+        show_login: !InputAccountManager.inputPermitted() || !InputAccountManager.viewPermitted()
     });
 
     Template.input.helpers({
@@ -49,14 +52,49 @@ export let input_onload = function (page) {
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();
         },
+        showCanNotDoSportType: function () {
+            canNotDoSportType_deps.depend();
+            return canNotDoSportType.length > 0;
+        },
+        canNotDoSportType: function () {
+            canNotDoSportType_deps.depend();
+            return canNotDoSportType;
+        },
         athleteByID: function (id) {
             Meteor.login_deps.depend();
             input_deps.depend();
+
+            if (!DBInterface.isReady()) {
+                DBInterface.waitForReady(function () {
+                    input_deps.changed();
+                });
+                return {};
+            }
             let sportTypes = {};
 
-            if (AccountManagement.retrieveAccounts().Station.logged_in) {
+            //load data
+            const athlete = getAthleteByID(id);
+            if (athlete === undefined) return {};
+
+            const stationAccount = InputAccountManager.getStationAccount();
+            const ct = DBInterface.getCompetitionType();
+
+
+            canNotDoSportType = [];
+            if (stationAccount.account) {
+                for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
+                    if (!stationAccount.account.score_write_permissions.hasOwnProperty(sportTypeIndex)) continue;
+                    let sportType = stationAccount.account.score_write_permissions[sportTypeIndex];
+                    if (athlete.sports.indexOf(sportType) == -1) {
+                        canNotDoSportType.push(ct.getSportType(sportType).name);
+                    }
+                }
+            }
+            canNotDoSportType_deps.changed();
+
+            if (stationAccount.logged_in) {
                 // Return all sport types that can be written to with the current station account
-                const stIDs = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+                const stIDs = stationAccount.account.score_write_permissions;
                 for (let stID in stIDs) {
                     if (!stIDs.hasOwnProperty(stID)) continue;
                     stID = stIDs[stID];
@@ -65,18 +103,15 @@ export let input_onload = function (page) {
             }
 
             // Add all other sport types we don't have write permission for
-            let all_sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(), DBInterface.getCompetitionType().getSportType);
+            let all_sportTypes = lodash.map(athlete.sports, ct.getSportType);
             for (let index in all_sportTypes) {
                 if (!all_sportTypes.hasOwnProperty(index)) continue;
-                stID = all_sportTypes[index];
-                sportTypes[stID.id] = stID;
+                let sportType = all_sportTypes[index];
+                sportTypes[sportType.id] = sportType;
             }
 
-            const athlete = getAthleteByID(id);
-            if (athlete === undefined) return {};
-
             // Fetch the measurements
-            const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+            const read_only_measurements = athlete.getPlain(Meteor.input.log, [InputAccountManager.getGroupAccount().account], false);
 
             athlete.sportType = {};
             let stID;
@@ -104,7 +139,7 @@ export let input_onload = function (page) {
             }
 
             // Insert the read-write data from the current session
-            if (AccountManagement.retrieveAccounts().Station.account && sessionStorage.getItem("measurements")) {
+            if (stationAccount.account && sessionStorage.getItem("measurements")) {
                 const measurements = JSON.parse(sessionStorage.getItem("measurements"))[id];
                 for (let sportType in measurements) {
                     if (!measurements.hasOwnProperty(sportType)) continue;
@@ -119,8 +154,8 @@ export let input_onload = function (page) {
 
             // Remove unused sportTypes (skipping the ones we have write permission for) and add a write_permission flag
             let write_permissions = [];
-            if (AccountManagement.retrieveAccounts().Station.account)
-                write_permissions = AccountManagement.retrieveAccounts().Station.account.score_write_permissions;
+            if (stationAccount.account)
+                write_permissions = stationAccount.account.score_write_permissions;
 
             athlete.sportType = lodash.map(athlete.sportType, function (element) {
                 const write_permission = lodash.includes(write_permissions, element.metadata.id);
@@ -134,6 +169,29 @@ export let input_onload = function (page) {
                 return e !== undefined;
             });
 
+            athlete.sportType = _.map(athlete.sportType, function (element) {
+                if (element.metadata.unit === "min:s") {
+                    element.metadata.inputType = "text";
+                    for (let m in element.measurements) {
+                        const min = Math.floor(element.measurements[m].value / 60);
+                        const s = element.measurements[m].value - min * 60;
+                        if (s < 10) {
+                            element.measurements[m].strValue = min + ":0" + s;
+                        } else {
+                            element.measurements[m].strValue = min + ":" + s;
+                        }
+                    }
+                } else {
+                    element.metadata.inputType = "number";
+                    for (let m in element.measurements) {
+                        element.measurements[m].strValue = element.measurements[m].value.toString();
+                    }
+                }
+                return element;
+            });
+
+            console.log(athlete.sportType);
+
             return athlete;
         },
         isEmpty: function (arr) {
@@ -146,11 +204,10 @@ export let input_onload = function (page) {
         length: function (arr) {
             return arr.length;
         },
-        empty_measurement: {read_only: false, value: "", class: "add-attempt-input"},
+        empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input"},
         scoreWritePermission: function (metadata) {
             Meteor.login_deps.depend();
             return metadata.write_permission;
-            // return AccountManagement.retrieveAccounts().Station.logged_in;
         }
     });
 
@@ -185,7 +242,7 @@ export let input_onload = function (page) {
         }
     });
 
-    function updateMeasurement(athleteID, stID, attempt, measurement) {
+    function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
         if (!athleteID || !stID || !attempt) return;
         if (!sessionStorage.getItem("measurements")) sessionStorage.setItem("measurements", "{}");
 
@@ -193,9 +250,26 @@ export let input_onload = function (page) {
         if (measurements[athleteID] === undefined) measurements[athleteID] = {};
         if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
+        const ct = DBInterface.getCompetitionType();
+
+        const sportTypeData = ct.getSportType(stID);
+        const strDotMeasurement = strMeasurement.replace(/,/g, ".");
+
+        let measurement = 0;
+        if (sportTypeData.unit === "min:s") {
+            const res = strDotMeasurement.split(':');
+            if (res.length >= 2) {
+                measurement = parseFloat(res[0]) * 60 + parseFloat(res[1]);
+            } else if (res.length == 1) {
+                measurement = parseFloat(strDotMeasurement);
+            }
+        } else {
+            measurement = parseFloat(strDotMeasurement);
+        }
+
         if (measurements[athleteID][stID][attempt] == measurement) return false;
 
-        if (measurement === "") {
+        if (strMeasurement === "") {
             const attempts = measurements[athleteID][stID];
             if (attempts.hasOwnProperty(attempt)) {
                 delete measurements[athleteID][stID][attempt];
@@ -232,6 +306,7 @@ export let input_onload = function (page) {
                 const data = event.target.dataset;
                 event.preventDefault();
                 event.stopImmediatePropagation();
+                console.log(event.target.value);
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                     event.target.value = "";
 

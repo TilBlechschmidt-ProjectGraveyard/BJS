@@ -1,4 +1,5 @@
 {
-  "dbVersion": "0.0.24",
-  "competitionMongoURL": "EQUAL"
+  "dbVersion": "0.0.28",
+  "competitionMongoURL": "EQUAL",
+  "adminPassword": "supersecret"
 }

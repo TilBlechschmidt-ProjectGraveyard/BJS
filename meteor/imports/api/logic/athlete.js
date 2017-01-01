@@ -1,7 +1,7 @@
 import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
+import {genUUID} from "./../crypto/pwdgen";
 import {getAcsFromAccounts} from "./account";
-const COLLECTIONS = require("../database/collections")();
 
 
 /**
@@ -15,7 +15,7 @@ const COLLECTIONS = require("../database/collections")();
  * @param {string} handicap Handicap id of the athlete
  * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
  * @param {String[]|object} ct List of sports the athlete can do or a competition type object
- * @param {string} [id] - Mongo DB id
+ * @param {string|string[]} [id] - Mongo DB id or list of activated sports
  * @constructor
  */
 export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct, id) {
@@ -26,17 +26,27 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
-    this.id = id;
+    if (id && id.constructor == Array) {
+        this.id = undefined;
+    } else {
+        this.id = id;
+    }
 
     if (ct.constructor == Array) {
         this.sports = ct;
     } else {
         this.sports = [];
 
+        let sportTypes;
+        if (id && id.constructor == Array) sportTypes = id;
+
         const allSports = ct.getSports();
         for (let sport in allSports) {
             if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
-                this.sports.push(allSports[sport].id);
+                const stID = allSports[sport].id;
+                if (!sportTypes || sportTypes.indexOf(stID) > 0) {
+                    this.sports.push(stID);
+                }
             }
         }
     }
@@ -81,10 +91,19 @@ Athlete.prototype = {
             log.error('Der Stations Account hat keine Berechtigung');
             canWrite = false;
         }
+
+        if (this.sports.indexOf(stID) == -1) {
+            log.error('Der Athlete kann diese Sportartn nicht ausführen');
+            canWrite = false;
+        }
+
         if (canWrite) {
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            // write to db
             if (this.id) {
-                COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {data: this.data}});
+                let writeObject = {};
+                writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
             }
             return true;
         } else {
@@ -175,7 +194,11 @@ Athlete.prototype = {
         encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
         encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
-        encrypted.data = this.data;
+
+
+        for (let dataGroupID in this.data.data) {
+            encrypted["m_" + genUUID()] = this.data[dataGroupID];
+        }
 
         return encrypted;
     }
@@ -187,9 +210,10 @@ Athlete.prototype = {
  * @param {Object} data Encrypted athlete
  * @param {Account[]} accounts List of accounts containing the one that was used for encryption
  * @param {boolean} require_signature whether or not to enable signature enforcing
+ * @param {boolean} require_group_check whether or not to enable group permission check
  * @returns {boolean|Athlete}
  */
-Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) {
+Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, require_group_check = true) {
     const acs = getAcsFromAccounts(accounts);
     const firstName = Crypto.tryDecrypt(log, data.firstName, acs);
     const lastName = Crypto.tryDecrypt(log, data.lastName, acs);
@@ -202,6 +226,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
 
     if (firstName && lastName && ageGroup && isMale && group && handicap && maxAge && sports) {
 
+        if (require_group_check)
         if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
             accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
             accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
@@ -226,6 +251,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
             return false;
         }
 
+        if (require_group_check)
         if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
             (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
             (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
@@ -240,7 +266,16 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature) 
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
 
-        athlete.data = new Data(data.data.data);
+        let measureData = [];
+
+        for (let memberName in data) {
+            if (memberName.substr(0, 2) === "m_") {
+                measureData.push(data[memberName]);
+            }
+        }
+
+
+        athlete.data = new Data(measureData);
         return athlete;
     }
     log.error('Die Daten konnten nicht entschlüsselt werden.');
