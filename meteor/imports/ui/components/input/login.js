@@ -1,4 +1,4 @@
-import "./index.html";
+import "./login.html";
 import {DBInterface} from "../../../api/database/db_access";
 import {selectDefaultAthlete} from "../../../startup/client/helpers";
 import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
