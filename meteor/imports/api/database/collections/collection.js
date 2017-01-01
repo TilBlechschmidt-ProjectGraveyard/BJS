@@ -21,7 +21,13 @@ export function Collection(name, publicationFunction) {
                 });
 
                 Meteor.publish(col.name, function () {
-                    return col.handle.find({});
+                    return col.handle.find({}, {
+                        fields: {
+                            'adminAccount.ac.privHash': false,
+                            'cleanDB': false,
+                            'dbVersion': false
+                        }
+                    });
                 });
             }
         };
