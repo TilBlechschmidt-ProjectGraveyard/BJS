@@ -1,4 +1,6 @@
 import {input_onload} from "./components/input/index";
+
+
 FlowRouter.route('/', {
     action: function () {
         // FlowRouter.go("/config");
@@ -24,5 +26,15 @@ input.route('/:athlete_id', {
         BlazeLayout.render('input', {
             athlete_id: params.athlete_id
         });
+    }
+});
+
+let output = FlowRouter.group({
+    prefix: '/output'
+});
+
+output.route('/', {
+    action: function () {
+        BlazeLayout.render('output');
     }
 });

@@ -1,3 +1,1 @@
-/**
- * Created by Ayla on 29.12.2016.
- */
+import "./index.html";
