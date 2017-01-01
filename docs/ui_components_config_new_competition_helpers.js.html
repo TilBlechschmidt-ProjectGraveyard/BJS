@@ -81,6 +81,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
@@ -101,6 +102,7 @@
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
@@ -138,13 +140,18 @@
     <h3>Global</h3>
     <ul>
         <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
-        <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
@@ -165,21 +172,18 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 import {Account} from "../../../api/logic/account";
-import {Crypto} from "../../../api/crypto/crypto";
 import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
 
-if (!Meteor.inEditMode) {
-    if (window.location.href.includes("/config/")) {
-        FlowRouter.redirect('/config');
-    }
-}
+//TODO include
+// if (!Meteor.oldName) {
+//     if (window.location.href.includes("/config/")) {
+//         FlowRouter.redirect('/config');
+//     }
+// }
 
 const start_classes_object = require('../../../data/start_classes.json');
-
-//TODO replace with login
-Meteor.adminAccount = new Account([], [], Crypto.generateAC('1234', 'chilli'));
 
 let start_classes = [];
 
@@ -188,6 +192,15 @@ for (let stID in start_classes_object) {
         stID: stID,
         name: start_classes_object[stID].name
     });
+}
+
+
+export function nameExists(name) {
+    const name_without_whitespaces = name.replace(/ /g, '');
+    const allCompetitions = _.map(DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions()), function (n) {
+        return n.replace(/ /g, '');
+    });
+    return allCompetitions.indexOf(name_without_whitespaces) != -1 &amp;&amp; name_without_whitespaces != NewCompetition.getName();
 }
 
 /**
@@ -205,8 +218,9 @@ export let NewCompetition = {
     /**
      * Saves the current configuration
      * @param {Account[]} [accounts] - All generated accounts. undefined will save the competition editable
+     * @param [callback] optional callback
      */
-    save: function (accounts) {
+    save: function (accounts, callback) {
         const log = new Log();
         const ct = NewCompetition.getCompetitionType();
 
@@ -239,7 +253,8 @@ export let NewCompetition = {
                     Meteor.groups[group].name,
                     athlete.handicap,
                     ct.maxAge,
-                    ct
+                    ct,
+                    sportTypes
                 ).encryptForDatabase(account, account);
             });
         };
@@ -248,13 +263,27 @@ export let NewCompetition = {
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
+
+        if (Meteor.oldName != NewCompetition.getName()) {
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
+            Meteor.oldName = NewCompetition.getName();
+        }
+
         DBInterface.writeCompetition(
+            Meteor.adminLoginObject,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,
             encryptedAthletes,
             accounts,
-            final
+            final,
+            function (result) {
+                if (!result) {
+                    Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                    if (typeof callback === 'function') callback(false);
+                }
+                if (typeof callback === 'function') callback(true);
+            }
         );
     },
 
@@ -287,6 +316,7 @@ export let NewCompetition = {
                 document.getElementById("pick-gender").removeAttribute("disabled");
                 document.getElementById("pick-start_class").removeAttribute("disabled");
                 document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
 
                 document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
 
@@ -316,6 +346,7 @@ export let NewCompetition = {
                 document.getElementById("in-year").setAttribute("disabled", "true");
                 document.getElementById("pick-gender").setAttribute("disabled", "true");
                 document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("btn-add-athlete2").setAttribute("disabled", "true");
                 document.getElementById("pick-start_class").setAttribute("disabled", "true");
 
                 document.getElementById("pick-gender").selectedIndex = 0;
@@ -462,7 +493,7 @@ Meteor.groups = NewCompetition.getGroups();</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:55
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:13:36
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

@@ -81,6 +81,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
@@ -101,6 +102,7 @@
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
@@ -138,13 +140,18 @@
     <h3>Global</h3>
     <ul>
         <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
-        <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
@@ -181,7 +188,7 @@
                         <ul class="dummy">
                             <li>
                                 <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                                <a href="ui_components_config_new_competition_helpers.js.html#line36">line 36</a>
+                                <a href="ui_components_config_new_competition_helpers.js.html#line42">line 42</a>
                             </li>
                         </ul>
                     </dd>
@@ -212,7 +219,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line40">line 40</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line46">line 46</a>
                         </li>
                     </ul>
                 </dd>
@@ -251,7 +258,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line226">line 226</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line250">line 250</a>
                         </li>
                     </ul>
                 </dd>
@@ -296,7 +303,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line217">line 217</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line241">line 241</a>
                         </li>
                     </ul>
                 </dd>
@@ -342,7 +349,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line287">line 287</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line311">line 311</a>
                         </li>
                     </ul>
                 </dd>
@@ -387,7 +394,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line199">line 199</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line223">line 223</a>
                         </li>
                     </ul>
                 </dd>
@@ -433,7 +440,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line248">line 248</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line272">line 272</a>
                         </li>
                     </ul>
                 </dd>
@@ -478,7 +485,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line177">line 177</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line201">line 201</a>
                         </li>
                     </ul>
                 </dd>
@@ -493,6 +500,7 @@
 
 
             <h4 class="name" id=".save"><span class="type-signature">(static) </span>save<span class="signature">(accounts<span
+                    class="signature-attributes">opt</span>, callback<span
                     class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
@@ -508,7 +516,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line47">line 47</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line54">line 54</a>
                         </li>
                     </ul>
                 </dd>
@@ -572,6 +580,28 @@
                 </tr>
 
 
+                <tr>
+
+                    <td class="name"><code>callback</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>optional callback</p></td>
+                </tr>
+
+
                 </tbody>
             </table>
 
@@ -591,7 +621,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line208">line 208</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line232">line 232</a>
                         </li>
                     </ul>
                 </dd>
@@ -662,7 +692,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line278">line 278</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line302">line 302</a>
                         </li>
                     </ul>
                 </dd>
@@ -733,7 +763,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line191">line 191</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line215">line 215</a>
                         </li>
                     </ul>
                 </dd>
@@ -804,7 +834,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                            <a href="ui_components_config_new_competition_helpers.js.html#line240">line 240</a>
+                            <a href="ui_components_config_new_competition_helpers.js.html#line264">line 264</a>
                         </li>
                     </ul>
                 </dd>
@@ -870,7 +900,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:56
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:13:36
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

@@ -81,6 +81,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
@@ -101,6 +102,7 @@
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
@@ -138,13 +140,18 @@
     <h3>Global</h3>
     <ul>
         <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
-        <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
@@ -181,7 +188,7 @@
                         <ul class="dummy">
                             <li>
                                 <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                    href="api_database_db_access.js.html#line9">line 9</a>
+                                    href="api_database_db_access.js.html#line15">line 15</a>
                             </li>
                         </ul>
                     </dd>
@@ -201,8 +208,8 @@
 
 
             <h4 class="name" id=".activateCompetition"><span
-                    class="type-signature">(static) </span>activateCompetition<span
-                    class="signature">(competitionName)</span><span class="type-signature"></span></h4>
+                    class="type-signature">(static) </span>activateCompetition<span class="signature">(loginObject, competitionName, callback<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
             <p class="summary">
@@ -217,7 +224,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line165">line 165</a>
+                                href="api_database_db_access.js.html#line178">line 178</a>
                         </li>
                     </ul>
                 </dd>
@@ -244,11 +251,38 @@
                     <th>Type</th>
 
 
+                    <th>Attributes</th>
+
+
                     <th class="last">Description</th>
                 </tr>
                 </thead>
 
                 <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>loginObject</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="global.html#LoginObject">LoginObject</a></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"><p>loginObject of the admin</p></td>
+                </tr>
 
 
                 <tr>
@@ -265,7 +299,35 @@
                     </td>
 
 
+                    <td class="attributes">
+
+
+                    </td>
+
+
                     <td class="description last"><p>The name of the competition</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>callback</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>optional callback</p></td>
                 </tr>
 
 
@@ -290,7 +352,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line90">line 90</a>
+                                href="api_database_db_access.js.html#line96">line 96</a>
                         </li>
                     </ul>
                 </dd>
@@ -333,7 +395,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line73">line 73</a>
+                                href="api_database_db_access.js.html#line79">line 79</a>
                         </li>
                     </ul>
                 </dd>
@@ -454,7 +516,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line145">line 145</a>
+                                href="api_database_db_access.js.html#line151">line 151</a>
                         </li>
                     </ul>
                 </dd>
@@ -501,7 +563,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line120">line 120</a>
+                                href="api_database_db_access.js.html#line126">line 126</a>
                         </li>
                     </ul>
                 </dd>
@@ -602,7 +664,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line110">line 110</a>
+                                href="api_database_db_access.js.html#line116">line 116</a>
                         </li>
                     </ul>
                 </dd>
@@ -702,7 +764,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line100">line 100</a>
+                                href="api_database_db_access.js.html#line106">line 106</a>
                         </li>
                     </ul>
                 </dd>
@@ -801,7 +863,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line61">line 61</a>
+                                href="api_database_db_access.js.html#line67">line 67</a>
                         </li>
                     </ul>
                 </dd>
@@ -904,7 +966,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line52">line 52</a>
+                                href="api_database_db_access.js.html#line58">line 58</a>
                         </li>
                     </ul>
                 </dd>
@@ -954,7 +1016,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line15">line 15</a>
+                                href="api_database_db_access.js.html#line21">line 21</a>
                         </li>
                     </ul>
                 </dd>
@@ -1000,7 +1062,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line129">line 129</a>
+                                href="api_database_db_access.js.html#line135">line 135</a>
                         </li>
                     </ul>
                 </dd>
@@ -1046,7 +1108,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line137">line 137</a>
+                                href="api_database_db_access.js.html#line143">line 143</a>
                         </li>
                     </ul>
                 </dd>
@@ -1076,6 +1138,134 @@
             </dl>
 
 
+            <h4 class="name" id=".removeCompetition"><span class="type-signature">(static) </span>removeCompetition<span
+                    class="signature">(loginObject, competitionName, callback<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+
+            <p class="summary">Removes a competition with a given name.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
+                                href="api_database_db_access.js.html#line190">line 190</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Removes a competition with a given name. The actual data are still in the db. Only the link is
+                    deleted.</p>
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>loginObject</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="global.html#LoginObject">LoginObject</a></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"><p>loginObject of the admin</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>competitionName</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"><p>The name of the competition</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>callback</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>optional callback</p></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
             <h4 class="name" id=".waitForReady"><span class="type-signature">(static) </span>waitForReady<span
                     class="signature">(callback)</span><span class="type-signature"></span></h4>
 
@@ -1091,7 +1281,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line26">line 26</a>
+                                href="api_database_db_access.js.html#line32">line 32</a>
                         </li>
                     </ul>
                 </dd>
@@ -1148,8 +1338,8 @@
 
 
             <h4 class="name" id=".writeCompetition"><span class="type-signature">(static) </span>writeCompetition<span
-                    class="signature">(competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts)</span><span
-                    class="type-signature"></span></h4>
+                    class="signature">(loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final, callback<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
 
             <p class="summary">
@@ -1164,7 +1354,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_database_db_access.js.html">api/database/db_access.js</a>, <a
-                                href="api_database_db_access.js.html#line157">line 157</a>
+                                href="api_database_db_access.js.html#line166">line 166</a>
                         </li>
                     </ul>
                 </dd>
@@ -1191,11 +1381,38 @@
                     <th>Type</th>
 
 
+                    <th>Attributes</th>
+
+
                     <th class="last">Description</th>
                 </tr>
                 </thead>
 
                 <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>loginObject</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="global.html#LoginObject">LoginObject</a></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"><p>loginObject of the admin</p></td>
+                </tr>
 
 
                 <tr>
@@ -1207,6 +1424,12 @@
 
 
                         <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
 
 
                     </td>
@@ -1230,6 +1453,12 @@
                     </td>
 
 
+                    <td class="attributes">
+
+
+                    </td>
+
+
                     <td class="description last"><p>The type id of the competition</p></td>
                 </tr>
 
@@ -1248,6 +1477,12 @@
                     </td>
 
 
+                    <td class="attributes">
+
+
+                    </td>
+
+
                     <td class="description last"><p>List of sport type ids which are used by the contest</p></td>
                 </tr>
 
@@ -1261,6 +1496,12 @@
 
 
                         <span class="param-type">Array.&lt;object></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
 
 
                     </td>
@@ -1285,7 +1526,55 @@
                     </td>
 
 
+                    <td class="attributes">
+
+
+                    </td>
+
+
                     <td class="description last"><p>A list of accounts</p></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>final</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>callback</code></td>
+
+
+                    <td class="type">
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"><p>optional callback</p></td>
                 </tr>
 
 
@@ -1303,7 +1592,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:56
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:13:36
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

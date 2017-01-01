@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>api/logic/data.js - Documentation</title>
+    <title>api/account_managment/AccountManager.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -162,115 +162,123 @@
 
 <div id="main">
 
-    <h1 class="page-title">api/logic/data.js</h1>
+    <h1 class="page-title">api/account_managment/AccountManager.js</h1>
 
 
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {Crypto} from "./../crypto/crypto.js";
-import {filterUndefined} from "./general";
-import {getAcsFromAccounts} from "./account";
+            <pre class="prettyprint source linenums"><code>import {DBInterface} from "../database/db_access";
+import {Crypto} from "../crypto/crypto";
+import {isGroupAccount, isStationAccount} from "../logic/account";
+
+const storage = window.sessionStorage;
+
 
 /**
- * Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
- * @param {object} [data]
- * @constructor
+ *
+ * @param {string} passphrase - The login passphrase entered by the user.
+ * @param callback
+ * @returns {?Account}
  */
-export function Data(data) {
-    /// data is an array of objects with id (view getSports) and measurement
-    // example: [{encryptedStID: object, encryptedMeasurements: object}]
-    if (data) {
-        this.data = data;
-    } else {
-        this.data = [];
-    }
+export function getAccountByPassphrase(passphrase, callback) {
+    DBInterface.waitForReady(function () {
+        const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+        const remoteAccounts = contestAccounts.concat([adminAccount]);
+        let account = null;
+        for (let remoteAccount in remoteAccounts) {
+            if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
 
+            remoteAccount = remoteAccounts[remoteAccount];
+
+            if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
+                account = remoteAccount;
+                account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
+                break;
+            }
+        }
+        if (typeof callback === 'function') callback(account);
+    });
 }
 
-Data.prototype = {
+export function AccountManager(name) {
+    this.name = name;
+    this.storageID = "account" + name;
+}
+
+AccountManager.prototype = {
+
     /**
-     * @typedef {Object} PlainData
-     * @property {string} stID - The id of the sport type
-     * @property {object[]} measurements - The decrypted
+     * @typedef {Object} AccountManagerResult
+     * @property {?Account} account - The account or undefined
+     * @property {boolean} logged_in - Whether the account is logged in
+     * @property {boolean} processing - Whether the account is processed
      */
 
     /**
-     * Returns the data in plain text.
-     * @param {Log} log - Logger instance to use
-     * @param {Account[]} accounts - Accounts that should be used for decryption
-     * @param {boolean} requireSignature - whether or not to enable signature enforcing
-     * @param {string} groupID - Identifier of the group this data is from
-     * @returns {PlainData[]}
+     * Returns the account.
+     * @returns AccountManagerResult
      */
-    getPlain: function (log, accounts, requireSignature, groupID) {
-        return filterUndefined(_.map(this.data, function (dataObject) {
-            const acs = getAcsFromAccounts(accounts);
-            const stIDDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedStID, acs);
-            const measurementsDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedMeasurements, acs);
-
-            if (requireSignature &amp;&amp; !(stIDDecryptResult.signatureEnforced &amp;&amp; measurementsDecryptResult.signatureEnforced)) {
-                log.error('Die Signatur der Sport Art mit der ID ' + stIDDecryptResult.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
-                return undefined;
-            }
-
-            if (accounts[stIDDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1 ||
-                accounts[measurementsDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1) {
-                log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-                return undefined;
-            }
-
-            if ((stIDDecryptResult.signatureEnforced &amp;&amp; accounts[stIDDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1) ||
-                (measurementsDecryptResult.signatureEnforced &amp;&amp; accounts[measurementsDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1)) {
-                log.error('Der Stations Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-                return undefined;
-            }
-
-            return {
-                stID: stIDDecryptResult,
-                measurements: measurementsDecryptResult
-            };
-        }));
+    get: function () {
+        if (!storage.getItem(this.storageID)) {
+            this.logout();
+        }
+        return JSON.parse(storage.getItem(this.storageID));
     },
 
-    /**
-     * Finds and returns the dataObject with the given sport (stID).
-     * @param {Log} log - Logger instance to use
-     * @param {number} stID - Identifier of the sport the returned data should be part of
-     * @param {AuthenticationCode[]} acs - List of authentication codes that should be used for decryption
-     * @returns {{groupSignature, stationSignature, data: {Array}}}
-                */
-    findEncrypted: function (log, stID, acs) {
-        return _.find(this.data, function (dataObject) {
-            const decryptedData = Crypto.tryDecrypt(log, dataObject.encryptedStID, acs);
-            return decryptedData === stID;
+    store: function (account) {
+        storage.setItem(this.storageID, JSON.stringify(account));
+    },
+
+    setProcessing: function (newStatus) {
+        const account = this.get();
+        account.processing = newStatus;
+        this.store(account);
+    },
+
+    login: function (passphrase, callback) {
+        this.setProcessing(true);
+        let thisAccountManager = this;
+        setTimeout(function () { //TODO remove timeout. its just for preloader testing
+            getAccountByPassphrase(passphrase, function (account) {
+                if (account === null &amp;&amp; typeof callback === 'function') {
+                    thisAccountManager.setProcessing(false);
+                    callback(false, "Ungültiges Passwort.");
+                } else {
+                    thisAccountManager.store({
+                        account: account,
+                        logged_in: true,
+                        processing: false
+                    });
+
+                    // Notify the caller
+                    if (typeof callback === 'function') callback(true);
+                }
+            });
+        }, 100);
+    },
+
+    logout: function () {
+        this.store({
+            account: undefined,
+            logged_in: false,
+            processing: false
         });
     },
 
-    /**
-     * Updates the data of a given stID.
-     * @param {Log} log - Logger instance to use
-     * @param {number} stID - Identifier of the sport the returned data should be part of
-     * @param {number[]} newMeasurements The measurements that should be inserted
-     * @param {AuthenticationCode} groupAC - Authentication code of the group
-     * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
-     */
-    push: function (log, stID, newMeasurements, groupAC, stationAC) {
-
-        const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
-        const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
-        // const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
-        //
-        // if (oldData) {
-        //     oldData.encryptedStID = encryptedStID;
-        //     oldData.encryptedMeasurements = newEncryptedMeasurements;
-        // } else {
-        this.data.push({
-            encryptedStID: encryptedStID,
-            encryptedMeasurements: newEncryptedMeasurements,
-        });
-        // }
+    isLoggedIn: function () {
+        return this.get().logged_in;
+    },
+    isGroupAccount: function () {
+        return isGroupAccount(this.get().account);
+    },
+    isStationAccount: function () {
+        return isStationAccount(this.get().account);
     }
 };
+
+
+
 </code></pre>
         </article>
     </section>
