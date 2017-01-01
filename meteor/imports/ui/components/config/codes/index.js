@@ -15,6 +15,9 @@ let _login_tracker = new Tracker.Dependency();
 
 
 Template.codes.helpers({
+    get_competition_name: function () {
+        return NewCompetition.getName();
+    },
     login_stations: function () {
         _login_tracker.depend();
         return loginStations;

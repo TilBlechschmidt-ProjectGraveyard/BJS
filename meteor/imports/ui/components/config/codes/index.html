@@ -168,39 +168,42 @@
             </div>
 
             <div class="printcontent">
-                <div class="print-password-title">Stationslogins</div>
-                <table class="print-password-table">
-                    {{#each l in login_stations}}
-                        {{#with l}}
-                            <tr>
-                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                <td class="print-password-field">{{password}}</td>
-                            </tr>
-                        {{/with}}
-                    {{/each}}
-                </table>
-                <div class="print-password-title">Gruppenlogins</div>
-                <table class="print-password-table">
-                    {{#each l in login_groups}}
-                        {{#with l}}
-                            <tr>
-                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                <td class="print-password-field">{{password}}</td>
-                            </tr>
-                        {{/with}}
-                    {{/each}}
-                </table>
-                <div class="print-password-title">Eigene Logins</div>
-                <table class="print-password-table">
-                    {{#each l in login_custom}}
-                        {{#with l}}
-                            <tr>
-                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                <td class="print-password-field">{{password}}</td>
-                            </tr>
-                        {{/with}}
-                    {{/each}}
-                </table>
+                <div class="printcontent-content">
+                    <h1>{{get_competition_name}}: Zugangscodes</h1>
+                    <div class="print-password-title">Stationslogins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_stations}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
+                    <div class="print-password-title">Gruppenlogins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_groups}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
+                    <div class="print-password-title">Eigene Logins</div>
+                    <table class="print-password-table">
+                        {{#each l in login_custom}}
+                            {{#with l}}
+                                <tr>
+                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
+                                    <td class="print-password-field">{{password}}</td>
+                                </tr>
+                            {{/with}}
+                        {{/each}}
+                    </table>
+                </div>
             </div>
 
 
