@@ -191,5 +191,16 @@ export let DBInterface = {
         Meteor.call('removeCompetition', loginObject, competitionName, function (err, data) {
             if (typeof callback === 'function') callback(data);
         });
+    },
+
+    /**
+     * Generates certificates for the current competition
+     * @param {LoginObject} loginObject - loginObject of the admin
+     * @param [callback] - optional callback
+     */
+    generateCertificates: function (loginObject, callback) {
+        Meteor.call('generateCertificates', loginObject, function (err, data) {
+            if (typeof callback === 'function') callback(data);
+        });
     }
 };

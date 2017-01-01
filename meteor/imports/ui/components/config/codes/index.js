@@ -57,37 +57,6 @@ Template.codes.helpers({
 
             return accountObject;
         });
-    },
-    get_custom_sport_types: function () {
-        _login_tracker.depend();
-        const ct = NewCompetition.getCompetitionType();
-        const all_sport_types = _.map(
-            _.filter(NewCompetition.getSports(), function (sportTypeObj) {
-                return sportTypeObj.activated;
-            }), function (sportTypeObj) {
-                let stID = sportTypeObj.stID;
-                let name = ct.getNameOfSportType(stID);
-                if (name.length > 27) {
-                    name = name.slice(0, 24) + "...";
-                }
-                return {
-                    stID: stID,
-                    name: name
-                };
-            }
-        );
-
-        const group_permissions = loginCustom[currentCustomLogin].account.group_permissions;
-
-        for (let stIDIndex in group_permissions) {
-            for (let sportObjectIndex in all_sport_types) {
-                if (group_permissions[stIDIndex] === all_sport_types[sportObjectIndex].stID) {
-                    all_sport_types[sportObjectIndex].checked = "checked";
-                }
-            }
-        }
-
-        return all_sport_types;
     }
 });
 
@@ -108,7 +77,7 @@ Template.codes.events({
             Meteor.f7.confirm('Haben Sie alle Zugangscodes am Besten zwei mal gespeichert? Dafür kann man diese Ausdrucken, als PDF speichern oder abschreiben.', 'BJS starten', function () {
                 Meteor.f7.confirm('Nach dem Starten können die Zugangscodes nicht erneut angezeigt werden. Stellen Sie sicher, dass Sie ohne "RunItEasy" Zugriff auf die Zugangscodes haben. Ansonsten müssen Sie einen neuen Wettkampf einrichten!', 'BJS starten', function () {
                     Meteor.f7.confirm('Jetzt starten?', 'BJS starten', function () {
-                        const accounts = _.map(loginGroups.concat(loginStations), function (obj) {
+                        const accounts = _.map(loginGroups.concat(loginStations).concat(loginCustom), function (obj) {
                             return obj.account;
                         });
 
@@ -145,7 +114,7 @@ Template.codes.events({
             };
         });
 
-        const accountNumber = Meteor.groups.length + sportTypes.length;
+        const accountNumber = Meteor.groups.length + sportTypes.length + 1;
 
         //Delete old passwords
         loginGroups = [];
@@ -173,7 +142,23 @@ Template.codes.events({
                 _login_tracker.changed();
                 progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
 
-                setTimeout(generateNextStationLogin, 0);
+                setTimeout(generateNextGroupLogin, 0);
+            } else if (groupID == Meteor.groups.length) {
+                const certificatePassword = genRandomCode();
+
+                const certificateAccount = new Account("Urkunden", [], [], Crypto.generateAC(certificatePassword), true);
+
+                loginStations.push({
+                    password: certificatePassword,
+                    account: certificateAccount
+                });
+
+                counter++;
+                _login_tracker.changed();
+                progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
+
+
+                setTimeout(generateNextGroupLogin, 0);
             } else {
                 document.getElementById("btn-new-codes").removeAttribute("disabled");
                 document.getElementById("btn-print").removeAttribute("disabled");
@@ -231,6 +216,9 @@ Template.codes.events({
                 }
             }
         }
+        let certificateCheckbox = document.getElementById("custom-select-certificate-" + accountIndex);
+
+        loginCustom[accountIndex].account.canViewResults = (certificateCheckbox && certificateCheckbox.checked);
     },
     'click .btn-remove-account' (event, instance) {
         let accountIndex = event.target.closest(".btn-remove-account").dataset.account_index;

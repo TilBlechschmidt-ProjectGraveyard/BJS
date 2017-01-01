@@ -137,6 +137,10 @@ export function onStartup() {
                 sportTypes: sportTypes,
                 encryptedAthletes: encryptedAthletes
             };
+        },
+        'generateCertificates': function (loginObject) {
+            //TODO implement
+            return {};
         }
     });
 

@@ -113,6 +113,22 @@
                                                                                 </li>
                                                                             {{/with}}
                                                                         {{/each}}
+                                                                        <li>
+                                                                            <label class="label-checkbox item-content">
+                                                                                <input type="checkbox" {{canViewResults}}
+                                                                                       class="permission-input"
+                                                                                       data-account_index="{{account_index}}"
+                                                                                       id="custom-select-certificate-{{account_index}}">
+                                                                                <div class="item-media">
+                                                                                    <i class="icon icon-form-checkbox"></i>
+                                                                                </div>
+                                                                                <div class="item-inner">
+                                                                                    <div class="item-title">Urkunden
+                                                                                        erstellen
+                                                                                    </div>
+                                                                                </div>
+                                                                            </label>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                                 <p><a href="#" data-account_index="{{account_index}}"
