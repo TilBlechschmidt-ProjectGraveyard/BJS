@@ -49,3 +49,9 @@ config.route('/codes', {
         });
     }
 });
+
+output.route('/output', {
+    action: function () {
+        BlazeLayout.render('output');
+    }
+});

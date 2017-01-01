@@ -5,7 +5,7 @@ const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$
 
 /**
  * @typedef {Object} AuthenticationCode
- * @property {string} salt - The salt that is used to create the public and private hash
+ * @property {string} salt - The salt used to create the public and private hash
  * @property {string} pubHash - The public Hash of the Code
  * @property {string} privHash - The private Hash of the Code
  */
@@ -50,7 +50,7 @@ function generateHMAC(data, password) {
  * @private
  * @param {*} data - Arbitrary data to sign.
  * @param {AuthenticationCode} ac - Authentication to use when generating the signature.
- * @returns {Signature} An Signature instance that contains both the generated signature and the public hash of the authentication code used for the signature.
+ * @returns {Signature} An Signature instance that contains the generated signature as well as the public hash of the authentication code used for the signature.
  */
 function generateSignature(data, ac) {
     return {
@@ -64,8 +64,8 @@ function generateSignature(data, ac) {
  * @private
  * @param {SED} SED - The signed and encrypted data.
  * @param {*} data - The decrypted data.
- * @param {AuthenticationCode} groupAC - The GroupAC that will be used for checking.
- * @param {AuthenticationCode} stationAC - The GroupAC that will be used for checking.
+ * @param {AuthenticationCode} groupAC - The GroupAC used for checking.
+ * @param {AuthenticationCode} stationAC - The GroupAC used for checking.
  * @returns {boolean}
  */
 function checkSignature(SED, data, groupAC, stationAC) {
@@ -102,9 +102,9 @@ function decrypt(SED, groupAC) {
  */
 export let Crypto = {
     /**
-     * Generate a private hash based on the password and salt
+     * Generate a private hash based on password and salt
      * @param password {string} - Phrase to use for encryption
-     * @param salt {string} - Salt to throw into the mix
+     * @param salt {string} - Salt to add to the mix
      * @returns {string}
      */
     generatePubHash: function (password, salt) {
@@ -116,9 +116,9 @@ export let Crypto = {
     },
 
     /**
-     * Generate a private hash based on the password and salt
+     * Generate a private hash based on password and salt
      * @param password {string} - Phrase to use for encryption
-     * @param salt {string} - Salt to throw into the mix
+     * @param salt {string} - Salt to add to the mix
      * @returns {string}
      */
     generatePrivHash: function (password, salt) {
@@ -145,7 +145,7 @@ export let Crypto = {
 
 
     /**
-     * Generates a authentication code for.
+     * Generates an authentication code for.
      * @public
      * @param password  {string}     Password to generate the authentication code from.
      * @param salt      {string=}    Salt to recreate a specific authentication code.
@@ -167,8 +167,8 @@ export let Crypto = {
      * Encrypt data and sign it.
      * @public
      * @param data {*} Data to encrypt.
-     * @param {AuthenticationCode} groupAC - Group authentication code to use for encryption.
-     * @param {AuthenticationCode} stationAC - Station authentication code to use for encryption.
+     * @param {AuthenticationCode} groupAC - Group authentication code used for encryption.
+     * @param {AuthenticationCode} stationAC - Station authentication code used for encryption.
      * @returns {{groupSignature: Signature, stationSignature: Signature, data: (string|*)}}
      */
     encrypt: function (data, groupAC, stationAC) {
