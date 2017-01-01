@@ -1,5 +1,7 @@
 import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/db_access";
+import {Account} from "../../api/logic/account";
+import {Crypto} from "../../api/crypto/crypto";
 
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
@@ -7,6 +9,14 @@ export function onStartup() {
     if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
 
     initCollections();
+
+    const ac = Crypto.generateAC(Meteor.config.adminPassword);
+    const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true);
+    Meteor.COLLECTIONS.Generic.handle.update(
+        {_id: DBInterface.getGenericID()},
+        {$set: {adminAccount: adminAccount}}
+    );
+
 
     Meteor.methods({
         'activateCompetition': function (competitionName) {

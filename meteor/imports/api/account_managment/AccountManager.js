@@ -13,7 +13,9 @@ const storage = window.sessionStorage;
  */
 export function getAccountByPassphrase(passphrase, callback) {
     DBInterface.waitForReady(function () {
-        const remoteAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+        const remoteAccounts = contestAccounts.concat([adminAccount]);
         let account = null;
         for (let remoteAccount in remoteAccounts) {
             if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
