@@ -157,6 +157,8 @@ export let input_onload = function (page) {
                 return e !== undefined;
             });
 
+            console.log(athlete.sportType);
+
             return athlete;
         },
         isEmpty: function (arr) {
