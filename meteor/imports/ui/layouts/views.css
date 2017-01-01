@@ -50,5 +50,19 @@
         position: absolute;
         top: 40px;
         left: 30px;
+        width: 100%;
+    }
+
+    body, html {
+        width: 100%;
+    }
+
+    .print-password-title {
+        width: 100%;
+        font-size: xx-large;
+    }
+
+    .print-password-field {
+        text-align: right;
     }
 }

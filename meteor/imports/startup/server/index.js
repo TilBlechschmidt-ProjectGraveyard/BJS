@@ -4,9 +4,9 @@ import {DBInterface} from "../../api/database/db_access";
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../../../config.json');
-    initCollections();
-
     if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
+
+    initCollections();
 
     Meteor.methods({
         'activateCompetition': function (competitionName) {

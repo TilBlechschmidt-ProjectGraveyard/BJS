@@ -19,9 +19,9 @@
                                     <div class="item-inner">
                                         {{#with a}}
                                             {{#if logged_in}}
-                                                {{>logout_button name=name value=placeholder processing=processing}}
+                                                {{>logout_button description=description name=name value=placeholder processing=processing}}
                                             {{else}}
-                                                {{>login_button name=name processing=processing}}
+                                                {{>login_button description=description name=name processing=processing}}
                                             {{/if}}
                                         {{/with}}
                                     </div>
@@ -47,9 +47,6 @@
                                 </li>
                             </ul>
                         {{/if}}
-                        <!--<div class="list-block-label">Hinweis: Sofern nur der Gruppenleiter angemeldet ist können keine-->
-                        <!--Änderungen an den Daten vorgenommen werden!-->
-                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -58,7 +55,7 @@
 </template>
 
 <template name="login_button">
-    <div class="item-title label">{{name}}</div>
+    <div class="item-title label">{{description}}</div>
     <div class="item-input">
         <input type="password" id="{{name}}_pwd" placeholder="Passwort" data-name="{{name}}">
     </div>
@@ -70,7 +67,7 @@
 </template>
 
 <template name="logout_button">
-    <div class="item-title label">{{name}}</div>
+    <div class="item-title label">{{description}}</div>
     <div class="item-input">
         <input type="text" value="{{value}}" disabled>
     </div>

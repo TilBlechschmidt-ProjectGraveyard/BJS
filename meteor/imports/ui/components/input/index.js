@@ -1,10 +1,10 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
-import {AccountManagement} from "../../../api/AccountManagement";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
+import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
@@ -28,7 +28,7 @@ function getAthleteByID(id) {
 export let input_onload = function (page) {
 
     Template.login.helpers({
-        show_login: !AccountManagement.inputPermitted()
+        show_login: !InputAccountManager.inputPermitted() || !InputAccountManager.viewPermitted()
     });
 
     Template.input.helpers({
@@ -75,12 +75,12 @@ export let input_onload = function (page) {
             const athlete = getAthleteByID(id);
             if (athlete === undefined) return {};
 
-            const stationAccount = AccountManagement.retrieveAccounts().Station;
+            const stationAccount = InputAccountManager.getStationAccount();
             const ct = DBInterface.getCompetitionType();
 
 
             canNotDoSportType = [];
-            if (stationAccount) {
+            if (stationAccount.account) {
                 for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
                     let sportType = stationAccount.account.score_write_permissions[sportTypeIndex];
                     if (athlete.sports.indexOf(sportType) == -1) {
@@ -99,7 +99,7 @@ export let input_onload = function (page) {
             }
 
             // Fetch the measurements
-            const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManagement.retrieveAccounts().Gruppenleiter.account], false);
+            const read_only_measurements = athlete.getPlain(Meteor.input.log, [InputAccountManager.getGroupAccount().account], false);
 
             athlete.sportType = {};
             let stID;

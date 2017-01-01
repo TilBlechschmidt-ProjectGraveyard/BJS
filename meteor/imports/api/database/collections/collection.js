@@ -115,9 +115,12 @@ export function ContestCollection(name, publicationFunction) {
 
     col.connect = function (competition_name) {
         Meteor.dbReady[col.basename] = false;
-        let name = competition_name.replace(/ /g, '') + "_" + col.basename;
+        let competition_name_without_whitespaces = competition_name.replace(/ /g, '');
+        let name = competition_name_without_whitespaces + "_" + col.basename;
         console.log("connecting to " + name);
 
+        // let dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competition_name_without_whitespaces);
+        // let handle = new Mongo.Collection(name, {_driver: dbHandle});
         let handle = new Mongo.Collection(name, {});
 
         if (Meteor.isClient) col.ground = Ground.Collection(handle);

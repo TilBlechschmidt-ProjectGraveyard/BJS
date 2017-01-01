@@ -7,8 +7,8 @@ export function initGeneric() {
         this.handle.insert({
             dbVersion: Meteor.config.dbVersion,
             cleanDB: true,
-            activeContest: "bjs2016",
-            contests: ["bjs2016"],
+            activeContest: "Beispiel Konfiguration",
+            contests: ["Beispiel Konfiguration"],
             editContests: []
         });
     };

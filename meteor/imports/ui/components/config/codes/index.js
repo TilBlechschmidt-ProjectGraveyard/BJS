@@ -158,10 +158,9 @@ Template.codes.events({
             if (groupID < Meteor.groups.length) {
                 const password = genRandomCode();
 
-                const account = new Account([Meteor.groups[groupID].name], [], Crypto.generateAC(password));
+                const account = new Account(Meteor.groups[groupID].name, [Meteor.groups[groupID].name], [], Crypto.generateAC(password));
 
                 loginGroups.push({
-                    name: Meteor.groups[groupID].name,
                     password: password,
                     account: account
                 });
@@ -185,9 +184,8 @@ Template.codes.events({
                 const password = genRandomCode();
 
                 loginStations.push({
-                    name: sportTypes[counter].name,
                     password: password,
-                    account: new Account([], [sportTypes[counter].stID], Crypto.generateAC(password))
+                    account: new Account(sportTypes[counter].name, [], [sportTypes[counter].stID], Crypto.generateAC(password))
                 });
 
                 counter++;
@@ -204,10 +202,9 @@ Template.codes.events({
     },
     'click #btn-add-account' (event, instance) {
         const password = genRandomCode();
-        const account = new Account([], [], Crypto.generateAC(password));
+        const account = new Account('Unbenannt', [], [], Crypto.generateAC(password));
 
         loginCustom.push({
-            name: "Custom",
             password: password,
             account: account
         });
@@ -239,7 +236,7 @@ Template.codes.events({
     },
     'input .in-custom-name' (event, instance) {
         let accountIndex = event.target.dataset.account_index;
-        loginCustom[accountIndex].name = event.target.value;
+        loginCustom[accountIndex].account.name = event.target.value;
         _login_tracker.changed();
     }
 });

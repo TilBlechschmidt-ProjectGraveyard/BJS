@@ -36,7 +36,8 @@
                                                 <li>
                                                     <div class="item-content">
                                                         <div class="item-inner">
-                                                            <div class="item-title">{{name}}</div>
+                                                            <div class="item-title">{{#with
+                                                                    account}}{{name}}{{/with}}</div>
                                                             <div class="item-after">{{password}}</div>
                                                         </div>
                                                     </div>
@@ -51,7 +52,8 @@
                                                 <li>
                                                     <div class="item-content">
                                                         <div class="item-inner">
-                                                            <div class="item-title">{{name}}</div>
+                                                            <div class="item-title">{{#with
+                                                                    account}}{{name}}{{/with}}</div>
                                                             <div class="item-after">{{password}}</div>
                                                         </div>
                                                     </div>
@@ -67,7 +69,8 @@
                                                     <li class="accordion-item">
                                                         <a href="" class="item-link item-content">
                                                             <div class="item-inner">
-                                                                <div class="item-title">{{name}}</div>
+                                                                <div class="item-title">{{#with
+                                                                        account}}{{name}}{{/with}}</div>
                                                                 <div class="item-after">{{password}}</div>
                                                             </div>
                                                         </a>
@@ -82,7 +85,8 @@
                                                                                     </div>
                                                                                     <div class="item-input">
                                                                                         <input data-account_index="{{account_index}}"
-                                                                                               value="{{name}}"
+                                                                                               value="{{#with
+                                                                                                       account}}{{name}}{{/with}}"
                                                                                                type="text"
                                                                                                class="in-custom-name"
                                                                                                placeholder="Name">
@@ -103,7 +107,8 @@
                                                                                             <i class="icon icon-form-checkbox"></i>
                                                                                         </div>
                                                                                         <div class="item-inner">
-                                                                                            <div class="item-title">{{name}}</div>
+                                                                                            <div class="item-title">{{#with
+                                                                                                    account}}{{name}}{{/with}}</div>
                                                                                         </div>
                                                                                     </label>
                                                                                 </li>
@@ -112,7 +117,8 @@
                                                                     </ul>
                                                                 </div>
                                                                 <p><a href="#" data-account_index="{{account_index}}"
-                                                                      class="btn-remove-account button button-fill button-big color-red">"{{name}}
+                                                                      class="btn-remove-account button button-fill button-big color-red">"{{#with
+                                                                        account}}{{name}}{{/with}}
                                                                     " löschen</a>
                                                                 </p>
                                                             </div>
@@ -168,7 +174,7 @@
                     {{#each l in login_stations}}
                         {{#with l}}
                             <tr>
-                                <td class="print-password-field">{{name}}</td>
+                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
                                 <td class="print-password-field">{{password}}</td>
                             </tr>
                         {{/with}}
@@ -179,7 +185,7 @@
                     {{#each l in login_groups}}
                         {{#with l}}
                             <tr>
-                                <td class="print-password-field">{{name}}</td>
+                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
                                 <td class="print-password-field">{{password}}</td>
                             </tr>
                         {{/with}}
@@ -190,7 +196,7 @@
                     {{#each l in login_custom}}
                         {{#with l}}
                             <tr>
-                                <td class="print-password-field">{{name}}</td>
+                                <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
                                 <td class="print-password-field">{{password}}</td>
                             </tr>
                         {{/with}}

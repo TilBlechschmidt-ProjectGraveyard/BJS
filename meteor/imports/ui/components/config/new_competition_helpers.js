@@ -19,7 +19,7 @@ import {DBInterface} from "../../../api/database/db_access";
 const start_classes_object = require('../../../data/start_classes.json');
 
 //TODO replace with login
-Meteor.adminAccount = new Account([], [], Crypto.generateAC('1234', 'chilli'));
+Meteor.adminAccount = new Account('Admin', [], [], Crypto.generateAC('1234', 'chilli'));
 
 let start_classes = [];
 

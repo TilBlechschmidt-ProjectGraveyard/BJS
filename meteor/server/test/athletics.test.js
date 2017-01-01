@@ -7,8 +7,8 @@ import {Account} from "../../imports/api/logic/account";
 chai.should();
 
 const ct = COMPETITION_TYPES[0].object;
-const groupAccount = new Account(['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
-const stationAccount = new Account([], ['st_long_jump', 'st_ball_200', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], Crypto.generateAC('hflhkfks;kjfjankfa'));
+const groupAccount = new Account('Q#z', ['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
+const stationAccount = new Account('Stationen', [], ['st_long_jump', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], Crypto.generateAC('hflhkfks;kjfjankfa'));
 
 describe('athletics', function () {
     it('updates a measurement', function () {
