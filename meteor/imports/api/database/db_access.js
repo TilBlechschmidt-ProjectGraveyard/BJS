@@ -1,5 +1,11 @@
 import {getCompetitionTypeByID} from "../logic/competition_type";
 import {Athlete} from "../logic/athlete";
+import {initCollections} from "./collections/index";
+
+
+if (Meteor.isClient) {
+    initCollections();
+}
 
 /**
  * Object containing all information and functions required for Swimming contest.
@@ -148,29 +154,33 @@ export let DBInterface = {
 
     /**
      * Creates a new competition
+     * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
      * @param {number} competitionTypeID - The type id of the competition
      * @param {string[]} sportTypes - List of sport type ids which are used by the contest
      * @param {object[]} encrypted_athletes - A list of encrypted athletes. To encrypt an athlete use athlete.encryptForDatabase([...])
      * @param {Account[]} accounts - A list of accounts
+     * @param final
      */
-    writeCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-        Meteor.call('writeCompetition', competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
+    writeCompetition: function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
+        Meteor.call('writeCompetition', loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
     },
 
     /**
      * Activates a competition with a given name
+     * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
      */
-    activateCompetition: function (competitionName) {
-        Meteor.call('activateCompetition', competitionName);
+    activateCompetition: function (loginObject, competitionName) {
+        Meteor.call('activateCompetition', loginObject, competitionName);
     },
 
     /**
      * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
+     * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
      */
-    removeCompetition: function (competitionName) {
-        Meteor.call('removeCompetition', competitionName);
+    removeCompetition: function (loginObject, competitionName) {
+        Meteor.call('removeCompetition', loginObject, competitionName);
     }
 };

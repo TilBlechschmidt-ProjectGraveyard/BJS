@@ -1,7 +1,26 @@
 import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/db_access";
-import {Account} from "../../api/logic/account";
+import {Account, checkLogin} from "../../api/logic/account";
 import {Crypto} from "../../api/crypto/crypto";
+
+
+/**
+ * Returns the admin account.
+ * @returns {Account}
+ */
+function getAdminAccount() {
+    return Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+}
+
+/**
+ *
+ * @param {LoginObject} loginObject
+ * @returns {boolean}
+ */
+function checkAdminLogin(loginObject) {
+    console.log("check admin Login: " + checkLogin(getAdminAccount(), loginObject));
+    return checkLogin(getAdminAccount(), loginObject);
+}
 
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
@@ -19,11 +38,13 @@ export function onStartup() {
 
 
     Meteor.methods({
-        'activateCompetition': function (competitionName) {
+        'activateCompetition': function (loginObject, competitionName) {
+            if (!checkAdminLogin(loginObject)) return false;
             Meteor.COLLECTIONS.switch(competitionName);
+            return true;
         },
-        'removeCompetition': function (competitionName) {
-            console.log('remove ' + competitionName);
+        'removeCompetition': function (loginObject, competitionName) {
+            if (!checkAdminLogin(loginObject)) return false;
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             let listOFCompetitions = DBInterface.listCompetitions();
             if (listOFEditCompetitions.indexOf(competitionName) != -1) {
@@ -43,9 +64,10 @@ export function onStartup() {
                     }
                 });
             }
+            return true;
         },
-        'writeCompetition': function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-
+        'writeCompetition': function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
+            if (!checkAdminLogin(loginObject)) return false;
             // update index in Generic
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             console.log(listOFEditCompetitions);
@@ -100,8 +122,10 @@ export function onStartup() {
                 contestType: competitionTypeID,
                 sportTypes: sportTypes
             });
+            return true;
         },
-        'getEditInformation': function (competitionName) {
+        'getEditInformation': function (loginObject, competitionName) {
+            if (!checkAdminLogin(loginObject)) return undefined;
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             if (listOFEditCompetitions.indexOf(competitionName) == -1) return undefined;
 

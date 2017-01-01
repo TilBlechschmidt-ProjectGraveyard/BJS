@@ -3,11 +3,9 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 import {Account} from "../../../api/logic/account";
-import {Crypto} from "../../../api/crypto/crypto";
 import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
-
 
 //TODO include
 // if (!Meteor.oldName) {
@@ -17,9 +15,6 @@ import {DBInterface} from "../../../api/database/db_access";
 // }
 
 const start_classes_object = require('../../../data/start_classes.json');
-
-//TODO replace with login
-Meteor.adminAccount = new Account('Admin', [], [], Crypto.generateAC('1234', 'chilli'));
 
 let start_classes = [];
 
@@ -94,11 +89,12 @@ export let NewCompetition = {
 
         if (Meteor.oldName != NewCompetition.getName()) {
             console.log("renamed");
-            DBInterface.removeCompetition(Meteor.oldName);
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
 
         DBInterface.writeCompetition(
+            Meteor.adminLoginObject,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,
@@ -120,6 +116,8 @@ export let NewCompetition = {
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
+                console.log(Meteor._currentAthlete);
+                console.log(Meteor._currentGroup);
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
@@ -137,6 +135,7 @@ export let NewCompetition = {
                 document.getElementById("pick-gender").removeAttribute("disabled");
                 document.getElementById("pick-start_class").removeAttribute("disabled");
                 document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
 
                 document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
 
@@ -166,6 +165,7 @@ export let NewCompetition = {
                 document.getElementById("in-year").setAttribute("disabled", "true");
                 document.getElementById("pick-gender").setAttribute("disabled", "true");
                 document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("btn-add-athlete2").setAttribute("disabled", "true");
                 document.getElementById("pick-start_class").setAttribute("disabled", "true");
 
                 document.getElementById("pick-gender").selectedIndex = 0;

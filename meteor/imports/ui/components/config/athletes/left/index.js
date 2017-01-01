@@ -32,6 +32,7 @@ Template.athletes_left.events({
             if (NewCompetition.groupExists(value)) {
                 Meteor.f7.alert('Es gibt bereits eine Gruppe mit dem Namen "' + value + '".', "Gruppenname");
             } else {
+                NewCompetition.selectAthlete(-1);
                 Meteor._currentGroup = Meteor.groups.length;
                 Meteor.groups.push({name: value, athletes: []});
                 Meteor._groups_tracker.changed();
@@ -40,6 +41,7 @@ Template.athletes_left.events({
         });
     },
     'click .link-open-group': function (event) {
+        NewCompetition.selectAthlete(-1);
         Meteor._currentGroup = event.target.closest(".link-open-group").dataset.group_index;
         Meteor._athletes_tracker.changed();
     },

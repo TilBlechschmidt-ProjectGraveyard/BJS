@@ -47,6 +47,18 @@ export let athletes_right_onLoad = function () {
         'input .athlete-input' (event, instance) {
             NewCompetition.selectAthlete(Meteor._currentAthlete);
             Meteor._athletes_tracker.changed();
+        },
+        'click #btn-add-athlete2' (event, instance) {
+            const currentAthlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+            Meteor.groups[Meteor._currentGroup].athletes.push({
+                firstName: currentAthlete.firstName,
+                lastName: currentAthlete.lastName,
+                ageGroup: currentAthlete.ageGroup,
+                isMale: currentAthlete.isMale,
+                handicap: currentAthlete.handicap,
+            });
+            Meteor._athletes_tracker.changed();
+            NewCompetition.selectAthlete(Meteor.groups[Meteor._currentGroup].athletes.length - 1);
         }
     });
 };

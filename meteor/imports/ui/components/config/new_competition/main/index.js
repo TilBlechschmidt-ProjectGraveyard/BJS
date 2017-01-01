@@ -77,7 +77,7 @@ Template.new_competition_main.events({
     },
     'click #btn-remove-competition' (event, instance) {
         Meteor.f7.confirm('Wollen Sie den Wettkampf wirklich löschen?', 'Löschen?', function () {
-            DBInterface.removeCompetition(Meteor.oldName); //use old name. The name saved in NewCompetition may be changed already.
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName); //use old name. The name saved in NewCompetition may be changed already.
             FlowRouter.go('/config');
         });
     }

@@ -5,11 +5,24 @@ import {NewCompetition} from "../../new_competition_helpers";
 import {Athlete} from "../../../../../api/logic/athlete";
 import {Log} from "../../../../../api/log";
 import {genUUID} from "../../../../../api/crypto/pwdgen";
+import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
+import {getLoginObject} from "../../../../../api/logic/account";
 
 let _deps = new Tracker.Dependency();
 
 let competitions = [];
 let editCompetitions = [];
+
+//TODO replace with login view
+getAccountByPassphrase('supersecret', function (account) {
+    if (account) {
+        Meteor.adminAccount = account;
+        Meteor.adminLoginObject = getLoginObject(account);
+        console.log("Admin logged in");
+    } else {
+        alert("Wrong admin password");
+    }
+});
 
 
 Template.home_left.helpers({
@@ -28,7 +41,7 @@ Template.home_left.events({
         const name = event.target.closest(".link-activate_competition").dataset.competition_name;
 
         Meteor.f7.confirm('Nach dem Starten des Wettbewerbs "' + name + '" müssen alle Geräte erneut eine Verbindung zum Server aufbauen. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
-            DBInterface.activateCompetition(name);
+            DBInterface.activateCompetition(Meteor.adminLoginObject, name);
             Meteor.f7.showPreloader('Daten laden...');
             setTimeout(function () {
                 location.reload();
@@ -50,7 +63,7 @@ Template.home_left.events({
         Session.keys = {};
         Meteor.groups = [];
 
-        Meteor.call('getEditInformation', name, function (err, data) {
+        Meteor.call('getEditInformation', Meteor.adminLoginObject, name, function (err, data) {
             if (err) {
                 console.log(err);
                 Meteor.f7.hidePreloader();

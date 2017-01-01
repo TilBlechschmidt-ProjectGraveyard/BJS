@@ -129,6 +129,20 @@ export let Crypto = {
         return wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000}));
     },
 
+    /**
+     * Generates a login token used for Meteor.call
+     * @param privHash {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generateLoginToken: function (privHash, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(privHash + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1}));
+    },
+
 
     /**
      * Generates a authentication code for.
