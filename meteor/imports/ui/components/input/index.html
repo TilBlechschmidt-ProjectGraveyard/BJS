@@ -86,11 +86,33 @@
             </div>
         </div>
     </div>
+
+    <!--TODO create function for the meteor stuff below-->
+    {{#if athlete_id}}
+        {{#with athleteByID athlete_id}}
+            {{#each s in sportType}}
+                {{#with s}}
+                    <div class="popup popup-{{name}}">
+                        <div class="content-block">
+                            <p>{{#with metadata}}{{name}}{{/with}}</p>
+                            <p><a href="#" class="close-popup">Close popup</a></p>
+                            <p>{{#with metadata}}{{description}}{{/with}}</p>
+                        </div>
+                    </div>
+                {{/with}}
+            {{/each}}
+        {{/with}}
+    {{/if}}
+
 </template>
 
 <template name="attempts">
     {{#with sportType}}
-        <div class="content-block-title">{{#with metadata}}{{name}}{{/with}}</div>
+        <div class="content-block-title">
+            <a href="#" data-popup=".popup-{{name}}" class="link-open-st-info open-popup">
+                {{#with metadata}}{{name}}{{/with}}
+            </a>
+        </div>
         <div class="list-block">
             <ul>
                 {{#each m in measurements}}
