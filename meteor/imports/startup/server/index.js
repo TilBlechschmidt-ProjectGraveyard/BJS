@@ -149,10 +149,7 @@ export function onStartup() {
             });
         },
         'generateCertificates': function (loginObject) {
-            //TODO check login object
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
-
-            console.log(account);
 
             if (!account) {
                 return false;
@@ -160,8 +157,6 @@ export function onStartup() {
             if (!account.canViewResults) {
                 return encryptAs(false, account);
             }
-
-
 
             const ct = DBInterface.getCompetitionType();
             const log = new Log();
