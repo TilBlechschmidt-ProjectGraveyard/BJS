@@ -1,4 +1,3 @@
-import "../single_login";
 import "./athletes/left";
 import "./athletes/middle";
 import "./athletes/right";

@@ -14,7 +14,7 @@ export let selectDefaultAthlete = function () {
                 return athlete.id == FlowRouter.getParam("athlete_id");
             })) && athletes[0] !== undefined) {
             FlowRouter.go('/contest/' + athletes[0].id);
-            Meteor.login_deps.depend();
+            Meteor.inputDependency.depend();
         }
     });
 };
@@ -28,4 +28,17 @@ export let arrayify = function (obj) {
         result.push(new_obj);
     }
     return result;
+};
+
+export let tryDecrypt = function (string) {
+    try {
+        return atob(string);
+    } catch (e) {
+        return false;
+    }
+};
+
+export let getLastLogin = function () {
+    if (!sessionStorage.getItem("firstLogin")) return "";
+    return sessionStorage.getItem("firstLogin") == "Gruppenleiter" ? "Station" : "Gruppenleiter";
 };

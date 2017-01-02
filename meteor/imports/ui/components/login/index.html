@@ -1,0 +1,20 @@
+<template name="login">
+    <div class="view">
+        <div class="page">
+            <div class="page-content login-screen-content">
+                <div class="login-screen-title">RunItEasy</div>
+                <div id="login-swiper" class="swiper-container" style="height:100%">
+                    <div class="swiper-wrapper">
+                        {{#each steps}}
+                            {{#with this}}
+                                <div class="swiper-slide"
+                                     data-template="{{template}}">{{> UI.dynamic template=template data=data}}</div>
+                            {{/with}}
+                        {{/each}}
+                    </div>
+                    <div class="swiper-pagination grow" id="progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

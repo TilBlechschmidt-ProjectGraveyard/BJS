@@ -4,13 +4,13 @@ import "./index.css";
 import "./login";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
-import {arrayify, getAthletes, selectDefaultAthlete} from "../../../startup/client/helpers";
+import {arrayify, getAthletes, selectDefaultAthlete, getLastLogin} from "../../../startup/client/helpers";
 import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
 
-const input_deps = new Tracker.Dependency();
+Meteor.inputDependency = new Tracker.Dependency();
 let canNotDoSportType = [];
 const canNotDoSportType_deps = new Tracker.Dependency();
 
@@ -33,8 +33,11 @@ export let input_onload = function (page) {
     });
 
     Template.input.helpers({
+        last_login: function () {
+            return getLastLogin();
+        },
         athletes: function () {
-            Meteor.login_deps.depend();
+            Meteor.inputDependency.depend();
             const athletes = lodash.sortBy(getAthletes(), 'lastName');
 
             let athlete_list = [];
@@ -47,7 +50,7 @@ export let input_onload = function (page) {
             return athlete_list;
         },
         nameByID: function (id) {
-            Meteor.login_deps.depend();
+            Meteor.inputDependency.depend();
             const athlete = getAthleteByID(id);
             if (!athlete) return "";
             return getAthleteByID(id).getFullName();
@@ -61,12 +64,12 @@ export let input_onload = function (page) {
             return canNotDoSportType;
         },
         athleteByID: function (id) {
-            Meteor.login_deps.depend();
-            input_deps.depend();
+            Meteor.inputDependency.depend();
+            Meteor.inputDependency.depend();
 
             if (!DBInterface.isReady()) {
                 DBInterface.waitForReady(function () {
-                    input_deps.changed();
+                    Meteor.inputDependency.changed();
                 });
                 return {};
             }
@@ -206,7 +209,7 @@ export let input_onload = function (page) {
         },
         empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input"},
         scoreWritePermission: function (metadata) {
-            Meteor.login_deps.depend();
+            Meteor.inputDependency.depend();
             return metadata.write_permission;
         }
     });
@@ -239,6 +242,10 @@ export let input_onload = function (page) {
             let prevAthleteID = athleteIDs.indexOf(FlowRouter.getParam("athlete_id")) + 1;
             if (prevAthleteID > athleteIDs.length - 1) prevAthleteID = 0;
             FlowRouter.go("/contest/" + athleteIDs[prevAthleteID]);
+        },
+        'click .logout-button': function () {
+            //TODO logout AND possibly set Meteor.firstLogin to false (?)
+            InputAccountManager.logout(getLastLogin());
         }
     });
 
@@ -310,7 +317,7 @@ export let input_onload = function (page) {
                 if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                     event.target.value = "";
 
-                input_deps.changed();
+                Meteor.inputDependency.changed();
                 event.stopPropagation();
                 return false;
             }
@@ -321,7 +328,7 @@ export let input_onload = function (page) {
             event.stopImmediatePropagation();
             if (updateMeasurement(data.athleteId, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                 event.target.value = "";
-            input_deps.changed();
+            Meteor.inputDependency.changed();
         }
     });
 

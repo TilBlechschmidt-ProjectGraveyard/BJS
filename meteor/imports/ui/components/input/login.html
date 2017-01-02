@@ -1,4 +1,4 @@
-<template name="login">
+<template name="inputLogin">
     <div class="login-screen {{#if show_login}}modal-in{{/if}}">
         <div class="view">
             <div class="page">
@@ -60,7 +60,7 @@
         <input type="password" id="{{name}}_pwd" placeholder="Passwort" data-name="{{name}}">
     </div>
     {{#if processing}}
-        {{>preloader}}
+        {{>input_preloader}}
     {{else}}
         <a href="#" class="item-link list-button login-button" data-name="{{name}}">Anmelden</a>
     {{/if}}
@@ -72,13 +72,13 @@
         <input type="text" value="{{value}}" disabled>
     </div>
     {{#if processing}}
-        {{>preloader}}
+        {{>input_preloader}}
     {{else}}
         <a href="#" class="item-link list-button color-red logout-button " data-name="{{name}}">Abmelden</a>
     {{/if}}
 </template>
 
-<template name="preloader">
+<template name="input_preloader">
     <div style="width: 65%; height: 43px">
         <span style="display: block; margin: auto; padding-top: 22px" class="preloader"></span>
     </div>

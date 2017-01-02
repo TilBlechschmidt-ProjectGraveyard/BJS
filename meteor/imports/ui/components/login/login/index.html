@@ -1,0 +1,32 @@
+<template name="omni_login">
+    <!-- Default view-page layout -->
+    <div class="view">
+        <div class="page">
+            <!-- page-content has additional login-screen content -->
+            <div class="page-content login-screen-content">
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">{{type}}</div>
+                                <div class="item-input">
+                                    <input type="password" placeholder="Passwort" data-type="{{type}}">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link list-button login-button" data-type="{{type}}">Anmelden</a>
+                        </li>
+                    </ul>
+                    <div class="list-block-label">Bitte melden sie sich mit dem Passwort an, welches sie von dem
+                        Administrator erhalten haben.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

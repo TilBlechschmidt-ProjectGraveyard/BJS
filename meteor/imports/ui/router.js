@@ -1,9 +1,20 @@
+import {InputAccountManager} from "../api/account_managment/InputAccountManager";
 import {input_onload} from "./components/input/index";
+
 FlowRouter.route('/', {
     action: function () {
         // FlowRouter.go("/config");
         //TODO: Check if it is already configured and run the following if that is the case:
-        FlowRouter.go("/contest");
+        // FlowRouter.go("/contest");
+    }
+});
+
+FlowRouter.route('/logout', {
+    action: function () {
+        InputAccountManager.logout('Gruppenleiter', true);
+        InputAccountManager.logout('Station', true);
+        // InputAccountManager.logout('Administrator', true);
+        FlowRouter.go('/login');
     }
 });
 

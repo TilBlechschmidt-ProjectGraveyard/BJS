@@ -3,12 +3,12 @@ import {DBInterface} from "../../../api/database/db_access";
 import {selectDefaultAthlete} from "../../../startup/client/helpers";
 import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
 
-Meteor.login_deps = new Tracker.Dependency();
+Meteor.inputDependency = new Tracker.Dependency();
 fullscreen_deps = new Tracker.Dependency();
 
-Template.login.helpers({
+Template.inputLogin.helpers({
     accounts: function () {
-        Meteor.login_deps.depend();
+        Meteor.inputDependency.depend();
         const accounts = InputAccountManager.retrieveAccounts();
         accounts.GroupAccount.description = "Gruppenleiter";
         accounts.StationAccount.description = "Stationsleiter";
@@ -20,11 +20,11 @@ Template.login.helpers({
         return accounts;
     },
     view_permitted: function () {
-        Meteor.login_deps.depend();
+        Meteor.inputDependency.depend();
         return InputAccountManager.viewPermitted() && !InputAccountManager.inputPermitted();
     },
     input_permitted: function () {
-        Meteor.login_deps.depend();
+        Meteor.inputDependency.depend();
         return InputAccountManager.inputPermitted();
     },
     fullscreen: function () {
@@ -59,7 +59,7 @@ function login(event) {
     const password_input = document.getElementById(type + "_pwd");
     const password = password_input.value;
 
-    Meteor.login_deps.changed();
+    Meteor.inputDependency.changed();
 
     // setTimeout(function () {
     InputAccountManager.login(type, password, function (success, err) {
@@ -69,13 +69,13 @@ function login(event) {
                 password_input.value = "";
             }
             selectDefaultAthlete();
-            Meteor.login_deps.changed();
+        Meteor.inputDependency.changed();
         });
-    Meteor.login_deps.changed();
+    Meteor.inputDependency.changed();
     // }, 300);
 }
 
-Template.login.events({
+Template.inputLogin.events({
     'click .fullscreen-toggle': function () {
         toggleFullScreen();
     },
@@ -130,13 +130,13 @@ Template.login.events({
                     }
 
                     InputAccountManager.logout(event.target.dataset.name);
-                    Meteor.login_deps.changed();
+                    Meteor.inputDependency.changed();
                     setTimeout(Meteor.f7.hidePreloader, 500);
                 }
             );
         } else {
             InputAccountManager.logout(event.target.dataset.name);
-            Meteor.login_deps.changed();
+            Meteor.inputDependency.changed();
         }
     }
 });

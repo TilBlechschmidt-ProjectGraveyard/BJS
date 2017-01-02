@@ -5,6 +5,44 @@ import {DBInterface} from "../database/db_access";
 let inputGroupAccount = new AccountManager('input_group_account');
 let inputStationAccount = new AccountManager('input_station_account');
 
+function logout(type) {
+    if (type == "Gruppenleiter") {
+        inputGroupAccount.logout();
+    } else {
+        inputStationAccount.logout();
+    }
+}
+
+function saveData() {
+    const group_account = inputGroupAccount.get();
+    const station_account = inputStationAccount.get();
+    const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+
+    if (sessionStorage.getItem("measurements")) {
+        const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+        // Loop through all athletes
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            athlete = athletes[athlete];
+            // Check if there is some data for the athlete in the session storage
+            if (measurements[athlete.id]) {
+                // Loop through the sport types
+                for (let stID in measurements[athlete.id]) {
+                    if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
+                    // Add all measurements for the sport type to the athlete
+                    athlete.addMeasurement(Meteor.input.log, stID,
+                        lodash.map(measurements[athlete.id][stID], function (measurement) {
+                            return measurement;
+                        }),
+                        group_account, station_account);
+                }
+            }
+        }
+
+        sessionStorage.setItem("measurements", "{}");
+    }
+}
+
 export let InputAccountManager = {
     /**
      * Returns the Group and station account
@@ -42,10 +80,11 @@ export let InputAccountManager = {
     },
 
     login: function (type, passphrase, callback) {
-        if (type == "GroupAccount") inputGroupAccount.setProcessing(true);
+        //TODO Make this login function work on the admin account as well
+        if (type == "Gruppenleiter") inputGroupAccount.setProcessing(true);
         else                        inputStationAccount.setProcessing(true);
         DBInterface.waitForReady(function () {
-            if (type == "GroupAccount") {
+            if (type == "Gruppenleiter") {
                 inputGroupAccount.login(passphrase, function (logged_in) {
                     if (!logged_in) {
                         if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
@@ -71,11 +110,28 @@ export let InputAccountManager = {
         });
     },
 
-    logout: function (type) {
-        if (type == "GroupAccount") {
-            inputGroupAccount.logout();
+    logout: function (type, force) {
+        if (inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn()) {
+            if (force) {
+                saveData();
+                logout(type);
+                Meteor.inputDependency.changed();
+            } else {
+                Meteor.f7.confirm('Die Daten können nachträglich nicht mehr editiert werden, wenn Sie sich abmelden!', 'Hinweis',
+                    function () {
+                        Meteor.f7.showPreloader('Speichere Daten');
+                        saveData();
+                        logout(type);
+                        Meteor.inputDependency.changed();
+                        setTimeout(function () {
+                            // checkPermission();
+                            Meteor.f7.hidePreloader();
+                        }, 2500);
+                    }
+                );
+            }
         } else {
-            inputStationAccount.logout();
+            logout(type);
         }
     },
 };

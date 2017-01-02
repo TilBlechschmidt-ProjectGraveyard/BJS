@@ -1,0 +1,17 @@
+<template name="login_overview">
+    <div class="list-block">
+        <ul>
+            {{#each choices}}
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-link list-button overview-choice" data-type="{{type}}"
+                             style="width: 100%">{{title}}</div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="list-block">
+        <div class="list-block-label">Some text containing the competition title.</div>
+    </div>
+</template>
