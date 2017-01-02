@@ -23,6 +23,14 @@ function checkAdminLogin(loginObject) {
     return checkLogin(getAdminAccount(), loginObject);
 }
 
+function encryptAsAdmin(data) {
+    return Crypto.encrypt(data, getAdminAccount().ac, getAdminAccount().ac);
+}
+
+function encryptAs(data, account) {
+    return Crypto.encrypt(data, account.ac, account.ac);
+}
+
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../../../config.json');
@@ -40,12 +48,12 @@ export function onStartup() {
 
     Meteor.methods({
         'activateCompetition': function (loginObject, competitionName) {
-            if (!checkAdminLogin(loginObject)) return false;
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             Meteor.COLLECTIONS.switch(competitionName);
-            return true;
+            return encryptAsAdmin(true);
         },
         'removeCompetition': function (loginObject, competitionName) {
-            if (!checkAdminLogin(loginObject)) return false;
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             let listOFCompetitions = DBInterface.listCompetitions();
             if (listOFEditCompetitions.indexOf(competitionName) != -1) {
@@ -65,10 +73,10 @@ export function onStartup() {
                     }
                 });
             }
-            return true;
+            return encryptAsAdmin(true);
         },
         'writeCompetition': function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-            if (!checkAdminLogin(loginObject)) return false;
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             // update index in Generic
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             if (final) {
@@ -117,7 +125,7 @@ export function onStartup() {
                 contestType: competitionTypeID,
                 sportTypes: sportTypes
             });
-            return true;
+            return encryptAsAdmin(true);
         },
         'getEditInformation': function (loginObject, competitionName) {
             if (!checkAdminLogin(loginObject)) return undefined;
@@ -134,14 +142,26 @@ export function onStartup() {
             // console.log(Meteor.COLLECTIONS.Athletes.handles[competitionName]);
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competitionName].find().fetch();
 
-            return {
+            return encryptAsAdmin({
                 competitionTypeID: competitionTypeID,
                 sportTypes: sportTypes,
                 encryptedAthletes: encryptedAthletes
-            };
+            });
         },
         'generateCertificates': function (loginObject) {
             //TODO check login object
+            const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
+
+            console.log(account);
+
+            if (!account) {
+                return false;
+            }
+            if (!account.canViewResults) {
+                return encryptAs(false, account);
+            }
+
+
 
             const ct = DBInterface.getCompetitionType();
             const log = new Log();
@@ -180,7 +200,7 @@ export function onStartup() {
 
             console.log(log.getAsString());
 
-            return groups;
+            return encryptAs(groups, account);
         }
     });
 

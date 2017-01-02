@@ -6,6 +6,7 @@ import {Account} from "../../../api/logic/account";
 import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
+import {Crypto} from "../../../api/crypto/crypto";
 
 //TODO include
 // if (!Meteor.oldName) {
@@ -40,6 +41,8 @@ export function nameExists(name) {
  * @namespace
  */
 export let NewCompetition = {
+    editModeAccount: new Account('EditModeAccount', [''], [], Crypto.generateAC('1234', '1234')),
+
     start_classes: start_classes,
 
     /** @constant {number} */
@@ -65,7 +68,7 @@ export let NewCompetition = {
         const final = !!accounts;
 
         if (!final) {
-            accounts = [Meteor.adminAccount];
+            accounts = [NewCompetition.editModeAccount];
         }
 
         console.log(final);
@@ -74,7 +77,7 @@ export let NewCompetition = {
 
         let groupToEncryptedAthletes = function (group) {
             return _.map(Meteor.groups[group].athletes, function (athlete) {
-                let account = final ? Meteor.groups[group].account : Meteor.adminAccount;
+                let account = final ? Meteor.groups[group].account : NewCompetition.editModeAccount;
 
                 return new Athlete(
                     log,
@@ -97,12 +100,12 @@ export let NewCompetition = {
 
 
         if (Meteor.oldName != NewCompetition.getName()) {
-            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
+            DBInterface.removeCompetition(Meteor.adminAccount, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
 
         DBInterface.writeCompetition(
-            Meteor.adminLoginObject,
+            Meteor.adminAccount,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,

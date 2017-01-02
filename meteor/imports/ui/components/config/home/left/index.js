@@ -4,7 +4,6 @@ import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition, nameExists} from "../../new_competition_helpers";
 import {encryptedAthletesToGroups} from "../../../../../api/logic/athlete";
 import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
-import {getLoginObject} from "../../../../../api/logic/account";
 
 let _deps = new Tracker.Dependency();
 
@@ -15,7 +14,6 @@ let editCompetitions = [];
 getAccountByPassphrase('supersecret', function (account) {
     if (account) {
         Meteor.adminAccount = account;
-        Meteor.adminLoginObject = getLoginObject(account);
     } else {
         alert("Wrong admin password");
     }
@@ -39,7 +37,7 @@ Template.home_left.events({
 
         Meteor.f7.confirm('Nach dem Starten des Wettbewerbs "' + name + '" müssen alle Geräte erneut eine Verbindung zum Server aufbauen. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
             Meteor.f7.showPreloader('Daten laden...');
-            DBInterface.activateCompetition(Meteor.adminLoginObject, name, function (result) {
+            DBInterface.activateCompetition(Meteor.adminAccount, name, function (result) {
                 if (!result) {
                     Meteor.f7.alert("Es gab einen Fehler während des Ladens. Melden Sie sich ab und versuchen Sie es bitte erneut.");
                 } else {
@@ -48,8 +46,6 @@ Template.home_left.events({
                     }, 1500);
                 }
             });
-
-
         });
     },
     'click #link-new_competition': function (event) {
@@ -74,7 +70,7 @@ Template.home_left.events({
         Session.keys = {};
         Meteor.groups = [];
 
-        Meteor.call('getEditInformation', Meteor.adminLoginObject, name, function (err, data) {
+        DBInterface.getEditInformation(Meteor.adminAccount, name, function (err, data) {
             if (err) {
                 console.log(err);
                 Meteor.f7.hidePreloader();
@@ -93,7 +89,7 @@ Template.home_left.events({
                 }
                 NewCompetition.setSports(sports);
 
-                const groups = encryptedAthletesToGroups(data.encryptedAthletes, [Meteor.adminAccount], false, false);
+                const groups = encryptedAthletesToGroups(data.encryptedAthletes, [NewCompetition.editModeAccount], false, false);
 
                 NewCompetition.setGroups(groups);
 

@@ -2,13 +2,11 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {DBInterface} from "../../../api/database/db_access";
 import {getAccountByPassphrase} from "../../../api/account_managment/AccountManager";
-import {getLoginObject} from "../../../api/logic/account";
 
 //TODO replace with login view
 getAccountByPassphrase('urkunden', function (account) {
     if (account) {
         Meteor.certificateAccount = account;
-        Meteor.certificateLoginObject = getLoginObject(account);
     } else {
         alert("Wrong urkunden password");
     }
@@ -20,7 +18,7 @@ const groups_deps = new Tracker.Dependency();
 
 
 Template.output.onRendered(function () {
-    DBInterface.generateCertificates(Meteor.certificateLoginObject, function (data) {
+    DBInterface.generateCertificates(Meteor.certificateAccount, function (data) {
         groups = data;
         current_group = 0;
         groups_deps.changed();
