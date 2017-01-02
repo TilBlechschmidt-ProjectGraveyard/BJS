@@ -38,7 +38,11 @@ export let tryDecrypt = function (string) {
     }
 };
 
+export let invertLogin = function (group) {
+    return group == "Gruppenleiter" ? "Station" : "Gruppenleiter";
+};
+
 export let getLastLogin = function () {
     if (!sessionStorage.getItem("firstLogin")) return "";
-    return sessionStorage.getItem("firstLogin") == "Gruppenleiter" ? "Station" : "Gruppenleiter";
+    return invertLogin(sessionStorage.getItem("firstLogin"));
 };

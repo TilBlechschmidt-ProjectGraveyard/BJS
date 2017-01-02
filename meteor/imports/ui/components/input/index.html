@@ -38,7 +38,13 @@
                         </a>
                     </div>
                     <div class="center" style="overflow-x: auto; overflow-y: hidden">{{nameByID athlete_id}}</div>
-                    <div class="right"><a href="#" class="logout-button">{{last_login}} abmelden</a></div>
+                    <div class="right">
+                        {{#if both_logged_in}}
+                            <a href="#" class="logout-button">{{last_login}} abmelden</a>
+                        {{else}}
+                            <a href="#" class="return-to-login">Zurück</a>
+                        {{/if}}
+                    </div>
                 </div>
             </div>
 

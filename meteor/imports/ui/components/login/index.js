@@ -1,4 +1,4 @@
 import "./router";
 import "./index.html";
-import "./overview";
+import "./choices";
 import "./login";

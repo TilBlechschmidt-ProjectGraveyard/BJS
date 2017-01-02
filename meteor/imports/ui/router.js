@@ -18,13 +18,17 @@ FlowRouter.route('/logout', {
     }
 });
 
-let input = FlowRouter.group({
+const input = FlowRouter.group({
     prefix: '/contest'
 });
 
 input.route('/', {
     triggersEnter: input_onload,
     action: function () {
+        if (!InputAccountManager.viewPermitted()) {
+            FlowRouter.go('/login');
+            return;
+        }
         BlazeLayout.render('input');
     }
 });

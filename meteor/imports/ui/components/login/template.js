@@ -20,9 +20,7 @@ function login(event) {
         if (!sessionStorage.getItem("firstLogin"))
             sessionStorage.setItem("firstLogin", type);
 
-
-        // checkPermission();
-        if (checkPermission())
+        if (checkPermission().redirected)
             nextStep(getLoginSwiper());
 
         Meteor.inputDependency.changed();
@@ -44,9 +42,11 @@ export let getLoginSwiper = function () {
 };
 
 export let goToStep = function (swiper, step) {
+    swiper.unlockSwipeToPrev();
     swiper.unlockSwipeToNext();
     swiper.slideTo(step);
     swiper.lockSwipeToNext();
+    swiper.lockSwipeToPrev();
 };
 
 function onSliderMove() {
@@ -64,7 +64,8 @@ export let initSwiper = function () {
     Meteor.swiper = Meteor.f7.swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         paginationType: 'progress',
-        allowSwipeToNext: false
+        allowSwipeToNext: false,
+        allowSwipeToPrev: false
     });
 
     // Meteor.swiper.once('sliderMove', onSliderMove);
@@ -75,7 +76,21 @@ export let login_onLoad = function () {
     Template.login.events({
         'click .overview-choice': function (event) {
             FlowRouter.go('/login/' + btoa(event.target.dataset.type));
-            nextStep(document.getElementById('login-swiper').swiper);
+            nextStep(getLoginSwiper());
+        },
+        'click .selection': function (event) {
+            const type = event.target.dataset.type;
+            if (event.target.dataset.type == "continue_login")
+                nextStep(getLoginSwiper());
+            else if (type == "view_data")
+                FlowRouter.go("/contest");
+            else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
+                Meteor.f7.showPreloader("Abmelden");
+                InputAccountManager.logout(sessionStorage.getItem("firstLogin"));
+                sessionStorage.removeItem("firstLogin");
+                checkPermission();
+                setTimeout(Meteor.f7.hidePreloader, 500);
+            }
         },
         'click .login-button': function (event) {
             login(event);

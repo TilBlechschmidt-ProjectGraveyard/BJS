@@ -1,11 +1,11 @@
-<template name="login_overview">
+<template name="choices">
     <div class="list-block">
         <ul>
-            {{#each choices}}
+            {{#each c in choices}}
                 <li class="item-content">
                     <div class="item-inner">
-                        <div class="item-link list-button overview-choice" data-type="{{type}}"
-                             style="width: 100%">{{title}}</div>
+                        <div class="item-link list-button {{class}}" data-type="{{#with c}}{{type}}{{/with}}"
+                             style="width: 100%">{{#with c}}{{title}}{{/with}}</div>
                     </div>
                 </li>
             {{/each}}

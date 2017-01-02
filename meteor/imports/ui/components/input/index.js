@@ -1,11 +1,11 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./index.css";
-import "./login";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify, getAthletes, selectDefaultAthlete, getLastLogin} from "../../../startup/client/helpers";
 import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
+import {checkPermission, updateSwiperProgress} from "../login/router";
 
 Meteor.input = {};
 Meteor.input.log = new Log();
@@ -33,6 +33,9 @@ export let input_onload = function (page) {
     });
 
     Template.input.helpers({
+        both_logged_in: function () {
+            return InputAccountManager.inputPermitted();
+        },
         last_login: function () {
             return getLastLogin();
         },
@@ -249,6 +252,10 @@ export let input_onload = function (page) {
             //TODO logout AND possibly set Meteor.firstLogin to false (?)
             InputAccountManager.logout(getLastLogin());
             return false;
+        },
+        'click .return-to-login': function () {
+            checkPermission();
+            setTimeout(updateSwiperProgress, 1);
         }
     });
 
