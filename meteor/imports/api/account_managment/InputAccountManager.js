@@ -1,5 +1,6 @@
 import {AccountManager} from "./AccountManager";
 import {DBInterface} from "../database/db_access";
+import {checkPermission} from "../../ui/components/login/router";
 
 
 let inputGroupAccount = new AccountManager('input_group_account');
@@ -124,7 +125,7 @@ export let InputAccountManager = {
                         logout(type);
                         Meteor.inputDependency.changed();
                         setTimeout(function () {
-                            // checkPermission();
+                            checkPermission();
                             Meteor.f7.hidePreloader();
                         }, 2500);
                     }

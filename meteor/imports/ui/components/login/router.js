@@ -16,19 +16,17 @@ const login_overview = {
 };
 
 export let checkPermission = function () {
-    console.log("permission check");
 
     const groupLoggedIn = InputAccountManager.getGroupAccount().logged_in;
     const stationLoggedIn = InputAccountManager.getStationAccount().logged_in;
-    console.log(groupLoggedIn, stationLoggedIn);
+    const loginA = tryDecrypt(FlowRouter.getParam("loginA"));
+    const loginB = tryDecrypt(FlowRouter.getParam("loginB"));
 
-    if (groupLoggedIn && !stationLoggedIn) {
+    if (groupLoggedIn && !stationLoggedIn && !(loginA == "Gruppenleiter" && loginB == "Station")) {
         FlowRouter.go('/login/' + btoa("Gruppenleiter") + '/' + btoa("Station"));
-        // if (getLoginSwiper()) goToStep(getLoginSwiper(), 2);
         return true;
-    } else if (stationLoggedIn && !groupLoggedIn) {
+    } else if (stationLoggedIn && !groupLoggedIn && !(loginA == "Station" && loginB == "Gruppenleiter")) {
         FlowRouter.go('/login/' + btoa("Station") + '/' + btoa("Gruppenleiter"));
-        // if (getLoginSwiper()) goToStep(getLoginSwiper(), 2);
         return true;
     } else if (stationLoggedIn && groupLoggedIn)
         selectDefaultAthlete();
@@ -40,7 +38,7 @@ login.route("/", {
     triggersEnter: login_onLoad,
     action: function () {
 
-        checkPermission();
+        if (checkPermission()) return;
 
         BlazeLayout.render("login", {
             steps: [
@@ -56,7 +54,7 @@ login.route("/:loginA", {
     triggersEnter: login_onLoad,
     action: function (params) {
 
-        checkPermission();
+        if (checkPermission()) return;
 
         params.loginA = tryDecrypt(params.loginA);
 
@@ -79,7 +77,7 @@ login.route("/:loginA/:loginB", {
     triggersEnter: login_onLoad,
     action: function (params) {
 
-        checkPermission();
+        if (checkPermission()) return;
 
         params.loginA = tryDecrypt(params.loginA);
         params.loginB = tryDecrypt(params.loginB);
