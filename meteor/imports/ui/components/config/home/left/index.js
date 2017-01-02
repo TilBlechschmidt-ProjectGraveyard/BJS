@@ -70,32 +70,25 @@ Template.home_left.events({
         Session.keys = {};
         Meteor.groups = [];
 
-        DBInterface.getEditInformation(Meteor.adminAccount, name, function (err, data) {
-            if (err) {
-                console.log(err);
-                Meteor.f7.hidePreloader();
-                Meteor.f7.alert("Fehler beim Laden der Daten! Versuchen Sie es erneut oder wenden sie sich an den Softwarespezialisten ihres Vertrauens.", "Fehler"); //TODO replace error message
-            } else {
+        DBInterface.getEditInformation(Meteor.adminAccount, name, function (data) {
+            NewCompetition.setName(name);
+            Meteor.oldName = name;
+            NewCompetition.setCompetitionTypeID(data.competitionTypeID);
 
-                NewCompetition.setName(name);
-                Meteor.oldName = name;
-                NewCompetition.setCompetitionTypeID(data.competitionTypeID);
-
-                const sports = NewCompetition.getSports();
-                for (let sportID in sports) {
-                    if (data.sportTypes.indexOf(sports[sportID].stID) == -1) {
-                        sports[sportID].activated = false;
-                    }
+            const sports = NewCompetition.getSports();
+            for (let sportID in sports) {
+                if (data.sportTypes.indexOf(sports[sportID].stID) == -1) {
+                    sports[sportID].activated = false;
                 }
-                NewCompetition.setSports(sports);
-
-                const groups = encryptedAthletesToGroups(data.encryptedAthletes, [NewCompetition.editModeAccount], false, false);
-
-                NewCompetition.setGroups(groups);
-
-                Meteor.f7.hidePreloader();
-                FlowRouter.go('/config/new');
             }
+            NewCompetition.setSports(sports);
+
+            const groups = encryptedAthletesToGroups(data.encryptedAthletes, [NewCompetition.editModeAccount], false, false);
+
+            NewCompetition.setGroups(groups);
+
+            Meteor.f7.hidePreloader();
+            FlowRouter.go('/config/new');
         });
     }
 });
