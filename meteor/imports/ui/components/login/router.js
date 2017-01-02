@@ -15,6 +15,15 @@ const login_overview = {
     }
 };
 
+function fixSwiperProgress() {
+    let swiper = getLoginSwiper();
+    if (swiper) {
+        console.log("UPDATE");
+        swiper.update(true);
+        goToStep(swiper, 2);
+    }
+}
+
 export let checkPermission = function () {
 
     const groupLoggedIn = InputAccountManager.getGroupAccount().logged_in;
@@ -92,6 +101,8 @@ login.route("/:loginA/:loginB", {
 
         Template.login.onRendered(function () {
             goToStep(getLoginSwiper(), 2);
+            setTimeout(fixSwiperProgress, 1);
         });
+
     }
 });

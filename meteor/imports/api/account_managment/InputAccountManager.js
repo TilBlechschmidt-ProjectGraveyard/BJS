@@ -134,5 +134,5 @@ export let InputAccountManager = {
         } else {
             logout(type);
         }
-    },
+    }
 };

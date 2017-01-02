@@ -39,6 +39,7 @@ export let nextStep = function (swiper) {
 };
 
 export let getLoginSwiper = function () {
+    if (!document.getElementById('login-swiper')) return false;
     return document.getElementById('login-swiper').swiper;
 };
 
@@ -66,7 +67,7 @@ export let initSwiper = function () {
         allowSwipeToNext: false
     });
 
-    Meteor.swiper.once('sliderMove', onSliderMove);
+    // Meteor.swiper.once('sliderMove', onSliderMove);
 };
 
 export let login_onLoad = function () {

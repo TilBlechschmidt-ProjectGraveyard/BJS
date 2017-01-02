@@ -243,9 +243,12 @@ export let input_onload = function (page) {
             if (prevAthleteID > athleteIDs.length - 1) prevAthleteID = 0;
             FlowRouter.go("/contest/" + athleteIDs[prevAthleteID]);
         },
-        'click .logout-button': function () {
+        'click .logout-button': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             //TODO logout AND possibly set Meteor.firstLogin to false (?)
             InputAccountManager.logout(getLastLogin());
+            return false;
         }
     });
 
