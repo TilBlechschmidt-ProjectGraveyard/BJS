@@ -2,6 +2,7 @@ import {Data} from "./data";
 import {Crypto} from "./../crypto/crypto.js";
 import {genUUID} from "./../crypto/pwdgen";
 import {getAcsFromAccounts} from "./account";
+import {Log} from "../log";
 
 
 /**
@@ -252,14 +253,14 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
         }
 
         if (require_group_check)
-        if ((firstName.signatureEnforced && accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (lastName.signatureEnforced && accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (isMale.signatureEnforced && accounts[isMale.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (group.signatureEnforced && accounts[group.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (handicap.signatureEnforced && accounts[handicap.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (maxAge.signatureEnforced && accounts[maxAge.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (sports.signatureEnforced && accounts[sports.usedACs.stationAC].group_permissions.indexOf(group.data) == -1)) {
+            if ((firstName.signatureEnforced && accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (lastName.signatureEnforced && accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (ageGroup.signatureEnforced && accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (isMale.signatureEnforced && accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (group.signatureEnforced && accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (handicap.signatureEnforced && accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (maxAge.signatureEnforced && accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (sports.signatureEnforced && accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1)) {
             log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
             return false;
         }
@@ -281,3 +282,35 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
     log.error('Die Daten konnten nicht entschlüsselt werden.');
     return false;
 };
+
+
+export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_signature, require_group_check) {
+    const log = new Log();
+    let groupNames = {};
+    let groups = [];
+
+
+    for (let athlete in encryptedAthletes) {
+        let encryptedAthlete = encryptedAthletes[athlete];
+        let decryptedAthlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, require_signature, require_group_check);
+
+        if (!groupNames.hasOwnProperty(decryptedAthlete.group)) {
+            groupNames[decryptedAthlete.group] = groups.length;
+            groups.push({
+                name: decryptedAthlete.group,
+                athletes: []
+            });
+        }
+        groups[groupNames[decryptedAthlete.group]].athletes.push(decryptedAthlete);
+
+        // groups[groupNames[decryptedAthlete.group]].athletes.push({
+        //     firstName: decryptedAthlete.firstName,
+        //     lastName: decryptedAthlete.lastName,
+        //     ageGroup: decryptedAthlete.ageGroup,
+        //     isMale: decryptedAthlete.isMale,
+        //     handicap: decryptedAthlete.handicap
+        // });
+    }
+
+    return groups;
+}

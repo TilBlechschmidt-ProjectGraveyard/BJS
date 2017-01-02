@@ -209,7 +209,7 @@ export let Swimming = {
      * @param {Athlete} athlete - The Athlete
      * @param {Account[]} accounts - A list of accounts used to decrypt
      * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {number}
+     * @returns {{score: number, stScores: object}}
      */
     calculate: function (log, athlete, accounts, requireSignature) {
         // collect data
@@ -217,10 +217,18 @@ export let Swimming = {
 
         // get best score for each category
         const scores = [0, 0, 0, 0, 0, 0];
+        const stScores = {};
         for (let vd in validData) {
             const score = this.calculateOne(validData[vd]);
             const bestScore = _.max(score);
             const category = validData[vd].category;
+
+            if (!stScores.hasOwnProperty(validData[vd].stID)) {
+                stScores[validData[vd].stID] = 0;
+            }
+            if (stScores[validData[vd].stID] < bestScore) {
+                stScores[validData[vd].stID] = bestScore;
+            }
 
             log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
 
@@ -230,11 +238,14 @@ export let Swimming = {
         }
 
         // take the three best categories
-        return _.reduce(_.sortBy(scores, function (num) {
-            return num;
-        }).splice(3, 3), function (mem, num) {
-            return mem + num;
-        }, 0);
+        return {
+            score: _.reduce(_.sortBy(scores, function (num) {
+                return num;
+            }).splice(3, 3), function (mem, num) {
+                return mem + num;
+            }, 0),
+            stScores: stScores
+        };
     },
 
     /**
@@ -269,15 +280,15 @@ export let Swimming = {
      * @returns {{score: number, certificate: number}}
      */
     generateCertificate: function (log, athlete, accounts, requireSignature) {
-        const score = this.calculate(log, athlete, accounts, requireSignature);
+        const calculateResult = this.calculate(log, athlete, accounts, requireSignature);
         const certificateInfo = this.getCertificateInfo(log, athlete);
 
         let certificate = -1;
 
         if (certificateInfo !== undefined) {
-            if (score >= certificateInfo[1]) {
+            if (calculateResult.score >= certificateInfo[1]) {
                 certificate = 2;
-            } else if (score >= certificateInfo[0]) {
+            } else if (calculateResult.score >= certificateInfo[0]) {
                 certificate = 1;
             } else {
                 certificate = 0;
@@ -285,7 +296,8 @@ export let Swimming = {
         }
 
         return {
-            score: score,
+            score: calculateResult.score,
+            stScores: calculateResult.stScores,
             certificate: certificate
         };
     }

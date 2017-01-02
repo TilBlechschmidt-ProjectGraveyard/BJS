@@ -68,11 +68,12 @@ export let NewCompetition = {
             accounts = [Meteor.adminAccount];
         }
 
+        console.log(final);
+
         let encryptedAthletes = [];
 
         let groupToEncryptedAthletes = function (group) {
             return _.map(Meteor.groups[group].athletes, function (athlete) {
-
                 let account = final ? Meteor.groups[group].account : Meteor.adminAccount;
 
                 return new Athlete(

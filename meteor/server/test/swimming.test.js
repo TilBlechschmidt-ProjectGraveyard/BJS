@@ -77,7 +77,7 @@ describe('swimming', function () {
         p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount], false).should.be.equal(26);
+        ct.calculate(log, p, [groupAccount], false).score.should.be.equal(26);
     });
 
     it('calculates the configuration of Hans Müller with stationAccount', function () {
@@ -89,7 +89,7 @@ describe('swimming', function () {
         p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount, stationAccount], false).should.be.equal(26);
+        ct.calculate(log, p, [groupAccount, stationAccount], false).score.should.be.equal(26);
     });
 
     it('calculates the configuration of Hans Müller with stationAccount and signature required', function () {
@@ -101,7 +101,7 @@ describe('swimming', function () {
         p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount, stationAccount], true).should.be.equal(26);
+        ct.calculate(log, p, [groupAccount, stationAccount], true).score.should.be.equal(26);
     });
 
     it('calculates the configuration of Hans Müller without stationAccount but signature required', function () {
@@ -113,7 +113,7 @@ describe('swimming', function () {
         p.addMeasurement(log, 'st_crawl_100', [80], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_butterfly_50', [70], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount], true).should.be.equal(0);
+        ct.calculate(log, p, [groupAccount], true).score.should.be.equal(0);
     });
 
     it('generates the certificate of Hans Müller', function () {

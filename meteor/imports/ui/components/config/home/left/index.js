@@ -2,8 +2,7 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition, nameExists} from "../../new_competition_helpers";
-import {Athlete} from "../../../../../api/logic/athlete";
-import {Log} from "../../../../../api/log";
+import {encryptedAthletesToGroups} from "../../../../../api/logic/athlete";
 import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
 import {getLoginObject} from "../../../../../api/logic/account";
 
@@ -94,30 +93,7 @@ Template.home_left.events({
                 }
                 NewCompetition.setSports(sports);
 
-                const log = new Log();
-                let groupNames = {};
-                let groups = [];
-
-                for (let athlete in data.encryptedAthletes) {
-                    let encryptedAthlete = data.encryptedAthletes[athlete];
-                    let decryptedAthlete = Athlete.decryptFromDatabase(log, encryptedAthlete, [Meteor.adminAccount], false, false);
-
-                    if (!groupNames.hasOwnProperty(decryptedAthlete.group)) {
-                        groupNames[decryptedAthlete.group] = groups.length;
-                        groups.push({
-                            name: decryptedAthlete.group,
-                            athletes: []
-                        });
-                    }
-                    groups[groupNames[decryptedAthlete.group]].athletes.push({
-                        firstName: decryptedAthlete.firstName,
-                        lastName: decryptedAthlete.lastName,
-                        ageGroup: decryptedAthlete.ageGroup,
-                        isMale: decryptedAthlete.isMale,
-                        handicap: decryptedAthlete.handicap
-                    });
-
-                }
+                const groups = encryptedAthletesToGroups(data.encryptedAthletes, [Meteor.adminAccount], false, false);
 
                 NewCompetition.setGroups(groups);
 

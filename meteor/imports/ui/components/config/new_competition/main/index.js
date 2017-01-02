@@ -45,7 +45,7 @@ Template.new_competition_main.events({
                     text: 'Ja',
                     onClick: function () {
                         if (save()) {
-                            NewCompetition.save(function (result) {
+                            NewCompetition.save(undefined, function (result) {
                                 if (result) FlowRouter.go('/config');
                             });
                         }

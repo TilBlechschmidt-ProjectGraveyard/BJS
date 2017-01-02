@@ -8,27 +8,15 @@
             <div class="contacts-content">
                 <div class="list-block contacts-block">
                     <ul>
-                        <li class="athlete">
-                            <div class="contact-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Gruppe A</div>
+                        {{#each g in list_groups}}
+                            <li data-id="{{@index}}" class="group-selector">
+                                <div class="contact-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">{{g}}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="athlete">
-                            <div class="contact-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Gruppe B</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="athlete">
-                            <div class="contact-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Gruppe C</div>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        {{/each}}
                     </ul>
                 </div>
             </div>
@@ -47,7 +35,7 @@
                             <span>Gruppen</span>
                         </a>
                     </div>
-                    <div class="center">Gruppenname</div>
+                    <div class="center">{{get_groupname}}</div>
                     <div class="right">
                         <a href="#" class="link">Abmelden</a>
                     </div>
@@ -56,45 +44,54 @@
 
             <!-- Page content -->
             <div class="page-content">
-                <div class="content-block-title">Teilnehmername</div>
-                <div class="list-block">
-                    <ul>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">Gesamtpunktzahl</div>
-                                    <div class="item-after">
-                                        Punkte
+                {{#each a in list_athletes}}
+                    {{#with a}}
+                        <div class="content-block-title">{{name}}</div>
+                        <div class="list-block">
+                            <ul>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title label">Gesamtpunktzahl</div>
+                                            <div class="item-after">
+                                                {{score}}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">Urkunde</div>
-                                    <div class="item-after">
-                                        Ehrenurkunde
+                                </li>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title label">Urkunde</div>
+                                            <div class="item-after">
+                                                {{#if valid}}
+                                                    {{certificateName}}
+                                                {{else}}
+                                                    Noch nicht genügend Werte
+                                                {{/if}}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="accordion-item"><a href="#" class="item-content item-link">
-                            <div class="item-inner">
-                                <div class="item-title">Einzelpunkte</div>
-                            </div>
-                        </a>
-                            <div class="accordion-item-content">
-                                <div class="content-block" style="padding-left: 10%">
-                                    <p>Sportart 1: 42</p>
-                                    <p>Sportart 2: 100</p>
-                                    <p>Sportart 3: 4000000000</p>
-                                    <p>Sportart 4: -156</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                                </li>
+                                <li class="accordion-item"><a href="#" class="item-content item-link">
+                                    <div class="item-inner">
+                                        <div class="item-title">Einzelpunkte</div>
+                                    </div>
+                                </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block" style="padding-left: 10%">
+                                            {{#each s in stScores}}
+                                                {{#with s}}
+                                                    <p>{{name}}: {{score}}</p>
+                                                {{/with}}
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    {{/with}}
+                {{/each}}
             </div>
         </div>
     </div>

@@ -2,6 +2,8 @@ import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/db_access";
 import {Account, checkLogin} from "../../api/logic/account";
 import {Crypto} from "../../api/crypto/crypto";
+import {encryptedAthletesToGroups} from "../../api/logic/athlete";
+import {Log} from "../../api/log";
 
 
 /**
@@ -139,8 +141,46 @@ export function onStartup() {
             };
         },
         'generateCertificates': function (loginObject) {
-            //TODO implement
-            return {};
+            //TODO check login object
+
+            const ct = DBInterface.getCompetitionType();
+            const log = new Log();
+
+            const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handle.find().fetch();
+
+            const groups = encryptedAthletesToGroups(encryptedAthletes, accounts, true, true);
+
+            let mapAthletet = function (athlete) {
+                const certificate = ct.generateCertificate(log, athlete, accounts, true);
+                // console.log(certificate);
+                const stScores = [];
+
+                for (let stID in certificate.stScores) {
+                    stScores.push({
+                        stID: stID,
+                        name: ct.getNameOfSportType(stID),
+                        score: certificate.stScores[stID]
+                    });
+                }
+
+                return {
+                    name: athlete.getFullName(),
+                    valid: ct.validate(log, athlete, accounts, true),
+                    score: certificate.score,
+                    stScores: stScores,
+                    certificate: certificate.certificate,
+                    certificateName: certificate.certificate === 2 ? "Ehrenurkunde" : (certificate.certificate === 1 ? "Siegerurkunde" : (certificate.certificate === 0 ? "Teilnehmerurkunde" : "Fehler"))
+                };
+            };
+
+            for (let groupGroupID in groups) {
+                groups[groupGroupID].athletes = _.map(groups[groupGroupID].athletes, mapAthletet);
+            }
+
+            console.log(log.getAsString());
+
+            return groups;
         }
     });
 

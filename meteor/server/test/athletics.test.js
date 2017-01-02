@@ -87,7 +87,7 @@ describe('athletics', function () {
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount], false).should.be.equal(2195);
+        ct.calculate(log, p, [groupAccount], false).score.should.be.equal(2195);
     });
 
     it('calculates the configuration of Hans Müller with stationAccount', function () {
@@ -101,7 +101,7 @@ describe('athletics', function () {
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount, stationAccount], false).should.be.equal(2195);
+        ct.calculate(log, p, [groupAccount, stationAccount], false).score.should.be.equal(2195);
     });
 
     it('calculates the configuration of Hans Müller with stationAccount and signature required', function () {
@@ -115,7 +115,7 @@ describe('athletics', function () {
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount, stationAccount], true).should.be.equal(2195);
+        ct.calculate(log, p, [groupAccount, stationAccount], true).score.should.be.equal(2195);
     });
 
     it('calculates the configuration of Hans Müller without stationAccount but signature required', function () {
@@ -129,7 +129,7 @@ describe('athletics', function () {
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
-        ct.calculate(log, p, [groupAccount], true).should.be.equal(0);
+        ct.calculate(log, p, [groupAccount], true).score.should.be.equal(0);
     });
 
     it('generates the certificate of Hans Müller', function () {
