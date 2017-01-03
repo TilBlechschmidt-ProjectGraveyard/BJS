@@ -37,6 +37,12 @@ function login(event) {
     });
 }
 
+export let prevStep = function (swiper) {
+    swiper.unlockSwipeToPrev();
+    swiper.slidePrev();
+    swiper.lockSwipeToPrev();
+};
+
 export let nextStep = function (swiper) {
     swiper.unlockSwipeToNext();
     swiper.slideNext();
@@ -109,6 +115,12 @@ export let login_onLoad = function () {
             event.preventDefault();
             event.stopImmediatePropagation();
             login(event);
+            return false;
+        },
+        'click .login-back-button': function (event) {
+            console.log('back');
+            console.log(getLoginSwiper());
+            prevStep(getLoginSwiper());
             return false;
         },
         'keypress input[type="password"]': function (event) {
