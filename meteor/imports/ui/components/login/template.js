@@ -75,10 +75,15 @@ export let login_onLoad = function () {
 
     Template.login.events({
         'click .overview-choice': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             FlowRouter.go('/login/' + btoa(event.target.dataset.type));
             nextStep(getLoginSwiper());
+            return false;
         },
         'click .selection': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             const type = event.target.dataset.type;
             if (event.target.dataset.type == "continue_login")
                 nextStep(getLoginSwiper());
@@ -91,6 +96,7 @@ export let login_onLoad = function () {
                 checkPermission();
                 setTimeout(Meteor.f7.hidePreloader, 500);
             }
+            return false;
         },
         'click .login-button': function (event) {
             event.preventDefault();
