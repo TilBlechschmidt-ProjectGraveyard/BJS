@@ -1,118 +1,159 @@
+import {SessionAccount} from "./SessionAccount";
 import {DBInterface} from "../database/db_access";
-import {Crypto} from "../crypto/crypto";
-import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
-
-const storage = window.sessionStorage;
+import {checkPermission} from "../../ui/components/login/router";
 
 
-/**
- *
- * @param {string} passphrase - The login passphrase entered by the user.
- * @param callback
- * @returns {?Account}
- */
-export function getAccountByPassphrase(passphrase, callback) {
-    DBInterface.waitForReady(function () {
-        const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
-        const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
-        const remoteAccounts = contestAccounts.concat([adminAccount]);
-        let account = null;
-        for (let remoteAccount in remoteAccounts) {
-            if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
+let inputGroupAccount = new SessionAccount('input_group_account');
+let inputStationAccount = new SessionAccount('input_station_account');
+let inputAdminAccount = new SessionAccount('input_admin_account');
+let inputOutputAccount = new SessionAccount('input_output_account');
 
-            remoteAccount = remoteAccounts[remoteAccount];
+function logout(type) {
+    if (type == "Gruppenleiter") {
+        inputGroupAccount.logout();
+    } else if (type == "Station") {
+        inputStationAccount.logout();
+    } else if (type == "Administrator") {
+        inputAdminAccount.logout();
+    } else if (type == "Urkunden Erstellen") {
+        inputOutputAccount.logout();
+    }
+}
 
-            if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
-                account = remoteAccount;
-                account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
-                break;
+function saveData() {
+    const group_account = inputGroupAccount.get();
+    const station_account = inputStationAccount.get();
+    const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+
+    if (sessionStorage.getItem("measurements")) {
+        const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+        // Loop through all athletes
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            athlete = athletes[athlete];
+            // Check if there is some data for the athlete in the session storage
+            if (measurements[athlete.id]) {
+                // Loop through the sport types
+                for (let stID in measurements[athlete.id]) {
+                    if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
+                    // Add all measurements for the sport type to the athlete
+                    athlete.addMeasurement(Meteor.input.log, stID,
+                        lodash.map(measurements[athlete.id][stID], function (measurement) {
+                            return measurement;
+                        }),
+                        group_account, station_account);
+                }
             }
         }
-        if (typeof callback === 'function') callback(account);
-    });
+
+        sessionStorage.setItem("measurements", "{}");
+    }
 }
 
-export function AccountManager(name) {
-    this.name = name;
-    this.storageID = "account" + name;
-}
-
-AccountManager.prototype = {
+export let AccountManager = {
+    /**
+     * Returns the Group and station account
+     * @return {{GroupAccount: AccountManagerResult, StationAccount: AccountManagerResult}}
+     */
+    retrieveAccounts: function () {
+        return {
+            GroupAccount: inputGroupAccount.get(),
+            StationAccount: inputStationAccount.get()
+        };
+    },
 
     /**
-     * @typedef {Object} AccountManagerResult
-     * @property {?Account} account - The account or undefined
-     * @property {boolean} logged_in - Whether the account is logged in
-     * @property {boolean} processing - Whether the account is processed
+     * Returns the group account
+     * @returns {?AccountManagerResult}
      */
+    getGroupAccount: function () {
+        return inputGroupAccount.get();
+    },
 
     /**
-     * Returns the account.
-     * @returns AccountManagerResult
+     * Returns the station account
+     * @returns {?AccountManagerResult}
      */
-    get: function () {
-        if (!storage.getItem(this.storageID)) {
-            this.logout();
-        }
-        return JSON.parse(storage.getItem(this.storageID));
+    getStationAccount: function () {
+        return inputStationAccount.get();
     },
 
-    store: function (account) {
-        storage.setItem(this.storageID, JSON.stringify(account));
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getAdminAccount: function () {
+        return inputAdminAccount.get();
     },
 
-    setProcessing: function (newStatus) {
-        const account = this.get();
-        account.processing = newStatus;
-        this.store(account);
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getOutputAccount: function () {
+        return inputOutputAccount.get();
     },
 
-    login: function (passphrase, callback) {
-        this.setProcessing(true);
-        let thisAccountManager = this;
-        setTimeout(function () { //TODO remove timeout. its just for preloader testing
-            getAccountByPassphrase(passphrase, function (account) {
-                if (account === null && typeof callback === 'function') {
-                    thisAccountManager.setProcessing(false);
-                    callback(false, "Ungültiges Passwort.");
-                } else {
-                    thisAccountManager.store({
-                        account: account,
-                        logged_in: true,
-                        processing: false
-                    });
+    viewPermitted: function () {
+        return inputGroupAccount.isLoggedIn();
+    },
 
-                    // Notify the caller
-                    if (typeof callback === 'function') callback(true);
-                }
+    inputPermitted: function () {
+        return inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn();
+    },
+
+    login: function (type, passphrase, callback) {
+        let account = inputGroupAccount;
+
+        if (type == "Station") account = inputStationAccount;
+        else if (type == "Administrator") account = inputAdminAccount;
+        else if (type == "Urkunden Erstellen") account = inputOutputAccount;
+
+
+        account.setProcessing(true);
+        DBInterface.waitForReady(function () {
+            account.login(passphrase, function (logged_in) {
+                if (!logged_in) {
+                    if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
+                } else if (type == "Gruppenleiter" && !account.isGroupAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Gruppe an.");
+                } else if (type == "Station" && !account.isStationAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Station an.");
+                } else if (type == "Administrator" && !account.isAdminAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benuzer hat keine Administrator Rechte.");
+                } else if (type == "Urkunden Erstellen" && !account.canViewResults()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benutzer hat keine Berechtigung die Urkunden zu erstellen..");
+                } else if (typeof callback === 'function') callback(true);
             });
-        }, 100);
-    },
-
-    logout: function () {
-        this.store({
-            account: undefined,
-            logged_in: false,
-            processing: false
         });
     },
 
-    isLoggedIn: function () {
-        return this.get().logged_in;
-    },
-    isGroupAccount: function () {
-        return isGroupAccount(this.get().account);
-    },
-    isStationAccount: function () {
-        return isStationAccount(this.get().account);
-    },
-    isAdminAccount: function () {
-        return isAdminAccount(this.get().account);
-    },
-    canViewResults: function () {
-        return this.get().account.canViewResults;
+    logout: function (type, force) {
+        if (inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn()) {
+            if (force) {
+                saveData();
+                logout(type);
+                Meteor.inputDependency.changed();
+            } else {
+                Meteor.f7.confirm('Wenn Sie sich abmelden können die Daten nachträglich nicht mehr editiert werden!', 'Hinweis',
+                    function () {
+                        Meteor.f7.showPreloader('Speichere Daten');
+                        saveData();
+                        logout(type);
+                        Meteor.inputDependency.changed();
+                        setTimeout(function () {
+                            checkPermission();
+                            Meteor.f7.hidePreloader();
+                        }, 2500);
+                    }
+                );
+            }
+        } else {
+            logout(type);
+        }
     }
 };
-
-
-

@@ -5,7 +5,7 @@ import {NewCompetition} from "../../new_competition_helpers";
 import {Athlete} from "../../../../../api/logic/athlete";
 import {Log} from "../../../../../api/log";
 import {genUUID} from "../../../../../api/crypto/pwdgen";
-import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
+import {getAccountByPassphrase} from "../../../../../api/account_managment/SessionAccount";
 import {getLoginObject} from "../../../../../api/logic/account";
 
 let _deps = new Tracker.Dependency();
