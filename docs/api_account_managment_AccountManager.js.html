@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>api/logic/competition_types/swimming.js - Documentation</title>
+    <title>api/account_managment/AccountManager.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -177,303 +177,192 @@
 
 <div id="main">
 
-    <h1 class="page-title">api/logic/competition_types/swimming.js</h1>
+    <h1 class="page-title">api/account_managment/AccountManager.js</h1>
 
 
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {filterUndefined} from "./../general";
+            <pre class="prettyprint source linenums"><code>import {SessionAccount} from "./SessionAccount";
+import {DBInterface} from "../database/db_access";
+import {checkPermission} from "../../ui/components/login/router";
 
-/**
- * Object containing all information and functions required for Swimming contest.
- * @public
- * @namespace
- */
-export let Swimming = {
-    /** @constant {number} */
-    maxAge: 18,
 
-    /**
-     * @typedef {Object} SwimmingCalculation
-     * @property {number} a - A sport type specific number required to calculate the score
-     * @property {number} c - A sport type specific number required to calculate the score
-     * @property {number} d - A sport type specific number required to calculate the score
-     * @property {ConversionFactors} conversionFactor - An object containing information about conversion factors for all start classes
-     */
+let inputGroupAccount = new SessionAccount('input_group_account');
+let inputStationAccount = new SessionAccount('input_station_account');
+let inputAdminAccount = new SessionAccount('input_admin_account');
+let inputOutputAccount = new SessionAccount('input_output_account');
 
-    /**
-     * @typedef {Object} SwimmingGenderData
-     * @property {SwimmingCalculation} scoreCalculation - Information about the score calculation
-     */
+function logout(type) {
+    if (type == "Gruppenleiter") {
+        inputGroupAccount.logout();
+    } else if (type == "Station") {
+        inputStationAccount.logout();
+    } else if (type == "Administrator") {
+        inputAdminAccount.logout();
+    } else if (type == "Urkunden Erstellen") {
+        inputOutputAccount.logout();
+    }
+}
 
-    /**
-     * @typedef {Object} SwimmingSportData
-     * @property {string} id - The id of the sport type
-     * @property {string} name - The human readable name for the sport type
-     * @property {number} category - The category of the sport type (eg. sprinting)
-     * @property {string} unit - The human readable unit for the measurements (eg. m (meter))
-     * @property {string} description - A description of the sport type. It may contain information about how to measure in this sport type.
-     */
+function saveData() {
+    const group_account = inputGroupAccount.get();
+    const station_account = inputStationAccount.get();
+    const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 
-    /**
-     * Returns a list of sport types associated with the ct athletics.
-     * @returns {SwimmingSportData[]}
-     */
-    getSports: function () {
-        return require('./../../../data/swimming/sports.json');
-    },
-
-    /**
-     * Returns the SportType by its id
-     * @param {string} stID - The id of the sport type
-     * @return {object|undefined}
-     */
-    getSportType: function (stID) {
-        const data = Swimming.getSports();
-
-        for (let d in data) {
-            if (data[d].id === stID) return data[d];
-        }
-        return undefined;
-    },
-
-    /**
-     * Returns the name of a SportType
-     * @param {string} stID - The id of the sport type
-     * @return {string}
-     */
-    getNameOfSportType: function (stID) {
-        const sport_type = Swimming.getSportType(stID);
-        if (sport_type) return sport_type.name;
-        else return "Unknown";
-    },
-
-    getScoreTable: function () {
-        return require('./../../../data/swimming/score_table.json');
-    },
-    /**
-     * Returns whether a given athlete can do the sport type with the id stID.
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @param {string} stID - The string id of the sport type
-     * @returns {{canDoSport, dataObject, log}}
-                */
-    canDoSportType: function (log, athlete, stID) {
-        //collect information
-        let baseInformation = _.find(this.getSports(), function (st) {
-            return st.id === stID;
-        });
-
-        // check information
-        if (!baseInformation) {
-            log.error(stID + ' ist keine gültige Sport ID.');
-            return {
-                canDoSport: false,
-                dataObject: undefined
-            };
-        }
-
-        // filter information
-        const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
-        //noinspection JSUnresolvedVariable
-        const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
-
-        const baseScoreTable = this.getScoreTable();
-
-        const genderScoreInfo = athlete.isMale ? baseScoreTable.m : baseScoreTable.w;
-        const scoreTable = genderScoreInfo[athlete.tableAge][stID];
-
-        // save important information
-        const dataObject = {
-            stID: stID,
-            name: baseInformation.name,
-            category: baseInformation.category,
-            unit: baseInformation.unit,
-            genderInfo: genderInfo,
-            scoreTable: scoreTable,
-            conversionFactor: handicapData === undefined ? 1.0 : handicapData,
-            conversionAddend: (athlete.handicap !== '0' &amp;&amp; (stID === 'st_diving_push' || stID === 'st_diving')) ? 1.0 : 0.0
-        };
-
-        let canDoSport = true;
-
-        // check age
-        if (scoreTable === undefined) {
-            log.warning(athlete.getFullName() + ' hat kein gültiges Alter für ' + baseInformation.name + '.');
-            canDoSport = false;
-        }
-
-        return {
-            canDoSport: canDoSport,
-            dataObject: dataObject
-        };
-    },
-
-    /**
-     * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @param {Account[]} accounts - A list of accounts used to decrypt
-     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * * @returns {object[]}
-     */
-    getValidData: function (log, athlete, accounts, requireSignature) {
-        //get the plain data from the athlete (unencrypted)
-        const plain = athlete.getPlain(log, accounts, requireSignature);
-
-        // filter data with more then on point
-        const tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements.data) > 0;
-        });
-
-        // temporary store this in that
-        const that = this; //TODO alternative?
-
-        // Add information
-        return filterUndefined(_.map(tmpData, function (dataObject) {
-            //noinspection JSUnresolvedVariable
-            let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
-
-            // add measurement to general information
-            if (canDoSportObject.dataObject !== undefined) {
-                canDoSportObject.dataObject.measurements = dataObject.measurements.data;
-            }
-            return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
-        }));
-    },
-
-    /**
-     * Returns whether an athlete is already finished.
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @param {Account[]} accounts - A list of accounts used to decrypt
-     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {boolean}
-     */
-    validate: function (log, athlete, accounts, requireSignature) {
-        // collect data
-        const data = this.getValidData(log, athlete, accounts, requireSignature);
-
-        // sort for categories
-        const categories = [];
-        for (let st in data) {
-            categories[data[st].category] = true;
-        }
-
-        return 3 &lt;= _.filter(categories, function (category) {
-                return category;
-            }).length;
-    },
-
-    /**
-     * Calculates the score of one dataObject returned by the getValidData function.
-     * @private
-     * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
-     * @returns {number[]}
-     */
-    calculateOne: function (dataObject) {
-        return _.map(dataObject.measurements, function (measurement) {
-            const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * measurement;
-            let score = 0;
-
-            // select score from table
-            for (let i = 0; i &lt;= 14; i++) {
-                if ((dataObject.unit === 'm' &amp;&amp; tmp_measurement >= dataObject.scoreTable[i]) ||
-                    (dataObject.unit !== 'm' &amp;&amp; tmp_measurement &lt;= dataObject.scoreTable[i])) {
-                    score = i + 1;
+    if (sessionStorage.getItem("measurements")) {
+        const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+        // Loop through all athletes
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            athlete = athletes[athlete];
+            // Check if there is some data for the athlete in the session storage
+            if (measurements[athlete.id]) {
+                // Loop through the sport types
+                for (let stID in measurements[athlete.id]) {
+                    if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
+                    // Add all measurements for the sport type to the athlete
+                    athlete.addMeasurement(Meteor.input.log, stID,
+                        lodash.map(measurements[athlete.id][stID], function (measurement) {
+                            return measurement;
+                        }),
+                        group_account, station_account);
                 }
             }
-            return score;
+        }
+
+        sessionStorage.setItem("measurements", "{}");
+    }
+}
+
+export let AccountManager = {
+    /**
+     * Returns the Group and station account
+     * @return {{GroupAccount: AccountManagerResult, StationAccount: AccountManagerResult}}
+                */
+    retrieveAccounts: function () {
+        return {
+            GroupAccount: inputGroupAccount.get(),
+            StationAccount: inputStationAccount.get(),
+            AdminAccount: inputAdminAccount.get(),
+            OutputAccount: inputOutputAccount.get()
+        };
+    },
+
+    /**
+     * Returns the group account
+     * @returns {?AccountManagerResult}
+     */
+    getGroupAccount: function () {
+        return inputGroupAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getStationAccount: function () {
+        return inputStationAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getAdminAccount: function () {
+        return inputAdminAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getOutputAccount: function () {
+        return inputOutputAccount.get();
+    },
+
+    /**
+     * Returns whether a group is logged in
+     * @returns {*}
+     */
+    viewPermitted: function () {
+        return inputGroupAccount.isLoggedIn();
+    },
+
+    /**
+     * Returns whether a group AND a station are logged in
+     * @returns {*}
+     */
+    inputPermitted: function () {
+        return inputGroupAccount.isLoggedIn() &amp;&amp; inputStationAccount.isLoggedIn();
+    },
+
+    /**
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {string} passphrase
+     * @param [callback] - optional callback
+     */
+    login: function (type, passphrase, callback) {
+        let account = inputGroupAccount;
+
+        if (type == "Station") account = inputStationAccount;
+        else if (type == "Administrator") account = inputAdminAccount;
+        else if (type == "Urkunden Erstellen") account = inputOutputAccount;
+
+
+        account.setProcessing(true);
+        DBInterface.waitForReady(function () {
+            account.login(passphrase, function (logged_in) {
+                if (!logged_in) {
+                    if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
+                } else if (type == "Gruppenleiter" &amp;&amp; !account.isGroupAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Gruppe an.");
+                } else if (type == "Station" &amp;&amp; !account.isStationAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Station an.");
+                } else if (type == "Administrator" &amp;&amp; !account.isAdminAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benuzer hat keine Administrator Rechte.");
+                } else if (type == "Urkunden Erstellen" &amp;&amp; !account.canViewResults()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benutzer hat keine Berechtigung die Urkunden zu erstellen..");
+                } else if (typeof callback === 'function') callback(true);
+            });
         });
     },
 
     /**
-     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @param {Account[]} accounts - A list of accounts used to decrypt
-     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {number}
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {boolean} force - Skip confirmation
      */
-    calculate: function (log, athlete, accounts, requireSignature) {
-        // collect data
-        const validData = this.getValidData(log, athlete, accounts, requireSignature);
-
-        // get best score for each category
-        const scores = [0, 0, 0, 0, 0, 0];
-        for (let vd in validData) {
-            const score = this.calculateOne(validData[vd]);
-            const bestScore = _.max(score);
-            const category = validData[vd].category;
-
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
-
-            if (scores[category] &lt; bestScore) {
-                scores[category] = bestScore;
-            }
-        }
-
-        // take the three best categories
-        return _.reduce(_.sortBy(scores, function (num) {
-            return num;
-        }).splice(3, 3), function (mem, num) {
-            return mem + num;
-        }, 0);
-    },
-
-    /**
-     * Returns information about the ct swimming.
-     * @returns {object}
-     */
-    getInformation: function () {
-        return require('./../../../data/swimming/information.json');
-    },
-
-    /**
-     * Returns the min. score for the different certificates.
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @returns {undefined|number[]}
-     */
-    getCertificateInfo: function (log, athlete) {
-        if (athlete.check(log) === false) {
-            log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
-            return undefined;
-        }
-        return [15, 27];
-    },
-
-    /**
-     * Generates to certificate for an athlete
-     * @public
-     * @param {Log} log - A log object
-     * @param {Athlete} athlete - The Athlete
-     * @param {Account[]} accounts - A list of accounts used to decrypt
-     * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {{score: number, certificate: number}}
-                */
-    generateCertificate: function (log, athlete, accounts, requireSignature) {
-        const score = this.calculate(log, athlete, accounts, requireSignature);
-        const certificateInfo = this.getCertificateInfo(log, athlete);
-
-        let certificate = -1;
-
-        if (certificateInfo !== undefined) {
-            if (score >= certificateInfo[1]) {
-                certificate = 2;
-            } else if (score >= certificateInfo[0]) {
-                certificate = 1;
+    logout: function (type, force) {
+        if (inputGroupAccount.isLoggedIn() &amp;&amp; inputStationAccount.isLoggedIn()) {
+            if (force) {
+                saveData();
+                logout(type);
+                Meteor.inputDependency.changed();
             } else {
-                certificate = 0;
+                Meteor.f7.confirm('Wenn Sie sich abmelden können die Daten nachträglich nicht mehr editiert werden!', 'Hinweis',
+                    function () {
+                        Meteor.f7.showPreloader('Speichere Daten');
+                        saveData();
+                        logout(type);
+                        Meteor.inputDependency.changed();
+                        setTimeout(function () {
+                            checkPermission();
+                            Meteor.f7.hidePreloader();
+                        }, 2500);
+                    }
+                );
             }
+        } else {
+            logout(type);
         }
-
-        return {
-            score: score,
-            certificate: certificate
-        };
     }
-};</code></pre>
+};
+</code></pre>
         </article>
     </section>
 
