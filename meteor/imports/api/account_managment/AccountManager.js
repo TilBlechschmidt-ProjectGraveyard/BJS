@@ -50,6 +50,11 @@ function saveData() {
     }
 }
 
+/**
+ * Object containing various function to manage account on the client.
+ * @public
+ * @namespace
+ */
 export let AccountManager = {
     /**
      * Returns the Group and station account
