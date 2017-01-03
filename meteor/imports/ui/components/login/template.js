@@ -6,13 +6,20 @@ function login(event) {
     const password_input = document.querySelectorAll("input[data-type='" + type + "'][type='password']")[0];
     const password = password_input.value;
 
+    if (Meteor.loginInProgress) {
+        console.warn("Login already in progress!");
+        return;
+    }
+    Meteor.loginInProgress = true;
     Meteor.f7.showPreloader("Anmelden");
 
     InputAccountManager.login(type, password, function (success, err) {
         if (!success) {
             //TODO: Throw something at the user
             Meteor.f7.hidePreloader();
-            Meteor.f7.alert(err, "Fehler");
+            Meteor.f7.alert(err, "Fehler", function () {
+                Meteor.loginInProgress = false;
+            });
             password_input.value = "";
             return;
         }
@@ -24,9 +31,9 @@ function login(event) {
             nextStep(getLoginSwiper());
 
         Meteor.inputDependency.changed();
-        // selectDefaultAthlete();
 
         Meteor.f7.hidePreloader();
+        Meteor.loginInProgress = false;
     });
 }
 
@@ -75,10 +82,15 @@ export let login_onLoad = function () {
 
     Template.login.events({
         'click .overview-choice': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             FlowRouter.go('/login/' + btoa(event.target.dataset.type));
             nextStep(getLoginSwiper());
+            return false;
         },
         'click .selection': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             const type = event.target.dataset.type;
             if (event.target.dataset.type == "continue_login")
                 nextStep(getLoginSwiper());
@@ -91,6 +103,7 @@ export let login_onLoad = function () {
                 checkPermission();
                 setTimeout(Meteor.f7.hidePreloader, 500);
             }
+            return false;
         },
         'click .login-button': function (event) {
             event.preventDefault();
@@ -98,7 +111,7 @@ export let login_onLoad = function () {
             login(event);
             return false;
         },
-        'keypress input': function (event) {
+        'keypress input[type="password"]': function (event) {
             if (event.keyCode == 13) {
                 if (event.target.dataset.type) login(event);
                 event.stopPropagation();
