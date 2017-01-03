@@ -3,25 +3,34 @@ import "./index.html";
 import {DBInterface} from "../../../api/database/db_access";
 import {getAccountByPassphrase} from "../../../api/account_managment/AccountManager";
 
-//TODO replace with login view
-getAccountByPassphrase('urkunden', function (account) {
-    if (account) {
-        Meteor.certificateAccount = account;
-    } else {
-        alert("Wrong urkunden password");
-    }
-});
 
 let groups = [];
 let current_group = -1;
 const groups_deps = new Tracker.Dependency();
 
 
-Template.output.onRendered(function () {
+function refresh() {
     DBInterface.generateCertificates(Meteor.certificateAccount, function (data) {
         groups = data;
         current_group = 0;
         groups_deps.changed();
+    });
+}
+
+Template.output.onRendered(function () {
+    DBInterface.waitForReady(function () {
+
+        //TODO replace with login view
+        getAccountByPassphrase('urkunden', function (account) {
+            if (account) {
+                Meteor.certificateAccount = account;
+            } else {
+                alert("Wrong urkunden password");
+            }
+        });
+
+        refresh();
+
     });
 });
 
@@ -51,4 +60,5 @@ Template.output.events({
         Meteor.f7.closePanel();
         groups_deps.changed();
     },
+    'click #btn_refresh': refresh
 });
