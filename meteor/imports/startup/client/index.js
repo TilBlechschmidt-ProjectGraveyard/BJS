@@ -3,6 +3,7 @@ import "../../ui/components/login";
 import "../../ui/components/views";
 import "../../ui/components/config";
 import "../../ui/components/input";
+import "../../ui/components/offline/index";
 import "../../ui/components/preloader";
 import {arrayify} from "./helpers";
 

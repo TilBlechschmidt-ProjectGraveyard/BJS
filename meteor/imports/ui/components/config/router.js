@@ -1,7 +1,8 @@
 import {athletes_right_onLoad} from "./athletes/right";
 
 let config = FlowRouter.group({
-    prefix: '/config'
+    prefix: '/config',
+    name: 'config'
 });
 
 config.route('/', {

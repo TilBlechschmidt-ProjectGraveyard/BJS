@@ -1,0 +1,30 @@
+<template name="offline">
+    <div class="login-screen {{#if isOffline}}modal-in{{/if}}">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Darn it!</div>
+                    <p style="text-align: center; color:#455A64">Wir können unsere fleißigen Gorillas nicht erreichen!
+                        <br> Bitte setze dich so bald wie möglich mit ihnen in Verbindung um diesen Teil der Seite
+                        nutzen zu können.</p>
+                    <div class="list-block">
+                        <img src="/gorilla.jpg" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .hidden {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .show {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+    </style>
+</template>
