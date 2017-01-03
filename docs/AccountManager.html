@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Crypto - Documentation</title>
+    <title>AccountManager - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -190,7 +190,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Crypto</h1>
+    <h1 class="page-title">AccountManager</h1>
 
 
     <section>
@@ -198,7 +198,7 @@
         <header>
 
             <h2>
-                Crypto
+                AccountManager
             </h2>
 
 
@@ -215,8 +215,8 @@
                     <dd class="tag-source">
                         <ul class="dummy">
                             <li>
-                                <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                    href="api_crypto_crypto.js.html#line103">line 103</a>
+                                <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                                <a href="api_account_managment_AccountManager.js.html#line58">line 58</a>
                             </li>
                         </ul>
                     </dd>
@@ -225,8 +225,8 @@
                 </dl>
 
 
-                <div class="description"><p>Object containing various cryptography related tasks like encryption,
-                    decryption and signature verification.</p></div>
+                <div class="description"><p>Object containing various function to manage account on the client.</p>
+                </div>
 
 
             </div>
@@ -235,11 +235,13 @@
             <h3 class="subsection-title">Methods</h3>
 
 
-            <h4 class="name" id=".encrypt"><span class="type-signature">(static) </span>encrypt<span class="signature">(data, groupAC, stationAC)</span><span
-                    class="type-signature"> &rarr; {Object}</span></h4>
+            <h4 class="name" id=".getAdminAccount"><span class="type-signature">(static) </span>getAdminAccount<span
+                    class="signature">()</span><span class="type-signature"> &rarr; (nullable) {<a
+                    href="global.html#AccountManagerResult">AccountManagerResult</a>}</span></h4>
 
 
-            <p class="summary">Encrypt data and sign it.</p>
+            <p class="summary">
+            <p>Returns the station account</p>.</p>
 
 
             <dl class="details">
@@ -249,8 +251,8 @@
                 <dd class="tag-source">
                     <ul class="dummy">
                         <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line174">line 174</a>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line92">line 92</a>
                         </li>
                     </ul>
                 </dd>
@@ -260,86 +262,8 @@
 
 
             <div class="description">
-                <p>Encrypt data and sign it.</p>
+                <p>Returns the station account</p>
             </div>
-
-
-            <h5>Parameters:</h5>
-
-
-            <table class="params">
-                <thead>
-                <tr>
-
-                    <th>Name</th>
-
-
-                    <th>Type</th>
-
-
-                    <th class="last">Description</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-
-                <tr>
-
-                    <td class="name"><code>data</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">*</span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Data to encrypt.</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>groupAC</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Group authentication code to use for encryption.</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>stationAC</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Station authentication code to use for encryption.</p></td>
-                </tr>
-
-
-                </tbody>
-            </table>
 
 
             <h5>Returns:</h5>
@@ -351,20 +275,20 @@
                 </dt>
                 <dd>
 
-                    <span class="param-type">Object</span>
+                    <span class="param-type"><a href="global.html#AccountManagerResult">AccountManagerResult</a></span>
 
 
                 </dd>
             </dl>
 
 
-            <h4 class="name" id=".generateAC"><span class="type-signature">(static) </span>generateAC<span
-                    class="signature">(password, salt<span class="signature-attributes">opt</span>)</span><span
-                    class="type-signature"> &rarr; {<a
-                    href="global.html#AuthenticationCode">AuthenticationCode</a>}</span></h4>
+            <h4 class="name" id=".getGroupAccount"><span class="type-signature">(static) </span>getGroupAccount<span
+                    class="signature">()</span><span class="type-signature"> &rarr; (nullable) {<a
+                    href="global.html#AccountManagerResult">AccountManagerResult</a>}</span></h4>
 
 
-            <p class="summary">Generates a authentication code for.</p>
+            <p class="summary">
+            <p>Returns the group account</p>.</p>
 
 
             <dl class="details">
@@ -374,8 +298,8 @@
                 <dd class="tag-source">
                     <ul class="dummy">
                         <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line154">line 154</a>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line76">line 76</a>
                         </li>
                     </ul>
                 </dd>
@@ -385,7 +309,193 @@
 
 
             <div class="description">
-                <p>Generates a authentication code for.</p>
+                <p>Returns the group account</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type"><a href="global.html#AccountManagerResult">AccountManagerResult</a></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".getOutputAccount"><span class="type-signature">(static) </span>getOutputAccount<span
+                    class="signature">()</span><span class="type-signature"> &rarr; (nullable) {<a
+                    href="global.html#AccountManagerResult">AccountManagerResult</a>}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns the station account</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line100">line 100</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the station account</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type"><a href="global.html#AccountManagerResult">AccountManagerResult</a></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".getStationAccount"><span class="type-signature">(static) </span>getStationAccount<span
+                    class="signature">()</span><span class="type-signature"> &rarr; (nullable) {<a
+                    href="global.html#AccountManagerResult">AccountManagerResult</a>}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns the station account</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line84">line 84</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns the station account</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type"><a href="global.html#AccountManagerResult">AccountManagerResult</a></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".inputPermitted"><span class="type-signature">(static) </span>inputPermitted<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns whether a group AND a station are logged in</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line116">line 116</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns whether a group AND a station are logged in</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">*</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".login"><span class="type-signature">(static) </span>login<span class="signature">(type, passphrase, callback<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+
+            <p class="summary">
+            <p>Login for an account</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line126">line 126</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Login for an account</p>
             </div>
 
 
@@ -414,7 +524,7 @@
 
                 <tr>
 
-                    <td class="name"><code>password</code></td>
+                    <td class="name"><code>type</code></td>
 
 
                     <td class="type">
@@ -432,13 +542,13 @@
                     </td>
 
 
-                    <td class="description last"><p>Password to generate the authentication code from.</p></td>
+                    <td class="description last"><p>The type of the account that will be logged in</p></td>
                 </tr>
 
 
                 <tr>
 
-                    <td class="name"><code>salt</code></td>
+                    <td class="name"><code>passphrase</code></td>
 
 
                     <td class="type">
@@ -446,6 +556,26 @@
 
                         <span class="param-type">string</span>
 
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>callback</code></td>
+
+
+                    <td class="type">
 
                     </td>
 
@@ -458,7 +588,7 @@
                     </td>
 
 
-                    <td class="description last"><p>Salt to recreate a specific authentication code.</p></td>
+                    <td class="description last"><p>optional callback</p></td>
                 </tr>
 
 
@@ -466,34 +596,12 @@
             </table>
 
 
-            <h5>Returns:</h5>
-
-
-            <div class="param-desc">
-                <p>The resulting authentication code object.</p>
-            </div>
-
-
-            <dl class="param-type">
-                <dt>
-                    Type
-                </dt>
-                <dd>
-
-                    <span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-                </dd>
-            </dl>
-
-
-            <h4 class="name" id=".generateLoginToken"><span
-                    class="type-signature">(static) </span>generateLoginToken<span
-                    class="signature">(privHash, salt)</span><span class="type-signature"> &rarr; {string}</span></h4>
+            <h4 class="name" id=".logout"><span class="type-signature">(static) </span>logout<span class="signature">(type, force)</span><span
+                    class="type-signature"></span></h4>
 
 
             <p class="summary">
-            <p>Generates a login token used for Meteor.call</p>.</p>
+            <p>Login for an account</p>.</p>
 
 
             <dl class="details">
@@ -503,8 +611,8 @@
                 <dd class="tag-source">
                     <ul class="dummy">
                         <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line138">line 138</a>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line161">line 161</a>
                         </li>
                     </ul>
                 </dd>
@@ -514,7 +622,7 @@
 
 
             <div class="description">
-                <p>Generates a login token used for Meteor.call</p>
+                <p>Login for an account</p>
             </div>
 
 
@@ -540,7 +648,7 @@
 
                 <tr>
 
-                    <td class="name"><code>privHash</code></td>
+                    <td class="name"><code>type</code></td>
 
 
                     <td class="type">
@@ -552,25 +660,25 @@
                     </td>
 
 
-                    <td class="description last"><p>Phrase to use for encryption</p></td>
+                    <td class="description last"><p>The type of the account that will be logged in</p></td>
                 </tr>
 
 
                 <tr>
 
-                    <td class="name"><code>salt</code></td>
+                    <td class="name"><code>force</code></td>
 
 
                     <td class="type">
 
 
-                        <span class="param-type">string</span>
+                        <span class="param-type">boolean</span>
 
 
                     </td>
 
 
-                    <td class="description last"><p>Salt to throw into the mix</p></td>
+                    <td class="description last"><p>Skip confirmation</p></td>
                 </tr>
 
 
@@ -578,28 +686,12 @@
             </table>
 
 
-            <h5>Returns:</h5>
-
-
-            <dl class="param-type">
-                <dt>
-                    Type
-                </dt>
-                <dd>
-
-                    <span class="param-type">string</span>
-
-
-                </dd>
-            </dl>
-
-
-            <h4 class="name" id=".generatePrivHash"><span class="type-signature">(static) </span>generatePrivHash<span
-                    class="signature">(password, salt)</span><span class="type-signature"> &rarr; {string}</span></h4>
+            <h4 class="name" id=".retrieveAccounts"><span class="type-signature">(static) </span>retrieveAccounts<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
 
             <p class="summary">
-            <p>Generate a private hash based on the password and salt</p>.</p>
+            <p>Returns the Group and station account</p>.</p>
 
 
             <dl class="details">
@@ -609,8 +701,8 @@
                 <dd class="tag-source">
                     <ul class="dummy">
                         <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line124">line 124</a>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line63">line 63</a>
                         </li>
                     </ul>
                 </dd>
@@ -620,309 +712,11 @@
 
 
             <div class="description">
-                <p>Generate a private hash based on the password and salt</p>
+                <p>Returns the Group and station account</p>
             </div>
-
-
-            <h5>Parameters:</h5>
-
-
-            <table class="params">
-                <thead>
-                <tr>
-
-                    <th>Name</th>
-
-
-                    <th>Type</th>
-
-
-                    <th class="last">Description</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-
-                <tr>
-
-                    <td class="name"><code>password</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">string</span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Phrase to use for encryption</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>salt</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">string</span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Salt to throw into the mix</p></td>
-                </tr>
-
-
-                </tbody>
-            </table>
 
 
             <h5>Returns:</h5>
-
-
-            <dl class="param-type">
-                <dt>
-                    Type
-                </dt>
-                <dd>
-
-                    <span class="param-type">string</span>
-
-
-                </dd>
-            </dl>
-
-
-            <h4 class="name" id=".generatePubHash"><span class="type-signature">(static) </span>generatePubHash<span
-                    class="signature">(password, salt)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-
-            <p class="summary">
-            <p>Generate a private hash based on the password and salt</p>.</p>
-
-
-            <dl class="details">
-
-
-                <dt class="tag-source">Source:</dt>
-                <dd class="tag-source">
-                    <ul class="dummy">
-                        <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line110">line 110</a>
-                        </li>
-                    </ul>
-                </dd>
-
-
-            </dl>
-
-
-            <div class="description">
-                <p>Generate a private hash based on the password and salt</p>
-            </div>
-
-
-            <h5>Parameters:</h5>
-
-
-            <table class="params">
-                <thead>
-                <tr>
-
-                    <th>Name</th>
-
-
-                    <th>Type</th>
-
-
-                    <th class="last">Description</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-
-                <tr>
-
-                    <td class="name"><code>password</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">string</span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Phrase to use for encryption</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>salt</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">string</span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Salt to throw into the mix</p></td>
-                </tr>
-
-
-                </tbody>
-            </table>
-
-
-            <h5>Returns:</h5>
-
-
-            <dl class="param-type">
-                <dt>
-                    Type
-                </dt>
-                <dd>
-
-                    <span class="param-type">string</span>
-
-
-                </dd>
-            </dl>
-
-
-            <h4 class="name" id=".tryDecrypt"><span class="type-signature">(static) </span>tryDecrypt<span
-                    class="signature">(log, SED, acs)</span><span class="type-signature"> &rarr; {Object|boolean}</span>
-            </h4>
-
-
-            <p class="summary">Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.</p>
-
-
-            <dl class="details">
-
-
-                <dt class="tag-source">Source:</dt>
-                <dd class="tag-source">
-                    <ul class="dummy">
-                        <li>
-                            <a href="api_crypto_crypto.js.html">api/crypto/crypto.js</a>, <a
-                                href="api_crypto_crypto.js.html#line191">line 191</a>
-                        </li>
-                    </ul>
-                </dd>
-
-
-            </dl>
-
-
-            <div class="description">
-                <p>Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.</p>
-            </div>
-
-
-            <h5>Parameters:</h5>
-
-
-            <table class="params">
-                <thead>
-                <tr>
-
-                    <th>Name</th>
-
-
-                    <th>Type</th>
-
-
-                    <th class="last">Description</th>
-                </tr>
-                </thead>
-
-                <tbody>
-
-
-                <tr>
-
-                    <td class="name"><code>log</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type"><a href="Log.html">Log</a></span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>A log object.</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>SED</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type"><a href="global.html#SED">SED</a></span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Encrypted and signed data to decrypt.</p></td>
-                </tr>
-
-
-                <tr>
-
-                    <td class="name"><code>acs</code></td>
-
-
-                    <td class="type">
-
-
-                        <span class="param-type">Array.&lt;<a
-                                href="global.html#AuthenticationCode">AuthenticationCode</a>></span>
-
-
-                    </td>
-
-
-                    <td class="description last"><p>Array of authentication codes to attempt decryption with.</p></td>
-                </tr>
-
-
-                </tbody>
-            </table>
-
-
-            <h5>Returns:</h5>
-
-
-            <div class="param-desc">
-                <p>Object containing the data and the signatureEnforced property (whether or not the data has been
-                    checked against the station's AC) or false in case something went wrong or decryption/signature
-                    checking isn't possible or unsuccessful.</p>
-            </div>
 
 
             <dl class="param-type">
@@ -932,9 +726,52 @@
                 <dd>
 
                     <span class="param-type">Object</span>
-                    |
 
-                    <span class="param-type">boolean</span>
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id=".viewPermitted"><span class="type-signature">(static) </span>viewPermitted<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+
+            <p class="summary">
+            <p>Returns whether a group is logged in</p>.</p>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
+                            <a href="api_account_managment_AccountManager.js.html#line108">line 108</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description">
+                <p>Returns whether a group is logged in</p>
+            </div>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">*</span>
 
 
                 </dd>

@@ -1,4 +1,4 @@
-import {InputAccountManager} from "../api/account_managment/InputAccountManager";
+import {AccountManager} from "../api/account_managment/AccountManager";
 import {input_onload} from "./components/input/index";
 
 FlowRouter.route('/', {
@@ -11,9 +11,10 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/logout', {
     action: function () {
-        InputAccountManager.logout('Gruppenleiter', true);
-        InputAccountManager.logout('Station', true);
-        // InputAccountManager.logout('Administrator', true);
+        AccountManager.logout('Gruppenleiter', true);
+        AccountManager.logout('Station', true);
+        AccountManager.logout('Administrator', true);
+        AccountManager.logout('Urkunden Erstellen', true);
         FlowRouter.go('/login');
     }
 });
@@ -25,7 +26,7 @@ const input = FlowRouter.group({
 input.route('/', {
     triggersEnter: input_onload,
     action: function () {
-        if (!InputAccountManager.viewPermitted()) {
+        if (!AccountManager.viewPermitted()) {
             FlowRouter.go('/login');
             return;
         }

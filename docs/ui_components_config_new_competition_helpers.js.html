@@ -59,9 +59,36 @@
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
             </ul>
         </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
     </ul>
     <h3>Namespaces</h3>
     <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
@@ -81,6 +108,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
@@ -101,6 +129,7 @@
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
@@ -138,16 +167,22 @@
     <h3>Global</h3>
     <ul>
         <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
-        <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -165,21 +200,18 @@
  */
 import {getCompetitionTypeByID} from "../../../api/logic/competition_type";
 import {Account} from "../../../api/logic/account";
-import {Crypto} from "../../../api/crypto/crypto";
 import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
 
-if (!Meteor.inEditMode) {
-    if (window.location.href.includes("/config/")) {
-        FlowRouter.redirect('/config');
-    }
-}
+//TODO include
+// if (!Meteor.oldName) {
+//     if (window.location.href.includes("/config/")) {
+//         FlowRouter.redirect('/config');
+//     }
+// }
 
 const start_classes_object = require('../../../data/start_classes.json');
-
-//TODO replace with login
-Meteor.adminAccount = new Account([], [], Crypto.generateAC('1234', 'chilli'));
 
 let start_classes = [];
 
@@ -239,7 +271,8 @@ export let NewCompetition = {
                     Meteor.groups[group].name,
                     athlete.handicap,
                     ct.maxAge,
-                    ct
+                    ct,
+                    sportTypes
                 ).encryptForDatabase(account, account);
             });
         };
@@ -248,7 +281,17 @@ export let NewCompetition = {
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
+        console.log(NewCompetition.getName());
+        console.log(Meteor.oldName);
+
+        if (Meteor.oldName != NewCompetition.getName()) {
+            console.log("renamed");
+            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
+            Meteor.oldName = NewCompetition.getName();
+        }
+
         DBInterface.writeCompetition(
+            Meteor.adminLoginObject,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,
@@ -270,6 +313,8 @@ export let NewCompetition = {
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) &amp;&amp; (Meteor._currentGroup != -1)) {
+                console.log(Meteor._currentAthlete);
+                console.log(Meteor._currentGroup);
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
@@ -287,6 +332,7 @@ export let NewCompetition = {
                 document.getElementById("pick-gender").removeAttribute("disabled");
                 document.getElementById("pick-start_class").removeAttribute("disabled");
                 document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
 
                 document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
 
@@ -316,6 +362,7 @@ export let NewCompetition = {
                 document.getElementById("in-year").setAttribute("disabled", "true");
                 document.getElementById("pick-gender").setAttribute("disabled", "true");
                 document.getElementById("btn-delete-athlete").setAttribute("disabled", "true");
+                document.getElementById("btn-add-athlete2").setAttribute("disabled", "true");
                 document.getElementById("pick-start_class").setAttribute("disabled", "true");
 
                 document.getElementById("pick-gender").selectedIndex = 0;
@@ -462,7 +509,7 @@ Meteor.groups = NewCompetition.getGroups();</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:55
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 03 2017 23:20:45
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

@@ -59,9 +59,36 @@
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
             </ul>
         </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
     </ul>
     <h3>Namespaces</h3>
     <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
@@ -81,6 +108,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
                 <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
@@ -101,6 +129,7 @@
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
+                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
                 <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
             </ul>
@@ -138,16 +167,22 @@
     <h3>Global</h3>
     <ul>
         <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
         <li><a href="global.html#filterUndefined">filterUndefined</a></li>
         <li><a href="global.html#genRandomCode">genRandomCode</a></li>
-        <li><a href="global.html#genRandomString">genRandomString</a></li>
         <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
         <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -162,6 +197,12 @@
         <article>
             <pre class="prettyprint source linenums"><code>import {getCompetitionTypeByID} from "../logic/competition_type";
 import {Athlete} from "../logic/athlete";
+import {initCollections} from "./collections/index";
+
+
+if (Meteor.isClient) {
+    initCollections();
+}
 
 /**
  * Object containing all information and functions required for Swimming contest.
@@ -310,22 +351,34 @@ export let DBInterface = {
 
     /**
      * Creates a new competition
+     * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
      * @param {number} competitionTypeID - The type id of the competition
      * @param {string[]} sportTypes - List of sport type ids which are used by the contest
      * @param {object[]} encrypted_athletes - A list of encrypted athletes. To encrypt an athlete use athlete.encryptForDatabase([...])
      * @param {Account[]} accounts - A list of accounts
+     * @param final
      */
-    writeCompetition: function (competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-        Meteor.call('writeCompetition', competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
+    writeCompetition: function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
+        Meteor.call('writeCompetition', loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final);
     },
 
     /**
      * Activates a competition with a given name
+     * @param {LoginObject} loginObject - loginObject of the admin
      * @param {string} competitionName - The name of the competition
      */
-    activateCompetition: function (competitionName) {
-        Meteor.call('activateCompetition', competitionName);
+    activateCompetition: function (loginObject, competitionName) {
+        Meteor.call('activateCompetition', loginObject, competitionName);
+    },
+
+    /**
+     * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
+     * @param {LoginObject} loginObject - loginObject of the admin
+     * @param {string} competitionName - The name of the competition
+     */
+    removeCompetition: function (loginObject, competitionName) {
+        Meteor.call('removeCompetition', loginObject, competitionName);
     }
 };</code></pre>
         </article>
@@ -337,7 +390,7 @@ export let DBInterface = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Dec 31 2016 01:55:55
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 03 2017 23:20:45
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

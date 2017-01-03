@@ -1,4 +1,4 @@
-import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
+import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission} from "./router";
 
 function login(event) {
@@ -13,7 +13,7 @@ function login(event) {
     Meteor.loginInProgress = true;
     Meteor.f7.showPreloader("Anmelden");
 
-    InputAccountManager.login(type, password, function (success, err) {
+    AccountManager.login(type, password, function (success, err) {
         if (!success) {
             //TODO: Throw something at the user
             Meteor.f7.hidePreloader();
@@ -57,7 +57,7 @@ export let goToStep = function (swiper, step) {
 };
 
 function onSliderMove() {
-    // if (InputAccountManager.inputPermitted()) {
+    // if (AccountManager.inputPermitted()) {
     //     const logout_type = Meteor.firstLogin == "Gruppenleiter" ? "Station" : "Gruppenleiter";
     //     console.log(logout_type);
     // }
@@ -98,7 +98,7 @@ export let login_onLoad = function () {
                 FlowRouter.go("/contest");
             else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
                 Meteor.f7.showPreloader("Abmelden");
-                InputAccountManager.logout(sessionStorage.getItem("firstLogin"));
+                AccountManager.logout(sessionStorage.getItem("firstLogin"));
                 sessionStorage.removeItem("firstLogin");
                 checkPermission();
                 setTimeout(Meteor.f7.hidePreloader, 500);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>api/logic/athlete.js - Documentation</title>
+    <title>api/account_managment/SessionAccount.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -190,294 +190,174 @@
 
 <div id="main">
 
-    <h1 class="page-title">api/logic/athlete.js</h1>
+    <h1 class="page-title">api/account_managment/SessionAccount.js</h1>
 
 
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {Data} from "./data";
-import {Crypto} from "./../crypto/crypto.js";
-import {genUUID} from "./../crypto/pwdgen";
-import {getAcsFromAccounts} from "./account";
+            <pre class="prettyprint source linenums"><code>import {DBInterface} from "../database/db_access";
+import {Crypto} from "../crypto/crypto";
+import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
 
+const storage = window.sessionStorage;
 
 /**
- * Creates a new Athlete with the given information.
- * @param {Log} log Logger instance to use
- * @param {string} firstName first-name of the athlete
- * @param {string} lastName last-name of the athlete
- * @param {number} ageGroup Age category of the athlete
- * @param {boolean} isMale Whether or not the athlete is male
- * @param {string} group Identifier of the group this athlete is part of
- * @param {string} handicap Handicap id of the athlete
- * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
- * @param {String[]|object} ct List of sports the athlete can do or a competition type object
- * @param {string|string[]} [id] - Mongo DB id or list of activated sports
- * @constructor
+ *
+ * @param {string} passphrase - The login passphrase entered by the user.
+ * @param callback
+ * @returns {?Account}
  */
-export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct, id) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.ageGroup = ageGroup;
-    this.isMale = isMale;
-    this.group = group;
-    this.handicap = handicap;
-    this.maxAge = maxAge;
-    if (id &amp;&amp; id.constructor == Array) {
-        this.id = undefined;
-    } else {
-        this.id = id;
-    }
+export function getAccountByPassphrase(passphrase, callback) {
+    DBInterface.waitForReady(function () {
+        const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+        const remoteAccounts = contestAccounts.concat([adminAccount]);
+        let account = null;
+        for (let remoteAccount in remoteAccounts) {
+            if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
 
-    if (ct.constructor == Array) {
-        this.sports = ct;
-    } else {
-        this.sports = [];
+            remoteAccount = remoteAccounts[remoteAccount];
 
-        let sportTypes;
-        if (id &amp;&amp; id.constructor == Array) sportTypes = id;
-
-        const allSports = ct.getSports();
-        for (let sport in allSports) {
-            if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
-                const stID = allSports[sport].id;
-                if (!sportTypes || sportTypes.indexOf(stID) > 0) {
-                    this.sports.push(stID);
-                }
+            if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
+                account = remoteAccount;
+                account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
+                break;
             }
         }
-    }
-
-    /// data is an array of objects with id (view getSports) and measurement
-    // example: [{id: 'st_sprint', measurement: 16}]
-    this.data = new Data();
+        if (typeof callback === 'function') callback(account);
+    });
 }
 
-Athlete.prototype = {
+/**
+ * Creates a new session account
+ * @param {string} name - The name that is used to store data in the session storage. Must be unique for every account but can be used multiple times to access the same account from different parts of the application.
+ * @constructor
+ */
+export function SessionAccount(name) {
+    this.name = name;
+    this.storageID = "account" + name;
+}
+
+SessionAccount.prototype = {
+
     /**
-     * Returns the data in plain text.
-     * @param {Log} log Logger instance to use
-     * @param {Account[]} accounts
-     * @param {boolean} requireSignature
-     * @returns {PlainData[]}
+     * @typedef {Object} AccountManagerResult
+     * @property {?Account} account - The account or undefined
+     * @property {boolean} logged_in - Whether the account is logged in
+     * @property {boolean} processing - Whether the account is processed
      */
-    getPlain: function (log, accounts, requireSignature) {
-        return this.data.getPlain(log, accounts, requireSignature, this.group);
-    },
-
 
     /**
-     * Updates the data of a given sport (stID).
-     * @param {Log} log Logger instance to use
-     * @param {string} stID Identifier of the sport that should get updated/new values
-     * @param {number[]} newMeasurements New measurements that should be inserted
-     * @param {Account} groupAccount Account of the group this athlete is part of
-     * @param {Account} stationAccount Account of the station responsible for this sport type
-     * @returns {boolean} A boolean value that describes whether or not the update was successful
+     * Returns the account.
+     * @returns AccountManagerResult
      */
-    addMeasurement: function (log, stID, newMeasurements, groupAccount, stationAccount) {
-
-        let canWrite = true;
-
-        if (groupAccount.group_permissions.indexOf(this.group) == -1) {
-            log.error('Der Gruppen Account hat keine Berechtigung');
-            canWrite = false;
+    get: function () {
+        if (!storage.getItem(this.storageID)) {
+            this.logout();
         }
-
-        if (stationAccount.score_write_permissions.indexOf(stID) == -1) {
-            log.error('Der Stations Account hat keine Berechtigung');
-            canWrite = false;
-        }
-
-        if (this.sports.indexOf(stID) == -1) {
-            log.error('Der Athlete kann diese Sportartn nicht ausführen');
-            canWrite = false;
-        }
-
-        if (canWrite) {
-            this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
-            // write to db
-            if (this.id) {
-                let writeObject = {};
-                writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
-                Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
-            }
-            return true;
-        } else {
-            return false;
-        }
+        return JSON.parse(storage.getItem(this.storageID));
     },
 
     /**
-     * Checks whether the properties of the athlete are correct.
-     * @param {Log} log Logger instance to use
+     * Updates the data stored in the session storage. Shouldn't be called from outside.
+     * @returns AccountManagerResult
+     */
+    store: function (account) {
+        storage.setItem(this.storageID, JSON.stringify(account));
+    },
+
+    /**
+     * Updates the processing status. Shouldn't be called from outside.
+     * @param newStatus
+     */
+    setProcessing: function (newStatus) {
+        const account = this.get();
+        account.processing = newStatus;
+        this.store(account);
+    },
+
+    /**
+     * Login for an account
+     * @param {string} passphrase - The password
+     * @param [callback] - optional callback
+     */
+    login: function (passphrase, callback) {
+        this.setProcessing(true);
+        let thisSessionAccount = this;
+        setTimeout(function () { //TODO remove timeout. its just for preloader testing
+            getAccountByPassphrase(passphrase, function (account) {
+                if (account === null &amp;&amp; typeof callback === 'function') {
+                    thisSessionAccount.setProcessing(false);
+                    callback(false, "Ungültiges Passwort.");
+                } else {
+                    thisSessionAccount.store({
+                        account: account,
+                        logged_in: true,
+                        processing: false
+                    });
+
+                    // Notify the caller
+                    if (typeof callback === 'function') callback(true);
+                }
+            });
+        }, 100);
+    },
+
+    /**
+     * logout for the account
+     */
+    logout: function () {
+        this.store({
+            account: undefined,
+            logged_in: false,
+            processing: false
+        });
+    },
+
+    /**
+     * Returns whether the account is logged in
      * @returns {boolean}
      */
-    check: function (log) {
-        let result = true;
-
-        if ((typeof(this.firstName) != 'string') || (this.firstName === '')) {
-            log.error('Der Vorname des Athleten ist ungültig.');
-            result = false;
-        }
-        if ((typeof(this.lastName) != 'string') || (this.lastName === '')) {
-            log.error('Der Nachname des Athleten ist ungültig.');
-            result = false;
-        }
-        if (typeof(this.ageGroup) != 'number') {
-            log.error('Der Jahrgang des Athleten ist ungültig.');
-            result = false;
-        } else if (this.age &lt; 8) {
-            log.error('Der Sportler ist zu jung um an den Bundesjugendspielen teilzunehmen.');
-            result = false;
-        }
-        if (typeof(this.isMale) != 'boolean') {
-            log.error('Das Geschlecht des Athleten ist ungültig');
-            result = false;
-        }
-        return result;
-    },
-    /**
-     * Returns the full name (first name &amp; last name) of the athlete.
-     * @returns {string}
-     */
-    getFullName: function () {
-        return this.firstName + ' ' + this.lastName;
-    },
-    /**
-     * Returns a short version of the athletes name (first name &amp; last initial).
-     * @returns {string}
-     */
-    getShortName: function () {
-        return this.firstName + ' ' + this.lastName[0] + '.';
-    },
-    /**
-     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
-     * @returns {number}
-     */
-    get age() {
-        return new Date().getFullYear() - this.ageGroup;
-    },
-    /**
-     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
-     * @returns {number}
-     */
-    get tableAge() {
-        return Math.min(new Date().getFullYear() - this.ageGroup, this.maxAge);
-    },
-    /**
-     * Sets the age of the athlete.
-     * @param {integer} newAge - New age of the athlete
-     */
-    set age(newAge) {
-        this.ageGroup = new Date().getFullYear() - newAge;
+    isLoggedIn: function () {
+        return this.get().logged_in;
     },
 
     /**
-     * Encrypts the athlete for the database
-     * @param {Account} groupAccount - Account of the group that this athlete is part of
-     * @param {Account} serverAccount - Master account (?) TODO Describe this in a meaningful fashion
-     * @returns {Object}
+     * Returns whether the account has permissions for at least on group
+     * @returns {boolean}
      */
-    encryptForDatabase: function (groupAccount, serverAccount) {
-        const encrypted = {};
+    isGroupAccount: function () {
+        return isGroupAccount(this.get().account);
+    },
 
-        encrypted.firstName = Crypto.encrypt(this.firstName, groupAccount.ac, serverAccount.ac);
-        encrypted.lastName = Crypto.encrypt(this.lastName, groupAccount.ac, serverAccount.ac);
-        encrypted.ageGroup = Crypto.encrypt(this.ageGroup, groupAccount.ac, serverAccount.ac);
-        encrypted.isMale = Crypto.encrypt(this.isMale, groupAccount.ac, serverAccount.ac);
-        encrypted.group = Crypto.encrypt(this.group, groupAccount.ac, serverAccount.ac);
-        encrypted.handicap = Crypto.encrypt(this.handicap, groupAccount.ac, serverAccount.ac);
-        encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
+    /**
+     * Returns whether the account has permissions for at least on station
+     * @returns {boolean}
+     */
+    isStationAccount: function () {
+        return isStationAccount(this.get().account);
+    },
 
-        encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
+    /**
+     * Returns whether the account has admin permissions
+     * @returns {boolean}
+     */
+    isAdminAccount: function () {
+        return isAdminAccount(this.get().account);
+    },
 
-
-        for (let dataGroupID in this.data.data) {
-            encrypted["m_" + genUUID()] = this.data[dataGroupID];
-        }
-
-        return encrypted;
+    /**
+     * Returns whether the account is allowed to generate certificates
+     * @returns {boolean}
+     */
+    canViewResults: function () {
+        return this.get().account.canViewResults;
     }
 };
 
-/**
- * Decrypts the data from the database
- * @param {Log} log Logger instance to use
- * @param {Object} data Encrypted athlete
- * @param {Account[]} accounts List of accounts containing the one that was used for encryption
- * @param {boolean} require_signature whether or not to enable signature enforcing
- * @param {boolean} require_group_check whether or not to enable group permission check
- * @returns {boolean|Athlete}
- */
-Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, require_group_check = true) {
-    const acs = getAcsFromAccounts(accounts);
-    const firstName = Crypto.tryDecrypt(log, data.firstName, acs);
-    const lastName = Crypto.tryDecrypt(log, data.lastName, acs);
-    const ageGroup = Crypto.tryDecrypt(log, data.ageGroup, acs);
-    const isMale = Crypto.tryDecrypt(log, data.isMale, acs);
-    const group = Crypto.tryDecrypt(log, data.group, acs);
-    const handicap = Crypto.tryDecrypt(log, data.handicap, acs);
-    const maxAge = Crypto.tryDecrypt(log, data.maxAge, acs);
-    const sports = Crypto.tryDecrypt(log, data.sports, acs);
-
-    if (firstName &amp;&amp; lastName &amp;&amp; ageGroup &amp;&amp; isMale &amp;&amp; group &amp;&amp; handicap &amp;&amp; maxAge &amp;&amp; sports) {
-
-        if (require_group_check)
-        if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
-            accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) {
-            log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-            return false;
-        }
-
-        if (require_signature &amp;&amp; !(firstName.signatureEnforced &amp;&amp;
-            lastName.signatureEnforced &amp;&amp;
-            ageGroup.signatureEnforced &amp;&amp;
-            isMale.signatureEnforced &amp;&amp;
-            group.signatureEnforced &amp;&amp;
-            handicap.signatureEnforced &amp;&amp;
-            maxAge.signatureEnforced &amp;&amp;
-            sports.signatureEnforced)) {
-            log.error('Die Signatur des Athleten ' + firstName.data + ' ' + lastName.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
-            return false;
-        }
-
-        if (require_group_check)
-        if ((firstName.signatureEnforced &amp;&amp; accounts[firstName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (lastName.signatureEnforced &amp;&amp; accounts[lastName.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (ageGroup.signatureEnforced &amp;&amp; accounts[ageGroup.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (isMale.signatureEnforced &amp;&amp; accounts[isMale.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (group.signatureEnforced &amp;&amp; accounts[group.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (handicap.signatureEnforced &amp;&amp; accounts[handicap.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (maxAge.signatureEnforced &amp;&amp; accounts[maxAge.usedACs.stationAC].group_permissions.indexOf(group.data) == -1) ||
-            (sports.signatureEnforced &amp;&amp; accounts[sports.usedACs.stationAC].group_permissions.indexOf(group.data) == -1)) {
-            log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
-            return false;
-        }
-
-        let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
-
-        let measureData = [];
-
-        for (let memberName in data) {
-            if (memberName.substr(0, 2) === "m_") {
-                measureData.push(data[memberName]);
-            }
-        }
 
 
-        athlete.data = new Data(measureData);
-        return athlete;
-    }
-    log.error('Die Daten konnten nicht entschlüsselt werden.');
-    return false;
-};</code></pre>
+</code></pre>
         </article>
     </section>
 

@@ -1,8 +1,8 @@
 import {DBInterface} from "../../api/database/db_access";
-import {InputAccountManager} from "../../api/account_managment/InputAccountManager";
+import {AccountManager} from "../../api/account_managment/AccountManager";
 
 export let getAthletes = function getAthletes() {
-    const group_account = InputAccountManager.getGroupAccount().account;
+    const group_account = AccountManager.getGroupAccount().account;
     if (!group_account) return [];
     return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 };

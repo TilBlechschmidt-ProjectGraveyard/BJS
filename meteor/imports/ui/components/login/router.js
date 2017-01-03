@@ -1,6 +1,6 @@
 import {login_onLoad, getLoginSwiper, goToStep} from "./template";
 import {tryDecrypt, selectDefaultAthlete, invertLogin} from "../../../startup/client/helpers";
-import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
+import {AccountManager} from "../../../api/account_managment/AccountManager";
 
 const login = FlowRouter.group({
     prefix: '/login'
@@ -28,8 +28,8 @@ export let updateSwiperProgress = function (slideIndex) {
 
 export let checkPermission = function () {
 
-    const groupLoggedIn = InputAccountManager.getGroupAccount().logged_in;
-    const stationLoggedIn = InputAccountManager.getStationAccount().logged_in;
+    const groupLoggedIn = AccountManager.getGroupAccount().logged_in;
+    const stationLoggedIn = AccountManager.getStationAccount().logged_in;
     const loginA = tryDecrypt(FlowRouter.getParam("loginA"));
     const loginB = tryDecrypt(FlowRouter.getParam("loginB"));
 

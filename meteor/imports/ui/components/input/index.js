@@ -4,7 +4,7 @@ import "./index.css";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
 import {arrayify, getAthletes, selectDefaultAthlete, getLastLogin} from "../../../startup/client/helpers";
-import {InputAccountManager} from "../../../api/account_managment/InputAccountManager";
+import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission, updateSwiperProgress} from "../login/router";
 
 Meteor.input = {};
@@ -29,12 +29,12 @@ function getAthleteByID(id) {
 export let input_onload = function (page) {
 
     Template.login.helpers({
-        show_login: !InputAccountManager.inputPermitted() || !InputAccountManager.viewPermitted()
+        show_login: !AccountManager.inputPermitted() || !AccountManager.viewPermitted()
     });
 
     Template.input.helpers({
         both_logged_in: function () {
-            return InputAccountManager.inputPermitted();
+            return AccountManager.inputPermitted();
         },
         last_login: function () {
             return getLastLogin();
@@ -82,7 +82,7 @@ export let input_onload = function (page) {
             const athlete = getAthleteByID(id);
             if (athlete === undefined) return {};
 
-            const stationAccount = InputAccountManager.getStationAccount();
+            const stationAccount = AccountManager.getStationAccount();
             const ct = DBInterface.getCompetitionType();
 
 
@@ -117,7 +117,7 @@ export let input_onload = function (page) {
             }
 
             // Fetch the measurements
-            const read_only_measurements = athlete.getPlain(Meteor.input.log, [InputAccountManager.getGroupAccount().account], false);
+            const read_only_measurements = athlete.getPlain(Meteor.input.log, [AccountManager.getGroupAccount().account], false);
 
             athlete.sportType = {};
             let stID;
@@ -250,7 +250,7 @@ export let input_onload = function (page) {
             event.preventDefault();
             event.stopImmediatePropagation();
             //TODO logout AND possibly set Meteor.firstLogin to false (?)
-            InputAccountManager.logout(getLastLogin());
+            AccountManager.logout(getLastLogin());
             return false;
         },
         'click .return-to-login': function () {
