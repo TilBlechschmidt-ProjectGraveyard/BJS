@@ -5,12 +5,18 @@ import {checkPermission} from "../../ui/components/login/router";
 
 let inputGroupAccount = new AccountManager('input_group_account');
 let inputStationAccount = new AccountManager('input_station_account');
+let inputAdminAccount = new AccountManager('input_admin_account');
+let inputOutputAccount = new AccountManager('input_output_account');
 
 function logout(type) {
     if (type == "Gruppenleiter") {
         inputGroupAccount.logout();
-    } else {
+    } else if (type == "Station") {
         inputStationAccount.logout();
+    } else if (type == "Administrator") {
+        inputAdminAccount.logout();
+    } else if (type == "Urkunden Erstellen") {
+        inputOutputAccount.logout();
     }
 }
 
@@ -58,7 +64,7 @@ export let InputAccountManager = {
 
     /**
      * Returns the group account
-     * @returns {*|AccountManagerResult}
+     * @returns {?AccountManagerResult}
      */
     getGroupAccount: function () {
         return inputGroupAccount.get();
@@ -66,10 +72,26 @@ export let InputAccountManager = {
 
     /**
      * Returns the station account
-     * @returns {*|AccountManagerResult}
+     * @returns {?AccountManagerResult}
      */
     getStationAccount: function () {
         return inputStationAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getAdminAccount: function () {
+        return inputAdminAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getOutputAccount: function () {
+        return inputOutputAccount.get();
     },
 
     viewPermitted: function () {
@@ -81,33 +103,32 @@ export let InputAccountManager = {
     },
 
     login: function (type, passphrase, callback) {
-        //TODO Make this login function work on the admin account as well
-        if (type == "Gruppenleiter") inputGroupAccount.setProcessing(true);
-        else                        inputStationAccount.setProcessing(true);
+        let account = inputGroupAccount;
+
+        if (type == "Station") account = inputStationAccount;
+        else if (type == "Administrator") account = inputAdminAccount;
+        else if (type == "Urkunden Erstellen") account = inputOutputAccount;
+
+
+        account.setProcessing(true);
         DBInterface.waitForReady(function () {
-            if (type == "Gruppenleiter") {
-                inputGroupAccount.login(passphrase, function (logged_in) {
-                    if (!logged_in) {
-                        if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
-                    } else if (!inputGroupAccount.isGroupAccount()) {
-                        inputGroupAccount.logout();
-                        if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Gruppe an.");
-                    } else {
-                        if (typeof callback === 'function') callback(true);
-                    }
-                });
-            } else {
-                inputStationAccount.login(passphrase, function (logged_in) {
-                    if (!logged_in) {
-                        if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
-                    } else if (!inputStationAccount.isStationAccount()) {
-                        inputStationAccount.logout();
-                        if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Station an.");
-                    } else {
-                        if (typeof callback === 'function') callback(true);
-                    }
-                });
-            }
+            account.login(passphrase, function (logged_in) {
+                if (!logged_in) {
+                    if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
+                } else if (type == "Gruppenleiter" && !account.isGroupAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Gruppe an.");
+                } else if (type == "Station" && !account.isStationAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Station an.");
+                } else if (type == "Administrator" && !account.isAdminAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benuzer hat keine Administrator Rechte.");
+                } else if (type == "Urkunden Erstellen" && !account.canViewResults()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benutzer hat keine Berechtigung die Urkunden zu erstellen..");
+                } else if (typeof callback === 'function') callback(true);
+            });
         });
     },
 
@@ -118,7 +139,7 @@ export let InputAccountManager = {
                 logout(type);
                 Meteor.inputDependency.changed();
             } else {
-                Meteor.f7.confirm('Die Daten können nachträglich nicht mehr editiert werden, wenn Sie sich abmelden!', 'Hinweis',
+                Meteor.f7.confirm('Wenn Sie sich abmelden können die Daten nachträglich nicht mehr editiert werden!', 'Hinweis',
                     function () {
                         Meteor.f7.showPreloader('Speichere Daten');
                         saveData();

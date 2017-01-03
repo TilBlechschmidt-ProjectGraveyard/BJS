@@ -17,7 +17,7 @@ function getAdminAccount() {
  * @param {LoginObject} loginObject
  * @returns {boolean}
  */
-function checkAdminLogin(loginObject) {
+function checkAdminLogin(loginObject) { //TODO check isAdmin member
     console.log("check admin Login: " + checkLogin(getAdminAccount(), loginObject));
     return checkLogin(getAdminAccount(), loginObject);
 }
@@ -30,7 +30,7 @@ export function onStartup() {
     initCollections();
 
     const ac = Crypto.generateAC(Meteor.config.adminPassword);
-    const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true);
+    const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true, true);
     Meteor.COLLECTIONS.Generic.handle.update(
         {_id: DBInterface.getGenericID()},
         {$set: {adminAccount: adminAccount}}

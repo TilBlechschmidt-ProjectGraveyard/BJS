@@ -7,14 +7,16 @@ import {Crypto} from "./../crypto/crypto";
  * @param {string[]} score_write_permissions - List of sport type ids.
  * @param {AuthenticationCode} ac
  * @param {boolean=} canViewResults - Specifies whether the account has permissions to view the results.
+ * @param {boolean=} isAdmin - Specifies whether the account has admin permissions.
  * @constructor
  */
-export function Account(name, group_permissions, score_write_permissions, ac, canViewResults = false) {
+export function Account(name, group_permissions, score_write_permissions, ac, canViewResults = false, isAdmin = false) {
     this.name = name;
     this.score_write_permissions = score_write_permissions;
     this.group_permissions = group_permissions;
     this.ac = ac;
     this.canViewResults = canViewResults;
+    this.isAdmin = isAdmin;
 }
 
 /**
@@ -42,6 +44,15 @@ export function isStationAccount(account) {
  */
 export function canViewResults(account) {
     return account.canViewResults;
+}
+
+/**
+ * Returns whether the account has admin permissions.
+ * @param {Account} account - The Account
+ * @return {boolean}
+ */
+export function isAdminAccount(account) {
+    return account.isAdmin;
 }
 
 /**

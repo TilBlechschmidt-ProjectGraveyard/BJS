@@ -1,6 +1,6 @@
 import {DBInterface} from "../database/db_access";
 import {Crypto} from "../crypto/crypto";
-import {isGroupAccount, isStationAccount} from "../logic/account";
+import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
 
 const storage = window.sessionStorage;
 
@@ -105,6 +105,12 @@ AccountManager.prototype = {
     },
     isStationAccount: function () {
         return isStationAccount(this.get().account);
+    },
+    isAdminAccount: function () {
+        return isAdminAccount(this.get().account);
+    },
+    canViewResults: function () {
+        return this.get().account.canViewResults;
     }
 };
 
