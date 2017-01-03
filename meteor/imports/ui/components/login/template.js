@@ -6,13 +6,20 @@ function login(event) {
     const password_input = document.querySelectorAll("input[data-type='" + type + "'][type='password']")[0];
     const password = password_input.value;
 
+    if (Meteor.loginInProgress) {
+        console.warn("Login already in progress!");
+        return;
+    }
+    Meteor.loginInProgress = true;
     Meteor.f7.showPreloader("Anmelden");
 
     InputAccountManager.login(type, password, function (success, err) {
         if (!success) {
             //TODO: Throw something at the user
             Meteor.f7.hidePreloader();
-            Meteor.f7.alert(err, "Fehler");
+            Meteor.f7.alert(err, "Fehler", function () {
+                Meteor.loginInProgress = false;
+            });
             password_input.value = "";
             return;
         }
@@ -24,9 +31,9 @@ function login(event) {
             nextStep(getLoginSwiper());
 
         Meteor.inputDependency.changed();
-        // selectDefaultAthlete();
 
         Meteor.f7.hidePreloader();
+        Meteor.loginInProgress = false;
     });
 }
 
@@ -104,7 +111,7 @@ export let login_onLoad = function () {
             login(event);
             return false;
         },
-        'keypress input': function (event) {
+        'keypress input[type="password"]': function (event) {
             if (event.keyCode == 13) {
                 if (event.target.dataset.type) login(event);
                 event.stopPropagation();
