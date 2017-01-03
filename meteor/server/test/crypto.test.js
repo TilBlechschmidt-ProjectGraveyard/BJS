@@ -1,6 +1,6 @@
-import {Crypto} from '../../imports/api/crypto/crypto';
-import {Log} from '../../imports/api/log';
-import {chai} from 'meteor/practicalmeteor:chai';
+import {Crypto} from "../../imports/api/crypto/crypto";
+import {Log} from "../../imports/api/log";
+import {chai} from "meteor/practicalmeteor:chai";
 chai.should();
 
 
@@ -48,12 +48,15 @@ describe('crypto', function () {
     it('enforces parameter passing (encrypt)', function () {
         const valid = Crypto.encrypt(data, cachedAC1, cachedAC2);
         (function () {
+            //noinspection JSCheckFunctionSignatures
             Crypto.encrypt(data, cachedAC1);
         }).should.throw();
         (function () {
+            //noinspection JSCheckFunctionSignatures
             Crypto.encrypt(data);
         }).should.throw();
         (function () {
+            //noinspection JSCheckFunctionSignatures
             Crypto.encrypt();
         }).should.throw();
 
@@ -66,14 +69,18 @@ describe('crypto', function () {
     it('enforces parameter passing (tryDecrypt)', function () {
         const valid = Crypto.tryDecrypt(log, cachedSED, [cachedAC1, cachedAC2]);
         (function () {
+            //noinspection JSCheckFunctionSignatures
             Crypto.tryDecrypt(cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log missing
         (function () {
+            //noinspection JSCheckFunctionSignatures
             Crypto.tryDecrypt([], cachedSED, [cachedAC1, cachedAC2]);
         }).should.throw(); // log wrong type
         const stationACMissing = Crypto.tryDecrypt(log, cachedSED, [cachedAC1]);
         const emptyACList = Crypto.tryDecrypt(log, cachedSED, []);
+        //noinspection JSCheckFunctionSignatures
         const acsMissing = Crypto.tryDecrypt(log, cachedSED);
+        //noinspection JSCheckFunctionSignatures
         const wrongDataType = Crypto.tryDecrypt(log, {}, [cachedAC1, cachedAC2]);
 
         valid.should.not.be.equal(false);

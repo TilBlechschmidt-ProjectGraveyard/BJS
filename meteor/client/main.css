@@ -2,15 +2,3 @@
 #__blaze-root{
     height: 100%;
 }
-
-/*@media (max-width: 768px) {*/
-    /*.view-left{*/
-        /*width:240px;*/
-    /*}*/
-    /*.view-main{*/
-        /*width:-webkit-calc(100% - 241px);*/
-        /*width:-moz-calc(100% - 241px);*/
-        /*width:-ms-calc(100% - 241px);*/
-        /*width:calc(100% - 241px);*/
-    /*}*/
-/*}*/

@@ -56,6 +56,7 @@ export let Athletics = {
         const data = Athletics.getSports();
 
         for (let d in data) {
+            if (!data.hasOwnProperty(d)) continue;
             if (data[d].id === stID) return data[d];
         }
         return undefined;
@@ -180,6 +181,7 @@ export let Athletics = {
         // sort for categories
         const categories = [];
         for (let st in validData) {
+            if (!validData.hasOwnProperty(st)) continue;
             categories[validData[st].category] = true;
         }
 
@@ -246,6 +248,7 @@ export let Athletics = {
         const scores = [0, 0, 0, 0];
         const stScores = {};
         for (let vd in validData) {
+            if (!validData.hasOwnProperty(vd)) continue;
             const score = this.calculateOne(validData[vd]);
             const bestScore = _.max(score);
             const category = validData[vd].category;

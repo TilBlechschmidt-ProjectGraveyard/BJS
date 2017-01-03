@@ -32,6 +32,7 @@ export let input_onload = function (page) {
         show_login: !InputAccountManager.inputPermitted() || !InputAccountManager.viewPermitted()
     });
 
+    //noinspection JSUnusedGlobalSymbols
     Template.input.helpers({
         athletes: function () {
             Meteor.login_deps.depend();
@@ -173,6 +174,7 @@ export let input_onload = function (page) {
                 if (element.metadata.unit === "min:s") {
                     element.metadata.inputType = "text";
                     for (let m in element.measurements) {
+                        if (!element.measurements.hasOwnProperty(m)) continue;
                         const min = Math.floor(element.measurements[m].value / 60);
                         const s = element.measurements[m].value - min * 60;
                         if (s < 10) {
@@ -184,6 +186,7 @@ export let input_onload = function (page) {
                 } else {
                     element.metadata.inputType = "number";
                     for (let m in element.measurements) {
+                        if (!element.measurements.hasOwnProperty(m)) continue;
                         element.measurements[m].strValue = element.measurements[m].value.toString();
                     }
                 }

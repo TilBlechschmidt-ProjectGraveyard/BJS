@@ -2,6 +2,7 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {NewCompetition} from "../../new_competition_helpers";
 
+//noinspection JSUnusedGlobalSymbols
 Template.sports_main.helpers({
     sport_type_data: function () {
         const ct = NewCompetition.getCompetitionType();
@@ -26,6 +27,7 @@ function save() {
     );
 }
 
+//noinspection JSUnusedLocalSymbols
 Template.sports_main.events({
     'click #link_back' (event, instance) {
         save();

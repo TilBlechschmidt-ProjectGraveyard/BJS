@@ -20,6 +20,7 @@ Template.athletes_left.helpers({
     }
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.athletes_left.events({
     'click #link_back' (event, instance) {
         save();

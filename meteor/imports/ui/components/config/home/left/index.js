@@ -19,7 +19,7 @@ getAccountByPassphrase('supersecret', function (account) {
     }
 });
 
-
+//noinspection JSUnusedGlobalSymbols
 Template.home_left.helpers({
     competitions: function () {
         _deps.depend();
@@ -31,6 +31,7 @@ Template.home_left.helpers({
     }
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.home_left.events({
     'click .link-activate_competition': function (event) {
         const name = event.target.closest(".link-activate_competition").dataset.competition_name;
@@ -77,6 +78,7 @@ Template.home_left.events({
 
             const sports = NewCompetition.getSports();
             for (let sportID in sports) {
+                if (!sports.hasOwnProperty(sportID)) continue;
                 if (data.sportTypes.indexOf(sports[sportID].stID) == -1) {
                     sports[sportID].activated = false;
                 }

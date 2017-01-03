@@ -46,6 +46,7 @@ function initDatabase() {
         const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
         const allNames = genericData.contests.concat(genericData.editContests);
         for (let nameID in allNames) {
+            if (!allNames.hasOwnProperty(nameID)) continue;
             Meteor.COLLECTIONS.connect(allNames[nameID]);
         }
         Meteor.COLLECTIONS.switch(genericData.activeContest);
@@ -68,7 +69,7 @@ function removeData(driver) {
     });
 }
 
-function clearDatabase(dbHandle) {
+function clearDatabase() {
     console.log('-----------------------------------------------------');
     console.log('---------------------- WARNING ----------------------');
     console.log('-----------------------------------------------------');

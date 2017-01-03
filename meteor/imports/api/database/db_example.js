@@ -14,6 +14,7 @@ module.exports = function () {
     console.log(log.getAsString());
 
     for (let p_id in ps) {
+        if (!ps.hasOwnProperty(p_id)) continue;
         console.log(ps[p_id].getFullName());
     }
     console.log(groupAccount);

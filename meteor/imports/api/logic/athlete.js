@@ -43,6 +43,8 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
 
         const allSports = ct.getSports();
         for (let sport in allSports) {
+            if (!allSports.hasOwnProperty(sport)) continue;
+
             if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
                 const stID = allSports[sport].id;
                 if (!sportTypes || sportTypes.indexOf(stID) > 0) {
@@ -198,6 +200,7 @@ Athlete.prototype = {
 
 
         for (let dataGroupID in this.data.data) {
+            if (!this.data.data.hasOwnProperty(dataGroupID)) continue;
             encrypted["m_" + genUUID()] = this.data[dataGroupID];
         }
 
@@ -291,6 +294,7 @@ export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_s
 
 
     for (let athlete in encryptedAthletes) {
+        if (!encryptedAthletes.hasOwnProperty(athlete)) continue;
         let encryptedAthlete = encryptedAthletes[athlete];
         let decryptedAthlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, require_signature, require_group_check);
 

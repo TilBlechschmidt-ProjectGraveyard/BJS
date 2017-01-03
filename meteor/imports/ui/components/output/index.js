@@ -25,6 +25,7 @@ Template.output.onRendered(function () {
     });
 });
 
+//noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
     list_groups: function () {
         groups_deps.depend();
@@ -36,9 +37,6 @@ Template.output.helpers({
     list_athletes: function () {
         groups_deps.depend();
         if (current_group == -1) return [];
-        const ct = DBInterface.getCompetitionType();
-
-        console.log(groups[current_group].athletes);
         return groups[current_group].athletes;
     },
     get_groupname: function () {

@@ -14,6 +14,7 @@ let loginCustom = [];
 let _login_tracker = new Tracker.Dependency();
 
 
+//noinspection JSUnusedGlobalSymbols
 Template.codes.helpers({
     get_competition_name: function () {
         return NewCompetition.getName();
@@ -47,7 +48,9 @@ Template.codes.helpers({
 
 
             for (let stIDIndex in score_write_permissions) {
+                if (!score_write_permissions.hasOwnProperty(stIDIndex)) continue;
                 for (let sportObjectIndex in accountObject.sports) {
+                    if (!accountObject.sports.hasOwnProperty(sportObjectIndex)) continue;
                     if (score_write_permissions[stIDIndex] === accountObject.sports[sportObjectIndex].stID) {
                         accountObject.sports[sportObjectIndex].checked = "checked";
                         break;
@@ -60,6 +63,7 @@ Template.codes.helpers({
     }
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.codes.events({
     'click #link_back' (event,instance) {
         loginStations = [];

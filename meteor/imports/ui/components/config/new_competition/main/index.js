@@ -26,6 +26,7 @@ Template.new_competition_main.onRendered(function () {
     selector.innerHTML = "";
 
     for (let competition_type in COMPETITION_TYPES) {
+        if (!COMPETITION_TYPES.hasOwnProperty(competition_type)) continue;
         selector.innerHTML += "<option>" + COMPETITION_TYPES[competition_type].object.getInformation().name + "</option>";
     }
 
@@ -34,6 +35,7 @@ Template.new_competition_main.onRendered(function () {
     document.getElementById('text-comp_name').value = NewCompetition.getName();
 });
 
+//noinspection JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols
 Template.new_competition_main.events({
     'click #link_back' (event, instance) {
         Meteor.f7.modal({

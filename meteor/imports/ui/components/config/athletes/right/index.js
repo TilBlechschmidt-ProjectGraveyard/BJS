@@ -16,12 +16,14 @@ export let athletes_right_onLoad = function () {
         let selector = document.getElementById("pick-start_class");
         selector.innerHTML = "";
         for (let st_class in NewCompetition.start_classes) {
+            if (!NewCompetition.start_classes.hasOwnProperty(st_class)) continue;
             selector.innerHTML += "<option>" +
                 "(" + NewCompetition.start_classes[st_class].stID + ") " +
                 NewCompetition.start_classes[st_class].name + "</option>";
         }
     });
 
+    //noinspection JSUnusedLocalSymbols
     Template.athletes_right.events({
         'click #link_next'(event, instance) {
             save();

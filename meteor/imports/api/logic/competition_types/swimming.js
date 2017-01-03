@@ -48,6 +48,7 @@ export let Swimming = {
         const data = Swimming.getSports();
 
         for (let d in data) {
+            if (!data.hasOwnProperty(d)) continue;
             if (data[d].id === stID) return data[d];
         }
         return undefined;
@@ -173,6 +174,7 @@ export let Swimming = {
         // sort for categories
         const categories = [];
         for (let st in data) {
+            if (!data.hasOwnProperty(st)) continue;
             categories[data[st].category] = true;
         }
 
@@ -219,6 +221,7 @@ export let Swimming = {
         const scores = [0, 0, 0, 0, 0, 0];
         const stScores = {};
         for (let vd in validData) {
+            if (!validData.hasOwnProperty(vd)) continue;
             const score = this.calculateOne(validData[vd]);
             const bestScore = _.max(score);
             const category = validData[vd].category;

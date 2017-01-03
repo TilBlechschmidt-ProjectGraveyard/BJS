@@ -155,7 +155,7 @@ export let Crypto = {
         if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
             salt = CryptoJS.enc.Hex.parse(salt);
         }
-        //noinspection JSUnresolvedFunction
+        //noinspection JSUnresolvedFunction,JSCheckFunctionSignatures
         return {
             salt: wordsToHex(salt),
             pubHash: Crypto.generatePubHash(password, salt),

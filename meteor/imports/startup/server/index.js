@@ -112,11 +112,13 @@ export function onStartup() {
             // write data
             //write athletes
             for (let athlete in encrypted_athletes) {
+                if (!encrypted_athletes.hasOwnProperty(athlete)) continue;
                 Meteor.COLLECTIONS.Athletes.handles[competitionName].insert(encrypted_athletes[athlete]);
             }
 
             //write accounts
             for (let account in accounts) {
+                if (!accounts.hasOwnProperty(account)) continue;
                 Meteor.COLLECTIONS.Accounts.handles[competitionName].insert(accounts[account]);
             }
 
@@ -132,14 +134,11 @@ export function onStartup() {
             let listOFEditCompetitions = DBInterface.listEditCompetitions();
             if (listOFEditCompetitions.indexOf(competitionName) == -1) return undefined;
 
-            // console.log(Meteor.COLLECTIONS.Contest.handles);
             const contestDBHandle = Meteor.COLLECTIONS.Contest.handles[competitionName];
-            // console.log(contestDBHandle);
 
             const competitionTypeID = DBInterface.getCompetitionTypeID(contestDBHandle);
             const sportTypes = DBInterface.getActivatedSports(contestDBHandle);
 
-            // console.log(Meteor.COLLECTIONS.Athletes.handles[competitionName]);
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competitionName].find().fetch();
 
             return encryptAsAdmin({
@@ -172,6 +171,7 @@ export function onStartup() {
                 const stScores = [];
 
                 for (let stID in certificate.stScores) {
+                    if (!certificate.stScores.hasOwnProperty(stID)) continue;
                     stScores.push({
                         stID: stID,
                         name: ct.getNameOfSportType(stID),
@@ -190,10 +190,9 @@ export function onStartup() {
             };
 
             for (let groupGroupID in groups) {
+                if (!groups.hasOwnProperty(groupGroupID)) continue;
                 groups[groupGroupID].athletes = _.map(groups[groupGroupID].athletes, mapAthletet);
             }
-
-            console.log(log.getAsString());
 
             return encryptAs(groups, account);
         }

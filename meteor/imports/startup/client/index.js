@@ -15,5 +15,4 @@ export function onStartup() {
             swipePanel: 'left'
         });
     });
-    // console.log('Hi there from the client startup script!');
 }

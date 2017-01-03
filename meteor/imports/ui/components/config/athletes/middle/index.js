@@ -31,6 +31,7 @@ Template.athletes_middle.helpers({
     }
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.athletes_middle.events({
     'click #btn-rename-group' (event, instance) {
         Meteor.f7.prompt('Bitte geben sie den Namen der Gruppe ein.', 'Gruppen umbenennen', function (value) {

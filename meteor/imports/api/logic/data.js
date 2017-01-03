@@ -80,7 +80,7 @@ Data.prototype = {
     /**
      * Updates the data of a given stID.
      * @param {Log} log - Logger instance to use
-     * @param {number} stID - Identifier of the sport the returned data should be part of
+     * @param {string} stID - Identifier of the sport the returned data should be part of
      * @param {number[]} newMeasurements The measurements that should be inserted
      * @param {AuthenticationCode} groupAC - Authentication code of the group
      * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
@@ -89,16 +89,10 @@ Data.prototype = {
 
         const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
         const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
-        // const oldData = this.findEncrypted(log, stID, [groupAC, stationAC]);
-        //
-        // if (oldData) {
-        //     oldData.encryptedStID = encryptedStID;
-        //     oldData.encryptedMeasurements = newEncryptedMeasurements;
-        // } else {
+
         this.data.push({
             encryptedStID: encryptedStID,
             encryptedMeasurements: newEncryptedMeasurements,
         });
-        // }
     }
 };
