@@ -82,8 +82,12 @@ export let DBInterface = {
     getAthletesOfAccounts: function (log, accounts, require_signature) {
         let result = [];
         log.disable();
+        //iterate athletes
         Meteor.COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
+            //try to decrypt with accounts
             const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
+
+            //if decrypted add to result
             if (decrypted) {
                 result.push(decrypted);
             }

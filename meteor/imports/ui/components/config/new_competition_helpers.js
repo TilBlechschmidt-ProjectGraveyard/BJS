@@ -20,6 +20,8 @@ const start_classes_object = require('../../../data/start_classes.json');
 let start_classes = [];
 
 for (let stID in start_classes_object) {
+    //noinspection JSUnresolvedFunction
+    if (!start_classes_object.hasOwnProperty(stID)) continue;
     start_classes.push({
         stID: stID,
         name: start_classes_object[stID].name
@@ -28,7 +30,10 @@ for (let stID in start_classes_object) {
 
 
 export function nameExists(name) {
+    // remove whitespaces
     const name_without_whitespaces = name.replace(/ /g, '');
+
+    // get all competitions
     const allCompetitions = _.map(DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions()), function (n) {
         return n.replace(/ /g, '');
     });
@@ -58,6 +63,7 @@ export let NewCompetition = {
         const log = new Log();
         const ct = NewCompetition.getCompetitionType();
 
+        //load all sport types
         const sportTypes = _.map(_.filter(NewCompetition.getSports(), function (obj) {
             return obj.activated;
         }), function (obj) {
@@ -71,11 +77,11 @@ export let NewCompetition = {
             accounts = [NewCompetition.editModeAccount];
         }
 
-        console.log(final);
+        // athletes
 
         let encryptedAthletes = [];
-
         let groupToEncryptedAthletes = function (group) {
+            // iterate athletes and encrypt
             return _.map(Meteor.groups[group].athletes, function (athlete) {
                 let account = final ? Meteor.groups[group].account : NewCompetition.editModeAccount;
 
@@ -94,16 +100,19 @@ export let NewCompetition = {
             });
         };
 
+        // iterate groups and save encrypted athletes
         for (let group in Meteor.groups) {
+            if (!Meteor.groups.hasOwnProperty(group)) continue;
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
-
+        //remove old competition if name changed
         if (Meteor.oldName != NewCompetition.getName()) {
             DBInterface.removeCompetition(Meteor.adminAccount, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
 
+        //save the new competition
         DBInterface.writeCompetition(
             Meteor.adminAccount,
             NewCompetition.getName(),
@@ -113,6 +122,7 @@ export let NewCompetition = {
             accounts,
             final,
             function (result) {
+                //check result
                 if (!result) {
                     Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.");
                     if (typeof callback === 'function') callback(false);
@@ -123,7 +133,10 @@ export let NewCompetition = {
     },
 
     groupExists: function (name) {
+        //iterate groups
         for (let group in Meteor.groups) {
+            if (!Meteor.groups.hasOwnProperty(group)) continue;
+            //check name
             if (Meteor.groups[group].name === name) return true;
         }
         return false;
@@ -131,9 +144,11 @@ export let NewCompetition = {
 
     selectAthlete: function (athleteID) {
         if (!document.getElementById("in-first-name")) {
+            //ui elements aren't ready. just select nothing
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) && (Meteor._currentGroup != -1)) {
+                //another athlete is selected -> save all changes
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
@@ -144,7 +159,10 @@ export let NewCompetition = {
             }
             Meteor._currentAthlete = athleteID;
             if (athleteID != -1) {
+                // the new selected is an athlete -> load data & activate ui elements
                 const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+
+                //activate
                 document.getElementById("in-first-name").removeAttribute("disabled");
                 document.getElementById("in-last-name").removeAttribute("disabled");
                 document.getElementById("in-year").removeAttribute("disabled");
@@ -155,6 +173,7 @@ export let NewCompetition = {
 
                 document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
 
+                // find the start class index
                 for (let id in start_classes) {
                     if (start_classes[id].stID === new_athlete.handicap) {
                         document.getElementById("pick-start_class").selectedIndex = id;
@@ -162,6 +181,7 @@ export let NewCompetition = {
                     }
                 }
 
+                //set content of text fields
                 document.getElementById("in-first-name").value = new_athlete.firstName;
                 document.getElementById("in-last-name").value = new_athlete.lastName;
                 document.getElementById("in-year").value = new_athlete.ageGroup;
@@ -171,7 +191,7 @@ export let NewCompetition = {
                 document.getElementById("in-last-name").value = new_athlete.lastName;
                 document.getElementById("in-year").value = new_athlete.ageGroup;
             } else {
-
+                // the new selected isn't an athlete -> deactivate ui elements
                 document.getElementById("in-first-name").setAttribute("value", "");
                 document.getElementById("in-last-name").setAttribute("value", "");
                 document.getElementById("in-year").setAttribute("value", "");
@@ -277,6 +297,7 @@ export let NewCompetition = {
         const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
         Session.setDefault(
             NewCompetition.prefix + "sport_types",
+            //iterate all activated sports
             JSON.stringify(_.map(ct.getSports(), function (sportObj) {
                 return {stID: sportObj.id, activated: true};
             }))
