@@ -86,6 +86,13 @@ export let initSwiper = function () {
 
 export let login_onLoad = function () {
 
+    Template.login.helpers({
+        firstLoggedIn: function () {
+            Meteor.inputDependency.depend();
+            return sessionStorage.getItem("firstLogin");
+        }
+    });
+
     Template.login.events({
         'click .overview-choice': function (event) {
             event.preventDefault();
@@ -106,6 +113,7 @@ export let login_onLoad = function () {
                 Meteor.f7.showPreloader("Abmelden");
                 AccountManager.logout(sessionStorage.getItem("firstLogin"));
                 sessionStorage.removeItem("firstLogin");
+                Meteor.inputDependency.changed();
                 checkPermission();
                 setTimeout(Meteor.f7.hidePreloader, 500);
             }

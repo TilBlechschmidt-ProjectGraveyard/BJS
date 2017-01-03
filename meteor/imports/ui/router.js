@@ -15,6 +15,8 @@ FlowRouter.route('/logout', {
         AccountManager.logout('Station', true);
         AccountManager.logout('Administrator', true);
         AccountManager.logout('Urkunden Erstellen', true);
+        sessionStorage.removeItem("firstLogin");
+        Meteor.inputDependency.changed();
         FlowRouter.go('/login');
     }
 });
