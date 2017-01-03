@@ -93,7 +93,10 @@ export let login_onLoad = function () {
             }
         },
         'click .login-button': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             login(event);
+            return false;
         },
         'keypress input': function (event) {
             if (event.keyCode == 13) {
