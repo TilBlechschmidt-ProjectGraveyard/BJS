@@ -31,6 +31,11 @@ export function getAccountByPassphrase(passphrase, callback) {
     });
 }
 
+/**
+ * Creates a new session account
+ * @param {string} name - The name that is used to store data in the session storage. Must be unique for every account but can be used multiple times to access the same account from different parts of the application.
+ * @constructor
+ */
 export function SessionAccount(name) {
     this.name = name;
     this.storageID = "account" + name;
@@ -56,16 +61,29 @@ SessionAccount.prototype = {
         return JSON.parse(storage.getItem(this.storageID));
     },
 
+    /**
+     * Updates the data stored in the session storage. Shouldn't be called from outside.
+     * @returns AccountManagerResult
+     */
     store: function (account) {
         storage.setItem(this.storageID, JSON.stringify(account));
     },
 
+    /**
+     * Updates the processing status. Shouldn't be called from outside.
+     * @param newStatus
+     */
     setProcessing: function (newStatus) {
         const account = this.get();
         account.processing = newStatus;
         this.store(account);
     },
 
+    /**
+     * Login for an account
+     * @param {string} passphrase - The password
+     * @param [callback] - optional callback
+     */
     login: function (passphrase, callback) {
         this.setProcessing(true);
         let thisSessionAccount = this;
@@ -88,6 +106,9 @@ SessionAccount.prototype = {
         }, 100);
     },
 
+    /**
+     * logout for the account
+     */
     logout: function () {
         this.store({
             account: undefined,
@@ -96,18 +117,42 @@ SessionAccount.prototype = {
         });
     },
 
+    /**
+     * Returns whether the account is logged in
+     * @returns {boolean}
+     */
     isLoggedIn: function () {
         return this.get().logged_in;
     },
+
+    /**
+     * Returns whether the account has permissions for at least on group
+     * @returns {boolean}
+     */
     isGroupAccount: function () {
         return isGroupAccount(this.get().account);
     },
+
+    /**
+     * Returns whether the account has permissions for at least on station
+     * @returns {boolean}
+     */
     isStationAccount: function () {
         return isStationAccount(this.get().account);
     },
+
+    /**
+     * Returns whether the account has admin permissions
+     * @returns {boolean}
+     */
     isAdminAccount: function () {
         return isAdminAccount(this.get().account);
     },
+
+    /**
+     * Returns whether the account is allowed to generate certificates
+     * @returns {boolean}
+     */
     canViewResults: function () {
         return this.get().account.canViewResults;
     }

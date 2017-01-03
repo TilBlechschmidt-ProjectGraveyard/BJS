@@ -58,7 +58,9 @@ export let AccountManager = {
     retrieveAccounts: function () {
         return {
             GroupAccount: inputGroupAccount.get(),
-            StationAccount: inputStationAccount.get()
+            StationAccount: inputStationAccount.get(),
+            AdminAccount: inputAdminAccount.get(),
+            OutputAccount: inputOutputAccount.get()
         };
     },
 
@@ -94,14 +96,28 @@ export let AccountManager = {
         return inputOutputAccount.get();
     },
 
+    /**
+     * Returns whether a group is logged in
+     * @returns {*}
+     */
     viewPermitted: function () {
         return inputGroupAccount.isLoggedIn();
     },
 
+    /**
+     * Returns whether a group AND a station are logged in
+     * @returns {*}
+     */
     inputPermitted: function () {
         return inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn();
     },
 
+    /**
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {string} passphrase
+     * @param [callback] - optional callback
+     */
     login: function (type, passphrase, callback) {
         let account = inputGroupAccount;
 
@@ -132,6 +148,11 @@ export let AccountManager = {
         });
     },
 
+    /**
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {boolean} force - Skip confirmation
+     */
     logout: function (type, force) {
         if (inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn()) {
             if (force) {
