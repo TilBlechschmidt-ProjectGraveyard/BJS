@@ -1,5 +1,5 @@
 import {getLoginSwiper, goToStep} from "./template";
-import {tryDecrypt, selectDefaultAthlete, invertLogin} from "../../../startup/client/helpers";
+import {tryDecrypt, invertLogin} from "../../../startup/client/helpers";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 
 const login = FlowRouter.group({
@@ -46,7 +46,7 @@ export let checkPermission = function () {
         FlowRouter.go('/login/' + btoa("Station") + '/' + btoa("Gruppenleiter"));
         return {redirected: true};
     } else if (stationLoggedIn && groupLoggedIn) {
-        selectDefaultAthlete();
+        FlowRouter.go('/input');
     } else if (adminLoggedIn) {
         FlowRouter.go('/config');
     } else if (outputLoggedIn) {
