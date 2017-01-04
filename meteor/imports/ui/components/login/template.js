@@ -126,8 +126,6 @@ export let login_onLoad = function () {
             return false;
         },
         'click .login-back-button': function (event) {
-            console.log('back');
-            console.log(getLoginSwiper());
             prevStep(getLoginSwiper());
             return false;
         },
