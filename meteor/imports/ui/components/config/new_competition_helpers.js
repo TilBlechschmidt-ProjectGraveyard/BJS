@@ -160,40 +160,44 @@ export let NewCompetition = {
                 const handicapID = document.getElementById("pick-start_class").selectedIndex;
                 old_athlete.handicap = NewCompetition.start_classes[handicapID].stID;
             }
-            Meteor._currentAthlete = athleteID;
             if (athleteID != -1) {
-                // the new selected is an athlete -> load data & activate ui elements
-                const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
+                if (athleteID != Meteor._currentAthlete) {
+                    Meteor._currentAthlete = athleteID;
 
-                //activate
-                document.getElementById("in-first-name").removeAttribute("disabled");
-                document.getElementById("in-last-name").removeAttribute("disabled");
-                document.getElementById("in-year").removeAttribute("disabled");
-                document.getElementById("pick-gender").removeAttribute("disabled");
-                document.getElementById("pick-start_class").removeAttribute("disabled");
-                document.getElementById("btn-delete-athlete").removeAttribute("disabled");
-                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
+                    // the new selected is an athlete -> load data & activate ui elements
+                    const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
 
-                document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
+                    //activate
+                    document.getElementById("in-first-name").removeAttribute("disabled");
+                    document.getElementById("in-last-name").removeAttribute("disabled");
+                    document.getElementById("in-year").removeAttribute("disabled");
+                    document.getElementById("pick-gender").removeAttribute("disabled");
+                    document.getElementById("pick-start_class").removeAttribute("disabled");
+                    document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                    document.getElementById("btn-add-athlete2").removeAttribute("disabled");
 
-                // find the start class index
-                for (let id in start_classes) {
-                    if (start_classes[id].stID === new_athlete.handicap) {
-                        document.getElementById("pick-start_class").selectedIndex = id;
-                        break;
+                    document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
+
+                    // find the start class index
+                    for (let id in start_classes) {
+                        if (start_classes[id].stID === new_athlete.handicap) {
+                            document.getElementById("pick-start_class").selectedIndex = id;
+                            break;
+                        }
                     }
+
+                    //set content of text fields
+                    document.getElementById("in-first-name").value = new_athlete.firstName;
+                    document.getElementById("in-last-name").value = new_athlete.lastName;
+                    document.getElementById("in-year").value = new_athlete.ageGroup;
+
+                    // call it a second time because some browsers have problems with the placeholder
+                    document.getElementById("in-first-name").value = new_athlete.firstName;
+                    document.getElementById("in-last-name").value = new_athlete.lastName;
+                    document.getElementById("in-year").value = new_athlete.ageGroup;
                 }
-
-                //set content of text fields
-                document.getElementById("in-first-name").value = new_athlete.firstName;
-                document.getElementById("in-last-name").value = new_athlete.lastName;
-                document.getElementById("in-year").value = new_athlete.ageGroup;
-
-                // call it a second time because some browsers have problems with the placeholder
-                document.getElementById("in-first-name").value = new_athlete.firstName;
-                document.getElementById("in-last-name").value = new_athlete.lastName;
-                document.getElementById("in-year").value = new_athlete.ageGroup;
             } else {
+                Meteor._currentAthlete = athleteID;
                 // the new selected isn't an athlete -> deactivate ui elements
                 document.getElementById("in-first-name").setAttribute("value", "");
                 document.getElementById("in-last-name").setAttribute("value", "");
