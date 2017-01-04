@@ -17,31 +17,10 @@ FlowRouter.route('/logout', {
     }
 });
 
-const input = FlowRouter.group({
-    prefix: '/contest'
-});
-
-function checkPermission() {
-    if (!AccountManager.viewPermitted()) {
-        FlowRouter.go('/login');
-        return false;
-    }
-    return true;
-}
-
-input.route('/', {
+FlowRouter.route('/contest', {
     action: function () {
-        if (checkPermission()) BlazeLayout.render('input');
-    }
-});
-
-input.route('/:athlete_id', {
-    action: function (params) {
-        if (checkPermission()) {
-            BlazeLayout.render('input', {
-                athlete_id: params.athlete_id
-            });
-        }
+        if (AccountManager.viewPermitted()) BlazeLayout.render('input');
+        else FlowRouter.go('/login');
     }
 });
 

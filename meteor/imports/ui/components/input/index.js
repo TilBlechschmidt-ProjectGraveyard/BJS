@@ -3,7 +3,7 @@ import "./index.html";
 import "./index.css";
 import {Log} from "../../../api/log";
 import {DBInterface} from "../../../api/database/db_access";
-import {arrayify, getAthletes, selectDefaultAthlete, getLastLogin} from "../../../startup/client/helpers";
+import {arrayify, getAthletes, getLastLogin} from "../../../startup/client/helpers";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission, updateSwiperProgress} from "../login/router";
 
@@ -357,6 +357,4 @@ Template.input.onRendered(function () {
         shortSwipes: true,
         control: nameSwiper
     });
-
-    selectDefaultAthlete();
 });
