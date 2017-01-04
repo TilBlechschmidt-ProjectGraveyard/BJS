@@ -10,6 +10,12 @@
                     <div class="list-block">
                         <img src="/gorilla.jpg" style="width: 100%">
                     </div>
+                    <div class="list-block" style="text-align: center;">
+                        <div class="btn-spenden"
+                             onclick="window.open('https://www.wwf.de/spenden-helfen/fuer-ein-projekt-spenden/gorillas/formular/anzeigen/spenden/eintragen/', '_blank')">
+                            Spenden
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,6 +31,19 @@
             visibility: visible;
             opacity: 1;
             transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .btn-spenden {
+            width: 50%;
+            margin-left: 25%;
+            margin-right: 25%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background-color: red;
+            text-align: center;
+            color: #FFF;
+            border-radius: 10px;
+            cursor: pointer;
         }
     </style>
 </template>
