@@ -21,8 +21,8 @@ function logout(type) {
 }
 
 function saveData() {
-    const group_account = inputGroupAccount.get();
-    const station_account = inputStationAccount.get();
+    const group_account = inputGroupAccount.get().account;
+    const station_account = inputStationAccount.get().account;
     const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 
     if (sessionStorage.getItem("measurements")) {
