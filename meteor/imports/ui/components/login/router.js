@@ -10,10 +10,10 @@ const login_overview = {
     template: "choices", data: {
         class: "overview-choice",
         choices: [
-            {title: "Ich bin ein Gruppenleiter", type: "Gruppenleiter"},
-            {title: "Ich bin eine Station", type: "Station"},
-            {title: "Ich möchte Urkunden erstellen", type: "Urkunden"},
-            {title: "Ich bin ein Administrator", type: "Administrator"}
+            {title: "Anmeldung durch Gruppenleiter", type: "Gruppenleiter"},
+            {title: "Anmeldung durch Stationsleiter", type: "Station"},
+            {title: "Zugriff auf Urkunden", type: "Urkunden"},
+            {title: "Administratorzugriff", type: "Administrator"}
         ]
     }
 };
