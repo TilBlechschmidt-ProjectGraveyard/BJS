@@ -1,35 +1,51 @@
-import {input_onload} from "./components/input/index";
-
+import {AccountManager} from "../api/account_managment/AccountManager";
+import "./components/input";
 
 FlowRouter.route('/', {
     action: function () {
         // FlowRouter.go("/config");
         //TODO: Check if it is already configured and run the following if that is the case:
-        FlowRouter.go("/contest");
+        FlowRouter.go("/login");
     }
 });
 
-let input = FlowRouter.group({
+FlowRouter.route('/logout', {
+    action: function () {
+        AccountManager.logoutAll();
+        Meteor.inputDependency.changed();
+        FlowRouter.go('/login');
+    }
+});
+
+const input = FlowRouter.group({
     prefix: '/contest'
 });
 
+function checkPermission() {
+    if (!AccountManager.viewPermitted()) {
+        FlowRouter.go('/login');
+        return false;
+    }
+    return true;
+}
+
 input.route('/', {
-    triggersEnter: input_onload,
     action: function () {
-        BlazeLayout.render('input');
+        if (checkPermission()) BlazeLayout.render('input');
     }
 });
 
 input.route('/:athlete_id', {
-    triggersEnter: input_onload,
     action: function (params) {
-        BlazeLayout.render('input', {
-            athlete_id: params.athlete_id
-        });
+        if (checkPermission()) {
+            BlazeLayout.render('input', {
+                athlete_id: params.athlete_id
+            });
+        }
     }
 });
 
-let output = FlowRouter.group({
+const output = FlowRouter.group({
     prefix: '/output'
 });
 

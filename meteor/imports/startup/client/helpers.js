@@ -1,8 +1,8 @@
 import {DBInterface} from "../../api/database/db_access";
-import {InputAccountManager} from "../../api/account_managment/InputAccountManager";
+import {AccountManager} from "../../api/account_managment/AccountManager";
 
 export let getAthletes = function getAthletes() {
-    const group_account = InputAccountManager.getGroupAccount().account;
+    const group_account = AccountManager.getGroupAccount().account;
     if (!group_account) return [];
     return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 };
@@ -14,7 +14,7 @@ export let selectDefaultAthlete = function () {
                 return athlete.id == FlowRouter.getParam("athlete_id");
             })) && athletes[0] !== undefined) {
             FlowRouter.go('/contest/' + athletes[0].id);
-            Meteor.login_deps.depend();
+            Meteor.inputDependency.depend();
         }
     });
 };
@@ -28,4 +28,21 @@ export let arrayify = function (obj) {
         result.push(new_obj);
     }
     return result;
+};
+
+export let tryDecrypt = function (string) {
+    try {
+        return atob(string);
+    } catch (e) {
+        return false;
+    }
+};
+
+export let invertLogin = function (group) {
+    return group == "Gruppenleiter" ? "Station" : "Gruppenleiter";
+};
+
+export let getLastLogin = function () {
+    if (!sessionStorage.getItem("firstLogin")) return "";
+    return invertLogin(sessionStorage.getItem("firstLogin"));
 };

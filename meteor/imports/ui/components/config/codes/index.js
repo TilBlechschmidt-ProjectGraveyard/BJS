@@ -13,6 +13,24 @@ let loginCustom = [];
 
 let _login_tracker = new Tracker.Dependency();
 
+function setInputDisabled(state) {
+    if (state === true) state = "true";
+    const buttons = document.getElementsByClassName("button");
+    for (let button in buttons) {
+        if (!buttons.hasOwnProperty(button)) continue;
+        button = buttons[button];
+        if (state) button.setAttribute("disabled", state);
+        else button.removeAttribute("disabled");
+    }
+
+    const links = document.getElementsByClassName("item-link");
+    for (let link in links) {
+        if (!links.hasOwnProperty(link)) continue;
+        link = links[link];
+        if (state) link.setAttribute("disabled", state);
+        else link.removeAttribute("disabled");
+    }
+}
 
 //noinspection JSUnusedGlobalSymbols
 Template.codes.helpers({
@@ -96,15 +114,25 @@ Template.codes.events({
     'click #btn-print' (event, instance) {
         window.print();
     },
+    'click #btn-pdf' (event, instance) {
+        console.log("SAVE PDF", loginStations);
+        Blaze.saveAsPDF(Template.codes_print, {
+            filename: "ZugangscodesBJS.pdf",
+            data: {
+                competition_name: NewCompetition.getName(),
+                login_stations: loginStations,
+                login_groups: loginGroups,
+                login_custom: loginCustom
+            },
+        });
+    },
     'click #btn-new-codes' (event, instance) {
-        document.getElementById("btn-new-codes").setAttribute("disabled", "true");
-        document.getElementById("btn-print").setAttribute("disabled", "true");
-        document.getElementById("link_back").setAttribute("disabled", "true");
-        document.getElementById("link_start").setAttribute("disabled", "true");
+        setInputDisabled(true);
 
         // Load UI elements
         const progressBar = document.getElementById("progress-bar");
         const progressText = document.getElementById("progress-text");
+
 
         //load data
         const ct = NewCompetition.getCompetitionType();
@@ -164,10 +192,7 @@ Template.codes.events({
 
                 setTimeout(generateNextGroupLogin, 0);
             } else {
-                document.getElementById("btn-new-codes").removeAttribute("disabled");
-                document.getElementById("btn-print").removeAttribute("disabled");
-                document.getElementById("link_back").removeAttribute("disabled");
-                document.getElementById("link_start").removeAttribute("disabled");
+                setInputDisabled(false);
             }
         };
 
@@ -233,5 +258,11 @@ Template.codes.events({
         let accountIndex = event.target.dataset.account_index;
         loginCustom[accountIndex].account.name = event.target.value;
         _login_tracker.changed();
+    }
+});
+
+Template.codes_print.helpers({
+    hasData: function (obj) {
+        return Object.keys(obj).length > 0;
     }
 });

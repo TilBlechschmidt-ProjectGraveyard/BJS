@@ -3,7 +3,7 @@ import "./index.html";
 import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition, nameExists} from "../../new_competition_helpers";
 import {encryptedAthletesToGroups} from "../../../../../api/logic/athlete";
-import {getAccountByPassphrase} from "../../../../../api/account_managment/AccountManager";
+import {getAccountByPassphrase} from "../../../../../api/account_managment/SessionAccount";
 
 let _deps = new Tracker.Dependency();
 

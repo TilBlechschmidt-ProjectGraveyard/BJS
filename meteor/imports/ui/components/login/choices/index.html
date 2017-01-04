@@ -1,0 +1,17 @@
+<template name="choices">
+    <div class="list-block">
+        <ul>
+            {{#each c in choices}}
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-link list-button {{class}}" data-type="{{#with c}}{{type}}{{/with}}"
+                             style="width: 100%">{{#with c}}{{title}}{{/with}}</div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="list-block">
+        <div class="list-block-label">{{competition_notice}}</div>
+    </div>
+</template>
