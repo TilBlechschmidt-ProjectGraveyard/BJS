@@ -18,6 +18,10 @@ Template.athletes_right.onRendered(function () {
             "(" + NewCompetition.start_classes[st_class].stID + ") " +
             NewCompetition.start_classes[st_class].name + "</option>";
     }
+
+    window.onbeforeunload = function () {
+        return confirm("Wenn Sie die Konfigurationsseite verlassen, gehen alle nicht gespeicherten Eingaben verloren! Wollen Sie fortfahren?");
+    }
 });
 
 //noinspection JSUnusedLocalSymbols

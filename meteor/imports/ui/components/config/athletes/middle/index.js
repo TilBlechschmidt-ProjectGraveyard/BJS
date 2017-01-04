@@ -4,6 +4,12 @@ import {NewCompetition} from "../../new_competition_helpers";
 Meteor.groups = NewCompetition.getGroups();
 
 
+Template.athletes_middle.onRendered(function () {
+    window.onbeforeunload = function () {
+        return confirm("Wenn Sie die Konfigurationsseite verlassen, gehen alle nicht gespeicherten Eingaben verloren! Wollen Sie fortfahren?");
+    }
+});
+
 Template.athletes_middle.helpers({
     athletes: function () {
         Meteor._athletes_tracker.depend();
