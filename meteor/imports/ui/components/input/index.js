@@ -334,8 +334,7 @@ Template.input.onRendered(function () {
         loop: true,
         effect: 'slide',
         spaceBetween: 50,
-        allowSwipeToNext: false,
-        allowSwipeToPrev: false
+        onlyExternal: true
     });
 
     Meteor.f7.swiper('#input-swiper', {
