@@ -158,7 +158,7 @@ export let AccountManager = {
      * @param {string} type - The type of the account that will be logged in
      * @param {boolean=} force - Skip confirmation
      */
-    logout: function (type, force) {
+    logout: function (type, force = false) {
         if (inputGroupAccount.isLoggedIn() && inputStationAccount.isLoggedIn()) {
             if (force) {
                 saveData();

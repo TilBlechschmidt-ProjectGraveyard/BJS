@@ -26,7 +26,6 @@ function login(event) {
 
         if (!sessionStorage.getItem("firstLogin"))
             sessionStorage.setItem("firstLogin", type);
-
         if (checkPermission().redirected)
             nextStep(getLoginSwiper());
 
