@@ -195,6 +195,21 @@ export function onStartup() {
             }
 
             return encryptAs(groups, account);
+        },
+        'getServerIPs': function () {
+            const os = require('os');
+            const ifaces = os.networkInterfaces();
+            const ips = [];
+
+            Object.keys(ifaces).forEach(function (ifname) {
+                ifaces[ifname].forEach(function (iface) {
+                    if ('IPv4' !== iface.family || iface.internal !== false) {
+                        return;
+                    }
+                    ips.push(iface.address);
+                });
+            });
+            return ips;
         }
     });
 

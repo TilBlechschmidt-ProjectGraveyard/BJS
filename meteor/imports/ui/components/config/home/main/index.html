@@ -36,6 +36,25 @@
                         </li>
                     </ul>
                 </div>
+
+                <div class="content-block-title">IP-Addressen des Servers</div>
+                <div class="list-block">
+                    <ul>
+                        {{#each i in get_server_ips}}
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">{{i}}</div>
+                                        <div class="item-input" style="cursor: pointer;"
+                                             onclick="window.open('http://{{i}}:3000', '_blank')">
+                                            http://{{i}}:3000
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
 
 
