@@ -133,9 +133,10 @@ Template.codes.events({
     },
     'click #btn-new-codes' (event, instance) {
         setInputDisabled(true);
+        Meteor.f7.showProgressbar("#code-generation-progress");
 
         // Load UI elements
-        const progressBar = document.getElementById("progress-bar");
+        const progressBar = document.getElementById("code-generation-progress");
         const progressText = document.getElementById("progress-text");
 
 
@@ -157,7 +158,7 @@ Template.codes.events({
         Meteor.loginGroups = [];
         Meteor.loginStations = [];
         progressText.innerHTML = "0/" + accountNumber;
-        Meteor.f7.setProgressbar("#progress-bar", 100);//TODO not working
+        Meteor.f7.setProgressbar("#code-generation-progress", 0, 200);//TODO not working
         _login_tracker.changed();
 
         let counter = 0;
@@ -177,7 +178,8 @@ Template.codes.events({
 
                 counter++;
                 _login_tracker.changed();
-                progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
+                progressText.innerHTML = counter + "/" + accountNumber;
+                Meteor.f7.setProgressbar("#code-generation-progress", counter / accountNumber * 100, 1000);
 
                 setTimeout(generateNextGroupLogin, 0);
             } else if (groupID == Meteor.groups.length) {
@@ -192,8 +194,8 @@ Template.codes.events({
 
                 counter++;
                 _login_tracker.changed();
-                progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
-
+                progressText.innerHTML = counter + "/" + accountNumber;
+                Meteor.f7.setProgressbar("#code-generation-progress", counter / accountNumber * 100, 1000);
 
                 setTimeout(generateNextGroupLogin, 0);
             } else {
@@ -212,7 +214,8 @@ Template.codes.events({
 
                 counter++;
                 _login_tracker.changed();
-                progressText.innerHTML = counter + "/" + accountNumber; //TODO add progress bar
+                progressText.innerHTML = counter + "/" + accountNumber;
+                Meteor.f7.setProgressbar("#code-generation-progress", counter / accountNumber * 100, 1000);
 
                 setTimeout(generateNextStationLogin, 0);
             } else {
