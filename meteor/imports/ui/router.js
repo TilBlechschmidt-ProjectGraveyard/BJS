@@ -1,11 +1,12 @@
 import {AccountManager} from "../api/account_managment/AccountManager";
 import "./components/input";
 
-FlowRouter.route('/', {
-    triggersEnter: [function () {
-        FlowRouter.go("/login");
-    }]
-});
+FlowRouter.notFound = {
+    action: function () {
+        console.error("404 - Page not found! (" + FlowRouter.current().path + ")");
+        FlowRouter.go('/login');
+    }
+};
 
 FlowRouter.route('/logout', {
     action: function () {
