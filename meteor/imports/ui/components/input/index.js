@@ -12,10 +12,6 @@ Meteor.input.log = new Log();
 
 Meteor.inputDependency = new Tracker.Dependency();
 
-// TODO Move this into the athlete object as this is non-functional at the moment
-let canNotDoSportType = [];
-const canNotDoSportType_deps = new Tracker.Dependency();
-
 function hasClass(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
@@ -41,29 +37,28 @@ function populateAthlete(athlete) {
     const ct = DBInterface.getCompetitionType();
 
 
-    canNotDoSportType = [];
+    athlete.nonPermittedSportTypes = [];
     if (stationAccount.account) {
         for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
             if (!stationAccount.account.score_write_permissions.hasOwnProperty(sportTypeIndex)) continue;
             let sportType = stationAccount.account.score_write_permissions[sportTypeIndex];
             if (athlete.sports.indexOf(sportType) == -1) {
-                canNotDoSportType.push(ct.getSportType(sportType).name);
+                athlete.nonPermittedSportTypes.push(ct.getSportType(sportType).name);
             }
         }
     }
-    canNotDoSportType_deps.changed();
 
     if (stationAccount.logged_in) {
         // Return all sport types that can be written to with the current station account
         const stIDs = stationAccount.account.score_write_permissions;
         for (let stID in stIDs) {
-            if (!stIDs.hasOwnProperty(stID)) continue;
+            if (!stIDs.hasOwnProperty(stID) || !lodash.includes(athlete.sports, stIDs[stID])) continue;
             stID = stIDs[stID];
             sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
         }
     }
 
-    // Add all other sport types we don't have write permission for
+    // Add all other sport types we don't have write permission for but the athlete is permitted to perform
     let all_sportTypes = lodash.map(athlete.sports, ct.getSportType);
     for (let index in all_sportTypes) {
         if (!all_sportTypes.hasOwnProperty(index)) continue;
@@ -240,17 +235,13 @@ Template.input.helpers({
             return competitionType.getSportType(stID);
         });
     },
-    showCanNotDoSportType: function () {
-        canNotDoSportType_deps.depend();
-        return canNotDoSportType.length > 0;
-    },
-    canNotDoSportType: function () {
-        canNotDoSportType_deps.depend();
-        return canNotDoSportType;
-    },
     isEmpty: function (arr) {
         if (arr === undefined) return true;
         return arr.length === 0;
+    },
+    isNotEmpty: function (arr) {
+        if (arr === undefined) return true;
+        return arr.length !== 0;
     }
 });
 
@@ -329,7 +320,6 @@ Template.attempt.events({
         event.stopImmediatePropagation();
         const data = event.target.dataset;
         const parentSlide = event.target.closest("div.swiper-slide[data-hash]");
-        const athleteID = parentSlide.dataset.hash;
         if (updateMeasurement(getAthleteIDByElement(event.target), data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
             event.target.value = "";
         Meteor.inputDependency.changed();
@@ -337,14 +327,14 @@ Template.attempt.events({
 });
 
 Template.input.onRendered(function () {
-    const nameSwiper = Meteor.f7.swiper('#input-name-swiper', {
+    const nameSwiper = new Swiper('#input-name-swiper', {
         loop: true,
         effect: 'slide',
         spaceBetween: 50,
         onlyExternal: true
     });
 
-    Meteor.f7.swiper('#input-swiper', {
+    new Swiper('#input-swiper', {
         pagination: '.swiper-pagination',
         paginationType: 'fraction',
         hashnav: true,

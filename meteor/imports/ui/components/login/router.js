@@ -74,10 +74,6 @@ login.route("/", {
                 {template: "preloader"}
             ]
         });
-
-        Template.login.onRendered(function () {
-            goToStep(getLoginSwiper(), 0);
-        });
     }
 });
 
@@ -98,10 +94,6 @@ login.route("/:loginA", {
         if (params.loginA !== "Administrator") steps.push({template: "preloader"});
 
         BlazeLayout.render("login", {steps: steps});
-
-        Template.login.onRendered(function () {
-            goToStep(getLoginSwiper(), 1);
-        });
     }
 });
 
@@ -131,10 +123,18 @@ login.route("/:loginA/:loginB", {
                 {template: "omni_login", data: {type: params.loginB}}
             ]
         });
+    }
+});
 
-        Template.login.onRendered(function () {
-            goToStep(getLoginSwiper(), 2);
-            setTimeout(updateSwiperProgress, 1);
-        });
+Template.login.onRendered(function () {
+    const loginA = tryDecrypt(FlowRouter.getParam("loginA"));
+    const loginB = tryDecrypt(FlowRouter.getParam("loginB"));
+    if (!loginA && !loginB) {
+        goToStep(getLoginSwiper(), 0);
+    } else if (loginA && !loginB) {
+        goToStep(getLoginSwiper(), 1);
+    } else if (loginA && loginB) {
+        goToStep(getLoginSwiper(), 2);
+        setTimeout(updateSwiperProgress, 1);
     }
 });

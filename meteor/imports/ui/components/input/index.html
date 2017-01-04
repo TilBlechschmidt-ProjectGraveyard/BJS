@@ -10,12 +10,12 @@
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
                                     <div class="swiper-slide open-popover athlete-name"
-                                         data-popover=".popover-links">{{a.firstName}}&nbsp;{{a.lastName}}</div>
+                                         data-popover=".popover-links">{{a.getFullName}}</div>
                                 {{/each}}
                             </div>
                         </div>
                     </div>
-                    <div></div>
+                    <div><a href="#" data-popup=".popup-help" class="open-popup"><i class="f7-icons">help</i></a></div>
                 </div>
             </div>
 
@@ -35,12 +35,12 @@
                                                 Messdaten.</p>
                                         </div>
                                     {{/if}}
-                                    {{#if showCanNotDoSportType}}
+                                    {{#if isNotEmpty nonPermittedSportTypes}}
                                         <div class="content-block">
                                             <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an
                                                 dieser Station nicht durchführen:
                                             </div>
-                                            {{#each n in canNotDoSportType}}
+                                            {{#each n in nonPermittedSportTypes}}
                                                 <div style="text-align: center;">{{n}}</div>
                                             {{/each}}
                                             <br>
@@ -53,7 +53,8 @@
                             </div>
                         {{/each}}
                     </div>
-                    <div class="swiper-pagination"></div>
+                    <div class="swiper-pagination"
+                         style="left: calc(50% - 25px); text-align: center; width: 50px; padding: 5px; background-color:rgba(225, 225, 225, 0.75); border-radius: 20px;"></div>
                 </div>
             </div>
 
@@ -119,6 +120,18 @@
         }
 
     </style>
+
+    <!--TODO update-->
+    <div class="popup popup-help">
+        <p style="right: 14px; top: 0; position: absolute;"><a href="#" class="close-popup"><i class="f7-icons">close_round</i></a>
+        </p>
+        <div class="content-block">
+            <h2>Hilfe</h2>
+            <div class="page-content">
+
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="sportTypeDescriptions">
