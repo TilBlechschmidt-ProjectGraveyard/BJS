@@ -101,23 +101,37 @@
                     <div class="popup popup-{{name}}">
                         <div class="content-block">
                             {{#with metadata}}
-                                <p>{{name}}</p>
-                                <p><a href="#" class="close-popup">Close popup</a></p>
-                                <p>Einheit: {{unit}}</p>
-                                <p>{{{description}}}</p><!--Three { are required for html Tags!-->
+                                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                                   style="float: left;">chevron_left</i></a>
+                                <h1 style="text-align: center;">{{name}}</h1>
+                                <h5 style="text-align: center">Einheit: {{unit}}</h5>
+                                <p id="description" style="text-align: justify">{{{description}}}</p>
+                                <!--Three { are required for html Tags!-->
                                 {{#with m}}
                                     {{#each a in age}}
                                         {{a}}
                                     {{/each}}
                                 {{/with}}
+                                <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
                             {{/with}}
                         </div>
                     </div>
                 {{/with}}
             {{/each}}
+            <style>
+                .vcenterIcon {
+                    height: 39px;
+                    line-height: 39px;
+                    text-align: center;
+                }
+
+                #description img {
+                    display: block;
+                    margin: auto;
+                }
+            </style>
         {{/with}}
     {{/if}}
-
 </template>
 
 <template name="attempts">
