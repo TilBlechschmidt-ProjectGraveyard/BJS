@@ -1,124 +1,111 @@
 <template name="input">
-    <!-- Participant selection -->
-    <div class="panel-overlay"></div>
-    <div class="panel panel-left panel-cover">
-        <div class="content-block">
-            <p class="panel-title">Teilnehmer</p>
-
-            <div class="contacts-content">
-                <div class="list-block contacts-block">
-                    <ul>
-                        {{#each a in athletes}}
-                            {{#with a}}
-                                <li data-id="{{id}}" class="athlete">
-                                    <div class="contact-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">{{name}}</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {{/with}}
-                        {{/each}}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="pages">
         <div data-page="index" class="page navbar-fixed toolbar-fixed">
 
-            <!-- Navbar -->
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left">
-                        <a href="#" class="link open-panel">
-                            <i class="icon icon-bars"></i>
-                            <span>Teilnehmer</span>
-                        </a>
+                    <div></div>
+                    <div style="overflow-x: auto; overflow-y: hidden; text-align: center;" class="truncate">
+                        <div id="input-name-swiper" class="swiper-container" style="height: 100%">
+                            <div class="swiper-wrapper">
+                                {{#each a in athletes}}
+                                    <div class="swiper-slide">{{a.firstName}}&nbsp;{{a.lastName}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
                     </div>
-                    <div class="center" style="overflow-x: auto; overflow-y: hidden">{{nameByID athlete_id}}</div>
-                    <div class="right">
-                        {{#if both_logged_in}}
-                            <a href="#" class="logout-button">{{last_login}} abmelden</a>
-                        {{else}}
-                            <a href="#" class="return-to-login">Zurück</a>
-                        {{/if}}
-                    </div>
+                    <div></div>
                 </div>
             </div>
 
-            {{#if athlete_id}}
-                <!-- Page Content -->
-                <div class="page-content">
-                    {{#with athleteByID athlete_id}}
-                        {{#each s in sportType}}
-                            {{>attempts sportType=s}}
+            <div class="page-content">
+                <div id="input-swiper" class="swiper-container" style="height: 100%;">
+                    <div class="swiper-wrapper">
+                        {{#each a in athletes}}
+                            <div class="swiper-slide" data-hash="{{a.id}}" style="overflow-y: scroll;">
+                                {{#with a}}
+                                    {{#each s in sportType}}
+                                        {{>attempts sportType=s}}
+                                    {{/each}}
+                                    {{#if isEmpty sportType}}
+                                        <div class="content-block">
+                                            <p style="text-align: center;">Wie es scheint haben wir bis jetzt keinerlei
+                                                Messdaten.</p>
+                                        </div>
+                                    {{/if}}
+                                    {{#if showCanNotDoSportType}}
+                                        <div class="content-block">
+                                            <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an
+                                                dieser Station nicht durchführen:
+                                            </div>
+                                            {{#each n in canNotDoSportType}}
+                                                <div style="text-align: center;">{{n}}</div>
+                                            {{/each}}
+                                            <br>
+                                            <div style="text-align: center;">Dies liegt an dem Alter, dem Geschlecht
+                                                oder der Startklasse.
+                                            </div>
+                                        </div>
+                                    {{/if}}
+                                {{/with}}
+                            </div>
                         {{/each}}
-                        {{#if isEmpty sportType}}
-                            <div class="content-block">
-                                <p style="text-align: center;">Wie es scheint haben wir bis jetzt keinerlei
-                                    Messdaten.</p>
-                            </div>
-                        {{/if}}
-                        {{#if showCanNotDoSportType}}
-                            <div class="content-block">
-                                <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an dieser
-                                    Station nicht durchführen:
-                                </div>
-                                {{#each n in canNotDoSportType}}
-                                    <div style="text-align: center;">{{n}}</div>
-                                {{/each}}
-                                <br>
-                                <div style="text-align: center;">Dies liegt an dem Alter, dem Geschlecht oder der
-                                    Startklasse.
-                                </div>
-                            </div>
-                        {{/if}}
-                    {{/with}}
+                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-            {{else}}
-                <div class="page-content" style="width: 100%;">
-                    <span style="width:42px; height:42px; margin: auto; display: block; padding-top: 30px"
-                          class="preloader"></span>
-                </div>
-            {{/if}}
-            <!-- Toolbar -->
+            </div>
+
             <div class="toolbar">
                 <div class="toolbar-inner">
-                    <a href="" id="link_prev" class="item-link">Vorheriger</a>
-                    <a href="" id="link_next" class="item-link">Nächster</a>
+                    <a href="" id="link_prev" class="item-link hideOnMobile left">Vorheriger</a>
+                    <div class="item-link center">
+                        {{#if both_logged_in}}
+                            <a href="#" class="logout-button">{{last_login}} abmelden</a>
+                        {{else}}
+                            <a href="#" class="return-to-login">Übersicht</a>
+                        {{/if}}
+                    </div>
+                    <a href="" id="link_next" class="item-link hideOnMobile right">Nächster</a>
                 </div>
             </div>
         </div>
     </div>
 
-    {{#if athlete_id}}
-        {{#with athleteByID athlete_id}}
-            {{>sportTypeDescriptions sportTypes=sportType}}
-        {{/with}}
-    {{/if}}
+    {{>sportTypeDescriptions sportTypes=sportTypes}}
+
+    <style>
+        @media screen and (max-width: 480px) {
+            .hideOnMobile {
+                opacity: 0;
+            }
+        }
+
+        .truncate {
+            width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
 </template>
 
 <template name="sportTypeDescriptions">
     {{#each s in sportTypes}}
         {{#with s}}
-            <div class="popup popup-{{name}}">
+            <div class="popup popup-{{id}}">
                 <div class="content-block">
-                    {{#with metadata}}
-                        <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
-                                                           style="float: left;">chevron_left</i></a>
-                        <h1 style="text-align: center;">{{name}}</h1>
-                        <h5 style="text-align: center">Einheit: {{unit}}</h5>
-                        <p id="description" style="text-align: justify">{{{description}}}</p>
-                        <!--Three { are required for html Tags!-->
-                        {{#with m}}
-                            {{#each a in age}}
-                                {{a}}
-                            {{/each}}
-                        {{/with}}
-                        <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
+                    <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                       style="float: left;">chevron_left</i></a>
+                    <h1 style="text-align: center;">{{name}}</h1>
+                    <h5 style="text-align: center">Einheit: {{unit}}</h5>
+                    <p id="description" style="text-align: justify">{{{description}}}</p>
+                    <!--Three { are required for html Tags!-->
+                    {{#with m}}
+                        {{#each a in age}}
+                            {{a}}
+                        {{/each}}
                     {{/with}}
+                    <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
                 </div>
             </div>
         {{/with}}
@@ -139,7 +126,7 @@
 
 <template name="attempts">
     {{#with sportType}}
-        <div class="content-block-title">
+        <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">
             <a href="#" data-popup=".popup-{{name}}" class="link-open-st-info open-popup">
                 {{#with metadata}}{{name}}{{/with}} <i class="f7-icons" style="font-size: 12px">info</i>
             </a>
@@ -147,7 +134,7 @@
         <div class="list-block">
             <ul>
                 {{#each m in measurements}}
-                    {{>attempt n=@index measurement=m metadata=metadata athlete_id=athlete_id}}
+                    {{>attempt n=@index measurement=m metadata=metadata}}
                 {{/each}}
                 {{#if scoreWritePermission metadata}}
                     {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata}}
@@ -167,7 +154,6 @@
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
                            value="{{#with measurement}}{{strValue}}{{/with}}"
                            data-attempt="{{inc n}}"
-                           data-athlete-id="{{athlete_id}}"
                            data-stID="{{#with metadata}}{{id}}{{/with}}"
                            class="{{#with measurement}}{{class}}{{/with}}"
                         {{isReadOnly measurement}}
