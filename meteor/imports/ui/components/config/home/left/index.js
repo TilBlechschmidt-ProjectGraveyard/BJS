@@ -52,6 +52,9 @@ Template.home_left.events({
     'click #link-new_competition': function (event) {
         Session.keys = {};
         Meteor.groups = [];
+        Meteor.loginGroups = [];
+        Meteor.loginStations = [];
+        Meteor.loginCustom = [];
         let counter = 1;
         let name = "BJS " + new Date().getFullYear();
 
@@ -70,6 +73,9 @@ Template.home_left.events({
         const name = event.target.closest(".link-edit_competition").dataset.competition_name;
         Session.keys = {};
         Meteor.groups = [];
+        Meteor.loginGroups = [];
+        Meteor.loginStations = [];
+        Meteor.loginCustom = [];
 
         DBInterface.getEditInformation(Meteor.adminAccount, name, function (data) {
             NewCompetition.setName(name);

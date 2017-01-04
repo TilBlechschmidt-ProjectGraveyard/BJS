@@ -7,10 +7,6 @@ import {genRandomCode} from "../../../../api/crypto/pwdgen";
 import {Account} from "../../../../api/logic/account";
 import {Crypto} from "../../../../api/crypto/crypto";
 
-let loginStations = [];
-let loginGroups = [];
-let loginCustom = [];
-
 let _login_tracker = new Tracker.Dependency();
 
 function setInputDisabled(state) {
@@ -39,16 +35,16 @@ Template.codes.helpers({
     },
     login_stations: function () {
         _login_tracker.depend();
-        return loginStations;
+        return Meteor.loginStations;
     },
     login_groups: function () {
         _login_tracker.depend();
-        return loginGroups;
+        return Meteor.loginGroups;
     },
     login_custom: function () {
         _login_tracker.depend();
         const ct = NewCompetition.getCompetitionType();
-        return _.map(loginCustom, function (accountObject) {
+        return _.map(Meteor.loginCustom, function (accountObject) {
             accountObject.sports = _.map(
                 _.filter(NewCompetition.getSports(), function (sportTypeObj) {
                     return sportTypeObj.activated;
@@ -84,12 +80,21 @@ Template.codes.helpers({
 //noinspection JSUnusedLocalSymbols
 Template.codes.events({
     'click #link_back' (event,instance) {
-        loginStations = [];
-        loginGroups = [];
-        FlowRouter.go('/config/athletes');
+        if (Meteor.loginGroups.length > 0 || Meteor.loginStations.length > 0) {
+            Meteor.f7.confirm("Wenn Sie diese Seite verlassen werden die automatisch erstellten Zugangscodes gelöscht. Wollen Sie fortfahren?", "Zurück", function () {
+                Meteor.loginStations = [];
+                Meteor.loginGroups = [];
+                FlowRouter.go('/config/athletes');
+            });
+        } else {
+            Meteor.loginStations = [];
+            Meteor.loginGroups = [];
+            FlowRouter.go('/config/athletes');
+        }
+
     },
     'click #link_start' (event, instance) {
-        if (loginGroups.length != Meteor.groups.length) {
+        if (Meteor.loginGroups.length != Meteor.groups.length) {
             Meteor.f7.alert("Sie müssen erst Zugangscodes automatisch erstellen.", "Hinweiß");
             return;
         }
@@ -99,7 +104,7 @@ Template.codes.events({
             Meteor.f7.confirm('Haben Sie alle Zugangscodes am Besten zwei mal gespeichert? Dafür kann man diese Ausdrucken, als PDF speichern oder abschreiben.', 'BJS starten', function () {
                 Meteor.f7.confirm('Nach dem Starten können die Zugangscodes nicht erneut angezeigt werden. Stellen Sie sicher, dass Sie ohne "RunItEasy" Zugriff auf die Zugangscodes haben. Ansonsten müssen Sie einen neuen Wettkampf einrichten!', 'BJS starten', function () {
                     Meteor.f7.confirm('Jetzt starten?', 'BJS starten', function () {
-                        const accounts = _.map(loginGroups.concat(loginStations).concat(loginCustom), function (obj) {
+                        const accounts = _.map(Meteor.loginGroups.concat(Meteor.loginStations).concat(Meteor.loginCustom), function (obj) {
                             return obj.account;
                         });
 
@@ -115,14 +120,14 @@ Template.codes.events({
         window.print();
     },
     'click #btn-pdf' (event, instance) {
-        console.log("SAVE PDF", loginStations);
+        console.log("SAVE PDF", Meteor.loginStations);
         Blaze.saveAsPDF(Template.codes_print, {
             filename: "ZugangscodesBJS.pdf",
             data: {
                 competition_name: NewCompetition.getName(),
-                login_stations: loginStations,
-                login_groups: loginGroups,
-                login_custom: loginCustom
+                login_stations: Meteor.loginStations,
+                login_groups: Meteor.loginGroups,
+                login_custom: Meteor.loginCustom
             },
         });
     },
@@ -149,8 +154,8 @@ Template.codes.events({
         const accountNumber = Meteor.groups.length + sportTypes.length + 1;
 
         //Delete old passwords
-        loginGroups = [];
-        loginStations = [];
+        Meteor.loginGroups = [];
+        Meteor.loginStations = [];
         progressText.innerHTML = "0/" + accountNumber;
         Meteor.f7.setProgressbar("#progress-bar", 100);//TODO not working
         _login_tracker.changed();
@@ -164,7 +169,7 @@ Template.codes.events({
 
                 const account = new Account(Meteor.groups[groupID].name, [Meteor.groups[groupID].name], [], Crypto.generateAC(password));
 
-                loginGroups.push({
+                Meteor.loginGroups.push({
                     password: password,
                     account: account
                 });
@@ -180,7 +185,7 @@ Template.codes.events({
 
                 const certificateAccount = new Account("Urkunden", [], [], Crypto.generateAC(certificatePassword), true);
 
-                loginStations.push({
+                Meteor.loginStations.push({
                     password: certificatePassword,
                     account: certificateAccount
                 });
@@ -200,7 +205,7 @@ Template.codes.events({
             if (counter < sportTypes.length) {
                 const password = genRandomCode();
 
-                loginStations.push({
+                Meteor.loginStations.push({
                     password: password,
                     account: new Account(sportTypes[counter].name, [], [sportTypes[counter].stID], Crypto.generateAC(password))
                 });
@@ -221,7 +226,7 @@ Template.codes.events({
         const password = genRandomCode();
         const account = new Account('Unbenannt', [], [], Crypto.generateAC(password));
 
-        loginCustom.push({
+        Meteor.loginCustom.push({
             password: password,
             account: account
         });
@@ -234,29 +239,29 @@ Template.codes.events({
             return sportTypeObj.activated;
         });
 
-        loginCustom[accountIndex].account.group_permissions = [];
+        Meteor.loginCustom[accountIndex].account.group_permissions = [];
 
         for (let sportTypeIndex in all_sport_types) {
             let stID = all_sport_types[sportTypeIndex].stID;
             let checkbox = document.getElementById("custom-select-" + stID + "-" + accountIndex);
             if (checkbox) {
                 if (checkbox.checked) {
-                    loginCustom[accountIndex].account.group_permissions.push(stID);
+                    Meteor.loginCustom[accountIndex].account.group_permissions.push(stID);
                 }
             }
         }
         let certificateCheckbox = document.getElementById("custom-select-certificate-" + accountIndex);
 
-        loginCustom[accountIndex].account.canViewResults = (certificateCheckbox && certificateCheckbox.checked);
+        Meteor.loginCustom[accountIndex].account.canViewResults = (certificateCheckbox && certificateCheckbox.checked);
     },
     'click .btn-remove-account' (event, instance) {
         let accountIndex = event.target.closest(".btn-remove-account").dataset.account_index;
-        loginCustom.splice(accountIndex, 1);
+        Meteor.loginCustom.splice(accountIndex, 1);
         _login_tracker.changed();
     },
     'input .in-custom-name' (event, instance) {
         let accountIndex = event.target.dataset.account_index;
-        loginCustom[accountIndex].account.name = event.target.value;
+        Meteor.loginCustom[accountIndex].account.name = event.target.value;
         _login_tracker.changed();
     }
 });

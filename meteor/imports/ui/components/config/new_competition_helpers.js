@@ -75,6 +75,9 @@ export let NewCompetition = {
 
         if (!final) {
             accounts = [NewCompetition.editModeAccount];
+            if (Meteor.loginGroups.length > 0 || Meteor.loginStations.length > 0 || Meteor.loginCustom.length > 0) {
+                Meteor.f7.alert("Die Accounts werden erst gespeichert, wenn der Wettkampf gestartet wird.", "Hinweis");
+            }
         }
 
         // athletes
