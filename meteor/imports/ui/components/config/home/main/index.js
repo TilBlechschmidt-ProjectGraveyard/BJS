@@ -13,7 +13,6 @@ Template.home_main.onRendered(function () {
         document.getElementById('current-contest-name').innerHTML = DBInterface.getCompetitionName();
         document.getElementById('current-contest-type').innerHTML = DBInterface.getCompetitionType().getInformation().name;
         DBInterface.getServerIPs(function (data) {
-            console.log(data);
             ips = data;
             ip_tracker.changed();
         });

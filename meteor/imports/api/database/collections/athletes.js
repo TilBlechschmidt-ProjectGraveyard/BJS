@@ -29,7 +29,5 @@ export function initAthletes() {
         p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, serverAccount);
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, serverAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, serverAccount);
-        console.log(p);
-        console.log(log.getAsString());
     };
 }
