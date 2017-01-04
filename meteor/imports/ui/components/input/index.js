@@ -35,7 +35,7 @@ Template.input.helpers({
         return getLastLogin();
     },
     athletes: function () {
-        Meteor.login_deps.depend();
+        Meteor.inputDependency.depend();
         const athletes = lodash.sortBy(getAthletes(), 'lastName');
 
         let athlete_list = [];
