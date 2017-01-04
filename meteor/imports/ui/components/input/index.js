@@ -337,14 +337,14 @@ Template.attempt.events({
 });
 
 Template.input.onRendered(function () {
-    const nameSwiper = Meteor.f7.swiper('#input-name-swiper', {
+    const nameSwiper = new Swiper('#input-name-swiper', {
         loop: true,
         effect: 'slide',
         spaceBetween: 50,
         onlyExternal: true
     });
 
-    Meteor.f7.swiper('#input-swiper', {
+    new Swiper('#input-swiper', {
         pagination: '.swiper-pagination',
         paginationType: 'fraction',
         hashnav: true,
