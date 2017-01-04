@@ -93,45 +93,48 @@
         </div>
     </div>
 
-    <!--TODO create function for the meteor stuff below-->
     {{#if athlete_id}}
         {{#with athleteByID athlete_id}}
-            {{#each s in sportType}}
-                {{#with s}}
-                    <div class="popup popup-{{name}}">
-                        <div class="content-block">
-                            {{#with metadata}}
-                                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
-                                                                   style="float: left;">chevron_left</i></a>
-                                <h1 style="text-align: center;">{{name}}</h1>
-                                <h5 style="text-align: center">Einheit: {{unit}}</h5>
-                                <p id="description" style="text-align: justify">{{{description}}}</p>
-                                <!--Three { are required for html Tags!-->
-                                {{#with m}}
-                                    {{#each a in age}}
-                                        {{a}}
-                                    {{/each}}
-                                {{/with}}
-                                <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
-                            {{/with}}
-                        </div>
-                    </div>
-                {{/with}}
-            {{/each}}
-            <style>
-                .vcenterIcon {
-                    height: 39px;
-                    line-height: 39px;
-                    text-align: center;
-                }
-
-                #description img {
-                    display: block;
-                    margin: auto;
-                }
-            </style>
+            {{>sportTypeDescriptions sportTypes=sportType}}
         {{/with}}
     {{/if}}
+</template>
+
+<template name="sportTypeDescriptions">
+    {{#each s in sportTypes}}
+        {{#with s}}
+            <div class="popup popup-{{name}}">
+                <div class="content-block">
+                    {{#with metadata}}
+                        <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                           style="float: left;">chevron_left</i></a>
+                        <h1 style="text-align: center;">{{name}}</h1>
+                        <h5 style="text-align: center">Einheit: {{unit}}</h5>
+                        <p id="description" style="text-align: justify">{{{description}}}</p>
+                        <!--Three { are required for html Tags!-->
+                        {{#with m}}
+                            {{#each a in age}}
+                                {{a}}
+                            {{/each}}
+                        {{/with}}
+                        <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
+                    {{/with}}
+                </div>
+            </div>
+        {{/with}}
+    {{/each}}
+    <style>
+        .vcenterIcon {
+            height: 39px;
+            line-height: 39px;
+            text-align: center;
+        }
+
+        #description img {
+            display: block;
+            margin: auto;
+        }
+    </style>
 </template>
 
 <template name="attempts">
