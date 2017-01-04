@@ -251,6 +251,7 @@ export let input_onload = function (page) {
             event.stopImmediatePropagation();
             //TODO logout AND possibly set Meteor.firstLogin to false (?)
             AccountManager.logout(getLastLogin());
+            Meteor.inputDependency.changed();
             return false;
         },
         'click .return-to-login': function () {
