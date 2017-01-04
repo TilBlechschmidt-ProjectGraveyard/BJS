@@ -1,6 +1,7 @@
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission} from "./router";
 import {selectDefaultAthlete} from "../../../startup/client/helpers";
+import "./index.html";
 
 function login(event) {
     const type = event.target.dataset.type;
@@ -84,63 +85,60 @@ export let initSwiper = function () {
     // Meteor.swiper.once('sliderMove', onSliderMove);
 };
 
-export let login_onLoad = function () {
+Template.login.helpers({
+    firstLoggedIn: function () {
+        Meteor.inputDependency.depend();
+        return sessionStorage.getItem("firstLogin");
+    }
+});
 
-    Template.login.helpers({
-        firstLoggedIn: function () {
-            Meteor.inputDependency.depend();
-            return sessionStorage.getItem("firstLogin");
-        }
-    });
-
-    Template.login.events({
-        'click .overview-choice': function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            FlowRouter.go('/login/' + btoa(event.target.dataset.type));
+Template.login.events({
+    'click .overview-choice': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        FlowRouter.go('/login/' + btoa(event.target.dataset.type));
+        nextStep(getLoginSwiper());
+        return false;
+    },
+    'click .selection': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const type = event.target.dataset.type;
+        if (event.target.dataset.type == "continue_login")
             nextStep(getLoginSwiper());
+        else if (type == "view_data")
+            selectDefaultAthlete();
+        else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
+            Meteor.f7.showPreloader("Abmelden");
+            AccountManager.logout(sessionStorage.getItem("firstLogin"));
+            sessionStorage.removeItem("firstLogin");
+            Meteor.inputDependency.changed();
+            checkPermission();
+            setTimeout(Meteor.f7.hidePreloader, 500);
+        }
+        return false;
+    },
+    'click .login-button': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        login(event);
+        return false;
+    },
+    'click .login-back-button': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        prevStep(getLoginSwiper());
+        return false;
+    },
+    'keypress input[type="password"]': function (event) {
+        if (event.keyCode == 13) {
+            if (event.target.dataset.type) login(event);
+            event.stopPropagation();
             return false;
-        },
-        'click .selection': function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            const type = event.target.dataset.type;
-            if (event.target.dataset.type == "continue_login")
-                nextStep(getLoginSwiper());
-            else if (type == "view_data")
-                selectDefaultAthlete();
-            else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
-                Meteor.f7.showPreloader("Abmelden");
-                AccountManager.logout(sessionStorage.getItem("firstLogin"));
-                sessionStorage.removeItem("firstLogin");
-                Meteor.inputDependency.changed();
-                checkPermission();
-                setTimeout(Meteor.f7.hidePreloader, 500);
-            }
-            return false;
-        },
-        'click .login-button': function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            login(event);
-            return false;
-        },
-        'click .login-back-button': function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            prevStep(getLoginSwiper());
-            return false;
-        },
-        'keypress input[type="password"]': function (event) {
-            if (event.keyCode == 13) {
-                if (event.target.dataset.type) login(event);
-                event.stopPropagation();
-                return false;
-            }
-        },
-    });
+        }
+    },
+});
 
-    Template.login.onRendered(function () {
-        initSwiper();
-    });
-};
+Template.login.onRendered(function () {
+    initSwiper();
+});

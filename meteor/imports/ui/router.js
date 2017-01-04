@@ -1,5 +1,5 @@
 import {AccountManager} from "../api/account_managment/AccountManager";
-import {input_onload} from "./components/input/index";
+import "./components/input";
 
 FlowRouter.route('/', {
     action: function () {
@@ -30,14 +30,12 @@ function checkPermission() {
 }
 
 input.route('/', {
-    triggersEnter: input_onload,
     action: function () {
         if (checkPermission()) BlazeLayout.render('input');
     }
 });
 
 input.route('/:athlete_id', {
-    triggersEnter: input_onload,
     action: function (params) {
         if (checkPermission()) {
             BlazeLayout.render('input', {

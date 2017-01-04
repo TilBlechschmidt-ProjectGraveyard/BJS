@@ -1,4 +1,4 @@
-import {login_onLoad, getLoginSwiper, goToStep} from "./template";
+import {getLoginSwiper, goToStep} from "./template";
 import {tryDecrypt, selectDefaultAthlete, invertLogin} from "../../../startup/client/helpers";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 
@@ -57,7 +57,6 @@ export let checkPermission = function () {
 };
 
 login.route("/", {
-    triggersEnter: login_onLoad,
     action: function () {
 
         const permission = checkPermission();
@@ -79,7 +78,6 @@ login.route("/", {
 });
 
 login.route("/:loginA", {
-    triggersEnter: login_onLoad,
     action: function (params) {
 
         const permission = checkPermission();
@@ -104,7 +102,6 @@ login.route("/:loginA", {
 });
 
 login.route("/:loginA/:loginB", {
-    triggersEnter: login_onLoad,
     action: function (params) {
 
         const permission = checkPermission();

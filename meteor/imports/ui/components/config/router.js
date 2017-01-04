@@ -1,4 +1,4 @@
-import {athletes_right_onLoad} from "./athletes/right";
+import "./athletes/right";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 
 let config = FlowRouter.group({
@@ -40,7 +40,6 @@ config.route('/sports', {
 });
 
 config.route('/athletes', {
-    triggersEnter: athletes_right_onLoad,
     action: function () {
         if (checkPermission()) {
             BlazeLayout.render('two_view', {
