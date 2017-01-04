@@ -9,6 +9,9 @@ import {arrayify} from "./helpers";
 
 // Run things on startup
 export function onStartup() {
+
+    Meteor.pageVisitTime = new Date().getTime();
+
     Template.registerHelper('arrayify', arrayify);
 
     FlowRouter.triggers.enter(function () {
