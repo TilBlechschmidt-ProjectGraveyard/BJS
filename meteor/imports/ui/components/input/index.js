@@ -20,6 +20,12 @@ function hasClass(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
 
+function getAthleteIDByElement(element) {
+    const parentSlide = element.closest("div.swiper-slide[data-hash]");
+    if (!parentSlide) return "";
+    return parentSlide.dataset.hash;
+}
+
 function populateAthlete(athlete) {
     if (!DBInterface.isReady()) {
         DBInterface.waitForReady(function () {
@@ -266,9 +272,6 @@ Template.attempt.helpers({
     isReadOnly: function (measurement) {
         return measurement.read_only ? "disabled" : "";
     },
-    // athlete_id: function () {
-    //     return FlowRouter.getParam("athlete_id");
-    // }
 });
 
 Template.input.events({
@@ -306,9 +309,7 @@ Template.attempt.events({
             event.preventDefault();
             event.stopImmediatePropagation();
             const data = event.target.dataset;
-            const parentSlide = event.target.closest("div.swiper-slide[data-hash]");
-            const athleteID = parentSlide.dataset.hash;
-            if (updateMeasurement(athleteID, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
+            if (updateMeasurement(getAthleteIDByElement(event.target), data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                 event.target.value = "";
 
             Meteor.inputDependency.changed();
@@ -322,7 +323,7 @@ Template.attempt.events({
         const data = event.target.dataset;
         const parentSlide = event.target.closest("div.swiper-slide[data-hash]");
         const athleteID = parentSlide.dataset.hash;
-        if (updateMeasurement(athleteID, data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
+        if (updateMeasurement(getAthleteIDByElement(event.target), data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
             event.target.value = "";
         Meteor.inputDependency.changed();
     }

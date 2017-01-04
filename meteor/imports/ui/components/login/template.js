@@ -62,17 +62,6 @@ export let goToStep = function (swiper, step) {
     swiper.lockSwipeToPrev();
 };
 
-function onSliderMove() {
-    // if (AccountManager.inputPermitted()) {
-    //     const logout_type = Meteor.firstLogin == "Gruppenleiter" ? "Station" : "Gruppenleiter";
-    //     console.log(logout_type);
-    // }
-    //
-    // setTimeout(function () {
-    //     getLoginSwiper().once('sliderMove', onSliderMove);
-    // }, 200);
-}
-
 export let initSwiper = function () {
     Meteor.swiper = Meteor.f7.swiper('.swiper-container', {
         pagination: '.swiper-pagination',
@@ -80,8 +69,6 @@ export let initSwiper = function () {
         allowSwipeToNext: false,
         allowSwipeToPrev: false
     });
-
-    // Meteor.swiper.once('sliderMove', onSliderMove);
 };
 
 Template.login.helpers({

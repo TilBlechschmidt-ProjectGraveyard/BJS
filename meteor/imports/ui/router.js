@@ -2,11 +2,9 @@ import {AccountManager} from "../api/account_managment/AccountManager";
 import "./components/input";
 
 FlowRouter.route('/', {
-    action: function () {
-        // FlowRouter.go("/config");
-        //TODO: Check if it is already configured and run the following if that is the case:
+    triggersEnter: [function () {
         FlowRouter.go("/login");
-    }
+    }]
 });
 
 FlowRouter.route('/logout', {
