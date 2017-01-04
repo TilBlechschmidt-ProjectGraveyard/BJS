@@ -127,6 +127,11 @@ export function onStartup() {
                 contestType: competitionTypeID,
                 sportTypes: sportTypes
             });
+
+            if (final) {
+                Meteor.call('activateCompetition', loginObject, competitionName);
+            }
+
             return encryptAsAdmin(true);
         },
         'getEditInformation': function (loginObject, competitionName) {
