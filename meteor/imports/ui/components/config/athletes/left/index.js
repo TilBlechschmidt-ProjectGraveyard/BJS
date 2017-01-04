@@ -16,7 +16,7 @@ function save() {
 Template.athletes_left.onRendered(function () {
     window.onbeforeunload = function () {
         return confirm("Wenn Sie die Konfigurationsseite verlassen, gehen alle nicht gespeicherten Eingaben verloren! Wollen Sie fortfahren?");
-    }
+    };
 });
 
 Template.athletes_left.helpers({

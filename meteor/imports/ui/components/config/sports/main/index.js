@@ -6,7 +6,7 @@ import {NewCompetition} from "../../new_competition_helpers";
 Template.sports_main.onRendered(function () {
     window.onbeforeunload = function () {
         return confirm("Wenn Sie die Konfigurationsseite verlassen, gehen alle nicht gespeicherten Eingaben verloren! Wollen Sie fortfahren?");
-    }
+    };
 });
 
 //noinspection JSUnusedGlobalSymbols
