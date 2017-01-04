@@ -106,7 +106,7 @@ Template.login.events({
         if (event.target.dataset.type == "continue_login")
             nextStep(getLoginSwiper());
         else if (type == "view_data")
-            FlowRouter.go('/contest');
+            FlowRouter.go('/input');
         else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
             Meteor.f7.showPreloader("Abmelden");
             AccountManager.logout(sessionStorage.getItem("firstLogin"));

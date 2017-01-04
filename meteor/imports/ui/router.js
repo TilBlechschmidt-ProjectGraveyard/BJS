@@ -17,7 +17,7 @@ FlowRouter.route('/logout', {
     }
 });
 
-FlowRouter.route('/contest', {
+FlowRouter.route('/input', {
     action: function () {
         if (AccountManager.viewPermitted()) BlazeLayout.render('input');
         else FlowRouter.go('/login');

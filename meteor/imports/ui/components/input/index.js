@@ -272,13 +272,6 @@ Template.attempt.helpers({
 });
 
 Template.input.events({
-    // 'click li.athlete': function (event) {
-    //     event.preventDefault();
-    //     event.stopImmediatePropagation();
-    //     FlowRouter.go("/contest/" + event.target.closest("li").dataset.id);
-    //     Meteor.f7.closePanel();
-    //     return false;
-    // },
     'click #link_next': function () {
         event.preventDefault();
         event.stopImmediatePropagation();

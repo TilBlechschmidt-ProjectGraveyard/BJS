@@ -46,7 +46,7 @@ export let checkPermission = function () {
         FlowRouter.go('/login/' + btoa("Station") + '/' + btoa("Gruppenleiter"));
         return {redirected: true};
     } else if (stationLoggedIn && groupLoggedIn) {
-        FlowRouter.go('/contest');
+        FlowRouter.go('/input');
     } else if (adminLoggedIn) {
         FlowRouter.go('/config');
     } else if (outputLoggedIn) {
