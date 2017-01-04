@@ -181,5 +181,13 @@ export let AccountManager = {
         } else {
             logout(type);
         }
+    },
+
+    logoutAll: function () {
+        inputAdminAccount.logout();
+        inputOutputAccount.logout();
+        inputStationAccount.logout();
+        inputGroupAccount.logout();
+        sessionStorage.removeItem("firstLogin");
     }
 };

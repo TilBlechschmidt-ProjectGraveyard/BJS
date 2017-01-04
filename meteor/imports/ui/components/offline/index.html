@@ -13,7 +13,11 @@
                         <img src="/gorilla.jpg" style="width: 100%">
                     </div>
                     <div class="list-block" style="text-align: center;">
-                        <div class="btn-spenden"
+                        <div id="goToLoginButton" class="big-button" style="background-color: green">
+                            Zum Login!
+                        </div>
+                        <br>
+                        <div class="big-button" style="background-color: red"
                              onclick="window.open('https://www.wwf.de/spenden-helfen/fuer-ein-projekt-spenden/gorillas/formular/anzeigen/spenden/eintragen/', '_blank')">
                             Mehr Gorillas!
                         </div>
@@ -35,13 +39,12 @@
             transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .btn-spenden {
+        .big-button {
             width: 50%;
             margin-left: 25%;
             margin-right: 25%;
             padding-top: 20px;
             padding-bottom: 20px;
-            background-color: red;
             text-align: center;
             color: #FFF;
             border-radius: 10px;
