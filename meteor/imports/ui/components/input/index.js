@@ -300,6 +300,13 @@ Template.input.events({
         checkPermission();
         setTimeout(updateSwiperProgress, 1);
         return false;
+    },
+    'click .athlete-link': function () {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.getElementById("input-swiper").swiper.slideTo(parseFloat(event.target.dataset.target) + 1);
+        Meteor.f7.closeModal();
+        return false;
     }
 });
 

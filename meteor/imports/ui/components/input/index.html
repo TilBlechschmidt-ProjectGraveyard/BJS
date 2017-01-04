@@ -9,7 +9,8 @@
                         <div id="input-name-swiper" class="swiper-container" style="height: 100%">
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
-                                    <div class="swiper-slide">{{a.firstName}}&nbsp;{{a.lastName}}</div>
+                                    <div class="swiper-slide open-popover athlete-name"
+                                         data-popover=".popover-links">{{a.firstName}}&nbsp;{{a.lastName}}</div>
                                 {{/each}}
                             </div>
                         </div>
@@ -74,7 +75,25 @@
 
     {{>sportTypeDescriptions sportTypes=sportTypes}}
 
+    <div class="popover popover-links">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block athletes-list" style="max-height: 75%; overflow-y: scroll;">
+                <ul>
+                    {{#each athletes}}
+                        <li><a href="#" class="list-button item-link athlete-link"
+                               data-target="{{@index}}">{{this.firstName}}&nbsp;{{this.lastName}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <style>
+        .athletes-list::-webkit-scrollbar {
+            width: 0px; /* remove scrollbar space */
+            background: transparent; /* optional: just make scrollbar invisible */
+        }
         @media screen and (max-width: 480px) {
             .hideOnMobile {
                 opacity: 0;
@@ -87,6 +106,18 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .athlete-name:hover {
+            border-bottom-color: #B0BEC5;
+            cursor: pointer;
+        }
+
+        .athlete-name {
+            border-bottom: 2px solid transparent;
+            text-decoration: none;
+            transition: border-bottom-color 50ms linear 0s;
+        }
+
     </style>
 </template>
 
