@@ -30,6 +30,7 @@ export let checkPermission = function () {
 
     const groupLoggedIn = AccountManager.getGroupAccount().logged_in;
     const stationLoggedIn = AccountManager.getStationAccount().logged_in;
+    const adminLoggedIn = AccountManager.getAdminAccount().logged_in;
     const loginA = tryDecrypt(FlowRouter.getParam("loginA"));
     const loginB = tryDecrypt(FlowRouter.getParam("loginB"));
 
@@ -43,8 +44,11 @@ export let checkPermission = function () {
     } else if (stationLoggedIn && !groupLoggedIn && !(loginA == "Station" && loginB == "Gruppenleiter")) {
         FlowRouter.go('/login/' + btoa("Station") + '/' + btoa("Gruppenleiter"));
         return {redirected: true};
-    } else if (stationLoggedIn && groupLoggedIn)
+    } else if (stationLoggedIn && groupLoggedIn) {
         selectDefaultAthlete();
+    } else if (adminLoggedIn) {
+        FlowRouter.go('/config');
+    }
 
     return {
         redirected: false,
