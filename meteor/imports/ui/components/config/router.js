@@ -14,6 +14,14 @@ function checkPermission() {
     return true;
 }
 
+function inEditMode() {
+    if (!Meteor.oldName) {
+        FlowRouter.go('/config');
+        return false;
+    }
+    return true;
+}
+
 config.route('/', {
     action: function () {
         if (checkPermission()) {
@@ -29,19 +37,19 @@ config.route('/', {
 
 config.route('/new', {
     action: function () {
-        if (checkPermission()) BlazeLayout.render('new_competition_main');
+        if (checkPermission() && inEditMode()) BlazeLayout.render('new_competition_main');
     }
 });
 
 config.route('/sports', {
     action: function () {
-        if (checkPermission()) BlazeLayout.render('sports_main');
+        if (checkPermission() && inEditMode()) BlazeLayout.render('sports_main');
     }
 });
 
 config.route('/athletes', {
     action: function () {
-        if (checkPermission()) {
+        if (checkPermission() && inEditMode()) {
             BlazeLayout.render('two_view', {
                 first: 'view_left',
                 second: 'view_middle',
@@ -56,7 +64,7 @@ config.route('/athletes', {
 
 config.route('/codes', {
     action: function () {
-        if (checkPermission()) {
+        if (checkPermission() && inEditMode()) {
             BlazeLayout.render('two_view', {
                 first: 'view_full',
                 nested_full: 'codes',
