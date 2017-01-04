@@ -19,13 +19,21 @@ Template.athletes_middle.helpers({
             Meteor._currentGroup = -1;
             return [];
         } else if (Meteor._currentGroup != -1) {
+
             const group = Meteor.groups[Meteor._currentGroup];
+
+            const athletes = _.map(group.athletes, function (athlete, index) {
+                athlete.index = index;
+                return athlete;
+            });
+
             document.getElementById("btn-rename-group").innerHTML = group.name;
             document.getElementById("btn-rename-group").removeAttribute("disabled");
             document.getElementById("btn-delete-group").removeAttribute("disabled");
             document.getElementById("btn-add-athlete").removeAttribute("disabled");
 
-            return group.athletes;
+
+            return lodash.sortBy(athletes, 'lastName');
         } else {
             document.getElementById("btn-rename-group").innerHTML = "Keine Gruppe Ausgewählt";
             document.getElementById("btn-rename-group").setAttribute("disabled", "true");
