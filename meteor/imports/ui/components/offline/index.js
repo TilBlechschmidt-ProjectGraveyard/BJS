@@ -4,7 +4,6 @@ import {updateSwiperProgress} from "../login/router";
 
 Template.offline.helpers({
     isOffline: function () {
-        // return true;
         const time = new Date().getTime();
         const connected = Meteor.status().connected;
         if (Meteor.pageVisitTime + 3000 < time) {

@@ -12,7 +12,8 @@ const login_overview = {
         choices: [
             {title: "Ich bin ein Gruppenleiter", type: "Gruppenleiter"},
             {title: "Ich bin eine Station", type: "Station"},
-            {title: "Ich bin ein Administrator", type: "Administrator"}
+            {title: "Ich bin ein Administrator", type: "Administrator"},
+            {title: "Ich möchte Urkunden erstellen", type: "Urkunden Erstellen"}
         ]
     }
 };
@@ -30,6 +31,7 @@ export let checkPermission = function () {
     const groupLoggedIn = AccountManager.getGroupAccount().logged_in;
     const stationLoggedIn = AccountManager.getStationAccount().logged_in;
     const adminLoggedIn = AccountManager.getAdminAccount().logged_in;
+    const outputLoggedIn = AccountManager.getOutputAccount().logged_in;
     const loginA = tryDecrypt(FlowRouter.getParam("loginA"));
     const loginB = tryDecrypt(FlowRouter.getParam("loginB"));
 
@@ -47,6 +49,8 @@ export let checkPermission = function () {
         selectDefaultAthlete();
     } else if (adminLoggedIn) {
         FlowRouter.go('/config');
+    } else if (outputLoggedIn) {
+        FlowRouter.go('/output');
     }
 
     return {
