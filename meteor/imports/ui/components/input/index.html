@@ -10,7 +10,7 @@
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
                                     <div class="swiper-slide open-popover athlete-name"
-                                         data-popover=".popover-links">{{a.firstName}}&nbsp;{{a.lastName}}</div>
+                                         data-popover=".popover-links">{{a.getFullName}}</div>
                                 {{/each}}
                             </div>
                         </div>
@@ -35,12 +35,12 @@
                                                 Messdaten.</p>
                                         </div>
                                     {{/if}}
-                                    {{#if showCanNotDoSportType}}
+                                    {{#if isNotEmpty nonPermittedSportTypes}}
                                         <div class="content-block">
                                             <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an
                                                 dieser Station nicht durchführen:
                                             </div>
-                                            {{#each n in canNotDoSportType}}
+                                            {{#each n in nonPermittedSportTypes}}
                                                 <div style="text-align: center;">{{n}}</div>
                                             {{/each}}
                                             <br>
