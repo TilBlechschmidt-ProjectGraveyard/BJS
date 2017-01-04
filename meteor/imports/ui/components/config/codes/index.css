@@ -22,23 +22,4 @@
         bottom: 0;
         width: 100%;
     }
-
-    .printcontent-content {
-        margin-top: 0px;
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    .print-password-title {
-        width: 100%;
-        font-size: xx-large;
-    }
-
-    .print-name-field {
-        text-align: left;
-    }
-
-    .print-password-field {
-        text-align: right;
-    }
 }
