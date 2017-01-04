@@ -265,5 +265,17 @@ export let DBInterface = {
                 }
             }
         });
+    },
+
+    /**
+     * Generates certificates for the current competition
+     * @param [callback] - optional callback
+     */
+    getServerIPs: function (callback) {
+        Meteor.call('getServerIPs', function (err, data) {
+            if (typeof callback === 'function') {
+                callback(data);
+            }
+        });
     }
 };

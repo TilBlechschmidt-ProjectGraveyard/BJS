@@ -125,6 +125,8 @@ Template.login.events({
         return false;
     },
     'click .login-back-button': function (event) {
+        const type = event.target.dataset.type;
+        document.querySelectorAll("input[data-type='" + type + "'][type='password']")[0].value = "";
         event.preventDefault();
         event.stopImmediatePropagation();
         prevStep(getLoginSwiper());

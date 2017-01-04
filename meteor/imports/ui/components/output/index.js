@@ -1,7 +1,8 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import {DBInterface} from "../../../api/database/db_access";
-import {getAccountByPassphrase} from "../../../api/account_managment/AccountManager";
+import {getAccountByPassphrase, AccountManager} from "../../../api/account_managment/AccountManager";
+import {updateSwiperProgress} from "../login/router";
 
 
 let groups = [];
@@ -10,7 +11,7 @@ const groups_deps = new Tracker.Dependency();
 
 
 function refresh() {
-    DBInterface.generateCertificates(Meteor.certificateAccount, function (data) {
+    DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
         groups = data;
         current_group = 0;
         groups_deps.changed();
@@ -19,18 +20,7 @@ function refresh() {
 
 Template.output.onRendered(function () {
     DBInterface.waitForReady(function () {
-
-        //TODO replace with login view
-        getAccountByPassphrase('urkunden', function (account) {
-            if (account) {
-                Meteor.certificateAccount = account;
-            } else {
-                alert("Wrong urkunden password");
-            }
-        });
-
         refresh();
-
     });
 });
 
@@ -60,5 +50,14 @@ Template.output.events({
         Meteor.f7.closePanel();
         groups_deps.changed();
     },
-    'click #btn_refresh': refresh
+    'click #btn_refresh': refresh,
+    'click .logout-button': function (event) {
+        Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
+            AccountManager.logout("Urkunden");
+            sessionStorage.removeItem("firstLogin");
+            FlowRouter.go('/login');
+            updateSwiperProgress(0);
+            return false;
+        });
+    },
 });
