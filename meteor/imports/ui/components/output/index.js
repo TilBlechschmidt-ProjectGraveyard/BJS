@@ -2,6 +2,7 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import {DBInterface} from "../../../api/database/db_access";
 import {getAccountByPassphrase, AccountManager} from "../../../api/account_managment/AccountManager";
+import {updateSwiperProgress} from "../login/router";
 
 
 let groups = [];
@@ -52,7 +53,7 @@ Template.output.events({
     'click #btn_refresh': refresh,
     'click .logout-button': function (event) {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
-            AccountManager.logout("Urkunden Erstellen");
+            AccountManager.logout("Urkunden");
             sessionStorage.removeItem("firstLogin");
             FlowRouter.go('/login');
             updateSwiperProgress(0);

@@ -13,7 +13,7 @@ const login_overview = {
             {title: "Ich bin ein Gruppenleiter", type: "Gruppenleiter"},
             {title: "Ich bin eine Station", type: "Station"},
             {title: "Ich bin ein Administrator", type: "Administrator"},
-            {title: "Ich möchte Urkunden erstellen", type: "Urkunden Erstellen"}
+            {title: "Ich möchte Urkunden erstellen", type: "Urkunden"}
         ]
     }
 };

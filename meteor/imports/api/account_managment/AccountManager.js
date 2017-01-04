@@ -15,7 +15,7 @@ function logout(type) {
         inputStationAccount.logout();
     } else if (type == "Administrator") {
         inputAdminAccount.logout();
-    } else if (type == "Urkunden Erstellen") {
+    } else if (type == "Urkunden") {
         inputOutputAccount.logout();
     }
 }
@@ -128,7 +128,7 @@ export let AccountManager = {
 
         if (type == "Station") account = inputStationAccount;
         else if (type == "Administrator") account = inputAdminAccount;
-        else if (type == "Urkunden Erstellen") account = inputOutputAccount;
+        else if (type == "Urkunden") account = inputOutputAccount;
 
 
         account.setProcessing(true);
@@ -145,7 +145,7 @@ export let AccountManager = {
                 } else if (type == "Administrator" && !account.isAdminAccount()) {
                     account.logout();
                     if (typeof callback === 'function') callback(false, "Dieser Benuzer hat keine Administrator Rechte.");
-                } else if (type == "Urkunden Erstellen" && !account.canViewResults()) {
+                } else if (type == "Urkunden" && !account.canViewResults()) {
                     account.logout();
                     if (typeof callback === 'function') callback(false, "Dieser Benutzer hat keine Berechtigung die Urkunden zu erstellen..");
                 } else if (typeof callback === 'function') callback(true);
