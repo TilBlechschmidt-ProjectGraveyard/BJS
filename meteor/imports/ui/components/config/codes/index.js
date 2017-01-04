@@ -271,3 +271,9 @@ Template.codes_print.helpers({
         return Object.keys(obj).length > 0;
     }
 });
+
+Template.codes_print.onRendered(function () {
+    window.onbeforeunload = function () {
+        return confirm("Wenn Sie die Konfigurationsseite verlassen, gehen alle nicht gespeicherten Eingaben verloren! Wollen Sie fortfahren?");
+    }
+});
