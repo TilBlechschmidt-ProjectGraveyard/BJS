@@ -27,7 +27,6 @@ export let updateSwiperProgress = function (slideIndex) {
 };
 
 export let checkPermission = function () {
-
     const groupLoggedIn = AccountManager.getGroupAccount().logged_in;
     const stationLoggedIn = AccountManager.getStationAccount().logged_in;
     const adminLoggedIn = AccountManager.getAdminAccount().logged_in;
