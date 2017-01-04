@@ -148,14 +148,15 @@
                                 <p>
                                     <span id="progress-bar" data-progress="10" class="progressbar"></span>
                                 </p>
-                                <!-- Button Print -->
                                 <p><a href="#" id="btn-add-account"
                                       class="button button-fill button-big color-green">Eigenen Zugangscode
                                     erstellen</a>
                                 </p>
-                                <!-- Button Print -->
                                 <p><a href="#" id="btn-print"
                                       class="button button-fill button-big color-gray">Drucken</a>
+                                </p>
+                                <p><a href="#" id="btn-pdf"
+                                      class="button button-fill button-big color-gray">Als PDF speichern</a>
                                 </p>
 
 
@@ -168,44 +169,8 @@
             </div>
 
             <div class="printcontent">
-                <div class="printcontent-content">
-                    <h1>{{get_competition_name}}: Zugangscodes</h1>
-                    <div class="print-password-title">Stationslogins</div>
-                    <table class="print-password-table">
-                        {{#each l in login_stations}}
-                            {{#with l}}
-                                <tr>
-                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                    <td class="print-password-field">{{password}}</td>
-                                </tr>
-                            {{/with}}
-                        {{/each}}
-                    </table>
-                    <div class="print-password-title">Gruppenlogins</div>
-                    <table class="print-password-table">
-                        {{#each l in login_groups}}
-                            {{#with l}}
-                                <tr>
-                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                    <td class="print-password-field">{{password}}</td>
-                                </tr>
-                            {{/with}}
-                        {{/each}}
-                    </table>
-                    <div class="print-password-title">Eigene Logins</div>
-                    <table class="print-password-table">
-                        {{#each l in login_custom}}
-                            {{#with l}}
-                                <tr>
-                                    <td class="print-name-field">{{#with account}}{{name}}{{/with}}</td>
-                                    <td class="print-password-field">{{password}}</td>
-                                </tr>
-                            {{/with}}
-                        {{/each}}
-                    </table>
-                </div>
+                {{>codes_print competition_name=get_competition_name login_stations=login_stations login_groups=login_groups login_custom=login_custom}}
             </div>
-
 
             <!-- Toolbar -->
             <div class="toolbar">
@@ -216,4 +181,87 @@
             </div>
         </div>
     </div>
+</template>
+
+<template name="codes_print">
+    <div class="printcontent-content">
+        <h1>{{competition_name}}: Zugangscodes</h1>
+
+        {{#if hasData login_stations}}
+            <div class="print-password-title">Stationslogins</div>
+            <table class="print-password-table" style="width:100%">
+                <tbody>
+                    <tr>
+                        <th>Zugang</th>
+                        <th>Passwort</th>
+                    </tr>
+                    {{#each l in login_stations}}
+                        <tr>
+                            <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
+                            <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/if}}
+
+        {{#if hasData login_groups}}
+            <div class="print-password-title">Gruppenlogins</div>
+            <table class="print-password-table">
+                <tr>
+                    <th>Zugang</th>
+                    <th>Passwort</th>
+                </tr>
+                {{#each l in login_groups}}
+                    <tr>
+                        <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
+                        <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{/if}}
+
+        {{#if hasData login_groups}}
+            <div class="print-password-title">Eigene Logins</div>
+            <table class="print-password-table">
+                <tr>
+                    <th>Zugang</th>
+                    <th>Passwort</th>
+                </tr>
+                {{#each l in login_custom}}
+                    <tr>
+                        <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
+                        <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{/if}}
+    </div>
+    <style>
+        table { border-collapse: collapse; }
+        tr { border-bottom: 1px solid rgba(236, 239, 241, .75); }
+        tr:nth-child(even) {
+            background-color: #ECEFF1;
+        }
+        .printcontent-content {
+            margin-top: 0px;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .print-password-title {
+            width: 100%;
+            font-size: xx-large;
+        }
+
+        .print-name-field {
+            text-align: left;
+            width: 50%;
+        }
+
+        .print-password-field {
+            text-align: right;
+            width: 50%;
+        }
+    </style>
 </template>
