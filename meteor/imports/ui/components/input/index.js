@@ -231,32 +231,43 @@ export let input_onload = function (page) {
 
     Template.input.events({
         'click li.athlete': function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             FlowRouter.go("/contest/" + event.target.closest("li").dataset.id);
             Meteor.f7.closePanel();
+            return false;
         },
         'click #link_prev': function () {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             const athleteIDs = getAthleteIDs();
             let prevAthleteID = athleteIDs.indexOf(FlowRouter.getParam("athlete_id")) - 1;
             if (prevAthleteID < 0) prevAthleteID = athleteIDs.length - 1;
             FlowRouter.go("/contest/" + athleteIDs[prevAthleteID]);
+            return false;
         },
         'click #link_next': function () {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             const athleteIDs = getAthleteIDs();
             let prevAthleteID = athleteIDs.indexOf(FlowRouter.getParam("athlete_id")) + 1;
             if (prevAthleteID > athleteIDs.length - 1) prevAthleteID = 0;
             FlowRouter.go("/contest/" + athleteIDs[prevAthleteID]);
+            return false;
         },
         'click .logout-button': function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            //TODO logout AND possibly set Meteor.firstLogin to false (?)
             AccountManager.logout(getLastLogin());
             Meteor.inputDependency.changed();
             return false;
         },
         'click .return-to-login': function () {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             checkPermission();
             setTimeout(updateSwiperProgress, 1);
+            return false;
         }
     });
 

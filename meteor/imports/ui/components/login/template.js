@@ -1,5 +1,6 @@
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission} from "./router";
+import {selectDefaultAthlete} from "../../../startup/client/helpers";
 
 function login(event) {
     const type = event.target.dataset.type;
@@ -107,7 +108,7 @@ export let login_onLoad = function () {
             if (event.target.dataset.type == "continue_login")
                 nextStep(getLoginSwiper());
             else if (type == "view_data")
-                FlowRouter.go("/contest");
+                selectDefaultAthlete();
             else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
                 Meteor.f7.showPreloader("Abmelden");
                 AccountManager.logout(sessionStorage.getItem("firstLogin"));
