@@ -45,9 +45,9 @@ export function initAthletes() {
         p.addMeasurement(log, 'st_endurance_1000', [160], groupAccountA, serverAccount);
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccountA, serverAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccountA, serverAccount);
-        p.certificateScore = 2195;
-        p.certificateTime = Date.now();
-        p.certificatedBy = "Urkunden";
+        // p.certificateScore = 2195; //not working
+        // p.certificateTime = Date.now();
+        // p.certificatedBy = "Urkunden";
 
         const p2 = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false)[1];
         p2.addMeasurement(log, 'st_long_jump', [7.33], groupAccountA, serverAccount);
