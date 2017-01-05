@@ -18,10 +18,14 @@ function refresh() {
         groups = data;
         current_group = 0;
         groups_deps.changed();
+        Tracker.afterFlush(function () {
+            Meteor.f7.hidePreloader();
+        });
     });
 }
 
 Template.output.onRendered(function () {
+    Meteor.f7.showPreloader("Daten werden geladen");
     DBInterface.waitForReady(function () {
         refresh();
     });
