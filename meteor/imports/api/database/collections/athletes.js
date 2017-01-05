@@ -39,7 +39,8 @@ export function initAthletes() {
         this.handle.insert(new Athlete(log, 'Amy', 'Pond', 1990, false, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
 
         // add example measurement
-        const p = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false)[0];
+        const ps = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false);
+        const p = ps[0];
         p.addMeasurement(log, 'st_long_jump', [7.33], groupAccountA, serverAccount);
         p.addMeasurement(log, 'st_ball_200', [70], groupAccountA, serverAccount);
         p.addMeasurement(log, 'st_endurance_1000', [160], groupAccountA, serverAccount);
@@ -49,13 +50,14 @@ export function initAthletes() {
         // p.certificateTime = Date.now();
         // p.certificatedBy = "Urkunden";
 
-        const p2 = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false)[1];
+        const p2 = ps[1];
         p2.addMeasurement(log, 'st_long_jump', [7.33], groupAccountA, serverAccount);
         p2.addMeasurement(log, 'st_ball_200', [5.55], groupAccountA, serverAccount);
         p2.addMeasurement(log, 'st_sprint_100', [9.32], groupAccountA, serverAccount);
 
+        const p3s = DBInterface.getAthletesOfAccounts(log, [groupAccountB], false);
         for (let i = 0; i < 6; i++) {
-            const p3 = DBInterface.getAthletesOfAccounts(log, [groupAccountB], false)[i];
+            const p3 = p3s[i];
             p3.addMeasurement(log, 'st_long_jump', [7.33], groupAccountB, serverAccount);
             p3.addMeasurement(log, 'st_ball_200', [5.55], groupAccountB, serverAccount);
             p3.addMeasurement(log, 'st_sprint_100', [9.32], groupAccountB, serverAccount);
