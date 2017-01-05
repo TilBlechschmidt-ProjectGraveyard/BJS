@@ -127,7 +127,7 @@ export let NewCompetition = {
             function (result) {
                 //check result
                 if (!result) {
-                    Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.", "Fehler");
                     if (typeof callback === 'function') callback(false);
                 }
                 if (typeof callback === 'function') callback(true);

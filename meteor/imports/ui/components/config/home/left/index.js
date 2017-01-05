@@ -40,7 +40,7 @@ Template.home_left.events({
             Meteor.f7.showPreloader('Daten laden...');
             DBInterface.activateCompetition(Meteor.adminAccount, name, function (result) {
                 if (!result) {
-                    Meteor.f7.alert("Es gab einen Fehler während des Ladens. Melden Sie sich ab und versuchen Sie es bitte erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler während des Ladens. Melden Sie sich ab und versuchen Sie es bitte erneut.", "Fehler");
                 } else {
                     setTimeout(function () {
                         location.reload();
