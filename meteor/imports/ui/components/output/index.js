@@ -44,6 +44,9 @@ Template.output.helpers({
         if (current_group == -1) return "Daten laden...";
         return groups[current_group].name;
     },
+    not: function (b) {
+        return !b;
+    }
 });
 Template.output.events({
     'click .accordion-item': function (event) {

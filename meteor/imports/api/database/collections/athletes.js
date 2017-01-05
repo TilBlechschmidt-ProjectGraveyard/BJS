@@ -29,5 +29,11 @@ export function initAthletes() {
         p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, serverAccount);
         p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, serverAccount);
         p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, serverAccount);
+        p.setCertificateWritten(true);
+
+        const p2 = DBInterface.getAthletesOfAccounts(log, [groupAccount], false)[1];
+        p2.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, serverAccount);
+        p2.addMeasurement(log, 'st_ball_200', [5.55], groupAccount, serverAccount);
+        p2.addMeasurement(log, 'st_sprint_100', [9.32], groupAccount, serverAccount);
     };
 }
