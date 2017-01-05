@@ -42,7 +42,7 @@ function wordsToHex(words) {
  */
 function generateHMAC(data, password) {
     //noinspection JSUnresolvedFunction
-    return wordsToHex(CryptoJS.HmacSHA512(data, password));
+    return wordsToHex(CryptoJS.HmacSHA512(JSON.stringify(data), password));
 }
 
 /**
