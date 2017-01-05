@@ -27,6 +27,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
+    this.certificateWritten = false;
     if (id && id.constructor == Array) {
         this.id = undefined;
     } else {
@@ -101,6 +102,7 @@ Athlete.prototype = {
         }
 
         if (canWrite) {
+            this.setCertificateWritten(false);
             this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
             // write to db
             if (this.id) {
@@ -180,6 +182,24 @@ Athlete.prototype = {
     },
 
     /**
+     * Sets whether the certificate for the athlete is already written.
+     * @param {boolean} newStatus - The new status
+     */
+    setCertificateWritten(newStatus) {
+        this.certificateWritten = newStatus;
+        if (this.id) {
+            Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {certificateWritten: newStatus}});
+        }
+    },
+
+    /**
+     * Returns whether the certificate for the athlete is already written.
+     */
+    getCertificateWritten() {
+        return this.certificateWritten;
+    },
+
+    /**
      * Encrypts the athlete for the database
      * @param {Account} groupAccount - Account of the group that this athlete is part of
      * @param {Account} serverAccount - Master account (?) TODO Describe this in a meaningful fashion
@@ -197,6 +217,7 @@ Athlete.prototype = {
         encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
         encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
+        encrypted.certificateWritten = this.certificateWritten;
 
 
         for (let dataGroupID in this.data.data) {
@@ -269,6 +290,8 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
         }
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+
+        athlete.certificateWritten = data.certificateWritten;
 
         let measureData = [];
 

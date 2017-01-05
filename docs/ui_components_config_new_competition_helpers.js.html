@@ -32,9 +32,11 @@
                 <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#getCertificateWritten">getCertificateWritten</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
                 <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
                 <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
+                <li data-type='method'><a href="Athlete.html#setCertificateWritten">setCertificateWritten</a></li>
             </ul>
         </li>
         <li><a href="Data.html">Data</a>
@@ -59,9 +61,36 @@
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
             </ul>
         </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
     </ul>
     <h3>Namespaces</h3>
     <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
@@ -90,6 +119,7 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
@@ -98,7 +128,9 @@
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li>
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
@@ -155,6 +187,7 @@
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -175,6 +208,7 @@ import {Account} from "../../../api/logic/account";
 import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
+import {Crypto} from "../../../api/crypto/crypto";
 
 //TODO include
 // if (!Meteor.oldName) {
@@ -188,6 +222,8 @@ const start_classes_object = require('../../../data/start_classes.json');
 let start_classes = [];
 
 for (let stID in start_classes_object) {
+    //noinspection JSUnresolvedFunction
+    if (!start_classes_object.hasOwnProperty(stID)) continue;
     start_classes.push({
         stID: stID,
         name: start_classes_object[stID].name
@@ -196,7 +232,10 @@ for (let stID in start_classes_object) {
 
 
 export function nameExists(name) {
+    // remove whitespaces
     const name_without_whitespaces = name.replace(/ /g, '');
+
+    // get all competitions
     const allCompetitions = _.map(DBInterface.listCompetitions().concat(DBInterface.listEditCompetitions()), function (n) {
         return n.replace(/ /g, '');
     });
@@ -209,6 +248,8 @@ export function nameExists(name) {
  * @namespace
  */
 export let NewCompetition = {
+    editModeAccount: new Account('EditModeAccount', [''], [], Crypto.generateAC('1234', '1234')),
+
     start_classes: start_classes,
 
     /** @constant {number} */
@@ -224,6 +265,7 @@ export let NewCompetition = {
         const log = new Log();
         const ct = NewCompetition.getCompetitionType();
 
+        //load all sport types
         const sportTypes = _.map(_.filter(NewCompetition.getSports(), function (obj) {
             return obj.activated;
         }), function (obj) {
@@ -234,15 +276,19 @@ export let NewCompetition = {
         const final = !!accounts;
 
         if (!final) {
-            accounts = [Meteor.adminAccount];
+            accounts = [NewCompetition.editModeAccount];
+            if (Meteor.loginGroups.length > 0 || Meteor.loginStations.length > 0 || Meteor.loginCustom.length > 0) {
+                Meteor.f7.alert("Die Accounts werden erst gespeichert, wenn der Wettkampf gestartet wird.", "Hinweis");
+            }
         }
 
+        // athletes
+
         let encryptedAthletes = [];
-
         let groupToEncryptedAthletes = function (group) {
+            // iterate athletes and encrypt
             return _.map(Meteor.groups[group].athletes, function (athlete) {
-
-                let account = final ? Meteor.groups[group].account : Meteor.adminAccount;
+                let account = final ? Meteor.groups[group].account : NewCompetition.editModeAccount;
 
                 return new Athlete(
                     log,
@@ -259,18 +305,21 @@ export let NewCompetition = {
             });
         };
 
+        // iterate groups and save encrypted athletes
         for (let group in Meteor.groups) {
+            if (!Meteor.groups.hasOwnProperty(group)) continue;
             encryptedAthletes = encryptedAthletes.concat(groupToEncryptedAthletes(group));
         }
 
-
+        //remove old competition if name changed
         if (Meteor.oldName != NewCompetition.getName()) {
-            DBInterface.removeCompetition(Meteor.adminLoginObject, Meteor.oldName);
+            DBInterface.removeCompetition(Meteor.adminAccount, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
 
+        //save the new competition
         DBInterface.writeCompetition(
-            Meteor.adminLoginObject,
+            Meteor.adminAccount,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,
@@ -278,6 +327,7 @@ export let NewCompetition = {
             accounts,
             final,
             function (result) {
+                //check result
                 if (!result) {
                     Meteor.f7.alert("Es gab einen Fehler während des Speicherns. Melden Sie sich ab und versuchen Sie es bitte erneut.");
                     if (typeof callback === 'function') callback(false);
@@ -288,7 +338,10 @@ export let NewCompetition = {
     },
 
     groupExists: function (name) {
+        //iterate groups
         for (let group in Meteor.groups) {
+            if (!Meteor.groups.hasOwnProperty(group)) continue;
+            //check name
             if (Meteor.groups[group].name === name) return true;
         }
         return false;
@@ -296,9 +349,11 @@ export let NewCompetition = {
 
     selectAthlete: function (athleteID) {
         if (!document.getElementById("in-first-name")) {
+            //ui elements aren't ready. just select nothing
             Meteor._currentAthlete = -1;
         } else {
             if ((Meteor._currentAthlete != -1) &amp;&amp; (Meteor._currentGroup != -1)) {
+                //another athlete is selected -> save all changes
                 let old_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
                 old_athlete.firstName = document.getElementById("in-first-name").value;
                 old_athlete.lastName = document.getElementById("in-last-name").value;
@@ -307,36 +362,45 @@ export let NewCompetition = {
                 const handicapID = document.getElementById("pick-start_class").selectedIndex;
                 old_athlete.handicap = NewCompetition.start_classes[handicapID].stID;
             }
-            Meteor._currentAthlete = athleteID;
             if (athleteID != -1) {
-                const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
-                document.getElementById("in-first-name").removeAttribute("disabled");
-                document.getElementById("in-last-name").removeAttribute("disabled");
-                document.getElementById("in-year").removeAttribute("disabled");
-                document.getElementById("pick-gender").removeAttribute("disabled");
-                document.getElementById("pick-start_class").removeAttribute("disabled");
-                document.getElementById("btn-delete-athlete").removeAttribute("disabled");
-                document.getElementById("btn-add-athlete2").removeAttribute("disabled");
+                if (athleteID != Meteor._currentAthlete) {
+                    Meteor._currentAthlete = athleteID;
 
-                document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
+                    // the new selected is an athlete -> load data &amp; activate ui elements
+                    const new_athlete = Meteor.groups[Meteor._currentGroup].athletes[Meteor._currentAthlete];
 
-                for (let id in start_classes) {
-                    if (start_classes[id].stID === new_athlete.handicap) {
-                        document.getElementById("pick-start_class").selectedIndex = id;
-                        break;
+                    //activate
+                    document.getElementById("in-first-name").removeAttribute("disabled");
+                    document.getElementById("in-last-name").removeAttribute("disabled");
+                    document.getElementById("in-year").removeAttribute("disabled");
+                    document.getElementById("pick-gender").removeAttribute("disabled");
+                    document.getElementById("pick-start_class").removeAttribute("disabled");
+                    document.getElementById("btn-delete-athlete").removeAttribute("disabled");
+                    document.getElementById("btn-add-athlete2").removeAttribute("disabled");
+
+                    document.getElementById("pick-gender").selectedIndex = 1 - new_athlete.isMale;
+
+                    // find the start class index
+                    for (let id in start_classes) {
+                        if (start_classes[id].stID === new_athlete.handicap) {
+                            document.getElementById("pick-start_class").selectedIndex = id;
+                            break;
+                        }
                     }
+
+                    //set content of text fields
+                    document.getElementById("in-first-name").value = new_athlete.firstName;
+                    document.getElementById("in-last-name").value = new_athlete.lastName;
+                    document.getElementById("in-year").value = new_athlete.ageGroup;
+
+                    // call it a second time because some browsers have problems with the placeholder
+                    document.getElementById("in-first-name").value = new_athlete.firstName;
+                    document.getElementById("in-last-name").value = new_athlete.lastName;
+                    document.getElementById("in-year").value = new_athlete.ageGroup;
                 }
-
-                document.getElementById("in-first-name").value = new_athlete.firstName;
-                document.getElementById("in-last-name").value = new_athlete.lastName;
-                document.getElementById("in-year").value = new_athlete.ageGroup;
-
-                // call it a second time because some browsers have problems with the placeholder
-                document.getElementById("in-first-name").value = new_athlete.firstName;
-                document.getElementById("in-last-name").value = new_athlete.lastName;
-                document.getElementById("in-year").value = new_athlete.ageGroup;
             } else {
-
+                Meteor._currentAthlete = athleteID;
+                // the new selected isn't an athlete -> deactivate ui elements
                 document.getElementById("in-first-name").setAttribute("value", "");
                 document.getElementById("in-last-name").setAttribute("value", "");
                 document.getElementById("in-year").setAttribute("value", "");
@@ -442,6 +506,7 @@ export let NewCompetition = {
         const ct = getCompetitionTypeByID(NewCompetition.getCompetitionTypeID());
         Session.setDefault(
             NewCompetition.prefix + "sport_types",
+            //iterate all activated sports
             JSON.stringify(_.map(ct.getSports(), function (sportObj) {
                 return {stID: sportObj.id, activated: true};
             }))
@@ -493,7 +558,7 @@ Meteor.groups = NewCompetition.getGroups();</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:42:10
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jan 05 2017 01:02:28
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
