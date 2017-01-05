@@ -56,11 +56,16 @@ Template.output.helpers({
         localCertificated_deps.depend();
         if (current_group == -1) return [];
         return lodash.remove(getAthletesOfGroup(), function (athlete) {
-            return !(athlete.certificateWritten && !lodash.includes(localCertificated, athlete.id));
+            return !((athlete.certificateWritten || !athlete.valid) && !lodash.includes(localCertificated, athlete.id));
         });
     },
     invalidAthletes: function () {
-
+        groups_deps.depend();
+        localCertificated_deps.depend();
+        if (current_group == -1) return [];
+        return lodash.remove(getAthletesOfGroup(), function (athlete) {
+            return !(athlete.certificateWritten || athlete.valid);
+        });
     },
     doneAthletes: function () {
         groups_deps.depend();

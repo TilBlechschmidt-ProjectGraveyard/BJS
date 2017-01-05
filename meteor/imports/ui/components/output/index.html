@@ -58,6 +58,17 @@
                     </div>
                 {{/if}}
 
+                {{#if isNotEmpty invalidAthletes}}
+                    <div class="content-block-title">Nicht ausreichende Daten</div>
+                    <div class="list-block">
+                        <ul>
+                            {{#each a in invalidAthletes}}
+                                {{>result athlete=a}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
+
                 {{#if isNotEmpty doneAthletes}}
                     <div class="content-block-title">Fertiggestellte Urkunden</div>
                     <div class="list-block">
