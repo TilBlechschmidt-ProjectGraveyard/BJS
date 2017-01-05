@@ -229,6 +229,7 @@ export function onStartup() {
                 return encryptAs(false, account);
             }
 
+            const log = new Log();
             const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
             const athlete = Athlete.decryptFromDatabase(log, Meteor.COLLECTIONS.Athletes.handle.findOne({_id: id}), accounts, true, true);
             const ct = DBInterface.getCompetitionType();
