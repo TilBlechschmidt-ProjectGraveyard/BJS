@@ -1,0 +1,14 @@
+.footer {
+    margin-top: 20px;
+}
+
+@media screen and (min-height: 700px) {
+    .footer {
+        border-top: 1px solid rgb(200, 200, 200);
+        padding-top: 20px;
+        position: absolute;
+        bottom: 20px;
+        cursor: pointer;
+        width: 100%;
+    }
+}
