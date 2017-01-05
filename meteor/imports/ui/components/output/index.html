@@ -246,11 +246,6 @@
                         </p>
                     {{/if}}
                     <p style="text-align:left;">
-                        Gesamtpunktzahl <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
-                                           data-id="{{id}}">info_fill</i>
-                        <span style="float:right;">{{score}}</span>
-                    </p>
-                    <p style="text-align:left;">
                         Urkunde
                         <span style="float:right;">
                             {{#if valid}}
@@ -259,6 +254,11 @@
                                 Noch nicht genügend Werte
                             {{/if}}
                         </span>
+                    </p>
+                    <p style="text-align:left;">
+                        Gesamtpunktzahl <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
+                                           data-id="{{id}}">info_fill</i>
+                        <span style="float:right;">{{score}}</span>
                     </p>
                     {{#if not certificateWritten}}
                         {{#if valid}}
