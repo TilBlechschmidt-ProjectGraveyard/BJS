@@ -62,6 +62,11 @@ Template.output.helpers({
             return athlete.certificateWritten;
         });
     },
+    allAthletes: function () {
+        groups_deps.depend();
+        if (current_group == -1) return [];
+        return getAthletesOfGroup();
+    },
     get_groupname: function () {
         groups_deps.depend();
         if (current_group == -1) return "Daten laden...";
@@ -88,6 +93,16 @@ Template.result.helpers({
         let year = date.getFullYear();
 
         return hours + ':' + minutes + ':' + seconds; //', ' + day + ' ' + monthNames[monthIndex] + ' ' + year;
+    }
+});
+
+Template.result.events({
+    'click .open-detail-view': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        console.log(event.target, event.target.dataset.id);
+        Meteor.f7.popup('.popup-detail-' + event.target.dataset.id);
+        return false;
     }
 });
 

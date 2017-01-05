@@ -67,6 +67,46 @@
         </div>
     </div>
 
+    {{#each a in allAthletes}}
+        {{#with a}}
+            <div class="popup popup-detail-{{id}}">
+                <div class="content-block">
+                    <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                       style="float: left;">chevron_left</i></a>
+                    <h1 style="text-align: center;">{{name}}</h1>
+                    <h5 style="text-align: center">Gesamtpunktzahl: {{score}}</h5>
+                <p id="description" style="text-align: justify">
+                    {{#each s in stScores}}
+                        {{#with s}}
+                            <p>{{name}}: {{score}}</p>
+                        {{/with}}
+                    {{/each}}
+                    </p>
+                    <!-- Three { are required for html Tags! -->
+                </div>
+            </div>
+        {{/with}}
+    {{/each}}
+
+    <style>
+        /* Hairline after opened accordion */
+        .accordion-item-content:after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            bottom: 0;
+            right: auto;
+            top: auto;
+            height: 1px;
+            width: 100%;
+            background-color: #c8c7cc;
+            display: block;
+            z-index: 15;
+            -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%
+        }
+    </style>
+
 </template>
 
 <template name="result">
@@ -78,6 +118,17 @@
                     <div style="display: inline-block">
                         <div class="item-title" style="display: inline-block; vertical-align: middle;">{{name}}</div>
                         {{#if ../checkmarks}}
+                            {{#if certificateUpdate}}
+                                <svg style="display: inline-block"
+                                     class="warning warn"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                    <circle class="warning__circle" cx="26" cy="26" r="25"
+                                            fill="none"></circle>
+                                    <path class="warning__dash" fill="none"
+                                          d="M26 11.5 l0 20.5"></path>
+                                    <circle class="warning__dot" cx="26" cy="40" r="1" fill="white"></circle>
+                                </svg>
+                            {{/if}}
                             {{#if valid}}
                                 <svg style="display: inline-block"
                                      class="checkmark {{#if certificateWritten}}check{{/if}}"
@@ -103,8 +154,14 @@
             <div style="clear: both"></div>
             <div class="accordion-item-content">
                 <div class="content-block">
+                    {{#if certificateUpdate}}
+                        <p style="text-align:left;">
+                            Die Urkunde muss neu erstellt werden, da sich die Punktzahl des Athleten geändert hat.
+                        </p>
+                    {{/if}}
                     <p style="text-align:left;">
-                        Gesamtpunktzahl
+                        Gesamtpunktzahl <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
+                                           data-id="{{id}}">info_fill</i>
                         <span style="float:right;">{{score}}</span>
                     </p>
                     <p style="text-align:left;">

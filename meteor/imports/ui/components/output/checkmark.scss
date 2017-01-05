@@ -1,8 +1,11 @@
 @import "{wolves:bourbon}/bourbon";
 
 $color--red: #DC143C;
+$color--yellow: #F9A825;
 $color--green: #7ac142;
 $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
+
+// Checkmark
 
 .checkmark {
   width: 20px;
@@ -43,17 +46,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: stroke .3s $curve .8s forwards;
 }
 
-.checked {
-  animation: checkfill 0s ease-in-out 0s forwards, scale 0s ease-in-out 0s both;
-}
-
-.checked .checkmark__circle {
-  animation: stroke 0s $curve forwards;
-}
-
-.checked .checkmark__check {
-  animation: stroke 0s $curve 0s forwards;
-}
+// X-Mark
 
 .xmark {
   width: 20px;
@@ -94,17 +87,58 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: stroke .3s $curve .8s forwards;
 }
 
-.xmed {
-  animation: xfill 0s ease-in-out 0s forwards, scale 0s ease-in-out 0s both;
+// Exclamation mark
+
+.warning {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin-left: 10px;
+  margin-bottom: -5px;
+  box-shadow: inset 0px 0px 0px $color--yellow;
 }
 
-.xmed .xmark__circle {
-  animation: stroke 0s $curve forwards;
+.warning__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: $color--yellow;
+  fill: none;
 }
 
-.xmed .xmark__check {
-  animation: stroke 0s $curve 0s forwards;
+.warning__dash {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
 }
+
+.warning__dot {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.warn {
+  animation: warnfill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.warn .warning__circle {
+  animation: stroke .6s $curve forwards;
+}
+
+.warn .warning__dash {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+.warn .warning__dot {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+// Keyframes
 
 @keyframes stroke {
   100% {
@@ -130,5 +164,11 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 @keyframes xfill {
   100% {
     box-shadow: inset 0px 0px 0px 30px $color--red;
+  }
+}
+
+@keyframes warnfill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px $color--yellow;
   }
 }
