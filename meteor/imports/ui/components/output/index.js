@@ -1,7 +1,7 @@
 import {Template} from "meteor/templating";
 import "./index.html";
 import "./resultCollapse.css";
-import "./checkmark.scss";
+import "./icons.scss";
 import {DBInterface} from "../../../api/database/db_access";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
@@ -153,6 +153,7 @@ Template.result.events({
                     const accordionItem = document.querySelector(".accordion-item[data-collapse='true']");
                     accordionItem.className = accordionItem.className + " collapsed";
                     accordionItem.dataset.collapse = "";
+                    // TODO: Move the item in the groups collection down to "doneAthletes" after the animation time of 1000ms
                 }, 1200);
             });
         }, 200);
