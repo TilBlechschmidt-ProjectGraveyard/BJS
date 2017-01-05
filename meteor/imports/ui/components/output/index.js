@@ -1,5 +1,6 @@
 import {Template} from "meteor/templating";
 import "./index.html";
+import "./checkmark.scss";
 import {DBInterface} from "../../../api/database/db_access";
 import {getAccountByPassphrase, AccountManager} from "../../../api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
