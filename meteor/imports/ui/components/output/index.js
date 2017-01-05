@@ -45,6 +45,8 @@ function reloadSwiper() {
 
 function refresh() {
     DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
+        groups = [];
+
         for (let g in data) {
             if (!data.hasOwnProperty(g)) continue;
             const athletes = data[g].athletes;
