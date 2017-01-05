@@ -41,7 +41,7 @@ export function onStartup() {
                 triggerDefaultModalAction();
         },
         'click': function (event) {
-            if (!(event.target.tagName === "INPUT"))
+            if (event.target.tagName !== "INPUT")
                 event.target.blur();
         }
     });
