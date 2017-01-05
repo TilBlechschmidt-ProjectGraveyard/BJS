@@ -201,18 +201,22 @@
 
 <template name="codes_print">
     <div class="printcontent-content">
-        <h1>{{competition_name}}: Zugangscodes</h1>
+        <h1 align="center">{{competition_name}}: Zugangscodes</h1>
 
         {{#if hasData login_stations}}
+            <br />
+            <br />
+            <br />
             <div class="print-password-title">Stationslogins</div>
+            <br />
             <table class="print-password-table" style="width:100%">
                 <tbody>
-                    <tr>
-                        <th><p align="left">Zugang</p></th>
-                        <th><p align="right">Passwort</p></th>
+                    <tr class="print-block-header">
+                        <th><p class="print-name-subtitle" align="left">Zugang</p></th>
+                        <th><p class="print-password-subtitle" align="right">Passwort</p></th>
                     </tr>
                     {{#each l in login_stations}}
-                        <tr>
+                        <tr class="print-block-content">
                             <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
                             <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
                         </tr>
@@ -222,14 +226,18 @@
         {{/if}}
 
         {{#if hasData login_groups}}
+            <br />
+            <br />
+            <br />
             <div class="print-password-title">Gruppenlogins</div>
+            <br />
             <table class="print-password-table">
-                <tr>
-                    <th><p align="left">Zugang</p></th>
-                    <th><p align="right">Passwort</p></th>
+                <tr class="print-block-header">
+                    <th><p class="print-name-subtitle" align="left">Zugang</p></th>
+                    <th><p class="print-password-subtitle" align="right">Passwort</p></th>
                 </tr>
                 {{#each l in login_groups}}
-                    <tr>
+                    <tr class="print-block-content">
                         <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
                         <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
                     </tr>
@@ -238,14 +246,18 @@
         {{/if}}
 
         {{#if hasData login_groups}}
+            <br />
+            <br />
+            <br />
             <div class="print-password-title">Eigene Logins</div>
+            <br />
             <table class="print-password-table">
-                <tr>
-                    <th><p align="left">Zugang</p></th>
-                    <th><p align="right">Passwort</p></th>
+                <tr class="print-block-header">
+                    <th><p class="print-name-subtitle" align="left">Zugang</p></th>
+                    <th><p class="print-password-subtitle" align="right">Passwort</p></th>
                 </tr>
                 {{#each l in login_custom}}
-                    <tr>
+                    <tr class="print-block-content">
                         <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
                         <td class="print-password-field">{{#with l}}{{password}}{{/with}}</td>
                     </tr>

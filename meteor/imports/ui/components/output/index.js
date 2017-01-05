@@ -45,6 +45,12 @@ Template.output.helpers({
     },
 });
 Template.output.events({
+    'click .accordion-item': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
+        return false;
+    },
     'click .group-selector': function (event) {
         current_group = event.target.closest("li").dataset.id;
         Meteor.f7.closePanel();

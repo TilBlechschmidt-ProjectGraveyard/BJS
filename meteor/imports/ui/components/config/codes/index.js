@@ -266,7 +266,13 @@ Template.codes.events({
         let accountIndex = event.target.dataset.account_index;
         Meteor.loginCustom[accountIndex].account.name = event.target.value;
         _login_tracker.changed();
-    }
+    },
+    'click .accordion-item': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
+        return false;
+    },
 });
 
 Template.codes_print.helpers({
