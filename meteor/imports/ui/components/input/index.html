@@ -4,8 +4,9 @@
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div></div>
-                    <div style="overflow-x: auto; overflow-y: hidden; text-align: center;" class="truncate">
+                    <div class="left" style="width: 100px"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                            class="f7-icons">help</i></a></div>
+                    <div class="center">
                         <div id="input-name-swiper" class="swiper-container" style="height: 100%">
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
@@ -15,7 +16,7 @@
                             </div>
                         </div>
                     </div>
-                    <div><a href="#" data-popup=".popup-help" class="open-popup"><i class="f7-icons">help</i></a></div>
+                    <div class="right" style="width: 100px"></div>
                 </div>
             </div>
 
@@ -175,7 +176,9 @@
                 {{#with metadata}}{{name}}{{/with}} <i class="f7-icons" style="font-size: 12px">info</i>
             </a>
         </div>
-        <div class="list-block">
+        <div class="list-block"
+             style="{{#if
+                     gap}}margin-bottom: 70px; padding-bottom: 70px; border-bottom: 1px solid rgb(200, 200, 200);{{/if}}">
             <ul>
                 {{#each m in measurements}}
                     {{>attempt n=@index measurement=m metadata=metadata}}
