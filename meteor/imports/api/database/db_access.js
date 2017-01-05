@@ -249,7 +249,28 @@ export let DBInterface = {
 
     /**
      * Generates certificates for the current competition
-     * @param {Account} account - Admin account
+     * @param {Account} account - Output account
+     * @param {boolean} newStatus - The new status
+     * @param [callback] - optional callback
+     */
+    setCertificateWrittenTrue: function (account, newStatus, callback) {
+        const loginObject = getLoginObject(account);
+        Meteor.call('setCertificateWrittenTrue', loginObject, newStatus, function (err, enc_data) {
+            if (typeof callback === 'function') {
+                const log = new Log();
+                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
+                if (data) {
+                    callback(data.data);
+                } else if (Meteor.isClient) {
+                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                }
+            }
+        });
+    },
+
+    /**
+     * Generates certificates for the current competition
+     * @param {Account} account - Output account
      * @param [callback] - optional callback
      */
     generateCertificates: function (account, callback) {

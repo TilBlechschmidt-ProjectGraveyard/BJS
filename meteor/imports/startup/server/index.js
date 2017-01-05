@@ -217,6 +217,18 @@ export function onStartup() {
                 });
             });
             return ips;
+        },
+        'setCertificateWrittenTrue': function (loginObject, id) {
+            const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
+
+            if (!account) {
+                return false;
+            }
+            if (!account.canViewResults) {
+                return encryptAs(false, account);
+            }
+
+            Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {certificateWritten: true}});
         }
     });
 
