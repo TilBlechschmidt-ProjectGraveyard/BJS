@@ -248,14 +248,14 @@ export let DBInterface = {
     },
 
     /**
-     * Generates certificates for the current competition
+     * Marks the certificate of an athlete as written.
      * @param {Account} account - Output account
-     * @param {boolean} id - The new status
+     * @param {boolean} id - The meteor db id of the athlete
      * @param [callback] - optional callback
      */
-    setCertificateWrittenTrue: function (account, id, callback) {
+    certificateUpdate: function (account, id, callback) {
         const loginObject = getLoginObject(account);
-        Meteor.call('setCertificateWrittenTrue', loginObject, id, function (err, enc_data) {
+        Meteor.call('certificateUpdate', loginObject, id, function (err, enc_data) {
             if (typeof callback === 'function') {
                 const log = new Log();
                 const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);

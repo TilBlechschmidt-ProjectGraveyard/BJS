@@ -2,7 +2,7 @@ import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/db_access";
 import {Account, checkLogin} from "../../api/logic/account";
 import {Crypto} from "../../api/crypto/crypto";
-import {encryptedAthletesToGroups} from "../../api/logic/athlete";
+import {encryptedAthletesToGroups, Athlete} from "../../api/logic/athlete";
 import {Log} from "../../api/log";
 
 
@@ -187,7 +187,8 @@ export function onStartup() {
                 return {
                     name: athlete.getFullName(),
                     id: athlete.id,
-                    certificateWritten: athlete.certificateWritten,
+                    certificateWritten: athlete.certificateScore === certificate.score,
+                    certificateTime: athlete.certificateTime,
                     valid: ct.validate(log, athlete, accounts, true),
                     score: certificate.score,
                     stScores: stScores,
@@ -218,7 +219,7 @@ export function onStartup() {
             });
             return ips;
         },
-        'setCertificateWrittenTrue': function (loginObject, id) {
+        'certificateUpdate': function (loginObject, id) {
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 
             if (!account) {
@@ -228,7 +229,20 @@ export function onStartup() {
                 return encryptAs(false, account);
             }
 
-            Meteor.COLLECTIONS.Athletes.handle.update({_id: id}, {$set: {certificateWritten: true}});
+            const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
+            const athlete = Athlete.decryptFromDatabase(log, Meteor.COLLECTIONS.Athletes.handle.findOne({_id: id}), accounts, true, true);
+            const ct = DBInterface.getCompetitionType();
+            console.log(athlete);
+
+            if (ct.validate(log, athlete, accounts, true)) {
+                const certificate = ct.generateCertificate(log, athlete, accounts, true);
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: id}, {
+                    $set: {
+                        certificateTime: Date.now(),
+                        certificateScore: certificate.score
+                    }
+                });
+            }
         }
     });
 
