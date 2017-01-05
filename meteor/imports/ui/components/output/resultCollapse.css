@@ -1,0 +1,17 @@
+.result-accordion {
+    overflow: hidden;
+    -webkit-transition: max-height 1s;
+    -moz-transition: max-height 1s;
+    -ms-transition: max-height 1s;
+    -o-transition: max-height 1s;
+    transition: max-height 1s;
+    max-height: 800px;
+}
+
+.result-accordion.collapsed {
+    max-height: 0;
+}
+
+.result-accordion.collapsed::after {
+    max-height: 0;
+}

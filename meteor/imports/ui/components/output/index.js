@@ -1,5 +1,6 @@
 import {Template} from "meteor/templating";
 import "./index.html";
+import "./resultCollapse.css";
 import "./checkmark.scss";
 import {DBInterface} from "../../../api/database/db_access";
 import {AccountManager} from "../../../api/account_managment/AccountManager";
@@ -7,16 +8,72 @@ import {updateSwiperProgress} from "../login/router";
 
 
 let groups = [];
-let current_group = -1;
+let localCertificated = [];
 const groups_deps = new Tracker.Dependency();
 
-let localCertificated = [];
-const localCertificated_deps = new Tracker.Dependency();
+function reloadSwiper() {
+    const outputNameSwiperEl = document.getElementById('output-name-swiper');
+    const outputSwiperEl = document.getElementById('output-swiper');
+    if (outputNameSwiperEl && outputSwiperEl && outputNameSwiperEl.swiper && outputSwiperEl.swiper) {
+        outputNameSwiperEl.swiper.destroy(false);
+        outputSwiperEl.swiper.destroy(false);
+    }
+
+    const nameSwiper = new Swiper('#output-name-swiper', {
+        loop: true,
+        effect: 'slide',
+        spaceBetween: 50,
+        onlyExternal: true
+    });
+
+    new Swiper('#output-swiper', {
+        pagination: '.swiper-pagination',
+        paginationType: 'fraction',
+        hashnav: true,
+        hashnavWatchState: true,
+        replaceState: true,
+        parallax: true,
+        loop: true,
+        // observer: true,
+        speed: 400,
+        spaceBetween: 50,
+        grabCursor: true,
+        shortSwipes: true,
+        control: nameSwiper
+    });
+}
 
 function refresh() {
     DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
-        groups = data;
-        current_group = 0;
+        for (let g in data) {
+            if (!data.hasOwnProperty(g)) continue;
+            const athletes = data[g].athletes;
+
+            const group = {
+                name: data[g].name,
+                hash: btoa(data[g].name),
+                athleteCount: data[g].athletes.length,
+                validAthletes: [],
+                invalidAthletes: [],
+                doneAthletes: []
+            };
+
+            for (let athlete in athletes) {
+                if (!athletes.hasOwnProperty(athlete)) continue;
+                athlete = athletes[athlete];
+
+                if (athlete.valid && !athlete.certificateWritten && !lodash.includes(localCertificated, athlete.id)) {
+                    group.validAthletes.push(athlete);
+                } else if (!athlete.valid && !athlete.certificateWritten) {
+                    group.invalidAthletes.push(athlete);
+                } else if (athlete.certificateWritten) {
+                    group.doneAthletes.push(athlete);
+                }
+            }
+
+            groups.push(group);
+        }
+
         groups_deps.changed();
         Tracker.afterFlush(function () {
             Meteor.f7.hidePreloader();
@@ -24,66 +81,30 @@ function refresh() {
     });
 }
 
-Template.output.onRendered(function () {
-    Meteor.f7.showPreloader("Daten werden geladen");
-    DBInterface.waitForReady(function () {
-        refresh();
-    });
-});
-
-function getAthletesOfGroup() {
-    const athletes = lodash.sortBy(groups[current_group].athletes, "valid").reverse();
-    for (let athlete in localCertificated) {
-        if (!localCertificated.hasOwnProperty(athlete)) continue;
-        const athlete = lodash.find(athletes, {id: localCertificated[athlete]});
-        athlete.certificateWritten = true;
-        athlete.certificateTime = new Date();
-    }
-    return athletes;
-}
-
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
-    list_groups: function () {
+    groups: function () {
         groups_deps.depend();
 
-        return _.map(groups, function (group) {
-            return group.name;
-        });
-    },
-    athletes: function () {
-        groups_deps.depend();
-        localCertificated_deps.depend();
-        if (current_group == -1) return [];
-        return lodash.remove(getAthletesOfGroup(), function (athlete) {
-            return !((athlete.certificateWritten || !athlete.valid) && !lodash.includes(localCertificated, athlete.id));
-        });
-    },
-    invalidAthletes: function () {
-        groups_deps.depend();
-        localCertificated_deps.depend();
-        if (current_group == -1) return [];
-        return lodash.remove(getAthletesOfGroup(), function (athlete) {
-            return !(athlete.certificateWritten || athlete.valid);
-        });
-    },
-    doneAthletes: function () {
-        groups_deps.depend();
-        if (current_group == -1) return [];
-        return lodash.remove(getAthletesOfGroup(), function (athlete) {
-            return athlete.certificateWritten;
-        });
-    },
-    allAthletes: function () {
-        groups_deps.depend();
-        if (current_group == -1) return [];
-        return getAthletesOfGroup();
-    },
-    get_groupname: function () {
-        groups_deps.depend();
-        if (current_group == -1) return "Daten laden...";
-        return groups[current_group].name;
-    },
+        for (let athleteID in localCertificated) {
+            if (!localCertificated.hasOwnProperty(athleteID)) continue;
+            athleteID = localCertificated[athleteID];
+
+            for (let group in groups) {
+                if (!groups.hasOwnProperty(group)) continue;
+                group = groups[group];
+
+                const athlete = lodash.find(group.validAthletes, {id: athleteID});
+                if (athlete === undefined) continue;
+
+                athlete.certificateWritten = true;
+                athlete.certificateTime = new Date();
+                break;
+            }
+        }
+
+        return groups;
+    }
 });
 
 Template.result.helpers({
@@ -112,13 +133,9 @@ Template.result.events({
     'click .open-detail-view': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log(event.target, event.target.dataset.id);
         Meteor.f7.popup('.popup-detail-' + event.target.dataset.id);
         return false;
-    }
-});
-
-Template.output.events({
+    },
     'click .accordion-item': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -126,19 +143,24 @@ Template.output.events({
         return false;
     },
     'click .signCertificate': function (event) {
+        console.log("Signed certificate");
         localCertificated.push(event.target.dataset.id);
-        const accordion = event.target.closest('.accordion-item');
+        event.target.closest(".accordion-item").dataset.collapse = "true";
         setTimeout(function () {
-            localCertificated_deps.changed();
+            groups_deps.changed();
+            Tracker.afterFlush(function () {
+                setTimeout(function () {
+                    const accordionItem = document.querySelector(".accordion-item[data-collapse='true']");
+                    accordionItem.className = accordionItem.className + " collapsed";
+                    accordionItem.dataset.collapse = "";
+                }, 1200);
+            });
         }, 200);
         DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
-    },
-    'click .group-selector': function (event) {
-        current_group = event.target.closest("li").dataset.id;
-        Meteor.f7.closePanel();
-        groups_deps.changed();
-    },
-    'click #btn_refresh': refresh,
+    }
+});
+
+Template.output.events({
     'click .logout-button': function () {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Urkunden");
@@ -148,4 +170,23 @@ Template.output.events({
             return false;
         });
     },
+    'click .group-link': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.getElementById("output-swiper").swiper.slideTo(parseFloat(event.target.dataset.target) + 1);
+        Meteor.f7.closeModal();
+        return false;
+    }
+});
+
+Template.output.onRendered(function () {
+    Meteor.f7.showPreloader("Daten werden geladen");
+    DBInterface.waitForReady(function () {
+        refresh();
+        reloadSwiper();
+    });
+});
+
+Template.groupCertificates.onRendered(function () {
+    reloadSwiper();
 });

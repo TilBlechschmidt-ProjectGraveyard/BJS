@@ -265,13 +265,13 @@ Template.attempt.helpers({
 });
 
 Template.input.events({
-    'click #link_next': function () {
+    'click #link_next': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         document.getElementById("input-swiper").swiper.slideNext();
         return false;
     },
-    'click #link_prev': function () {
+    'click #link_prev': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         document.getElementById("input-swiper").swiper.slidePrev();
@@ -285,14 +285,14 @@ Template.input.events({
         Meteor.inputDependency.changed();
         return false;
     },
-    'click .return-to-login': function () {
+    'click .return-to-login': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         checkPermission();
         setTimeout(updateSwiperProgress, 1);
         return false;
     },
-    'click .athlete-link': function () {
+    'click .athlete-link': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         document.getElementById("input-swiper").swiper.slideTo(parseFloat(event.target.dataset.target) + 1);

@@ -1,110 +1,96 @@
 <template name="output">
-    <!-- Group selection -->
-    <div class="panel-overlay"></div>
-    <div class="panel panel-left panel-cover">
-        <div class="content-block">
-            <p class="panel-title">Gruppen <a style="color: white;" href="" id="btn_refresh"><i
-                    class="f7-icons">refresh</i></a></p>
-
-            <div class="contacts-content">
-                <div class="list-block contacts-block">
-                    <ul>
-                        {{#each g in list_groups}}
-                            <li data-id="{{@index}}" class="group-selector">
-                                <div class="contact-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">{{g}}</div>
-                                    </div>
-                                </div>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="pages">
         <div data-page="index" class="page navbar-fixed">
 
-            <!-- Navbar -->
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left">
-                        <a href="#" class="link open-panel">
-                            <i class="icon icon-bars"></i>
-                            <span>Gruppen</span>
-                        </a>
+                    <div style="width: 100px"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                            class="f7-icons">help</i></a></div>
+                    <div style="overflow-x: auto; overflow-y: hidden; text-align: center;" class="truncate">
+                        <div id="output-name-swiper" class="swiper-container" style="height: 100%">
+                            <div class="swiper-wrapper">
+                                {{#each g in groups}}
+                                    <div class="swiper-slide open-popover group-name"
+                                         data-popover=".popover-groups">{{g.name}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
                     </div>
-                    <div class="center">{{get_groupname}}</div>
-                    <div class="right"><a href="#" class="logout-button">Abmelden</a></div>
+                    <div style="width: 100px; text-align: right;"><a href="#" class="logout-button">Abmelden</a></div>
                 </div>
             </div>
 
             <div class="page-content">
-                {{#if isEmpty allAthletes}}
-                    <div class="content-block">
-                        <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
+                <div id="output-swiper" class="swiper-container" style="height: 100%;">
+                    <div class="swiper-wrapper">
+                        {{#each g in groups}}
+                            <div class="swiper-slide" data-hash="{{g.hash}}"
+                                 style="overflow-y: auto; overflow-x: hidden;">
+                                {{>groupCertificates group=g}}
+                            </div>
+                        {{/each}}
                     </div>
-                {{/if}}
-                {{#if isNotEmpty athletes}}
-                    <div class="content-block-title">Zu erstellende Urkunden</div>
-                    <div class="list-block">
-                        <ul>
-                            {{#each a in athletes}}
-                                {{>result athlete=a}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                {{/if}}
-
-                {{#if isNotEmpty invalidAthletes}}
-                    <div class="content-block-title">Nicht ausreichende Daten</div>
-                    <div class="list-block">
-                        <ul>
-                            {{#each a in invalidAthletes}}
-                                {{>result athlete=a}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                {{/if}}
-
-                {{#if isNotEmpty doneAthletes}}
-                    <div class="content-block-title">Fertiggestellte Urkunden</div>
-                    <div class="list-block">
-                        <ul>
-                            {{#each a in doneAthletes}}
-                                {{>result athlete=a}}
-                            {{/each}}
-                        </ul>
-                    </div>
-                {{/if}}
+                </div>
+                <div class="swiper-pagination"
+                     style="left: calc(50% - 25px); text-align: center; width: 50px; padding: 5px; background-color:rgba(225, 225, 225, 0.75); border-radius: 20px;"></div>
             </div>
         </div>
     </div>
 
-    {{#each a in allAthletes}}
-        {{#with a}}
-            <div class="popup popup-detail-{{id}}">
-                <div class="content-block">
-                    <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
-                                                       style="float: left;">chevron_left</i></a>
-                    <h1 style="text-align: center;">{{name}}</h1>
-                    <h5 style="text-align: center">Gesamtpunktzahl: {{score}}</h5>
-                <p id="description" style="text-align: justify">
-                    {{#each s in stScores}}
-                        {{#with s}}
-                            <p>{{name}}: {{score}}</p>
-                        {{/with}}
-                    {{/each}}
-                    </p>
-                    <!-- Three { are required for html Tags! -->
-                </div>
-            </div>
+    {{#each g in groups}}
+        {{#with g}}
+            <!-- Detailed result popups -->
+            {{#each a in validAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
+            {{#each a in invalidAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
+            {{#each a in doneAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
         {{/with}}
     {{/each}}
 
+    <div class="popover popover-groups">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block group-list" style="max-height: 75%; overflow-y: scroll;">
+                <ul>
+                    {{#each groups}}
+                        <li><a href="#" class="list-button item-link group-link"
+                               data-target="{{@index}}">{{this.name}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <style>
+        .group-list::-webkit-scrollbar {
+            width: 0px; /* remove scrollbar space */
+            background: transparent; /* optional: just make scrollbar invisible */
+        }
+
+        .group-name:hover {
+            border-bottom-color: #B0BEC5;
+            cursor: pointer;
+        }
+
+        .group-name {
+            border-bottom: 2px solid transparent;
+            text-decoration: none;
+            transition: border-bottom-color 50ms linear 0s;
+        }
+
+        .truncate {
+            width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         /* Hairline after opened accordion */
         .accordion-item.accordion-item-expanded .accordion-item-content:after {
             content: '';
@@ -126,9 +112,78 @@
 
 </template>
 
+<template name="detailedResults">
+    {{#with athlete}}
+        <div class="popup popup-detail-{{id}}">
+            <div class="content-block">
+                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                   style="float: left;">chevron_left</i></a>
+                <h1 style="text-align: center;">{{name}}</h1>
+                <h5 style="text-align: center">Gesamtpunktzahl: {{score}}</h5>
+            <p id="description" style="text-align: justify">
+                {{#each s in stScores}}
+                    {{#with s}}
+                        <p>{{name}}: {{score}}</p>
+                    {{/with}}
+                {{/each}}
+                </p>
+                <!-- Three { are required for html Tags! -->
+            </div>
+        </div>
+    {{/with}}
+</template>
+
+<template name="groupCertificates">
+    {{#with group}}
+        {{#if not athleteCount}}
+            <div class="content-block">
+                <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
+            </div>
+        {{/if}}
+        {{#if isNotEmpty validAthletes}}
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Zu
+                erstellende Urkunden
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in validAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+
+        {{#if isNotEmpty invalidAthletes}}
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Nicht
+                ausreichende Daten
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in invalidAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+
+        {{#if isNotEmpty doneAthletes}}
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">
+                Fertiggestellte Urkunden
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in doneAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+    {{/with}}
+</template>
+
 <template name="result">
     {{#with athlete}}
-        <li class="accordion-item {{#if not certificateWritten}}{{#if
+        <li class="accordion-item result-accordion {{#if not certificateWritten}}{{#if
                 valid}}accordion-item-expanded{{/if}}{{/if}}">
             <a href="#" class="item-content item-link">
                 <div class="item-media">
@@ -156,7 +211,7 @@
                                 </svg>
                             {{else}}
                                 <svg style="display: inline-block"
-                                     class="warning warn"
+                                     class="warning warn todo-svg"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                                     <circle class="warning__circle" cx="26" cy="26" r="25"
                                             fill="none"></circle>
