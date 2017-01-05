@@ -175,7 +175,8 @@
                 {{#with metadata}}{{name}}{{/with}} <i class="f7-icons" style="font-size: 12px">info</i>
             </a>
         </div>
-        <div class="list-block">
+        <div class="list-block"
+             style="{{#if gap}}margin-bottom: 100px; padding-bottom: 100px; border-bottom: 1px solid gray;{{/if}}">
             <ul>
                 {{#each m in measurements}}
                     {{>attempt n=@index measurement=m metadata=metadata}}

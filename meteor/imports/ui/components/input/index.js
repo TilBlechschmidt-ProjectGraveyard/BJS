@@ -48,21 +48,25 @@ function populateAthlete(athlete) {
         }
     }
 
+    let gapKey = "";
     if (stationAccount.logged_in) {
         // Return all sport types that can be written to with the current station account
         const stIDs = stationAccount.account.score_write_permissions;
         for (let stID in stIDs) {
             if (!stIDs.hasOwnProperty(stID) || !lodash.includes(athlete.sports, stIDs[stID])) continue;
             stID = stIDs[stID];
+            gapKey = stID;
             sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
         }
     }
 
+
     // Add all other sport types we don't have write permission for but the athlete is permitted to perform
-    let all_sportTypes = lodash.map(athlete.sports, ct.getSportType);
-    for (let index in all_sportTypes) {
-        if (!all_sportTypes.hasOwnProperty(index)) continue;
-        let sportType = all_sportTypes[index];
+    let athleteSportTypes = lodash.map(athlete.sports, ct.getSportType);
+    for (let index in athleteSportTypes) {
+        if (!athleteSportTypes.hasOwnProperty(index)) continue;
+        let sportType = athleteSportTypes[index];
+        if (sportTypes.hasOwnProperty(sportType.id)) continue;
         sportTypes[sportType.id] = sportType;
     }
 
@@ -121,11 +125,21 @@ function populateAthlete(athlete) {
         }
     });
 
+    let gapRequired = false;
     athlete.sportType = lodash.remove(athlete.sportType, function (e) {
+        if (e && !e.metadata.write_permission && gapKey !== "") {
+            gapRequired = true;
+        }
         return e !== undefined;
     });
 
     athlete.sportType = _.map(athlete.sportType, function (element) {
+
+        if (gapRequired && element.name === gapKey) {
+            element.gap = true;
+        }
+
+
         if (element.metadata.unit === "min:s") {
             element.metadata.inputType = "text";
             for (let m in element.measurements) {
@@ -226,7 +240,7 @@ Template.input.helpers({
             const w = lodash.remove(athletes, function (athlete) {
                 return athlete.isMale;
             });
-            console.log(m, w);
+            // console.log(m, w);
             athletes = m.concat(w);
         }
 
