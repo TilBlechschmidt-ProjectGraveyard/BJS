@@ -12,7 +12,8 @@ export function initAthletes() {
             return handle.find({}, {
                 fields: {
                     'certificateScore': false,
-                    'certificateTime': false
+                    'certificateTime': false,
+                    'certificatedBy': ""
                 }
             });
         });

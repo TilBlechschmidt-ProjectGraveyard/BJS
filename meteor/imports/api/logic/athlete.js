@@ -29,6 +29,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.maxAge = maxAge;
     this.certificateScore = -1;
     this.certificateTime = -1;
+    this.certificatedBy = "";
     if (id && id.constructor == Array) {
         this.id = undefined;
     } else {
@@ -201,6 +202,7 @@ Athlete.prototype = {
         encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
         encrypted.certificateScore = this.certificateScore;
         encrypted.certificateTime = this.certificateTime;
+        encrypted.certificatedBy = this.certificatedBy;
 
 
         for (let dataGroupID in this.data.data) {
@@ -279,6 +281,9 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
         }
         if (data.certificateTime) {
             athlete.certificateTime = data.certificateTime;
+        }
+        if (data.certificatedBy) {
+            athlete.certificatedBy = data.certificatedBy;
         }
 
         let measureData = [];
