@@ -32,7 +32,7 @@ function getAthletesOfGroup() {
     for (let athlete in localCertificated) {
         if (!localCertificated.hasOwnProperty(athlete)) continue;
         const athlete = lodash.find(athletes, {id: localCertificated[athlete]});
-        athlete.certificateWritten = true;
+        athlete.certificateWrittenAnimated = true;
     }
     return athletes;
 }
