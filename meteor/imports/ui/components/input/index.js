@@ -234,21 +234,10 @@ Template.input.helpers({
         return lodash.map(DBInterface.getCompetitionSportTypes(), function (stID) {
             return competitionType.getSportType(stID);
         });
-    },
-    isEmpty: function (arr) {
-        if (arr === undefined) return true;
-        return arr.length === 0;
-    },
-    isNotEmpty: function (arr) {
-        if (arr === undefined) return true;
-        return arr.length !== 0;
     }
 });
 
 Template.attempts.helpers({
-    length: function (arr) {
-        return arr.length;
-    },
     empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input"},
     scoreWritePermission: function (metadata) {
         Meteor.inputDependency.depend();
@@ -257,9 +246,6 @@ Template.attempts.helpers({
 });
 
 Template.attempt.helpers({
-    inc: function (i) {
-        return ++i;
-    },
     isReadOnly: function (measurement) {
         return measurement.read_only ? "disabled" : "";
     },

@@ -68,12 +68,6 @@ Template.output.helpers({
     },
 });
 
-Template.result.helpers({
-    not: function (b) {
-        return !b;
-    }
-});
-
 Template.output.events({
     'click .accordion-item': function (event) {
         event.preventDefault();
