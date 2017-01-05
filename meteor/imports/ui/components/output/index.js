@@ -82,14 +82,12 @@ Template.output.events({
         return false;
     },
     'click .signCertificate': function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
         localCertificated.push(event.target.dataset.id);
-        localCertificated_deps.changed();
+        const accordion = event.target.closest('.accordion-item');
+        setTimeout(function () {
+            localCertificated_deps.changed();
+        }, 200);
         DBInterface.setCertificateWrittenTrue(AccountManager.getOutputAccount().account, event.target.dataset.id);
-
-        return false;
     },
     'click .group-selector': function (event) {
         current_group = event.target.closest("li").dataset.id;
