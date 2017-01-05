@@ -13,7 +13,7 @@ export function initAthletes() {
                 fields: {
                     'certificateScore': false,
                     'certificateTime': false,
-                    'certificatedBy': ""
+                    'certificatedBy': false
                 }
             });
         });
