@@ -33,10 +33,10 @@ export function initAthletes() {
         this.handle.insert(new Athlete(log, 'Hans', 'Stüber', 1992, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Maximilian', 'Humboldt', 1996, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
         this.handle.insert(new Athlete(log, 'Hartwig', 'Grumboldt', 1994, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
-        this.handle.insert(new Athlete(log, 'Hedwig', 'Potter', 1962, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
+        this.handle.insert(new Athlete(log, 'Hedwig', 'Potter', 1962, false, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
         this.handle.insert(new Athlete(log, 'Harry', 'Potter', 1960, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
         this.handle.insert(new Athlete(log, 'Dr.', 'Who', 1, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
-        this.handle.insert(new Athlete(log, 'Amy', 'Pond', 1990, true, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
+        this.handle.insert(new Athlete(log, 'Amy', 'Pond', 1990, false, 'Q#b', '0', ct.maxAge, ct).encryptForDatabase(groupAccountB, serverAccount));
 
         // add example measurement
         const p = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false)[0];
