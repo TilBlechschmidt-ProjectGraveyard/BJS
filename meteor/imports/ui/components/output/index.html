@@ -42,6 +42,11 @@
             </div>
 
             <div class="page-content">
+                {{#if isEmpty allAthletes}}
+                    <div class="content-block">
+                        <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
+                    </div>
+                {{/if}}
                 {{#if isNotEmpty athletes}}
                     <div class="content-block-title">Zu erstellende Urkunden</div>
                     <div class="list-block">
@@ -189,6 +194,14 @@
                                 {{humanReadableDate certificateTime}}
                             </span>
                         </p>
+                        {{#if certificatedBy}}
+                            <p style="text-align:left;">
+                                Ersteller
+                                <span style="float:right;">
+                                    {{certificatedBy}}
+                                </span>
+                            </p>
+                        {{/if}}
                     {{/if}}
                 </div>
             </div>
