@@ -26,6 +26,7 @@ config.route('/', {
     action: function () {
         if (checkPermission()) {
             BlazeLayout.render('two_view', {
+                offline: 'offline',
                 first: 'view_left',
                 second: 'view_main',
                 nested_left: 'home_left',
@@ -37,13 +38,21 @@ config.route('/', {
 
 config.route('/new', {
     action: function () {
-        if (checkPermission() && inEditMode()) BlazeLayout.render('new_competition_main');
+        // if (checkPermission() && inEditMode()) BlazeLayout.render('new_competition_main');
+        if (checkPermission() && inEditMode()) BlazeLayout.render('two_view', {
+            offline: 'offline',
+            first: 'new_competition_main',
+        });
     }
 });
 
 config.route('/sports', {
     action: function () {
-        if (checkPermission() && inEditMode()) BlazeLayout.render('sports_main');
+        // if (checkPermission() && inEditMode()) BlazeLayout.render('sports_main');
+        if (checkPermission() && inEditMode()) BlazeLayout.render('two_view', {
+            offline: 'offline',
+            first: 'sports_main',
+        });
     }
 });
 
@@ -51,6 +60,7 @@ config.route('/athletes', {
     action: function () {
         if (checkPermission() && inEditMode()) {
             BlazeLayout.render('two_view', {
+                offline: 'offline',
                 first: 'view_left',
                 second: 'view_middle',
                 third: 'view_right',
@@ -66,6 +76,7 @@ config.route('/codes', {
     action: function () {
         if (checkPermission() && inEditMode()) {
             BlazeLayout.render('two_view', {
+                offline: 'offline',
                 first: 'view_full',
                 nested_full: 'codes',
             });
