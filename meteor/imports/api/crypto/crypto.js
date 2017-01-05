@@ -78,20 +78,24 @@ function checkSignature(SED, data, groupAC, stationAC) {
  * @private
  * @param {SED} SED - Encrypted and signed data to decrypt.
  * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption.
- * @returns {boolean|Object}    Either the decrypted data in case the encryption was successful or false if the signature verification failed.
+ * @returns {{data: ?object, success: boolean}}    Either the decrypted data in case the encryption was successful or false if the signature verification failed.
  */
 function decrypt(SED, groupAC) {
     //noinspection JSUnresolvedVariable
     const bytes = CryptoJS.Rabbit.decrypt(SED.data, groupAC.privHash);
     //noinspection JSUnresolvedVariable
-    let data;
     try {
         //noinspection JSUnresolvedVariable
-        data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        return {
+            data: JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),
+            success: true
+        };
     } catch (err) {
-        data = false;
+        return {
+            data: undefined,
+            success: false
+        };
     }
-    return data;
 }
 
 /**
@@ -219,10 +223,10 @@ export let Crypto = {
         });
         if (!stationAC) log.warning('STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK');
 
-        const data = decrypt(SED, groupAC);
-        if (data && checkSignature(SED, data, groupAC, stationAC))
+        const decryptResult = decrypt(SED, groupAC);
+        if (decryptResult.success && checkSignature(SED, decryptResult.data, groupAC, stationAC))
             return {
-                data: data,
+                data: decryptResult.data,
                 signatureEnforced: stationAC !== undefined,
                 usedACs: usedACs
             };
