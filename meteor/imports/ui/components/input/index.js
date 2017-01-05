@@ -278,6 +278,12 @@ Template.attempt.helpers({
     },
 });
 
+Template.switch.events({
+    'click .setting-checkbox': function (event) {
+        console.log("Setting updated (TODO: Store this somewhere and use it): ", event.target.dataset.id, event.target.checked);
+    }
+});
+
 Template.input.events({
     'click #link_next': function (event) {
         event.preventDefault();

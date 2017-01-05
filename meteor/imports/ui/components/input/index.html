@@ -16,7 +16,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="right" style="width: 100px"></div>
+                    <div class="right" style="width: 100px; text-align: right; display: inline-table">
+                        <a href="#" data-popover=".popover-settings" class="open-popover"><i
+                                class="f7-icons">gear</i></a>
+                    </div>
                 </div>
             </div>
 
@@ -132,6 +135,35 @@
             </div>
         </div>
     </div>
+
+    <div class="popover popover-settings">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block">
+                <ul>
+                    {{>switch title="Herren anzeigen" id="show-male"}}
+                    {{>switch title="Damen anzeigen" id="show-female"}}
+                    {{>switch title="Geschlechter gruppieren" id="group-by-sex"}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="switch">
+    <li>
+        <div class="item-content">
+            <div class="item-inner">
+                <div class="item-title label" style="width: 75%">{{title}}</div>
+                <div class="item-input" style="text-align: right">
+                    <label class="label-switch">
+                        <input type="checkbox" data-id="{{id}}" class="setting-checkbox">
+                        <div class="checkbox"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </li>
 </template>
 
 <template name="sportTypeDescriptions">
