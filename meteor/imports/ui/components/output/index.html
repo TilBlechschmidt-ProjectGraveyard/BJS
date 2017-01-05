@@ -42,23 +42,27 @@
             </div>
 
             <div class="page-content">
-                <div class="content-block-title">Zu erstellende Urkunden</div>
-                <div class="list-block">
-                    <ul>
-                        {{#each a in athletes}}
-                            {{>result athlete=a checkmarks=true}}
-                        {{/each}}
-                    </ul>
-                </div>
+                {{#if isNotEmpty athletes}}
+                    <div class="content-block-title">Zu erstellende Urkunden</div>
+                    <div class="list-block">
+                        <ul>
+                            {{#each a in athletes}}
+                                {{>result athlete=a checkmarks=true}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
 
-                <div class="content-block-title">Fertiggestellte Urkunden</div>
-                <div class="list-block">
-                    <ul>
-                        {{#each a in doneAthletes}}
-                            {{>result athlete=a checkmarks=false}}
-                        {{/each}}
-                    </ul>
-                </div>
+                {{#if isNotEmpty doneAthletes}}
+                    <div class="content-block-title">Fertiggestellte Urkunden</div>
+                    <div class="list-block">
+                        <ul>
+                            {{#each a in doneAthletes}}
+                                {{>result athlete=a checkmarks=false}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                {{/if}}
             </div>
         </div>
     </div>
