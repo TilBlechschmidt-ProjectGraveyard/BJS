@@ -188,6 +188,7 @@ export function onStartup() {
                     name: athlete.getFullName(),
                     id: athlete.id,
                     certificateWritten: athlete.certificateScore === certificate.score,
+                    certificateUpdate: (athlete.certificateScore >= 0) && (athlete.certificateScore !== certificate.score),
                     certificateTime: athlete.certificateTime,
                     valid: ct.validate(log, athlete, accounts, true),
                     score: certificate.score,

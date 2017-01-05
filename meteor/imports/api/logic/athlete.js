@@ -28,7 +28,7 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.handicap = handicap;
     this.maxAge = maxAge;
     this.certificateScore = -1;
-    this.certificateTime = 0;
+    this.certificateTime = -1;
     if (id && id.constructor == Array) {
         this.id = undefined;
     } else {
