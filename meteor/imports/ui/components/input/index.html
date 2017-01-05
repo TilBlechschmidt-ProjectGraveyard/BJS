@@ -10,7 +10,7 @@
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
                                     <div class="swiper-slide open-popover athlete-name"
-                                         data-popover=".popover-links">{{a.getFullName}}</div>
+                                         data-popover=".popover-athletes">{{a.getFullName}}</div>
                                 {{/each}}
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                     <div class="swiper-wrapper">
                         {{#each a in athletes}}
                             <div class="swiper-slide" data-hash="{{a.id}}"
-                                 style="overflow-y: scroll; overflow-x: hidden;">
+                                 style="overflow-y: auto; overflow-x: hidden;">
                                 {{#with a}}
                                     {{#each s in sportType}}
                                         {{>attempts sportType=s}}
@@ -75,7 +75,7 @@
 
     {{>sportTypeDescriptions sportTypes=sportTypes}}
 
-    <div class="popover popover-links">
+    <div class="popover popover-athletes">
         <div class="popover-angle"></div>
         <div class="popover-inner">
             <div class="list-block athletes-list" style="max-height: 75%; overflow-y: scroll;">
