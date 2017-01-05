@@ -45,7 +45,7 @@ export function initAthletes() {
         p2.addMeasurement(log, 'st_ball_200', [5.55], groupAccount, serverAccount);
         p2.addMeasurement(log, 'st_sprint_100', [9.32], groupAccount, serverAccount);
 
-        for (let i = 2; i < 7; i++) {
+        for (let i = 2; i < 11; i++) {
             const p3 = DBInterface.getAthletesOfAccounts(log, [groupAccount], false)[i];
             p3.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, serverAccount);
             p3.addMeasurement(log, 'st_ball_200', [5.55], groupAccount, serverAccount);
