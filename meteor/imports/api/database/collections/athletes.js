@@ -9,7 +9,12 @@ import {DBInterface} from "../db_access";
 export function initAthletes() {
     Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes', function (name, handle) {
         Meteor.publish(name, function () {
-            return handle.find({});
+            return handle.find({}, {
+                fields: {
+                    'certificateScore': false,
+                    'certificateTime': false
+                }
+            });
         });
     });
 
