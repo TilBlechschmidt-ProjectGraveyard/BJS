@@ -52,7 +52,7 @@ function populateAthlete(athlete) {
         // Return all sport types that can be written to with the current station account
         const stIDs = stationAccount.account.score_write_permissions;
         for (let stID in stIDs) {
-            if (!stIDs.hasOwnProperty(stID)) continue;
+            if (!stIDs.hasOwnProperty(stID) || !lodash.includes(athlete.sports, stIDs[stID])) continue;
             stID = stIDs[stID];
             sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
         }
