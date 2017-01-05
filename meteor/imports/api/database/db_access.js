@@ -250,12 +250,12 @@ export let DBInterface = {
     /**
      * Generates certificates for the current competition
      * @param {Account} account - Output account
-     * @param {boolean} newStatus - The new status
+     * @param {boolean} id - The new status
      * @param [callback] - optional callback
      */
-    setCertificateWrittenTrue: function (account, newStatus, callback) {
+    setCertificateWrittenTrue: function (account, id, callback) {
         const loginObject = getLoginObject(account);
-        Meteor.call('setCertificateWrittenTrue', loginObject, newStatus, function (err, enc_data) {
+        Meteor.call('setCertificateWrittenTrue', loginObject, id, function (err, enc_data) {
             if (typeof callback === 'function') {
                 const log = new Log();
                 const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
