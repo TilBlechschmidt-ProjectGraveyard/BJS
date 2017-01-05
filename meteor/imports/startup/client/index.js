@@ -39,6 +39,9 @@ export function onStartup() {
         'keypress': function (event) {
             if (event.keyCode == 13)
                 triggerDefaultModalAction();
+        },
+        'click': function (event) {
+            event.target.blur();
         }
     });
 

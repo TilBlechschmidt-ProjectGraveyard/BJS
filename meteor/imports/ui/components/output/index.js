@@ -59,6 +59,9 @@ Template.output.helpers({
             return !(athlete.certificateWritten && !lodash.includes(localCertificated, athlete.id));
         });
     },
+    invalidAthletes: function () {
+
+    },
     doneAthletes: function () {
         groups_deps.depend();
         if (current_group == -1) return [];
@@ -131,8 +134,7 @@ Template.output.events({
         groups_deps.changed();
     },
     'click #btn_refresh': refresh,
-    'click .logout-button': function (event) {
-        event.target.blur();
+    'click .logout-button': function () {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Urkunden");
             sessionStorage.removeItem("firstLogin");

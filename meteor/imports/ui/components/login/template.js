@@ -89,7 +89,7 @@ Template.login.events({
         }, 400);
         return false;
     },
-    'click .selection': function (event) {
+    'click .selection': function () {
         event.preventDefault();
         event.stopImmediatePropagation();
         const type = event.target.dataset.type;
@@ -102,7 +102,6 @@ Template.login.events({
             FlowRouter.go('/input');
         else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
             Meteor.f7.showPreloader("Abmelden");
-            event.target.blur();
             AccountManager.logout(sessionStorage.getItem("firstLogin"));
             sessionStorage.removeItem("firstLogin");
             Meteor.inputDependency.changed();
