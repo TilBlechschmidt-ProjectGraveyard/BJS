@@ -186,6 +186,8 @@ export function onStartup() {
 
                 return {
                     name: athlete.getFullName(),
+                    id: athlete.id,
+                    certificateWritten: athlete.certificateWritten,
                     valid: ct.validate(log, athlete, accounts, true),
                     score: certificate.score,
                     stScores: stScores,
