@@ -132,6 +132,7 @@ Template.output.events({
     },
     'click #btn_refresh': refresh,
     'click .logout-button': function (event) {
+        event.target.blur();
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Urkunden");
             sessionStorage.removeItem("firstLogin");

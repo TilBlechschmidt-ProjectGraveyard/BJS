@@ -26,7 +26,8 @@ Template.home_main.helpers({
 });
 
 Template.home_main.events({
-    'click .logout-button': function () {
+    'click .logout-button': function (event) {
+        event.target.blur();
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Administrator");
             sessionStorage.removeItem("firstLogin");

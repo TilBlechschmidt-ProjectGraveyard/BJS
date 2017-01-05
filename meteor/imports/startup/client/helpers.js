@@ -34,3 +34,11 @@ export let getLastLogin = function () {
     if (!sessionStorage.getItem("firstLogin")) return "";
     return invertLogin(sessionStorage.getItem("firstLogin"));
 };
+
+export let triggerDefaultModalAction = function () {
+    const modal = document.querySelectorAll('body > div.modal.modal-in')[0];
+    if (!modal) return false;
+    const defaultButton = modal.querySelector("div.modal-buttons > .modal-button-bold");
+    defaultButton.click();
+    return true;
+};

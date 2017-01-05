@@ -267,6 +267,7 @@ Template.input.events({
     'click .logout-button': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
+        event.target.blur();
         AccountManager.logout(getLastLogin());
         Meteor.inputDependency.changed();
         return false;

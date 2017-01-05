@@ -6,7 +6,7 @@ import "../../ui/components/input";
 import "../../ui/components/output";
 import "../../ui/components/offline/index";
 import "../../ui/components/preloader";
-import {arrayify} from "./helpers";
+import {arrayify, triggerDefaultModalAction} from "./helpers";
 
 // Run things on startup
 export function onStartup() {
@@ -33,6 +33,13 @@ export function onStartup() {
     });
     Template.registerHelper('hasData', function (obj) {
         return Object.keys(obj).length > 0;
+    });
+
+    Template.body.events({
+        'keypress': function (event) {
+            if (event.keyCode == 13)
+                triggerDefaultModalAction();
+        }
     });
 
     FlowRouter.triggers.enter(function () {
