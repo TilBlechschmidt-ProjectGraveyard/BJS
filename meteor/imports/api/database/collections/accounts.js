@@ -30,7 +30,8 @@ export function initAccounts() {
         for (let i = 0; i < 10; i++) {
             this.handle.insert(new Account('Q#z' + i, ['Q#z' + i], [], Crypto.generateAC('1234' + i, 'pepper')));
         }
-        this.handle.insert(new Account('Q#z', ['Q#z'], [], Crypto.generateAC('1234', 'chilli')));
+        this.handle.insert(new Account('Q#a', ['Q#a'], [], Crypto.generateAC('1234', 'chilli')));
+        this.handle.insert(new Account('Q#b', ['Q#b'], [], Crypto.generateAC('12345', 'chilli')));
         this.handle.insert(new Account('Weitsprung', [], ['st_long_jump'], Crypto.generateAC('4321', 'pepper')));
         this.handle.insert(new Account('Admin', ['Q#z'], ['st_long_jump', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], Crypto.generateAC('passwort', 'pepper')));
         this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('urkunden', 'pepper'), true));
