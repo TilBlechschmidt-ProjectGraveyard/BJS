@@ -32,7 +32,7 @@ function getAthletesOfGroup() {
     for (let athlete in localCertificated) {
         if (!localCertificated.hasOwnProperty(athlete)) continue;
         const athlete = lodash.find(athletes, {id: localCertificated[athlete]});
-        athlete.certificateWritten = true;
+        athlete.certificateWrittenAnimated = true;
     }
     return athletes;
 }
@@ -66,12 +66,6 @@ Template.output.helpers({
         if (current_group == -1) return "Daten laden...";
         return groups[current_group].name;
     },
-});
-
-Template.result.helpers({
-    not: function (b) {
-        return !b;
-    }
 });
 
 Template.output.events({
