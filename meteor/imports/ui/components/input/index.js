@@ -215,7 +215,20 @@ Template.input.helpers({
     },
     athletes: function () {
         Meteor.inputDependency.depend();
-        const athletes = lodash.sortBy(getAthletes(), 'lastName');
+        let athletes = lodash.sortBy(getAthletes(), 'lastName');
+
+        const sortMW = true;
+
+        if (sortMW) {
+            const m = lodash.remove(athletes, function (athlete) {
+                return !athlete.isMale;
+            });
+            const w = lodash.remove(athletes, function (athlete) {
+                return athlete.isMale;
+            });
+            console.log(m, w);
+            athletes = m.concat(w);
+        }
 
         return lodash.map(athletes, function (athlete) {
             return populateAthlete(athlete);
