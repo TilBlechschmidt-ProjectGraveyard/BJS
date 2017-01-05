@@ -24,7 +24,7 @@
                     <div class="swiper-wrapper">
                         {{#each a in athletes}}
                             <div class="swiper-slide" data-hash="{{a.id}}"
-                                 style="overflow-y: scroll; overflow-x: hidden;">
+                                 style="overflow-y: auto; overflow-x: hidden;">
                                 {{#with a}}
                                     {{#each s in sportType}}
                                         {{>attempts sportType=s}}
