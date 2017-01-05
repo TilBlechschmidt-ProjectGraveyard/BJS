@@ -133,6 +133,9 @@ Template.login.onRendered(function () {
         goToStep(getLoginSwiper(), 0);
     } else if (loginA && !loginB) {
         goToStep(getLoginSwiper(), 1);
+        setTimeout(function () {
+            document.getElementsByClassName("passwort-input")[0].focus();
+        }, 1000);
     } else if (loginA && loginB) {
         goToStep(getLoginSwiper(), 2);
         setTimeout(updateSwiperProgress, 1);

@@ -84,15 +84,21 @@ Template.login.events({
         event.stopImmediatePropagation();
         FlowRouter.go('/login/' + btoa(event.target.dataset.type));
         nextStep(getLoginSwiper());
+        setTimeout(function () {
+            document.getElementsByClassName("passwort-input")[0].focus();
+        }, 400);
         return false;
     },
     'click .selection': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         const type = event.target.dataset.type;
-        if (event.target.dataset.type == "continue_login")
+        if (event.target.dataset.type == "continue_login") {
             nextStep(getLoginSwiper());
-        else if (type == "view_data")
+            setTimeout(function () {
+                document.getElementsByClassName("passwort-input")[1].focus();
+            }, 400);
+        } else if (type == "view_data")
             FlowRouter.go('/input');
         else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
             Meteor.f7.showPreloader("Abmelden");
