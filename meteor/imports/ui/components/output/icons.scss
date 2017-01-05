@@ -5,6 +5,8 @@ $color--yellow: #F9A825;
 $color--green: #7ac142;
 $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
+// -- Generic icon class --
+
 .output-icon {
   width: 20px;
   height: 20px;
@@ -15,116 +17,82 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   margin-left: 10px;
 }
 
-// Checkmark
+// ----- Icon elements -----
 
-.checkmark {
-  box-shadow: inset 0 0 0 $color--green;
+.oi__dash {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
 }
 
-.checkmark__circle {
+.oi__dot {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.oi__circle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
   stroke-width: 2;
   stroke-miterlimit: 10;
+  fill: none;
+}
+
+.oi__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+// ------- Animations -------
+
+.output-icon.animated .oi__dot {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+.output-icon.animated .oi__dash {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+.output-icon.animated .oi__circle {
+  animation: stroke .6s $curve forwards;
+}
+
+.output-icon.animated .oi__check {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+// -- Specific icon styles --
+
+// OK-Icon  |  .oi-ok
+.oi-ok .oi__circle {
   stroke: $color--green;
-  fill: none;
 }
 
-.checkmark__check {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
+.oi-ok.animated {
+  animation: fill-green .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-.check {
-  animation: checkfill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-}
-
-.check .checkmark__circle {
-  animation: stroke .6s $curve forwards;
-}
-
-.check .checkmark__check {
-  animation: stroke .3s $curve .8s forwards;
-}
-
-// X-Mark
-
-.xmark {
-  box-shadow: inset 0 0 0 $color--red;
-}
-
-.xmark__circle {
-  stroke-dasharray: 166;
-  stroke-dashoffset: 166;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-  stroke: $color--red;
-  fill: none;
-}
-
-.xmark__check {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
-}
-
-.xm {
-  animation: xfill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-}
-
-.xm .xmark__circle {
-  animation: stroke .6s $curve forwards;
-}
-
-.xm .xmark__check {
-  animation: stroke .3s $curve .8s forwards;
-}
-
-// Exclamation mark
-
-.warning {
-  box-shadow: inset 0 0 0 $color--yellow;
-}
-
-.warning__circle {
-  stroke-dasharray: 166;
-  stroke-dashoffset: 166;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
+// Warn-Icon  |  .oi-warn
+.oi-warn .oi__circle {
   stroke: $color--yellow;
-  fill: none;
 }
 
-.warning__dash {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
+.oi-warn.animated {
+  animation: fill-yellow .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-.warning__dot {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
+// Err-Icon  |  .oi-err
+.oi-err .oi__circle {
+  stroke: $color--red;
 }
 
-.warn {
-  animation: warnfill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+.oi-err.animated {
+  animation: fill-red .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-.warn .warning__circle {
-  animation: stroke .6s $curve forwards;
-}
-
-.warn .warning__dash {
-  animation: stroke .3s $curve .8s forwards;
-}
-
-.warn .warning__dot {
-  animation: stroke .3s $curve .8s forwards;
-}
-
-// Keyframes
+// --------- Keyframes ---------
 
 @keyframes stroke {
   100% {
@@ -141,19 +109,19 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   }
 }
 
-@keyframes checkfill {
+@keyframes fill-green {
   100% {
     box-shadow: inset 0 0 0 30px $color--green;
   }
 }
 
-@keyframes xfill {
+@keyframes fill-red {
   100% {
     box-shadow: inset 0 0 0 30px $color--red;
   }
 }
 
-@keyframes warnfill {
+@keyframes fill-yellow {
   100% {
     box-shadow: inset 0 0 0 30px $color--yellow;
   }

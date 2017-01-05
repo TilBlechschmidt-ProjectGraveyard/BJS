@@ -191,42 +191,43 @@
                     {{#if valid}}
                         {{#if certificateUpdate}}
                             <svg style="display: inline-block"
-                                 class="output-icon warning warn"
+                                 class="output-icon oi-warn animated"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                                 <circle class="warning__circle" cx="26" cy="26" r="25"
                                         fill="none"></circle>
-                                <path class="warning__dash" fill="none"
+                                <path class="oi__dash" fill="none"
                                       d="M26 11.5 l0 20.5"></path>
-                                <circle class="warning__dot" cx="26" cy="40" r="1" fill="white"></circle>
+                                <circle class="oi__dot" cx="26" cy="40" r="1" fill="white"></circle>
                             </svg>
                         {{else}}
                             {{#if certificateWritten}}
                                 <svg style="display: inline-block"
-                                     class="output-icon checkmark check"
+                                     class="output-icon oi-ok animated"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="checkmark__circle" cx="26" cy="26" r="25"
+                                    <circle class="oi__circle" cx="26" cy="26" r="25"
                                             fill="none"></circle>
-                                    <path class="checkmark__check" fill="none"
+                                    <path class="oi__check" fill="none"
                                           d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
                                 </svg>
                             {{else}}
                                 <svg style="display: inline-block"
-                                     class="output-icon warning warn todo-svg"
+                                     class="output-icon oi-warn animated todo-svg"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="warning__circle" cx="26" cy="26" r="25"
+                                    <circle class="oi__circle" cx="26" cy="26" r="25"
                                             fill="none"></circle>
-                                    <path class="warning__dash" fill="none"
+                                    <path class="oi__dash" fill="none"
                                           d="M11.5 26 L40.5 26"></path>
                                 </svg>
                             {{/if}}
                         {{/if}}
                     {{else}}
-                        <svg class="output-icon xmark xm" xmlns="http://www.w3.org/2000/svg"
+                        <svg class="output-icon oi-err animated" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 52 52">
-                            <circle class="xmark__circle" cx="26" cy="26" r="25"
+                            <circle class="oi__circle" cx="26" cy="26" r="25"
                                     fill="none"></circle>
-                            <path class="xmark__check" fill="none"
-                                  d="M15 15 L37 37 M15 37 L 37 15"></path>
+                            <path class="oi__dash" fill="none"
+                                  d="M26 11.5 l0 20.5"></path>
+                            <circle class="oi__dot" cx="26" cy="40" r="1" fill="white"></circle>
                         </svg>
                     {{/if}}
                 </div>
