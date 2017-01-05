@@ -25,7 +25,12 @@ export function initAthletes() {
         const groupAccountA = new Account('Q#a', ['Q#a'], [], Crypto.generateAC('1234', 'chilli'));
         const groupAccountB = new Account('Q#b', ['Q#b'], [], Crypto.generateAC('12345', 'chilli'));
         const serverAccount = new Account('Admin', ['Q#z'], ['st_long_jump', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], Crypto.generateAC('passwort', 'pepper'));
-        this.handle.insert(new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
+
+        const pTest = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#a', '0', ct.maxAge, ct);
+        pTest.certificateScore = 15;
+        pTest.certificateTime = 12423234234253;
+        pTest.certificatedBy = "TheAlien";
+        this.handle.insert(pTest.encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Klaus', 'Schmidt', 1999, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Herbert', 'Gronewoldt', 1989, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Morten', 'Meier', 1998, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));

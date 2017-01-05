@@ -99,6 +99,7 @@ Template.output.helpers({
                 const athlete = lodash.find(group.validAthletes, {id: athleteID});
                 if (athlete === undefined) continue;
 
+                athlete.certificateUpdate = false;
                 athlete.certificateWritten = true;
                 athlete.certificateTime = new Date();
                 break;
@@ -145,7 +146,6 @@ Template.result.events({
         return false;
     },
     'click .signCertificate': function (event) {
-        console.log("Signed certificate");
         localCertificated.push(event.target.dataset.id);
         event.target.closest(".accordion-item").dataset.collapse = "true";
         setTimeout(function () {
