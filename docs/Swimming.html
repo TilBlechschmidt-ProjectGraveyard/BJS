@@ -32,9 +32,11 @@
                 <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#getCertificateWritten">getCertificateWritten</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
                 <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
                 <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
+                <li data-type='method'><a href="Athlete.html#setCertificateWritten">setCertificateWritten</a></li>
             </ul>
         </li>
         <li><a href="Data.html">Data</a>
@@ -59,9 +61,36 @@
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
             </ul>
         </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
     </ul>
     <h3>Namespaces</h3>
     <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
@@ -90,6 +119,7 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
@@ -98,7 +128,9 @@
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li>
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
@@ -155,6 +187,7 @@
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -244,7 +277,7 @@
 
             <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span
                     class="signature">(log, athlete, accounts, requireSignature)</span><span class="type-signature"> &rarr;
-                {number}</span></h4>
+                {Object}</span></h4>
 
 
             <p class="summary">Calculates the score archived by a athlete.</p>
@@ -258,7 +291,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line214">line 214</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line216">line 216</a>
                         </li>
                     </ul>
                 </dd>
@@ -379,7 +412,7 @@
                 </dt>
                 <dd>
 
-                    <span class="param-type">number</span>
+                    <span class="param-type">Object</span>
 
 
                 </dd>
@@ -402,7 +435,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line77">line 77</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line78">line 78</a>
                         </li>
                     </ul>
                 </dd>
@@ -527,7 +560,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line271">line 271</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line285">line 285</a>
                         </li>
                     </ul>
                 </dd>
@@ -671,7 +704,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line254">line 254</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line268">line 268</a>
                         </li>
                     </ul>
                 </dd>
@@ -779,7 +812,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line244">line 244</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line258">line 258</a>
                         </li>
                     </ul>
                 </dd>
@@ -826,7 +859,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line61">line 61</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line62">line 62</a>
                         </li>
                     </ul>
                 </dd>
@@ -1052,7 +1085,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line136">line 136</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line137">line 137</a>
                         </li>
                     </ul>
                 </dd>
@@ -1184,7 +1217,7 @@
                     <ul class="dummy">
                         <li>
                             <a href="api_logic_competition_types_swimming.js.html">api/logic/competition_types/swimming.js</a>,
-                            <a href="api_logic_competition_types_swimming.js.html#line169">line 169</a>
+                            <a href="api_logic_competition_types_swimming.js.html#line170">line 170</a>
                         </li>
                     </ul>
                 </dd>
@@ -1321,7 +1354,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:42:10
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jan 05 2017 01:02:28
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

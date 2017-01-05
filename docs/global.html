@@ -32,9 +32,11 @@
                 <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#getCertificateWritten">getCertificateWritten</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
                 <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
                 <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
+                <li data-type='method'><a href="Athlete.html#setCertificateWritten">setCertificateWritten</a></li>
             </ul>
         </li>
         <li><a href="Data.html">Data</a>
@@ -59,9 +61,36 @@
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
             </ul>
         </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
     </ul>
     <h3>Namespaces</h3>
     <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
         <li><a href="Athletics.html">Athletics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
@@ -90,6 +119,7 @@
         <li><a href="DBInterface.html">DBInterface</a>
             <ul class='methods'>
                 <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
@@ -98,7 +128,9 @@
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getContestID">getContestID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li>
                 <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li>
                 <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listCompetitions">listCompetitions</a></li>
                 <li data-type='method'><a href="DBInterface.html#.listEditCompetitions">listEditCompetitions</a></li>
@@ -155,6 +187,7 @@
         <li><a href="global.html#getStationNames">getStationNames</a></li>
         <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
         <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
     </ul>
@@ -261,7 +294,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line43">line 43</a>
+                        href="api_logic_account.js.html#line45">line 45</a>
                 </li>
             </ul>
         </dd>
@@ -343,7 +376,7 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="startup_server_index.js.html">startup/server/index.js</a>, <a
-            href="startup_server_index.js.html#line20">line 20</a>
+            href="startup_server_index.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -470,8 +503,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_account.js.html">api/logic/account.js</a>, <a href="api_logic_account.js.html#line89">line
-        89</a>
+        <a href="api_logic_account.js.html">api/logic/account.js</a>, <a href="api_logic_account.js.html#line100">line
+        100</a>
     </li></ul></dd>
     
 
@@ -826,8 +859,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
-                    <a href="api_account_managment_AccountManager.js.html#line14">line 14</a>
+                    <a href="api_account_managment_SessionAccount.js.html">api/account_managment/SessionAccount.js</a>,
+                    <a href="api_account_managment_SessionAccount.js.html#line13">line 13</a>
                 </li>
             </ul>
         </dd>
@@ -921,8 +954,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="api_logic_account.js.html">api/logic/account.js</a>, <a href="api_logic_account.js.html#line124">line
-        124</a>
+        <a href="api_logic_account.js.html">api/logic/account.js</a>, <a href="api_logic_account.js.html#line135">line
+        135</a>
     </li></ul></dd>
     
 
@@ -1058,7 +1091,7 @@
             <ul class="dummy">
                 <li>
                     <a href="startup_server_index.js.html">startup/server/index.js</a>, <a
-                        href="startup_server_index.js.html#line11">line 11</a>
+                        href="startup_server_index.js.html#line13">line 13</a>
                 </li>
             </ul>
         </dd>
@@ -1196,7 +1229,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line52">line 52</a>
+                        href="api_logic_account.js.html#line63">line 63</a>
                 </li>
             </ul>
         </dd>
@@ -1283,7 +1316,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line76">line 76</a>
+                        href="api_logic_account.js.html#line87">line 87</a>
                 </li>
             </ul>
         </dd>
@@ -1370,7 +1403,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line61">line 61</a>
+                        href="api_logic_account.js.html#line72">line 72</a>
                 </li>
             </ul>
         </dd>
@@ -1457,7 +1490,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line115">line 115</a>
+                        href="api_logic_account.js.html#line126">line 126</a>
                 </li>
             </ul>
         </dd>
@@ -1559,7 +1592,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line103">line 103</a>
+                        href="api_logic_account.js.html#line114">line 114</a>
                 </li>
             </ul>
         </dd>
@@ -1661,7 +1694,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_database_collections_index.js.html">api/database/collections/index.js</a>, <a
-                        href="api_database_collections_index.js.html#line99">line 99</a>
+                        href="api_database_collections_index.js.html#line100">line 100</a>
                 </li>
             </ul>
         </dd>
@@ -1673,6 +1706,93 @@
     <div class="description">
         <p>Creates all collections.</p>
     </div>
+
+
+    <h4 class="name" id="isAdminAccount"><span class="type-signature"></span>isAdminAccount<span class="signature">(account)</span><span
+            class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+    <p class="summary">Returns whether the account has admin permissions.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
+                        href="api_logic_account.js.html#line54">line 54</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Returns whether the account has admin permissions.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The Account</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">boolean</span>
+
+
+        </dd>
+    </dl>
 
 
     <h4 class="name" id="isGroupAccount"><span class="type-signature"></span>isGroupAccount<span class="signature">(account)</span><span
@@ -1690,7 +1810,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line25">line 25</a>
+                        href="api_logic_account.js.html#line27">line 27</a>
                 </li>
             </ul>
         </dd>
@@ -1777,7 +1897,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line34">line 34</a>
+                        href="api_logic_account.js.html#line36">line 36</a>
                 </li>
             </ul>
         </dd>
@@ -1862,8 +1982,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="api_account_managment_AccountManager.js.html">api/account_managment/AccountManager.js</a>,
-                    <a href="api_account_managment_AccountManager.js.html#line42">line 42</a>
+                    <a href="api_account_managment_SessionAccount.js.html">api/account_managment/SessionAccount.js</a>,
+                    <a href="api_account_managment_SessionAccount.js.html#line46">line 46</a>
                 </li>
             </ul>
         </dd>
@@ -1996,7 +2116,7 @@
             <ul class="dummy">
                 <li>
                     <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                    <a href="ui_components_config_new_competition_helpers.js.html#line292">line 292</a>
+                    <a href="ui_components_config_new_competition_helpers.js.html#line324">line 324</a>
                 </li>
             </ul>
         </dd>
@@ -2631,7 +2751,7 @@
             <ul class="dummy">
                 <li>
                     <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                    <a href="ui_components_config_new_competition_helpers.js.html#line283">line 283</a>
+                    <a href="ui_components_config_new_competition_helpers.js.html#line315">line 315</a>
                 </li>
             </ul>
         </dd>
@@ -3049,7 +3169,7 @@
             <ul class="dummy">
                 <li>
                     <a href="api_logic_account.js.html">api/logic/account.js</a>, <a
-                        href="api_logic_account.js.html#line65">line 65</a>
+                        href="api_logic_account.js.html#line76">line 76</a>
                 </li>
             </ul>
         </dd>
@@ -3141,7 +3261,7 @@
             <ul class="dummy">
                 <li>
                     <a href="ui_components_config_new_competition_helpers.js.html">ui/components/config/new_competition_helpers.js</a>,
-                    <a href="ui_components_config_new_competition_helpers.js.html#line254">line 254</a>
+                    <a href="ui_components_config_new_competition_helpers.js.html#line285">line 285</a>
                 </li>
             </ul>
         </dd>
@@ -3890,7 +4010,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jan 01 2017 22:42:10
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jan 05 2017 01:02:28
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
