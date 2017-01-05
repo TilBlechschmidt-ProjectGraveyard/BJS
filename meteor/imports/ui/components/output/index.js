@@ -68,6 +68,28 @@ Template.output.helpers({
     },
 });
 
+Template.result.helpers({
+    humanReadableDate: function (timestamp) {
+        const date = new Date(timestamp);
+
+        let monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();
+        let day = date.getDate();
+        let monthIndex = date.getMonth();
+        let year = date.getFullYear();
+
+        return hours + ':' + minutes + ':' + seconds; //', ' + day + ' ' + monthNames[monthIndex] + ' ' + year;
+    }
+});
+
 Template.output.events({
     'click .accordion-item': function (event) {
         event.preventDefault();
@@ -81,7 +103,7 @@ Template.output.events({
         setTimeout(function () {
             localCertificated_deps.changed();
         }, 200);
-        DBInterface.setCertificateWrittenTrue(AccountManager.getOutputAccount().account, event.target.dataset.id);
+        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
     },
     'click .group-selector': function (event) {
         current_group = event.target.closest("li").dataset.id;

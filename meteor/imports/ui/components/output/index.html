@@ -76,8 +76,7 @@
             <a href="#" class="item-content item-link">
                 <div class="item-inner">
                     <div style="display: inline-block">
-                        <div class="item-title"
-                             style="display: inline-block; vertical-align: middle;">{{name}}</div>
+                        <div class="item-title" style="display: inline-block; vertical-align: middle;">{{name}}</div>
                         {{#if ../checkmarks}}
                             {{#if valid}}
                                 <svg style="display: inline-block"
@@ -126,6 +125,13 @@
                                     fertigstellen</a>
                             </p>
                         {{/if}}
+                    {{else}}
+                        <p style="text-align:left;">
+                            Erstellungsdatum
+                            <span style="float:right;">
+                                {{humanReadableDate certificateTime}}
+                            </span>
+                        </p>
                     {{/if}}
                 </div>
             </div>
