@@ -228,7 +228,7 @@ export function onStartup() {
                 return encryptAs(false, account);
             }
 
-            Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: {certificateWritten: true}});
+            Meteor.COLLECTIONS.Athletes.handle.update({_id: id}, {$set: {certificateWritten: true}});
         }
     });
 
