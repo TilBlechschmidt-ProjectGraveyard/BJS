@@ -90,9 +90,10 @@
 
     <style>
         /* Hairline after opened accordion */
-        .accordion-item-content:after {
+        .accordion-item.accordion-item-expanded .accordion-item-content:after {
             content: '';
             position: absolute;
+            padding-left: 15px;
             left: 15px;
             bottom: 0;
             right: auto;
