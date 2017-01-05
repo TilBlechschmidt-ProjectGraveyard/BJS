@@ -45,131 +45,83 @@
                 <div class="content-block-title">Zu erstellende Urkunden</div>
                 <div class="list-block">
                     <ul>
-                        {{#each a in list_athletes}}
-                            {{#with a}}
-                                <li class="accordion-item {{#if not certificateWritten}}{{#if
-                                        valid}}accordion-item-expanded{{/if}}{{/if}}">
-                                    <a href="#" class="item-content item-link">
-                                        <div class="item-inner">
-                                            <div style="display: inline-block">
-                                                <div class="item-title"
-                                                     style="display: inline-block; vertical-align: middle;">{{name}}</div>
-                                                {{#if valid}}
-                                                    <svg style="display: inline-block"
-                                                         class="checkmark {{#if certificateWritten}}check{{/if}}"
-                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                                        <circle class="checkmark__circle" cx="26" cy="26" r="25"
-                                                                fill="none"></circle>
-                                                        <path class="checkmark__check" fill="none"
-                                                              d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
-                                                    </svg>
-                                                {{else}}
-                                                    <svg class="xmark xm" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 52 52">
-                                                        <circle class="xmark__circle" cx="26" cy="26" r="25"
-                                                                fill="none"></circle>
-                                                        <path class="xmark__check" fill="none"
-                                                              d="M15 15 L37 37 M15 37 L 37 15"></path>
-                                                    </svg>
-                                                {{/if}}
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div style="clear: both"></div>
-                                    <div class="accordion-item-content">
-                                        <div class="content-block">
-                                            <p style="text-align:left;">
-                                                Gesamtpunktzahl
-                                                <span style="float:right;">{{score}}</span>
-                                            </p>
-                                            <p style="text-align:left;">
-                                                Urkunde
-                                                <span style="float:right;">
-                                                    {{#if valid}}
-                                                        {{certificateName}}
-                                                    {{else}}
-                                                        Noch nicht genügend Werte
-                                                    {{/if}}
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                            {{/with}}
+                        {{#each a in athletes}}
+                            {{>result athlete=a}}
                         {{/each}}
                     </ul>
                 </div>
 
                 <div class="content-block-title">Fertiggestellte Urkunden</div>
                 <div class="list-block">
-
+                    <ul>
+                        {{#each a in doneAthletes}}
+                            {{>result athlete=a}}
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
-
-            <!-- Page content -->
-            <!--<div class="page-content">-->
-                <!--{{#each a in list_athletes}}-->
-                <!--{{#with a}}-->
-                <!--<div class="content-block-title" style="height: 20px;">-->
-                <!--{{name}}-->
-                <!--<svg class="checkmark {{#if
-                        certificateWritten}}check{{/if}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">-->
-                <!--<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>-->
-                <!--<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>-->
-                <!--</svg>-->
-                <!--<svg class="xmark xm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">-->
-                <!--<circle class="xmark__circle" cx="26" cy="26" r="25" fill="none"></circle>-->
-                <!--<path class="xmark__check" fill="none" d="M15 15 L37 37 M15 37 L 37 15"></path>-->
-                <!--</svg>-->
-                <!--</div>-->
-                <!--<div class="list-block">-->
-                <!--<ul>-->
-                <!--<li>-->
-                <!--<div class="item-content">-->
-                <!--<div class="item-inner">-->
-                <!--<div class="item-title label">Gesamtpunktzahl</div>-->
-                <!--<div class="item-after">-->
-                <!--{{score}}-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</li>-->
-                <!--<li>-->
-                <!--<div class="item-content">-->
-                <!--<div class="item-inner">-->
-                <!--<div class="item-title label">Urkunde</div>-->
-                <!--<div class="item-after">-->
-                    <!--{{#if valid}}-->
-                    <!--{{certificateName}}-->
-                        <!--{{else}}-->
-                    <!--Noch nicht genügend Werte-->
-                        <!--{{/if}}-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</li>-->
-                <!--<li class="accordion-item">-->
-                <!--<a href="#" class="item-content item-link">-->
-                <!--<div class="item-inner">-->
-                <!--<div class="item-title">Einzelpunkte</div>-->
-                <!--</div>-->
-                <!--</a>-->
-                <!--<div class="accordion-item-content">-->
-                <!--<div class="content-block" style="padding-left: 10%">-->
-                    <!--{{#each s in stScores}}-->
-                        <!--{{#with s}}-->
-                        <!--<p>{{name}}: {{score}}</p>-->
-                            <!--{{/with}}-->
-                        <!--{{/each}}-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--</div>-->
-                    <!--{{/with}}-->
-                <!--{{/each}}-->
-            <!--</div>-->
         </div>
     </div>
 
+</template>
+
+<template name="result">
+    {{#with athlete}}
+        <li class="accordion-item {{#if not certificateWritten}}{{#if
+                valid}}accordion-item-expanded{{/if}}{{/if}}">
+            <a href="#" class="item-content item-link">
+                <div class="item-inner">
+                    <div style="display: inline-block">
+                        <div class="item-title"
+                             style="display: inline-block; vertical-align: middle;">{{name}}</div>
+                        {{#if valid}}
+                            <svg style="display: inline-block"
+                                 class="checkmark {{#if certificateWritten}}check{{/if}}"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25"
+                                        fill="none"></circle>
+                                <path class="checkmark__check" fill="none"
+                                      d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
+                            </svg>
+                        {{else}}
+                            <svg class="xmark xm" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 52 52">
+                                <circle class="xmark__circle" cx="26" cy="26" r="25"
+                                        fill="none"></circle>
+                                <path class="xmark__check" fill="none"
+                                      d="M15 15 L37 37 M15 37 L 37 15"></path>
+                            </svg>
+                        {{/if}}
+                    </div>
+                </div>
+            </a>
+            <div style="clear: both"></div>
+            <div class="accordion-item-content">
+                <div class="content-block">
+                    <p style="text-align:left;">
+                        Gesamtpunktzahl
+                        <span style="float:right;">{{score}}</span>
+                    </p>
+                    <p style="text-align:left;">
+                        Urkunde
+                        <span style="float:right;">
+                            {{#if valid}}
+                                {{certificateName}}
+                            {{else}}
+                                Noch nicht genügend Werte
+                            {{/if}}
+                        </span>
+                    </p>
+                    {{#if not certificateWritten}}
+                        {{#if valid}}
+                            <p>
+                                <a href="#" class="item-link list-button signCertificate" data-id="{{id}}">Urkunde
+                                    fertigstellen</a>
+                            </p>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        </li>
+    {{/with}}
 </template>

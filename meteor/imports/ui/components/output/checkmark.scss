@@ -35,7 +35,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: checkfill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-.check .checkmark__circle {
+.checkmark:hover .checkmark__circle {
   animation: stroke .6s $curve forwards;
 }
 

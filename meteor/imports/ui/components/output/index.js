@@ -2,7 +2,7 @@ import {Template} from "meteor/templating";
 import "./index.html";
 import "./checkmark.scss";
 import {DBInterface} from "../../../api/database/db_access";
-import {getAccountByPassphrase, AccountManager} from "../../../api/account_managment/AccountManager";
+import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
 
 
@@ -10,6 +10,8 @@ let groups = [];
 let current_group = -1;
 const groups_deps = new Tracker.Dependency();
 
+let localCertificated = [];
+const localCertificated_deps = new Tracker.Dependency();
 
 function refresh() {
     DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
@@ -25,6 +27,16 @@ Template.output.onRendered(function () {
     });
 });
 
+function getAthletesOfGroup() {
+    const athletes = lodash.sortBy(groups[current_group].athletes, "valid").reverse();
+    for (let athlete in localCertificated) {
+        if (!localCertificated.hasOwnProperty(athlete)) continue;
+        const athlete = lodash.find(athletes, {id: localCertificated[athlete]});
+        athlete.certificateWritten = true;
+    }
+    return athletes;
+}
+
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
     list_groups: function () {
@@ -34,25 +46,49 @@ Template.output.helpers({
             return group.name;
         });
     },
-    list_athletes: function () {
+    athletes: function () {
+        groups_deps.depend();
+        localCertificated_deps.depend();
+        if (current_group == -1) return [];
+        return lodash.remove(getAthletesOfGroup(), function (athlete) {
+            return !(athlete.certificateWritten && !lodash.includes(localCertificated, athlete.id));
+        });
+    },
+    doneAthletes: function () {
         groups_deps.depend();
         if (current_group == -1) return [];
-        return groups[current_group].athletes;
+        return lodash.remove(getAthletesOfGroup(), function (athlete) {
+            return athlete.certificateWritten;
+        });
     },
     get_groupname: function () {
         groups_deps.depend();
         if (current_group == -1) return "Daten laden...";
         return groups[current_group].name;
     },
+});
+
+Template.result.helpers({
     not: function (b) {
         return !b;
     }
 });
+
 Template.output.events({
     'click .accordion-item': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
+        return false;
+    },
+    'click .signCertificate': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        localCertificated.push(event.target.dataset.id);
+        localCertificated_deps.changed();
+        DBInterface.setCertificateWrittenTrue(AccountManager.getOutputAccount().account, event.target.dataset.id);
+
         return false;
     },
     'click .group-selector': function (event) {
