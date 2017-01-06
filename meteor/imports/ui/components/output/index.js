@@ -224,6 +224,17 @@ Template.output.events({
         document.getElementById("output-swiper").swiper.slideTo(parseFloat(event.target.dataset.target) + 1);
         Meteor.f7.closeModal();
         return false;
+    },
+    'click .refresh-link': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Meteor.f7.closeModal();
+        Meteor.f7.showPreloader("Daten werden geladen");
+        DBInterface.waitForReady(function () {
+            refresh();
+            reloadSwiper();
+        });
+        return false;
     }
 });
 
