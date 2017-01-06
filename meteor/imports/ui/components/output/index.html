@@ -140,7 +140,7 @@
                 <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
             </div>
         {{/if}}
-        {{#if isNotEmpty validAthletes}}
+        <div class="collapsible {{#if notContainsAthletes validAthletes}}collapsed{{/if}}">
             <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Zu
                 erstellende Urkunden
             </div>
@@ -151,9 +151,9 @@
                     {{/each}}
                 </ul>
             </div>
-        {{/if}}
+        </div>
 
-        {{#if isNotEmpty invalidAthletes}}
+        <div class="collapsible {{#if notContainsAthletes invalidAthletes}}collapsed{{/if}}">
             <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Keine
                 ausreichenden Daten
             </div>
@@ -164,9 +164,9 @@
                     {{/each}}
                 </ul>
             </div>
-        {{/if}}
+        </div>
 
-        {{#if isNotEmpty doneAthletes}}
+        <div class="collapsible {{#if notContainsAthletes doneAthletes}}collapsed{{/if}}">
             <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">
                 Fertige Urkunden
             </div>
@@ -177,7 +177,7 @@
                     {{/each}}
                 </ul>
             </div>
-        {{/if}}
+        </div>
     {{/with}}
 </template>
 

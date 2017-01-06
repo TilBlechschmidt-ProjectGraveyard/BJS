@@ -38,7 +38,7 @@ function reloadSwiper() {
         speed: 400,
         spaceBetween: 50,
         grabCursor: true,
-        shortSwipes: true,
+        shortSwipes: false,
         control: nameSwiper
     });
 }
@@ -107,6 +107,21 @@ Template.output.helpers({
         }
 
         return groups;
+    }
+});
+
+function containsAthlete(arr) {
+    for (let athlete in arr) {
+        if (!arr.hasOwnProperty(athlete)) continue;
+        if (Object.keys(arr[athlete]).length > 0) return true;
+    }
+    return false;
+}
+
+Template.groupCertificates.helpers({
+    containsAthletes: containsAthlete,
+    notContainsAthletes: function (arr) {
+        return !containsAthlete(arr);
     }
 });
 
