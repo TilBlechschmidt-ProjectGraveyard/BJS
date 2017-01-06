@@ -7,13 +7,8 @@ import {Log} from "../../../api/log";
 import {Athlete} from "../../../api/logic/athlete";
 import {DBInterface} from "../../../api/database/db_access";
 import {Crypto} from "../../../api/crypto/crypto";
+import {AccountManager} from "../../../api/account_managment/AccountManager";
 
-//TODO include
-// if (!Meteor.oldName) {
-//     if (window.location.href.includes("/config/")) {
-//         FlowRouter.redirect('/config');
-//     }
-// }
 
 const start_classes_object = require('../../../data/start_classes.json');
 
@@ -111,13 +106,13 @@ export let NewCompetition = {
 
         //remove old competition if name changed
         if (Meteor.oldName != NewCompetition.getName()) {
-            DBInterface.removeCompetition(Meteor.adminAccount, Meteor.oldName);
+            DBInterface.removeCompetition(AccountManager.getAdminAccount().account, Meteor.oldName);
             Meteor.oldName = NewCompetition.getName();
         }
 
         //save the new competition
         DBInterface.writeCompetition(
-            Meteor.adminAccount,
+            AccountManager.getAdminAccount().account,
             NewCompetition.getName(),
             NewCompetition.getCompetitionTypeID(),
             sportTypes,

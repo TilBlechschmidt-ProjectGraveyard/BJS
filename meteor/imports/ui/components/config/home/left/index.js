@@ -3,21 +3,13 @@ import "./index.html";
 import {DBInterface} from "../../../../../api/database/db_access";
 import {NewCompetition, nameExists} from "../../new_competition_helpers";
 import {encryptedAthletesToGroups} from "../../../../../api/logic/athlete";
-import {getAccountByPassphrase} from "../../../../../api/account_managment/SessionAccount";
+import {AccountManager} from "../../../../../api/account_managment/AccountManager";
 
 let _deps = new Tracker.Dependency();
 
 let competitions = [];
 let editCompetitions = [];
 
-//TODO replace with login view
-getAccountByPassphrase('supersecret', function (account) {
-    if (account) {
-        Meteor.adminAccount = account;
-    } else {
-        alert("Wrong admin password");
-    }
-});
 
 //noinspection JSUnusedGlobalSymbols
 Template.home_left.helpers({
@@ -38,7 +30,7 @@ Template.home_left.events({
 
         Meteor.f7.confirm('Nach dem Starten des Wettbewerbs "' + name + '" müssen alle Geräte erneut eine Verbindung zum Server aufbauen. Wollen Sie fortfahren?', 'Wettbewerb starten', function () {
             Meteor.f7.showPreloader('Daten laden...');
-            DBInterface.activateCompetition(Meteor.adminAccount, name, function (result) {
+            DBInterface.activateCompetition(AccountManager.getAdminAccount().account, name, function (result) {
                 if (!result) {
                     Meteor.f7.alert("Es gab einen Fehler während des Ladens. Melden Sie sich ab und versuchen Sie es bitte erneut.", "Fehler");
                 } else {
@@ -77,7 +69,7 @@ Template.home_left.events({
         Meteor.loginStations = [];
         Meteor.loginCustom = [];
 
-        DBInterface.getEditInformation(Meteor.adminAccount, name, function (data) {
+        DBInterface.getEditInformation(AccountManager.getAdminAccount().account, name, function (data) {
             NewCompetition.setName(name);
             Meteor.oldName = name;
             NewCompetition.setCompetitionTypeID(data.competitionTypeID);
