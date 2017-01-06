@@ -42,3 +42,13 @@ export let triggerDefaultModalAction = function () {
     defaultButton.click();
     return true;
 };
+
+export function isOffline() {
+    const time = new Date().getTime();
+    const connected = Meteor.status().connected;
+    if (Meteor.pageVisitTime + 1000 < time) {
+        return !connected;
+    } else {
+        return false;
+    }
+}
