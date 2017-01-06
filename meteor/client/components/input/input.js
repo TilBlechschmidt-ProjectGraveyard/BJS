@@ -291,3 +291,7 @@ Template.input.events({
         return false;
     }
 });
+
+Template.input.onRendered(function () {
+    reloadSwiper();
+});
