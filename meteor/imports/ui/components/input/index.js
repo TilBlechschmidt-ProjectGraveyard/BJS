@@ -240,7 +240,6 @@ Template.input.helpers({
             const w = lodash.remove(athletes, function (athlete) {
                 return athlete.isMale;
             });
-            // console.log(m, w);
             athletes = m.concat(w);
         }
 

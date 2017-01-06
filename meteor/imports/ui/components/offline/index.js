@@ -6,7 +6,6 @@ Template.offline.helpers({
     isOffline: function () {
         const time = new Date().getTime();
         const connected = Meteor.status().connected;
-        console.log("check");
         if (Meteor.pageVisitTime + 1000 < time) {
             return !connected;
         } else {

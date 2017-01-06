@@ -172,7 +172,6 @@ export function onStartup() {
 
             let mapAthletet = function (athlete) {
                 const certificate = ct.generateCertificate(log, athlete, accounts, true);
-                // console.log(certificate);
                 const stScores = [];
 
                 for (let stID in certificate.stScores) {

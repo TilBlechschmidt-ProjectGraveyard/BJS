@@ -76,7 +76,7 @@ function refresh() {
 
         groups_deps.changed();
         Tracker.afterFlush(function () {
-            Meteor.f7.hidePreloader();
+            Meteor.f7.hideIndicator();
         });
     });
 }
@@ -185,8 +185,6 @@ Template.result.events({
                                 for (let athlete in validAthletes) {
                                     if (!validAthletes.hasOwnProperty(athlete)) continue;
                                     if (validAthletes[athlete].id == athleteID) {
-                                        console.log("Found athlete @ groupID:athleteID", group, athlete);
-                                        console.log(JSON.parse(JSON.stringify(groups[group])));
                                         oldAthlete = validAthletes[athlete];
                                         oldAthleteID = athlete;
                                         oldGroupID = group;
@@ -228,7 +226,7 @@ Template.output.events({
         event.preventDefault();
         event.stopImmediatePropagation();
         Meteor.f7.closeModal();
-        Meteor.f7.showPreloader("Daten werden geladen");
+        Meteor.f7.showIndicator();
         DBInterface.waitForReady(function () {
             refresh();
             reloadSwiper();
@@ -238,7 +236,7 @@ Template.output.events({
 });
 
 Template.output.onRendered(function () {
-    Meteor.f7.showPreloader("Daten werden geladen");
+    Meteor.f7.showIndicator();
     DBInterface.waitForReady(function () {
         refresh();
         reloadSwiper();
