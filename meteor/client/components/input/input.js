@@ -15,6 +15,9 @@ Meteor.inputDependency = new Tracker.Dependency();
 function reloadSwiper() {
     const inputNameSwiperEl = document.getElementById('input-name-swiper');
     const inputSwiperEl = document.getElementById('input-swiper');
+
+    if (!inputNameSwiperEl || !inputSwiperEl) return; // check if swipers are ready!
+
     if (inputNameSwiperEl && inputSwiperEl && inputNameSwiperEl.swiper && inputSwiperEl.swiper) {
         inputNameSwiperEl.swiper.destroy(false);
         inputSwiperEl.swiper.destroy(false);
@@ -230,6 +233,8 @@ Template.input.helpers({
             athletes = w.concat(m);
         }
 
+        reloadSwiper();
+
         return lodash.map(athletes, function (athlete) {
             return populateAthlete(athlete);
         });
@@ -285,12 +290,4 @@ Template.input.events({
         Meteor.f7.closeModal();
         return false;
     }
-});
-
-Template.input.onRendered(function () {
-    // reloadSwiper();
-    Tracker.autorun(function () {
-        Meteor.inputDependency.depend();
-        reloadSwiper();
-    });
 });

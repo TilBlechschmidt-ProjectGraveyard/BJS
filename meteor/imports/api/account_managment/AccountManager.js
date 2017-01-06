@@ -174,7 +174,7 @@ export let AccountManager = {
                         setTimeout(function () {
                             checkPermission();
                             Meteor.f7.hidePreloader();
-                        }, 2500);
+                        }, 1500);
                     }
                 );
             }

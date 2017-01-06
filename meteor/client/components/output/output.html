@@ -8,12 +8,15 @@
                     <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
                             class="f7-icons">help</i></a></div>
                     <div class="center truncate">
-                        <div id="output-name-swiper" class="swiper-container full-height">
-                            <div class="swiper-wrapper">
-                                {{#each g in groups}}
-                                    <div class="swiper-slide open-popover hover-underline group-name"
-                                         data-popover=".popover-groups">{{g.name}}</div>
-                                {{/each}}
+                        <div class="slider-title-wrapper">
+                            <div class="slider-title-overlay"></div>
+                            <div id="output-name-swiper" class="swiper-container full-height">
+                                <div class="swiper-wrapper">
+                                    {{#each g in groups}}
+                                        <div class="swiper-slide open-popover hover-underline group-name"
+                                             data-popover=".popover-groups">{{g.name}}</div>
+                                    {{/each}}
+                                </div>
                             </div>
                         </div>
                     </div>
