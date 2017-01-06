@@ -12,7 +12,7 @@ Meteor.input.log = new Log();
 
 Meteor.inputDependency = new Tracker.Dependency();
 
-function reloadSwiper() {
+export let reloadSwiper = function (forceAthleteReload) {
     const inputNameSwiperEl = document.getElementById('input-name-swiper');
     const inputSwiperEl = document.getElementById('input-swiper');
 
@@ -47,13 +47,28 @@ function reloadSwiper() {
         control: nameSwiper
     });
 
-    if (!location.hash)
-        inputSwiper.slideTo(Session.get("inputSlideIndex"));
-
-    inputSwiper.on('transitionEnd', function (swiper) {
-        Session.set("inputSlideIndex", parseFloat(swiper.realIndex) + 1);
-    });
-}
+    // inputSwiper.on('transitionEnd', function (swiper) {
+    //     setTimeout(function () {
+    //         Session.set("inputSlideIndex", location.hash.substr(1));
+    //     }, 200);
+    // });
+    //
+    // if ((!location.hash || forceAthleteReload) && Session.get("inputSlideIndex") !== undefined) {
+    //     console.log("SETTING HASH");
+    //     const athleteID = Session.get("inputSlideIndex");
+    //     setTimeout(function () {
+    //         const slides = document.querySelectorAll(".swiper-slide[data-hash]:not(.swiper-slide-duplicate):not(.swiper-slide-duplicate-prev)");
+    //         let slideID;
+    //         for (slideID in slides) {
+    //             if (!slides.hasOwnProperty(slideID)) continue;
+    //             if (slides[slideID].dataset.hash == athleteID)
+    //                 break;
+    //         }
+    //         if (slideID === undefined) return;
+    //         inputSwiper.slideTo(parseInt(slideID)+1);
+    //     }, 500);
+    // }
+};
 
 function populateAthlete(athlete) {
     if (!DBInterface.isReady()) {
@@ -208,7 +223,6 @@ Template.input.helpers({
     },
     athletes: function () {
         Meteor.inputDependency.depend();
-        //TODO Sorting broken
         let athletes = lodash.sortBy(getAthletes(), 'lastName');
 
         // Setting show male/female
@@ -293,6 +307,9 @@ Template.input.events({
     }
 });
 
+
 Template.input.onRendered(function () {
-    reloadSwiper();
+    DBInterface.waitForReady(function () {
+        reloadSwiper();
+    });
 });

@@ -1,3 +1,4 @@
+// import {reloadSwiper} from "../input";
 const defaultSettings = {
     showMale: true,
     showFemale: true,
@@ -17,6 +18,7 @@ Template.settingSwitch.events({
     'click .setting-checkbox': function (event) {
         Session.set(event.target.dataset.id, event.target.checked);
         Meteor.inputDependency.changed();
+        // reloadSwiper(true);
     }
 });
 
