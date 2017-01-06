@@ -5,7 +5,10 @@
                 <li class="item-content">
                     <div class="item-inner">
                         <div class="item-link list-button {{class}}" data-type="{{#with c}}{{type}}{{/with}}"
-                             style="cursor: pointer; width: 100%;">{{#with c}}{{title}}{{/with}}</div>
+                             data-offline_disabled="{{#with c}}{{#if offlineDisable}}{{#if
+                                     isOffline}}1{{/if}}{{/if}}{{/with}}"
+                             style="cursor: pointer; width: 100%; {{#with c}}{{#if offlineDisable}}{{#if
+                                     isOffline}}color: gray;{{/if}}{{/if}}{{/with}}">{{#with c}}{{title}}{{/with}}</div>
                     </div>
                 </li>
             {{/each}}

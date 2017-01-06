@@ -83,6 +83,9 @@ Template.login.helpers({
 
 Template.login.events({
     'click .overview-choice': function (event) {
+        if (event.target.dataset.offline_disabled === "1") {
+            return false;
+        }
         event.preventDefault();
         event.stopImmediatePropagation();
         FlowRouter.go('/login/' + btoa(event.target.dataset.type));
@@ -101,9 +104,9 @@ Template.login.events({
             setTimeout(function () {
                 document.getElementsByClassName("passwort-input")[1].focus();
             }, 400);
-        } else if (type == "view_data")
+        } else if (type == "view_data") {
             FlowRouter.go('/input');
-        else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
+        } else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
             Meteor.f7.showPreloader("Abmelden");
             AccountManager.logout(sessionStorage.getItem("firstLogin"));
             sessionStorage.removeItem("firstLogin");

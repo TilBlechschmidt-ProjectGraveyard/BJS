@@ -12,8 +12,8 @@ const login_overview = {
         choices: [
             {title: "Anmeldung durch Gruppenleiter", type: "Gruppenleiter"},
             {title: "Anmeldung durch Stationsleiter", type: "Station"},
-            {title: "Zugriff auf Urkunden", type: "Urkunden"},
-            {title: "Administratorzugriff", type: "Administrator"}
+            {title: "Zugriff auf Urkunden", type: "Urkunden", offlineDisable: true},
+            {title: "Administratorzugriff", type: "Administrator", offlineDisable: true}
         ]
     }
 };
