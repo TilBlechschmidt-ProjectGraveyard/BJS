@@ -14,7 +14,7 @@
                         {{>attempt n=@index measurement=m metadata=metadata showIcon=true}}
                     {{/each}}
                     {{#if scoreWritePermission metadata}}
-                        {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata showIcon=true}}
+                        {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata showIcon=false}}
                     {{/if}}
                 </ul>
             </div>
