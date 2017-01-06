@@ -12,6 +12,45 @@ Meteor.input.log = new Log();
 
 Meteor.inputDependency = new Tracker.Dependency();
 
+function reloadSwiper() {
+    const inputNameSwiperEl = document.getElementById('input-name-swiper');
+    const inputSwiperEl = document.getElementById('input-swiper');
+    if (inputNameSwiperEl && inputSwiperEl && inputNameSwiperEl.swiper && inputSwiperEl.swiper) {
+        inputNameSwiperEl.swiper.destroy(false);
+        inputSwiperEl.swiper.destroy(false);
+    }
+
+    const nameSwiper = new Swiper('#input-name-swiper', {
+        loop: true,
+        effect: 'slide',
+        spaceBetween: 50,
+        onlyExternal: true
+    });
+
+    const inputSwiper = new Swiper('#input-swiper', {
+        pagination: '.swiper-pagination',
+        paginationType: 'fraction',
+        hashnav: true,
+        hashnavWatchState: true,
+        replaceState: true,
+        parallax: true,
+        loop: true,
+        observer: true,
+        speed: 400,
+        spaceBetween: 50,
+        grabCursor: true,
+        shortSwipes: true,
+        control: nameSwiper
+    });
+
+    if (!location.hash)
+        inputSwiper.slideTo(Session.get("inputSlideIndex"));
+
+    inputSwiper.on('transitionEnd', function (swiper) {
+        Session.set("inputSlideIndex", parseFloat(swiper.realIndex) + 1);
+    });
+}
+
 function populateAthlete(athlete) {
     if (!DBInterface.isReady()) {
         DBInterface.waitForReady(function () {
@@ -165,18 +204,30 @@ Template.input.helpers({
     },
     athletes: function () {
         Meteor.inputDependency.depend();
+        //TODO Sorting broken
         let athletes = lodash.sortBy(getAthletes(), 'lastName');
 
-        const sortMW = true;
+        // Setting show male/female
+        const showFemale = Session.get("showFemale");
+        const showMale = Session.get("showMale");
 
-        if (sortMW) {
+        if (!(showMale && showFemale)) {
+            lodash.remove(athletes, function (athlete) {
+                const isMale = athlete.isMale;
+                return !((showMale && isMale) || (showFemale && !isMale));
+            });
+        }
+
+        const sortMW = Session.get("groupBySex");
+
+        if (sortMW !== undefined && sortMW) {
             const m = lodash.remove(athletes, function (athlete) {
                 return !athlete.isMale;
             });
             const w = lodash.remove(athletes, function (athlete) {
                 return athlete.isMale;
             });
-            athletes = m.concat(w);
+            athletes = w.concat(m);
         }
 
         return lodash.map(athletes, function (athlete) {
@@ -237,26 +288,9 @@ Template.input.events({
 });
 
 Template.input.onRendered(function () {
-    const nameSwiper = new Swiper('#input-name-swiper', {
-        loop: true,
-        effect: 'slide',
-        spaceBetween: 50,
-        onlyExternal: true
-    });
-
-    new Swiper('#input-swiper', {
-        pagination: '.swiper-pagination',
-        paginationType: 'fraction',
-        hashnav: true,
-        hashnavWatchState: true,
-        replaceState: true,
-        parallax: true,
-        loop: true,
-        observer: true,
-        speed: 400,
-        spaceBetween: 50,
-        grabCursor: true,
-        shortSwipes: true,
-        control: nameSwiper
+    // reloadSwiper();
+    Tracker.autorun(function () {
+        Meteor.inputDependency.depend();
+        reloadSwiper();
     });
 });
