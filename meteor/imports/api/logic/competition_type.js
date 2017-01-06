@@ -1,5 +1,6 @@
 import {Athletics} from "./competition_types/athletics.js";
 import {Swimming} from "./competition_types/swimming.js";
+import {Gymnastics} from "./competition_types/gymnastics";
 
 
 /**
@@ -26,6 +27,10 @@ export const COMPETITION_TYPES = [
     {
         id: 'ct_swimming',
         object: Swimming
+    },
+    {
+        id: 'ct_gymnsatics',
+        object: Gymnastics
     }
 ];
 
@@ -37,7 +42,9 @@ export const COMPETITION_TYPES = [
 export function getCompetitionTypeByID(id) {
     if (id === 0) {
         return Athletics;
-    } else {
+    } else if (id === 1) {
         return Swimming;
+    } else {
+        return Gymnastics;
     }
 }
