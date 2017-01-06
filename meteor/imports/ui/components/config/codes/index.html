@@ -157,7 +157,7 @@
                                 <!-- Button New -->
                                 <p><a href="#" id="btn-new-codes" class="button button-fill button-big color-green">
                                     Zugangscodes automatisch erstellen</a></p>
-                                <div style="text-align: center;">
+                                <div class="t-center">
                                     <span id="progress-text">Keine Zugangscodes</span>
                                 </div>
 
@@ -209,7 +209,7 @@
             <br />
             <div class="print-password-title">Stationslogins</div>
             <br />
-            <table class="print-password-table" style="width:100%">
+            <table class="print-password-table full-width">
                 <tbody>
                     <tr class="print-block-header">
                         <th><p class="print-name-subtitle" align="left">Zugang</p></th>
@@ -265,31 +265,4 @@
             </table>
         {{/if}}
     </div>
-    <style>
-        table { border-collapse: collapse; }
-        tr { border-bottom: 1px solid rgba(236, 239, 241, .75); }
-        tr:nth-child(even) {
-            background-color: #ECEFF1;
-        }
-        .printcontent-content {
-            margin-top: 0px;
-            margin-left: 0px;
-            margin-right: 0px;
-        }
-
-        .print-password-title {
-            width: 100%;
-            font-size: xx-large;
-        }
-
-        .print-name-field {
-            text-align: left;
-            width: 50%;
-        }
-
-        .print-password-field {
-            text-align: right;
-            width: 50%;
-        }
-    </style>
 </template>

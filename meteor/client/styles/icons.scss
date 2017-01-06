@@ -8,7 +8,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 // -- Generic icon class --
 
-.output-icon {
+.icon {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -16,23 +16,24 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   stroke: #fff;
   stroke-miterlimit: 10;
   margin-left: 10px;
+  display: inline-block;
 }
 
 // ----- Icon elements -----
 
-.oi__dash {
+.i__dash {
   transform-origin: 50% 50%;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
 }
 
-.oi__dot {
+.i__dot {
   transform-origin: 50% 50%;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
 }
 
-.oi__circle {
+.i__circle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
   stroke-width: 2;
@@ -40,7 +41,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   fill: none;
 }
 
-.oi__check {
+.i__check {
   transform-origin: 50% 50%;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
@@ -48,26 +49,26 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 // ------- Animations -------
 
-.output-icon.animated .oi__dot {
+.icon.animated .i__dot {
   animation: stroke .3s $curve .8s forwards;
 }
 
-.output-icon.animated .oi__dash {
+.icon.animated .i__dash {
   animation: stroke .3s $curve .8s forwards;
 }
 
-.output-icon.animated .oi__circle {
+.icon.animated .i__circle {
   animation: stroke .6s $curve forwards;
 }
 
-.output-icon.animated .oi__check {
+.icon.animated .i__check {
   animation: stroke .3s $curve .8s forwards;
 }
 
 // -- Specific icon styles --
 
 // OK-Icon  |  .oi-ok
-.oi-ok .oi__circle {
+.oi-ok .i__circle {
   stroke: $color--green;
 }
 
@@ -76,7 +77,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 }
 
 // Warn-Icon  |  .oi-warn
-.oi-warn .oi__circle {
+.oi-warn .i__circle {
   stroke: $color--yellow;
 }
 
@@ -85,7 +86,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 }
 
 // Ready-Icon  |  .oi-ready
-.oi-ready .oi__circle {
+.oi-ready .i__circle {
   stroke: $color--blue;
 }
 
@@ -94,7 +95,7 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 }
 
 // Err-Icon  |  .oi-err
-.oi-err .oi__circle {
+.oi-err .i__circle {
   stroke: $color--red;
 }
 

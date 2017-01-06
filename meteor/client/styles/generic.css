@@ -5,7 +5,34 @@ html, html * {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* CSS declarations go here */
+.t-left {
+    text-align: left;
+}
+
+.t-center {
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.align-left {
+    float: left;
+}
+
+.align-right {
+    float: right;
+}
+
+.justify {
+    text-align: justify;
+}
+
 #__blaze-root{
     height: 100%;
 }
@@ -20,4 +47,9 @@ html, html * {
         border-left: 1px solid rgb(200, 200, 200);
         border-right: 1px solid rgb(200, 200, 200);
     }
+}
+
+
+html {
+ -webkit-text-size-adjust: 100%;
 }

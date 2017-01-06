@@ -4,19 +4,19 @@
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left" style="width: 100px"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
                             class="f7-icons">help</i></a></div>
                     <div class="center truncate">
-                        <div id="input-name-swiper" class="swiper-container" style="height: 100%">
+                        <div id="input-name-swiper" class="swiper-container full-height">
                             <div class="swiper-wrapper">
                                 {{#each a in athletes}}
-                                    <div class="swiper-slide open-popover athlete-name"
+                                    <div class="swiper-slide open-popover hover-underline athlete-name"
                                          data-popover=".popover-athletes">{{a.getFullName}}</div>
                                 {{/each}}
                             </div>
                         </div>
                     </div>
-                    <div class="right" style="width: 100px; text-align: right; display: inline-table">
+                    <div class="right">
                         <a href="#" data-popover=".popover-settings" class="open-popover"><i
                                 class="f7-icons">gear</i></a>
                     </div>
@@ -27,8 +27,7 @@
                 <div id="input-swiper" class="swiper-container" style="height: 100%;">
                     <div class="swiper-wrapper">
                         {{#each a in athletes}}
-                            <div class="swiper-slide" data-hash="{{a.id}}"
-                                 style="overflow-y: auto; overflow-x: hidden;">
+                            <div class="swiper-slide" data-hash="{{a.id}}">
                                 {{#with a}}
                                     {{#each s in sportType}}
                                         {{>attempts sportType=s}}
@@ -40,14 +39,14 @@
                                     {{/if}}
                                     {{#if isNotEmpty nonPermittedSportTypes}}
                                         <div class="content-block">
-                                            <div style="text-align: center;">Folgende Sportarten kann {{getFullName}} an
+                                            <div class="t-center">Folgende Sportarten kann {{getFullName}} an
                                                 dieser Station nicht durchführen:
                                             </div>
                                             {{#each n in nonPermittedSportTypes}}
                                                 <div style="text-align: center;">{{n}}</div>
                                             {{/each}}
                                             <br>
-                                            <div style="text-align: center;">Dies liegt an dem Alter, dem Geschlecht
+                                            <div class="t-center">Dies liegt an dem Alter, dem Geschlecht
                                                 oder der Startklasse.
                                             </div>
                                         </div>
@@ -82,7 +81,7 @@
     <div class="popover popover-athletes">
         <div class="popover-angle"></div>
         <div class="popover-inner">
-            <div class="list-block athletes-list" style="max-height: 75%; overflow-y: scroll;">
+            <div class="list-block hide-scrollbar limit-vertical-height hover-underline">
                 <ul>
                     {{#each athletes}}
                         <li><a href="#" class="list-button item-link athlete-link"
@@ -92,37 +91,6 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .athletes-list::-webkit-scrollbar {
-            width: 0px; /* remove scrollbar space */
-            background: transparent; /* optional: just make scrollbar invisible */
-        }
-        @media screen and (max-width: 480px) {
-            .hideOnMobile {
-                opacity: 0;
-            }
-        }
-
-        .truncate {
-            width: 250px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .athlete-name:hover {
-            border-bottom-color: #B0BEC5;
-            cursor: pointer;
-        }
-
-        .athlete-name {
-            border-bottom: 2px solid transparent;
-            text-decoration: none;
-            transition: border-bottom-color 50ms linear 0s;
-        }
-
-    </style>
 
     <!--TODO update-->
     <div class="popup popup-help">
@@ -173,8 +141,8 @@
                 <div class="content-block">
                     <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
                                                        style="float: left;">chevron_left</i></a>
-                    <h1 style="text-align: center;">{{name}}</h1>
-                    <h5 style="text-align: center">Einheit: {{unit}}</h5>
+                    <h1 class="t-center">{{name}}</h1>
+                    <h5 class="t-center">Einheit: {{unit}}</h5>
                     <p id="description" style="text-align: justify">{{{description}}}</p>
                     <!--Three { are required for html Tags!-->
                     {{#with m}}

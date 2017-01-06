@@ -1,0 +1,30 @@
+/* Styles related to the top popup in slider-UIs (showing lists like e.g. group lists) */
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0px; /* remove scrollbar space */
+    background: transparent; /* optional: just make scrollbar invisible */
+}
+
+.limit-vertical-height {
+    max-height: 75%;
+    overflow-y: scroll;
+}
+
+.hover-underline {
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    transition: border-bottom-color 50ms linear 0s;
+}
+
+.hover-underline:hover {
+    border-bottom-color: #B0BEC5;
+    cursor: pointer;
+}
+
+/* Styles related to the title of slider-UIs */
+.truncate {
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -5,35 +5,33 @@
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div style="width: 100px"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
                             class="f7-icons">help</i></a></div>
-                    <div style="overflow-x: auto; overflow-y: hidden; text-align: center;" class="truncate">
-                        <div id="output-name-swiper" class="swiper-container" style="height: 100%">
+                    <div class="center truncate">
+                        <div id="output-name-swiper" class="swiper-container full-height">
                             <div class="swiper-wrapper">
                                 {{#each g in groups}}
-                                    <div class="swiper-slide open-popover group-name"
+                                    <div class="swiper-slide open-popover hover-underline group-name"
                                          data-popover=".popover-groups">{{g.name}}</div>
                                 {{/each}}
                             </div>
                         </div>
                     </div>
-                    <div style="width: 100px; text-align: right;"><a href="#" class="logout-button">Abmelden</a></div>
+                    <div class="right"><a href="#" class="logout-button">Abmelden</a></div>
                 </div>
             </div>
 
             <div class="page-content">
-                <div id="output-swiper" class="swiper-container" style="height: 100%;">
+                <div id="output-swiper" class="swiper-container full-height">
                     <div class="swiper-wrapper">
                         {{#each g in groups}}
-                            <div class="swiper-slide" data-hash="{{g.hash}}"
-                                 style="overflow-y: auto; overflow-x: hidden;">
+                            <div class="swiper-slide" data-hash="{{g.hash}}">
                                 {{>groupCertificates group=g}}
                             </div>
                         {{/each}}
                     </div>
                 </div>
-                <div class="swiper-pagination"
-                     style="left: calc(50% - 25px); text-align: center; width: 50px; padding: 5px; background-color:rgba(225, 225, 225, 0.75); border-radius: 20px;"></div>
+                <div class="swiper-pagination fraction"></div>
             </div>
         </div>
     </div>
@@ -56,7 +54,7 @@
     <div class="popover popover-groups">
         <div class="popover-angle"></div>
         <div class="popover-inner">
-            <div class="list-block group-list" style="max-height: 75%; overflow-y: scroll;">
+            <div class="list-block hide-scrollbar limit-vertical-height hover-underline">
                 <ul>
                     {{#each groups}}
                         <li><a href="#" class="list-button item-link group-link"
@@ -67,60 +65,16 @@
         </div>
     </div>
 
-    <style>
-        .group-list::-webkit-scrollbar {
-            width: 0px; /* remove scrollbar space */
-            background: transparent; /* optional: just make scrollbar invisible */
-        }
-
-        .group-name:hover {
-            border-bottom-color: #B0BEC5;
-            cursor: pointer;
-        }
-
-        .group-name {
-            border-bottom: 2px solid transparent;
-            text-decoration: none;
-            transition: border-bottom-color 50ms linear 0s;
-        }
-
-        .truncate {
-            width: 250px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Hairline after opened accordion */
-        .accordion-item.accordion-item-expanded .accordion-item-content:after {
-            content: '';
-            position: absolute;
-            padding-left: 15px;
-            left: 15px;
-            bottom: 0;
-            right: auto;
-            top: auto;
-            height: 1px;
-            width: 100%;
-            background-color: #c8c7cc;
-            display: block;
-            z-index: 15;
-            -webkit-transform-origin: 50% 100%;
-            transform-origin: 50% 100%
-        }
-    </style>
-
 </template>
 
 <template name="detailedResults">
     {{#with athlete}}
         <div class="popup popup-detail-{{id}}">
             <div class="content-block">
-                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
-                                                   style="float: left;">chevron_left</i></a>
-                <h1 style="text-align: center;">{{name}}</h1>
-                <h5 style="text-align: center">Gesamtpunktzahl: {{score}}</h5>
-            <p id="description" style="text-align: justify">
+                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link align-left">chevron_left</i></a>
+                <h1 class="t-center">{{name}}</h1>
+                <h5 class="t-center">Gesamtpunktzahl: {{score}}</h5>
+            <p id="description" class="justify">
                 {{#each s in stScores}}
                     {{#with s}}
                         <p>{{name}}: {{score}}</p>
@@ -137,7 +91,7 @@
     {{#with group}}
         {{#if not athleteCount}}
             <div class="content-block">
-                <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
+                <p class="t-center">Es wurden noch keine Messdaten übermittelt.</p>
             </div>
         {{/if}}
         <div class="autoWidthListBlock collapsible {{#if notContainsAthletes validAthletes}}collapsed{{/if}}">
@@ -190,44 +144,41 @@
 
                     {{#if valid}}
                         {{#if certificateUpdate}}
-                            <svg style="display: inline-block"
-                                 class="output-icon oi-warn animated"
+                            <svg class="icon oi-warn animated"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                                 <circle class="warning__circle" cx="26" cy="26" r="25"
                                         fill="none"></circle>
-                                <path class="oi__dash" fill="none"
+                                <path class="i__dash" fill="none"
                                       d="M26 11.5 l0 20.5"></path>
-                                <circle class="oi__dot" cx="26" cy="40" r="1" fill="white"></circle>
+                                <circle class="i__dot" cx="26" cy="40" r="1" fill="white"></circle>
                             </svg>
                         {{else}}
                             {{#if certificateWritten}}
-                                <svg style="display: inline-block"
-                                     class="output-icon oi-ok animated"
+                                <svg class="icon oi-ok animated"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="oi__circle" cx="26" cy="26" r="25"
+                                    <circle class="i__circle" cx="26" cy="26" r="25"
                                             fill="none"></circle>
-                                    <path class="oi__check" fill="none"
+                                    <path class="i__check" fill="none"
                                           d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
                                 </svg>
                             {{else}}
-                                <svg style="display: inline-block"
-                                     class="output-icon oi-ready animated todo-svg"
+                                <svg class="icon oi-ready animated todo-svg"
                                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="oi__circle" cx="26" cy="26" r="25"
+                                    <circle class="i__circle" cx="26" cy="26" r="25"
                                             fill="none"></circle>
-                                    <path class="oi__check" fill="none"
+                                    <path class="i__check" fill="none"
                                           d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
                                 </svg>
                             {{/if}}
                         {{/if}}
                     {{else}}
-                        <svg class="output-icon oi-err animated" xmlns="http://www.w3.org/2000/svg"
+                        <svg class="icon oi-err animated" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 52 52">
-                            <circle class="oi__circle" cx="26" cy="26" r="25"
+                            <circle class="i__circle" cx="26" cy="26" r="25"
                                     fill="none"></circle>
-                            <path class="oi__dash" fill="none"
+                            <path class="i__dash" fill="none"
                                   d="M26 11.5 l0 20.5"></path>
-                            <circle class="oi__dot" cx="26" cy="40" r="1" fill="white"></circle>
+                            <circle class="i__dot" cx="26" cy="40" r="1" fill="white"></circle>
                         </svg>
                     {{/if}}
                 </div>
@@ -241,13 +192,13 @@
             <div class="accordion-item-content">
                 <div class="content-block" style="padding-left: 65px;">
                     {{#if certificateUpdate}}
-                        <p style="text-align:left;">
+                        <p class="t-left">
                             Die Urkunde muss neu erstellt werden, da sich die Punktzahl des Athleten geändert hat.
                         </p>
                     {{/if}}
-                    <p style="text-align:left;">
+                    <p class="t-left">
                         Urkunde
-                        <span style="float:right;">
+                        <span class="align-right">
                             {{#if valid}}
                                 {{certificateName}}
                             {{else}}
@@ -255,10 +206,10 @@
                             {{/if}}
                         </span>
                     </p>
-                    <p style="text-align:left;">
+                    <p class="t-left">
                         Gesamtpunktzahl <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
                                            data-id="{{id}}">info_fill</i>
-                        <span style="float:right;">{{score}}</span>
+                        <span class="align-right">{{score}}</span>
                     </p>
                     {{#if not certificateWritten}}
                         {{#if valid}}
@@ -268,16 +219,16 @@
                             </p>
                         {{/if}}
                     {{else}}
-                        <p style="text-align:left;">
+                        <p class="t-left">
                             Erstellungsdatum
-                            <span style="float:right;">
+                            <span class="align-right">
                                 {{humanReadableDate certificateTime}}
                             </span>
                         </p>
                         {{#if certificatedBy}}
-                            <p style="text-align:left;">
+                            <p class="t-left">
                                 Ersteller
-                                <span style="float:right;">
+                                <span class="align-right">
                                     {{certificatedBy}}
                                 </span>
                             </p>
