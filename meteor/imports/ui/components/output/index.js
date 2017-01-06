@@ -37,7 +37,7 @@ function reloadSwiper() {
         speed: 400,
         spaceBetween: 50,
         grabCursor: true,
-        shortSwipes: false,
+        shortSwipes: true,
         control: nameSwiper
     });
 }
