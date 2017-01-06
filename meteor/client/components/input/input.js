@@ -244,7 +244,7 @@ Template.input.onRendered(function () {
         onlyExternal: true
     });
 
-    new Swiper('#input-swiper', {
+    const inputSwiper = new Swiper('#input-swiper', {
         pagination: '.swiper-pagination',
         paginationType: 'fraction',
         hashnav: true,
@@ -258,5 +258,12 @@ Template.input.onRendered(function () {
         grabCursor: true,
         shortSwipes: true,
         control: nameSwiper
+    });
+
+    if (!location.hash)
+        inputSwiper.slideTo(Session.get("inputSlideIndex"));
+
+    inputSwiper.on('transitionEnd', function (swiper) {
+        Session.set("inputSlideIndex", parseFloat(swiper.realIndex) + 1);
     });
 });
