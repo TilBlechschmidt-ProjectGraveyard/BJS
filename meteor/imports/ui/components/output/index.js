@@ -34,7 +34,6 @@ function reloadSwiper() {
         replaceState: true,
         parallax: true,
         loop: true,
-        // observer: true,
         speed: 400,
         spaceBetween: 50,
         grabCursor: true,
@@ -205,7 +204,7 @@ Template.result.events({
                 }, 1200);
             });
         }, 200);
-        // DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
+        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
     }
 });
 
