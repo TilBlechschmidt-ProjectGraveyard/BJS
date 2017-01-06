@@ -4,12 +4,10 @@ import {getAcsFromAccounts} from "./account";
 
 /**
  * Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
- * @param {object} [data]
+ * @param {[{encryptedStID: object, encryptedMeasurements: object, synced: boolean}]} [data]
  * @constructor
  */
 export function Data(data) {
-    /// data is an array of objects with id (view getSports) and measurement
-    // example: [{encryptedStID: object, encryptedMeasurements: object}]
     if (data) {
         this.data = data;
     } else {
@@ -23,6 +21,7 @@ Data.prototype = {
      * @typedef {Object} PlainData
      * @property {string} stID - The id of the sport type
      * @property {object[]} measurements - The decrypted
+     * @property {boolean} synced - Data synced with server
      */
 
     /**
@@ -58,7 +57,8 @@ Data.prototype = {
 
             return {
                 stID: stIDDecryptResult,
-                measurements: measurementsDecryptResult
+                measurements: measurementsDecryptResult,
+                synced: dataObject.synced
             };
         }));
     },
@@ -93,6 +93,7 @@ Data.prototype = {
         this.data.push({
             encryptedStID: encryptedStID,
             encryptedMeasurements: newEncryptedMeasurements,
+            synced: false
         });
     }
 };
