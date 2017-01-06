@@ -10,6 +10,7 @@ let inputOutputAccount = new SessionAccount('input_output_account');
 
 function logout(type) {
     if (type == "Gruppenleiter") {
+        Session.set("inputSlideIndex", undefined);
         inputGroupAccount.logout();
     } else if (type == "Station") {
         inputStationAccount.logout();
