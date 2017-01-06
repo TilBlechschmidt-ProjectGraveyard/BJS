@@ -3,6 +3,7 @@
 $color--red: #DC143C;
 $color--yellow: #F9A825;
 $color--green: #7ac142;
+$color--blue: #5283c1;
 $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 // -- Generic icon class --
@@ -83,6 +84,15 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: fill-yellow .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
+// Ready-Icon  |  .oi-ready
+.oi-ready .oi__circle {
+  stroke: $color--blue;
+}
+
+.oi-ready.animated {
+  animation: fill-blue .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
 // Err-Icon  |  .oi-err
 .oi-err .oi__circle {
   stroke: $color--red;
@@ -124,5 +134,11 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 @keyframes fill-yellow {
   100% {
     box-shadow: inset 0 0 0 30px $color--yellow;
+  }
+}
+
+@keyframes fill-blue {
+  100% {
+    box-shadow: inset 0 0 0 30px $color--blue;
   }
 }
