@@ -1,6 +1,7 @@
 import {AccountManager} from "../../../api/account_managment/AccountManager";
 import {checkPermission} from "./router";
 import "./index.html";
+import {triggerDefaultModalAction} from "../../../startup/client/helpers";
 
 function login(event) {
     const type = event.target.dataset.type;
@@ -9,6 +10,8 @@ function login(event) {
 
     if (Meteor.loginInProgress) {
         console.warn("Login already in progress!");
+        triggerDefaultModalAction();
+        password_input.focus();
         return;
     }
     Meteor.loginInProgress = true;

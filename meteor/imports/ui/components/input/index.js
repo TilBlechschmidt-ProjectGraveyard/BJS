@@ -93,7 +93,7 @@ function populateAthlete(athlete) {
         if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
         athlete.sportType[stID].measurements = athlete.sportType[stID].measurements.concat(
             lodash.map(measurement_block.measurements.data, function (measurement) {
-                return {read_only: true, value: measurement};
+                return {read_only: true, value: measurement, synced: measurement_block.synced};
             })
         );
     }
@@ -104,7 +104,7 @@ function populateAthlete(athlete) {
         for (let sportType in measurements) {
             if (!measurements.hasOwnProperty(sportType)) continue;
             const data = lodash.map(measurements[sportType], function (entry) {
-                return {read_only: false, value: entry};
+                return {read_only: false, value: entry, synced: false};
             });
             athlete.sportType[sportType].measurements = athlete.sportType[sportType].measurements.concat(data);
         }
@@ -265,7 +265,7 @@ Template.input.helpers({
 });
 
 Template.attempts.helpers({
-    empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input"},
+    empty_measurement: {read_only: false, strValue: "", class: "add-attempt-input", synced: false},
     scoreWritePermission: function (metadata) {
         Meteor.inputDependency.depend();
         return metadata.write_permission;

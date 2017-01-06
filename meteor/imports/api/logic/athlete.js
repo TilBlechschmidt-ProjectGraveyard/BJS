@@ -99,7 +99,7 @@ Athlete.prototype = {
         }
 
         if (this.sports.indexOf(stID) == -1) {
-            log.error('Der Athlete kann diese Sportartn nicht ausführen');
+            log.error('Der Athlete kann diese Sportarten nicht ausführen');
             canWrite = false;
         }
 
