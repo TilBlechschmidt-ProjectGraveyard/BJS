@@ -121,7 +121,6 @@ Template.codes.events({
         window.print();
     },
     'click #btn-pdf' (event, instance) {
-        console.log("SAVE PDF", Meteor.loginStations);
         Blaze.saveAsPDF(Template.codes_print, {
             filename: "ZugangscodesBJS.pdf",
             data: {
