@@ -18,7 +18,9 @@
 
 /* Alignment of left/right navbar elements */
 .navbar-inner .left, .navbar-inner .right {
-    width: 100px;
+    width: calc((100% - 250px) / 2);
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .navbar-inner .right {
