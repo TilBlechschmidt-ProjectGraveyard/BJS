@@ -1,0 +1,78 @@
+<template name="result">
+    {{#with athlete}}
+        <li class="accordion-item result-accordion {{#if not certificateWritten}}{{#if
+                valid}}accordion-item-expanded{{/if}}{{/if}} {{#if moved}}fade-open{{/if}}">
+            <a href="#" class="item-content item-link">
+                <div class="item-media">
+
+                    {{#if valid}}
+                        {{#if certificateUpdate}}
+                            {{> iconWarn}}
+                        {{else}}
+                            {{#if certificateWritten}}
+                                {{> iconOK}}
+                            {{else}}
+                                {{> iconReady class="todo-svg"}}
+                            {{/if}}
+                        {{/if}}
+                    {{else}}
+                        {{> iconErr}}
+                    {{/if}}
+                </div>
+                <div class="item-inner">
+                    <div style="display: inline-block">
+                        <div class="item-title" style="display: inline-block; vertical-align: middle;">{{name}}</div>
+                    </div>
+                </div>
+            </a>
+            <div style="clear: both"></div>
+            <div class="accordion-item-content">
+                <div class="content-block" style="padding-left: 65px;">
+                    {{#if certificateUpdate}}
+                        <p class="t-left">
+                            Die Urkunde muss neu erstellt werden, da sich die Punktzahl des Athleten geändert hat.
+                        </p>
+                    {{/if}}
+                    <p class="t-left">
+                        Urkunde
+                        <span class="align-right">
+                            {{#if valid}}
+                                {{certificateName}}
+                            {{else}}
+                                Noch nicht genügend Werte
+                            {{/if}}
+                        </span>
+                    </p>
+                    <p class="t-left">
+                        Gesamtpunktzahl <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
+                                           data-id="{{id}}">info_fill</i>
+                        <span class="align-right">{{score}}</span>
+                    </p>
+                    {{#if not certificateWritten}}
+                        {{#if valid}}
+                            <p>
+                                <a href="#" class="item-link list-button signCertificate" data-id="{{id}}">Urkunde
+                                    wurde erstellt</a>
+                            </p>
+                        {{/if}}
+                    {{else}}
+                        <p class="t-left">
+                            Erstellungsdatum
+                            <span class="align-right">
+                                {{humanReadableDate certificateTime}}
+                            </span>
+                        </p>
+                        {{#if certificatedBy}}
+                            <p class="t-left">
+                                Ersteller
+                                <span class="align-right">
+                                    {{certificatedBy}}
+                                </span>
+                            </p>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        </li>
+    {{/with}}
+</template>

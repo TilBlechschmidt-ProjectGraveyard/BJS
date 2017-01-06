@@ -1,0 +1,34 @@
+<template name="sportTypeDescriptions">
+    {{#each s in sportTypes}}
+        {{#with s}}
+            <div class="popup popup-{{id}}">
+                <div class="content-block">
+                    <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                       style="float: left;">chevron_left</i></a>
+                    <h1 class="t-center">{{name}}</h1>
+                    <h5 class="t-center">Einheit: {{unit}}</h5>
+                    <p id="description" style="text-align: justify">{{{description}}}</p>
+                    <!--Three { are required for html Tags!-->
+                    {{#with m}}
+                        {{#each a in age}}
+                            {{a}}
+                        {{/each}}
+                    {{/with}}
+                    <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
+                </div>
+            </div>
+        {{/with}}
+    {{/each}}
+    <style>
+        .vcenterIcon {
+            height: 39px;
+            line-height: 39px;
+            text-align: center;
+        }
+
+        #description img {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</template>

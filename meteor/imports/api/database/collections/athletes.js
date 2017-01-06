@@ -8,6 +8,18 @@ import {DBInterface} from "../db_access";
 
 export function initAthletes() {
     Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes', function (name, handle) {
+        handle.before.update(function (userId, doc, fieldNames, modifier) {
+            if (modifier.hasOwnProperty('$set')) {
+                for (let name in modifier.$set) {
+                    if (!modifier.$set.hasOwnProperty(name)) continue;
+
+                    if (name.substr(0, 2) === "m_") {
+                        modifier.$set[name].synced = true;
+                    }
+                }
+            }
+        });
+
         Meteor.publish(name, function () {
             return handle.find({}, {
                 fields: {

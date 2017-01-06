@@ -274,7 +274,7 @@ export let Swimming = {
     },
 
     /**
-     * Generates to certificate for an athlete
+     * Generates the certificate for an athlete
      * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete

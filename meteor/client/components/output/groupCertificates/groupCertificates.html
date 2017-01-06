@@ -1,0 +1,47 @@
+<template name="groupCertificates">
+    {{#with group}}
+        {{#if not athleteCount}}
+            <div class="content-block">
+                <p class="t-center">Es wurden noch keine Messdaten übermittelt.</p>
+            </div>
+        {{/if}}
+        <div class="autoWidthListBlock collapsible {{#if notContainsAthletes validAthletes}}collapsed{{/if}}">
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Zu
+                erstellende Urkunden
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in validAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        <div class="autoWidthListBlock collapsible {{#if notContainsAthletes invalidAthletes}}collapsed{{/if}}">
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">Keine
+                ausreichenden Daten
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in invalidAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        <div class="autoWidthListBlock collapsible {{#if notContainsAthletes doneAthletes}}collapsed{{/if}}">
+            <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">
+                Fertige Urkunden
+            </div>
+            <div class="list-block">
+                <ul>
+                    {{#each a in doneAthletes}}
+                        {{>result athlete=a}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{/with}}
+</template>

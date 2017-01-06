@@ -1,0 +1,54 @@
+<template name="offline">
+    <div class="login-screen offline {{#if isOffline}}modal-in{{/if}}">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Darn it!</div>
+                    <div class="list-block-label" style="color:#455A64; padding-left: 10%; padding-right: 10%">Wir
+                        können unsere fleißigen Gorillas nicht erreichen!
+                        <br> Bitte setze dich so bald wie möglich mit ihnen in Verbindung um diesen Teil der Seite
+                        nutzen zu können.
+                    </div>
+                    <div class="list-block">
+                        <img src="/gorilla.jpg" class="full-width">
+                    </div>
+                    <div class="list-block t-center">
+                        <div id="goToLoginButton" class="big-button" style="background-color: green">
+                            Zum Login!
+                        </div>
+                        <br>
+                        <div class="big-button" style="background-color: red"
+                             onclick="window.open('https://www.wwf.de/spenden-helfen/fuer-ein-projekt-spenden/gorillas/formular/anzeigen/spenden/eintragen/', '_blank')">
+                            Mehr Gorillas!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .hidden {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .show {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .big-button {
+            width: 50%;
+            margin-left: 25%;
+            margin-right: 25%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+            color: #FFF;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</template>

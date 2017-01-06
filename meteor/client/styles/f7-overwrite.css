@@ -1,0 +1,41 @@
+/* Hairline after opened accordion */
+.accordion-item.accordion-item-expanded .accordion-item-content:after {
+    content: '';
+    position: absolute;
+    padding-left: 15px;
+    left: 15px;
+    bottom: 0;
+    right: auto;
+    top: auto;
+    height: 1px;
+    width: 100%;
+    background-color: #c8c7cc;
+    display: block;
+    z-index: 15;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+}
+
+/* Alignment of left/right navbar elements */
+.navbar-inner .left, .navbar-inner .right {
+    width: 100px;
+}
+
+.navbar-inner .right {
+    text-align: right;
+    display: inline-table;
+}
+
+.swiper-slide {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.swiper-pagination.fraction {
+    left: calc(50% - 25px);
+    text-align: center;
+    width: 50px;
+    padding: 5px;
+    background-color:rgba(225, 225, 225, 0.75);
+    border-radius: 20px;
+}

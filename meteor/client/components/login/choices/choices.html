@@ -1,0 +1,36 @@
+<template name="choices">
+    <div class="list-block">
+        <ul>
+            {{#each c in choices}}
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-link list-button {{class}}" data-type="{{#with c}}{{type}}{{/with}}"
+                             data-offline_disabled="{{#with c}}{{#if offlineDisable}}{{#if
+                                     isOffline}}1{{/if}}{{/if}}{{/with}}"
+                             style="cursor: pointer; width: 100%; {{#with c}}{{#if offlineDisable}}{{#if
+                                     isOffline}}color: gray;{{/if}}{{/if}}{{/with}}">{{#with c}}{{title}}{{/with}}</div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="list-block">
+        <div class="list-block-label">{{competition_notice}}</div>
+    </div>
+    <div class="footer">
+        <table align="center">
+            <tr style="border: none">
+                <td style="border-right: 1px solid lightgrey; padding-right: 20px;">
+                    <div data-popup=".popup-impressum" class="open-popup t-center">
+                        Impressum
+                    </div>
+                </td>
+                <td style="padding-left: 20px;">
+                    <div data-popup=".popup-datanschutz" class="open-popup t-center">
+                        Datenschutzerklärung
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</template>

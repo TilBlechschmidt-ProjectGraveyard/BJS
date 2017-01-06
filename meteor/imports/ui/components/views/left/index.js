@@ -1,2 +1,2 @@
 import "./index.html";
-import "./../../../layouts/views.css";
+import "../../../../../client/styles/views.css";

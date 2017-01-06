@@ -1,0 +1,55 @@
+html, html * {
+    font-family: Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.t-left {
+    text-align: left;
+}
+
+.t-center {
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.align-left {
+    float: left;
+}
+
+.align-right {
+    float: right;
+}
+
+.justify {
+    text-align: justify;
+}
+
+#__blaze-root{
+    height: 100%;
+}
+
+@media screen and (min-width: 800px) {
+    .autoWidthListBlock {
+        width: 800px;
+        margin-left: calc(50% - 400px);
+    }
+
+    .autoWidthListBlock ul {
+        border-left: 1px solid rgb(200, 200, 200);
+        border-right: 1px solid rgb(200, 200, 200);
+    }
+}
+
+
+html {
+ -webkit-text-size-adjust: 100%;
+}

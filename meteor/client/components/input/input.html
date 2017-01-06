@@ -1,0 +1,122 @@
+<template name="input">
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                            class="f7-icons">help</i></a></div>
+                    <div class="center truncate">
+                        <div class="slider-title-wrapper">
+                            <div class="slider-title-overlay"></div>
+                            <div id="input-name-swiper" class="swiper-container full-height">
+                                <div class="swiper-wrapper">
+                                    {{#each a in athletes}}
+                                        <div class="swiper-slide open-popover hover-underline athlete-name"
+                                             data-popover=".popover-athletes">{{a.getFullName}}</div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <a href="#" data-popover=".popover-settings" class="open-popover"><i
+                                class="f7-icons">gear</i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div id="input-swiper" class="swiper-container" style="height: 100%;">
+                    <div class="swiper-wrapper">
+                        {{#each a in athletes}}
+                            <div class="swiper-slide" data-hash="{{a.id}}">
+                                {{#with a}}
+                                    {{#each s in sportType}}
+                                        {{>attempts sportType=s}}
+                                    {{/each}}
+                                    {{#if isEmpty sportType}}
+                                        <div class="content-block">
+                                            <p style="text-align: center;">Es wurden noch keine Messdaten übermittelt.</p>
+                                        </div>
+                                    {{/if}}
+                                    {{#if isNotEmpty nonPermittedSportTypes}}
+                                        <div class="content-block">
+                                            <div class="t-center">Folgende Sportarten kann {{getFullName}} an
+                                                dieser Station nicht durchführen:
+                                            </div>
+                                            {{#each n in nonPermittedSportTypes}}
+                                                <div style="text-align: center;">{{n}}</div>
+                                            {{/each}}
+                                            <br>
+                                            <div class="t-center">Dies liegt an dem Alter, dem Geschlecht
+                                                oder der Startklasse.
+                                            </div>
+                                        </div>
+                                    {{/if}}
+                                {{/with}}
+                            </div>
+                        {{/each}}
+                    </div>
+                    <div class="swiper-pagination"
+                         style="left: calc(50% - 25px); text-align: center; width: 50px; padding: 5px; background-color:rgba(225, 225, 225, 0.75); border-radius: 20px;"></div>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="" id="link_prev" class="item-link hideOnMobile left">Vorheriger</a>
+                    <div class="item-link center">
+                        {{#if both_logged_in}}
+                            <a href="#" class="logout-button">{{last_login}} abmelden</a>
+                        {{else}}
+                            <a href="#" class="return-to-login">Übersicht</a>
+                        {{/if}}
+                    </div>
+                    <a href="" id="link_next" class="item-link hideOnMobile right">Nächster</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{>sportTypeDescriptions sportTypes=sportTypes}}
+
+    <div class="popover popover-athletes">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block hide-scrollbar limit-vertical-height">
+                <ul>
+                    {{#each athletes}}
+                        <li><a href="#" class="list-button item-link athlete-link"
+                               data-target="{{@index}}">{{this.firstName}}&nbsp;{{this.lastName}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--TODO update-->
+    <div class="popup popup-help">
+        <p style="right: 14px; top: 0; position: absolute;"><a href="#" class="close-popup"><i class="f7-icons">close_round</i></a>
+        </p>
+        <div class="content-block">
+            <h2>Hilfe</h2>
+            <div class="page-content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="popover popover-settings">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block">
+                <ul>
+                    {{>settingSwitch title="Herren anzeigen" id="showMale"}}
+                    {{>settingSwitch title="Damen anzeigen" id="showFemale"}}
+                    {{>settingSwitch title="Geschlechter gruppieren" id="groupBySex"}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>

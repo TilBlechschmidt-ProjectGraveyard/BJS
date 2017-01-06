@@ -1,0 +1,60 @@
+/* Styles related to the top popup in slider-UIs (showing lists like e.g. group lists) */
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0px; /* remove scrollbar space */
+    background: transparent; /* optional: just make scrollbar invisible */
+}
+
+.limit-vertical-height {
+    max-height: 75%;
+    overflow-y: scroll;
+}
+
+.hover-underline {
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    transition: border-bottom-color 50ms linear 0s;
+}
+
+.hover-underline:hover {
+    border-bottom-color: #B0BEC5;
+    cursor: pointer;
+}
+
+/* Styles related to the title of slider-UIs */
+.truncate {
+    width: 250px;
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.slider-title-wrapper {
+    position: relative;
+    width: 250px;
+    height: 100%;
+}
+
+.slider-title-overlay {
+    pointer-events: none; /*send mouse events to slider*/
+    width: 300px;
+    height: 100%;
+    left: -25px;
+    top: 0;
+    position: absolute;
+    background: rgba(0, 0, 0, 0); /*stupid browsers!!!*/
+    background: -webkit-linear-gradient(right, rgba(247, 247, 247, 1) 9%, rgba(247, 247, 247, 0) 30%, rgba(247, 247, 247, 0) 70%, rgba(247, 247, 247, 1) 91%);
+    background: -o-linear-gradient(right, rgba(247, 247, 247, 1) 9%, rgba(247, 247, 247, 0) 30%, rgba(247, 247, 247, 0) 70%, rgba(247, 247, 247, 1) 91%);
+    background: -moz-linear-gradient(right, rgba(247, 247, 247, 1) 9%, rgba(247, 247, 247, 0) 30%, rgba(247, 247, 247, 0) 70%, rgba(247, 247, 247, 1) 91%);
+    background: linear-gradient(right, rgba(247, 247, 247, 1) 9%, rgba(247, 247, 247, 0) 30%, rgba(247, 247, 247, 0) 70%, rgba(247, 247, 247, 1) 91%);
+    z-index: 10;
+}
+
+.slider-title-wrapper .swiper-container {
+    width: 250px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}

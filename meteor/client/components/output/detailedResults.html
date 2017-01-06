@@ -1,0 +1,19 @@
+<template name="detailedResults">
+    {{#with athlete}}
+        <div class="popup popup-detail-{{id}}">
+            <div class="content-block">
+                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link align-left">chevron_left</i></a>
+                <h1 class="t-center">{{name}}</h1>
+                <h5 class="t-center">Gesamtpunktzahl: {{score}}</h5>
+            <p id="description" class="justify">
+                {{#each s in stScores}}
+                    {{#with s}}
+                        <p>{{name}}: {{score}}</p>
+                    {{/with}}
+                {{/each}}
+                </p>
+                <!-- Three { are required for html Tags! -->
+            </div>
+        </div>
+    {{/with}}
+</template>

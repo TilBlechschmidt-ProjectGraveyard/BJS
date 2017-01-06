@@ -1,0 +1,145 @@
+@import "{wolves:bourbon}/bourbon";
+
+$color--red: #DC143C;
+$color--yellow: #F9A825;
+$color--green: #7ac142;
+$color--blue: #5283c1;
+$curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
+
+// -- Generic icon class --
+
+.icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+// ----- Icon elements -----
+
+.i__dash {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.i__dot {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.i__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  fill: none;
+}
+
+.i__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+// ------- Animations -------
+
+.icon.animated .i__dot {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+.icon.animated .i__dash {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+.icon.animated .i__circle {
+  animation: stroke .6s $curve forwards;
+}
+
+.icon.animated .i__check {
+  animation: stroke .3s $curve .8s forwards;
+}
+
+// -- Specific icon styles --
+
+// OK-Icon  |  .i-ok
+.i-ok .i__circle {
+  stroke: $color--green;
+}
+
+.i-ok.animated {
+  animation: fill-green .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+// Warn-Icon  |  .i-warn
+.i-warn .i__circle {
+  stroke: $color--yellow;
+}
+
+.i-warn.animated {
+  animation: fill-yellow .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+// Ready-Icon  |  .i-ready
+.i-ready .i__circle {
+  stroke: $color--blue;
+}
+
+.i-ready.animated {
+  animation: fill-blue .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+// Err-Icon  |  .i-err
+.i-err .i__circle {
+  stroke: $color--red;
+}
+
+.i-err.animated {
+  animation: fill-red .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+// --------- Keyframes ---------
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill-green {
+  100% {
+    box-shadow: inset 0 0 0 30px $color--green;
+  }
+}
+
+@keyframes fill-red {
+  100% {
+    box-shadow: inset 0 0 0 30px $color--red;
+  }
+}
+
+@keyframes fill-yellow {
+  100% {
+    box-shadow: inset 0 0 0 30px $color--yellow;
+  }
+}
+
+@keyframes fill-blue {
+  100% {
+    box-shadow: inset 0 0 0 30px $color--blue;
+  }
+}

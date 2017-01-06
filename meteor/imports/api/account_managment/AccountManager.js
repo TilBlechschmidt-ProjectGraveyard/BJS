@@ -1,6 +1,6 @@
 import {SessionAccount} from "./SessionAccount";
 import {DBInterface} from "../database/db_access";
-import {checkPermission} from "../../ui/components/login/router";
+import {checkPermission} from "../../../client/components/login/router";
 
 
 let inputGroupAccount = new SessionAccount('input_group_account');
@@ -174,7 +174,7 @@ export let AccountManager = {
                         setTimeout(function () {
                             checkPermission();
                             Meteor.f7.hidePreloader();
-                        }, 2500);
+                        }, 1500);
                     }
                 );
             }
