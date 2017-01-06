@@ -182,10 +182,10 @@
                          gap}}margin-bottom: 70px; padding-bottom: 70px; border-bottom: 1px solid rgb(200, 200, 200);{{/if}}">
                 <ul>
                     {{#each m in measurements}}
-                        {{>attempt n=@index measurement=m metadata=metadata}}
+                        {{>attempt n=@index measurement=m metadata=metadata showIcon=true}}
                     {{/each}}
                     {{#if scoreWritePermission metadata}}
-                        {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata}}
+                        {{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata showIcon=false}}
                     {{/if}}
                 </ul>
             </div>
@@ -197,13 +197,17 @@
     <li>
         <div class="item-content">
             <div class="item-media">
-                {{#with measurement}}
-                    {{#if synced}}
-                        <!--{{> iconOK}}-->
-                    {{else}}
-                        <!--{{> iconErr}}-->
-                    {{/if}}
-                {{/with}}
+                {{#if showIcon}}
+                    {{#with measurement}}
+                        {{#if synced}}
+                            {{> iconOK}}
+                        {{else}}
+                            {{> iconErr}}
+                        {{/if}}
+                    {{/with}}
+                {{else}}
+                    {{> iconReady}}
+                {{/if}}
             </div>
             <div class="item-inner">
                 <div class="item-title label">{{inc n}}. Versuch</div>
