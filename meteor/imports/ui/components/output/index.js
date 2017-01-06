@@ -146,20 +146,51 @@ Template.result.events({
         return false;
     },
     'click .signCertificate': function (event) {
-        localCertificated.push(event.target.dataset.id);
+        const athleteID = event.target.dataset.id;
+        localCertificated.push(athleteID);
         event.target.closest(".accordion-item").dataset.collapse = "true";
+        // Wait for accordion to collapse
         setTimeout(function () {
             groups_deps.changed();
             Tracker.afterFlush(function () {
+                // Wait for checkmark animation
                 setTimeout(function () {
                     const accordionItem = document.querySelector(".accordion-item[data-collapse='true']");
                     accordionItem.className = accordionItem.className + " collapsed";
                     accordionItem.dataset.collapse = "";
-                    // TODO: Move the item in the groups collection down to "doneAthletes" after the animation time of 1000ms
+
+                    // Wait for collapse animation
+                    setTimeout(function () {
+                        let oldAthleteID;
+                        let oldGroupID;
+                        let oldAthlete;
+                        outerLoop:
+                            for (let group in groups) {
+                                if (!groups.hasOwnProperty(group)) continue;
+
+                                const validAthletes = groups[group].validAthletes;
+                                for (let athlete in validAthletes) {
+                                    if (!validAthletes.hasOwnProperty(athlete)) continue;
+                                    if (validAthletes[athlete].id == athleteID) {
+                                        console.log("Found athlete @ groupID:athleteID", group, athlete);
+                                        console.log(JSON.parse(JSON.stringify(groups[group])));
+                                        oldAthlete = validAthletes[athlete];
+                                        oldAthleteID = athlete;
+                                        oldGroupID = group;
+                                        break outerLoop;
+                                    }
+                                }
+
+                            }
+                        oldAthlete.moved = true;
+                        groups[oldGroupID].doneAthletes.push(oldAthlete);
+                        groups[oldGroupID].validAthletes[oldAthleteID] = {}; // Overwrite object instead of removing it to prevent blaze from replacing its content
+                        groups_deps.changed();
+                    }, 1000);
                 }, 1200);
             });
         }, 200);
-        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
+        // DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
     }
 });
 

@@ -15,3 +15,17 @@
 .result-accordion.collapsed::after {
     max-height: 0;
 }
+
+.result-accordion.fade-open {
+    animation-name: fadeOpen;
+    animation-duration: 4s;
+}
+
+@keyframes fadeOpen {
+    from {
+        max-height: 0
+    }
+    to {
+        max-height: 800px
+    }
+}
