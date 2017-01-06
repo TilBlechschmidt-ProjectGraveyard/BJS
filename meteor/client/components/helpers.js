@@ -1,5 +1,5 @@
-import {DBInterface} from "../../api/database/db_access";
-import {AccountManager} from "../../api/account_managment/AccountManager";
+import {DBInterface} from "../../imports/api/database/db_access";
+import {AccountManager} from "../../imports/api/account_managment/AccountManager";
 
 export let getAthletes = function getAthletes() {
     const group_account = AccountManager.getGroupAccount().account;
@@ -52,3 +52,41 @@ export function isOffline() {
         return false;
     }
 }
+
+// export let registerHelpers = function () {
+Meteor.pageVisitTime = new Date().getTime();
+
+Template.registerHelper('arrayify', arrayify);
+Template.registerHelper('not', function (b) {
+    return !b;
+});
+Template.registerHelper('isEmpty', function (arr) {
+    if (arr === undefined) return true;
+    return arr.length === 0;
+});
+Template.registerHelper('isNotEmpty', function (arr) {
+    if (arr === undefined) return true;
+    return arr.length !== 0;
+});
+Template.registerHelper('length', function (arr) {
+    return arr.length;
+});
+Template.registerHelper('inc', function (i) {
+    return ++i;
+});
+Template.registerHelper('hasData', function (obj) {
+    return Object.keys(obj).length > 0;
+});
+Template.registerHelper('isOffline', isOffline);
+
+Template.body.events({
+    'keypress': function (event) {
+        if (event.keyCode == 13)
+            triggerDefaultModalAction();
+    },
+    'click': function (event) {
+        if (event.target.tagName !== "INPUT")
+            event.target.blur();
+    }
+});
+// }

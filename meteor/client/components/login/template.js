@@ -1,7 +1,7 @@
-import {AccountManager} from "../../../api/account_managment/AccountManager";
+import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {checkPermission} from "./router";
-import "./index.html";
-import {triggerDefaultModalAction} from "../../../startup/client/helpers";
+import "./login.html";
+import {triggerDefaultModalAction} from "../helpers";
 
 function login(event) {
     const type = event.target.dataset.type;

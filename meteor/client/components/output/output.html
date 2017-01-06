@@ -1,0 +1,71 @@
+<template name="output">
+    {{> offline}}
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed">
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                            class="f7-icons">help</i></a></div>
+                    <div class="center truncate">
+                        <div id="output-name-swiper" class="swiper-container full-height">
+                            <div class="swiper-wrapper">
+                                {{#each g in groups}}
+                                    <div class="swiper-slide open-popover hover-underline group-name"
+                                         data-popover=".popover-groups">{{g.name}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right"><a href="#" class="logout-button">Abmelden</a></div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div id="output-swiper" class="swiper-container full-height">
+                    <div class="swiper-wrapper">
+                        {{#each g in groups}}
+                            <div class="swiper-slide" data-hash="{{g.hash}}">
+                                {{>groupCertificates group=g}}
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="swiper-pagination fraction"></div>
+            </div>
+        </div>
+    </div>
+
+    {{#each g in groups}}
+        {{#with g}}
+            <!-- Detailed result popups -->
+            {{#each a in validAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
+            {{#each a in invalidAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
+            {{#each a in doneAthletes}}
+                {{>detailedResults athlete=a}}
+            {{/each}}
+        {{/with}}
+    {{/each}}
+
+    <div class="popover popover-groups">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block hide-scrollbar limit-vertical-height hover-underline">
+                <ul>
+                    {{#each groups}}
+                        <li><a href="#" class="list-button item-link group-link"
+                               data-target="{{@index}}">{{this.name}}</a></li>
+                    {{/each}}
+                    <li>
+                        <a href="#" class="list-button item-link refresh-link"><i class="f7-icons">reload</i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</template>

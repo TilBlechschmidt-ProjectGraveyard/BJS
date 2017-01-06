@@ -1,7 +1,7 @@
 import {Template} from "meteor/templating";
-import "./index.html";
-import "./index.css";
-import {DBInterface} from "../../../../api/database/db_access";
+import "./choices.html";
+import "./choices.css";
+import {DBInterface} from "../../../../imports/api/database/db_access";
 
 let db_tracker_tracker = new Tracker.Dependency();
 
