@@ -20,6 +20,7 @@ function reloadSwiper() {
 
     if (inputNameSwiperEl && inputSwiperEl && inputNameSwiperEl.swiper && inputSwiperEl.swiper) {
         inputNameSwiperEl.swiper.destroy(false);
+        inputSwiperEl.swiper.off('transitionEnd');
         inputSwiperEl.swiper.destroy(false);
     }
 

@@ -15,8 +15,8 @@ Template.settingSwitch.helpers({
 
 Template.settingSwitch.events({
     'click .setting-checkbox': function (event) {
-        console.log("Setting updated (TODO: Store this somewhere and use it): ", event.target.dataset.id, event.target.checked);
         Session.set(event.target.dataset.id, event.target.checked);
+        Meteor.inputDependency.changed();
     }
 });
 
@@ -24,7 +24,9 @@ Template.settingSwitch.events({
 Template.settingSwitch.onRendered(function () {
     for (let id in defaultSettings) {
         if (!defaultSettings.hasOwnProperty(id)) continue;
-        if (Session.get(id) === undefined)
+        if (Session.get(id) === undefined) {
             Session.set(id, defaultSettings[id]);
+            Meteor.inputDependency.changed();
+        }
     }
 });
