@@ -147,42 +147,16 @@
 
                     {{#if valid}}
                         {{#if certificateUpdate}}
-                            <svg class="icon oi-warn animated"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                <circle class="warning__circle" cx="26" cy="26" r="25"
-                                        fill="none"></circle>
-                                <path class="i__dash" fill="none"
-                                      d="M26 11.5 l0 20.5"></path>
-                                <circle class="i__dot" cx="26" cy="40" r="1" fill="white"></circle>
-                            </svg>
+                            {{> iconWarn}}
                         {{else}}
                             {{#if certificateWritten}}
-                                <svg class="icon oi-ok animated"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="i__circle" cx="26" cy="26" r="25"
-                                            fill="none"></circle>
-                                    <path class="i__check" fill="none"
-                                          d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
-                                </svg>
+                                {{> iconOK}}
                             {{else}}
-                                <svg class="icon oi-ready animated todo-svg"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="i__circle" cx="26" cy="26" r="25"
-                                            fill="none"></circle>
-                                    <path class="i__check" fill="none"
-                                          d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
-                                </svg>
+                                {{> iconReady class="todo-svg"}}
                             {{/if}}
                         {{/if}}
                     {{else}}
-                        <svg class="icon oi-err animated" xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 52 52">
-                            <circle class="i__circle" cx="26" cy="26" r="25"
-                                    fill="none"></circle>
-                            <path class="i__dash" fill="none"
-                                  d="M26 11.5 l0 20.5"></path>
-                            <circle class="i__dot" cx="26" cy="40" r="1" fill="white"></circle>
-                        </svg>
+                        {{> iconErr}}
                     {{/if}}
                 </div>
                 <div class="item-inner">

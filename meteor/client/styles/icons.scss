@@ -67,39 +67,39 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 // -- Specific icon styles --
 
-// OK-Icon  |  .oi-ok
-.oi-ok .i__circle {
+// OK-Icon  |  .i-ok
+.i-ok .i__circle {
   stroke: $color--green;
 }
 
-.oi-ok.animated {
+.i-ok.animated {
   animation: fill-green .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-// Warn-Icon  |  .oi-warn
-.oi-warn .i__circle {
+// Warn-Icon  |  .i-warn
+.i-warn .i__circle {
   stroke: $color--yellow;
 }
 
-.oi-warn.animated {
+.i-warn.animated {
   animation: fill-yellow .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-// Ready-Icon  |  .oi-ready
-.oi-ready .i__circle {
+// Ready-Icon  |  .i-ready
+.i-ready .i__circle {
   stroke: $color--blue;
 }
 
-.oi-ready.animated {
+.i-ready.animated {
   animation: fill-blue .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
-// Err-Icon  |  .oi-err
-.oi-err .i__circle {
+// Err-Icon  |  .i-err
+.i-err .i__circle {
   stroke: $color--red;
 }
 
-.oi-err.animated {
+.i-err.animated {
   animation: fill-red .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 

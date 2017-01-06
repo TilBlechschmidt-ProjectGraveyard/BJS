@@ -1,4 +1,5 @@
 import "../../ui/router";
+import "../../ui/components/icons";
 import "../../ui/components/login";
 import "../../ui/components/views";
 import "../../ui/components/config";
