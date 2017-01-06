@@ -9,3 +9,15 @@ html, html * {
 #__blaze-root{
     height: 100%;
 }
+
+@media screen and (min-width: 800px) {
+    .autoWidthListBlock {
+        width: 800px;
+        margin-left: calc(50% - 400px);
+    }
+
+    .autoWidthListBlock .list-block {
+        border-left: 1px solid rgb(200, 200, 200);
+        border-right: 1px solid rgb(200, 200, 200);
+    }
+}
