@@ -47,110 +47,65 @@ export function onStartup() {
 
 
     Meteor.methods({
-        'activateCompetition': function (loginObject, competitionName) {
+        'activateCompetition': function (loginObject, competitionID) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            Meteor.COLLECTIONS.switch(competitionName);
+            Meteor.COLLECTIONS.switch(competitionID);
             return encryptAsAdmin(true);
         },
-        'removeCompetition': function (loginObject, competitionName) {
+        'removeCompetition': function (loginObject, competitionID) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            let listOFEditCompetitions = DBInterface.listEditCompetitions();
-            let listOFCompetitions = DBInterface.listCompetitions();
-            if (listOFEditCompetitions.indexOf(competitionName) != -1) {
-                Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {
-                    $set: {
-                        editContests: _.filter(listOFEditCompetitions, function (name) {
-                            return name != competitionName;
-                        })
-                    }
-                });
-            } else if (listOFCompetitions.indexOf(competitionName) != -1) {
-                Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {
-                    $set: {
-                        contests: _.filter(listOFCompetitions, function (name) {
-                            return name != competitionName;
-                        })
-                    }
-                });
-            }
+            Meteor.COLLECTIONS.Contests.handle.remove({_id: competitionID});
             return encryptAsAdmin(true);
         },
         'writeCompetition': function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            // update index in Generic
-            let listOFEditCompetitions = DBInterface.listEditCompetitions();
-            if (final) {
-                //remove from edit contest
-                Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {
-                    $set: {
-                        editContests: _.filter(listOFEditCompetitions, function (name) {
-                            return name != competitionName;
-                        })
-                    }
-                });
-
-                let listOFCompetitions = DBInterface.listCompetitions();
-                if (listOFCompetitions.indexOf(competitionName) == -1) {
-                    listOFCompetitions.push(competitionName);
-                    Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {contests: listOFCompetitions}});
+            Meteor.COLLECTIONS.Contests.handle.update({name: competitionName}, {
+                $set: {
+                    readOnly: final,
+                    name: competitionName,
+                    type: competitionTypeID,
+                    sportTypes: sportTypes
                 }
-            } else {
-                if (listOFEditCompetitions.indexOf(competitionName) == -1) {
-                    listOFEditCompetitions.push(competitionName);
-                    Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {editContests: listOFEditCompetitions}});
+            }, {upsert: true}, function (record) {
+                const competitionID = record._id;
+                // create collections if they don't exist
+                Meteor.COLLECTIONS.connect(competitionID);
+
+                // clear collections
+                Meteor.COLLECTIONS.Accounts.handles[competitionID].remove({});
+                Meteor.COLLECTIONS.Athletes.handles[competitionID].remove({});
+                Meteor.COLLECTIONS.Contest.handles[competitionID].remove({});
+
+                // write data
+                //write athletes
+                for (let athlete in encrypted_athletes) {
+                    if (!encrypted_athletes.hasOwnProperty(athlete)) continue;
+                    Meteor.COLLECTIONS.Athletes.handles[competitionID].insert(encrypted_athletes[athlete]);
                 }
-            }
 
-            // create collections if they don't exist
-            Meteor.COLLECTIONS.connect(competitionName);
+                //write accounts
+                for (let account in accounts) {
+                    if (!accounts.hasOwnProperty(account)) continue;
+                    Meteor.COLLECTIONS.Accounts.handles[competitionID].insert(accounts[account]);
+                }
 
-            // clear collections
-            Meteor.COLLECTIONS.Accounts.handles[competitionName].remove({});
-            Meteor.COLLECTIONS.Athletes.handles[competitionName].remove({});
-            Meteor.COLLECTIONS.Contest.handles[competitionName].remove({});
-
-            // write data
-            //write athletes
-            for (let athlete in encrypted_athletes) {
-                if (!encrypted_athletes.hasOwnProperty(athlete)) continue;
-                Meteor.COLLECTIONS.Athletes.handles[competitionName].insert(encrypted_athletes[athlete]);
-            }
-
-            //write accounts
-            for (let account in accounts) {
-                if (!accounts.hasOwnProperty(account)) continue;
-                Meteor.COLLECTIONS.Accounts.handles[competitionName].insert(accounts[account]);
-            }
-
-            //write general information
-            Meteor.COLLECTIONS.Contest.handles[competitionName].insert({
-                contestType: competitionTypeID,
-                sportTypes: sportTypes
+                if (final) {
+                    Meteor.call('activateCompetition', loginObject, competitionID);
+                }
             });
-
-            if (final) {
-                Meteor.call('activateCompetition', loginObject, competitionName);
-            }
 
             return encryptAsAdmin(true);
         },
-        'getEditInformation': function (loginObject, competitionName) {
+        'getCompetitions': function (loginObject) {
             if (!checkAdminLogin(loginObject)) return undefined;
-            let listOFEditCompetitions = DBInterface.listEditCompetitions();
-            if (listOFEditCompetitions.indexOf(competitionName) == -1) return undefined;
+            let competitions = Meteor.COLLECTIONS.Contests.find().fetch();
 
-            const contestDBHandle = Meteor.COLLECTIONS.Contest.handles[competitionName];
-
-            const competitionTypeID = DBInterface.getCompetitionTypeID(contestDBHandle);
-            const sportTypes = DBInterface.getActivatedSports(contestDBHandle);
-
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competitionName].find().fetch();
-
-            return encryptAsAdmin({
-                competitionTypeID: competitionTypeID,
-                sportTypes: sportTypes,
-                encryptedAthletes: encryptedAthletes
+            lodash.map(competitions, function (competition) {
+                competition.encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competition._id].find().fetch();
+                return competition;
             });
+
+            return encryptAsAdmin(competitions);
         },
         'generateCertificates': function (loginObject) {
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});

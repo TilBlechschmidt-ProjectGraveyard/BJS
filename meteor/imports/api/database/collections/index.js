@@ -1,5 +1,5 @@
 import {initGeneric} from "./generic";
-import {initContest} from "./contest";
+import {initContests} from "./contests";
 import {initAccounts} from "./accounts";
 import {initAthletes} from "./athletes";
 import {DBInterface} from "../DBInterface";
@@ -7,34 +7,31 @@ import {DBInterface} from "../DBInterface";
 function initDatabase() {
     initAccounts();
     initAthletes();
-    initContest();
 
-    Meteor.COLLECTIONS.connect = function (competitionName) {
-        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionName) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionName) || Meteor.COLLECTIONS.Contest.handles.hasOwnProperty(competitionName)) {
+    Meteor.COLLECTIONS.connect = function (competitionID) {
+        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
             return false;
         }
-        Meteor.COLLECTIONS.Accounts.connect(competitionName);
-        Meteor.COLLECTIONS.Athletes.connect(competitionName);
-        Meteor.COLLECTIONS.Contest.connect(competitionName);
+        Meteor.COLLECTIONS.Accounts.connect(competitionID);
+        Meteor.COLLECTIONS.Athletes.connect(competitionID);
         return true;
     };
 
-    Meteor.COLLECTIONS.switch = function (competitionName) {
-        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionName) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionName) || !Meteor.COLLECTIONS.Contest.handles.hasOwnProperty(competitionName)) {
+    Meteor.COLLECTIONS.switch = function (competitionID) {
+        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
             return false;
         }
         if (Meteor.isServer) {
-            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionName}});
+            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionID}});
         }
-        Meteor.COLLECTIONS.Accounts.switch(competitionName);
-        Meteor.COLLECTIONS.Athletes.switch(competitionName);
-        Meteor.COLLECTIONS.Contest.switch(competitionName);
+        Meteor.COLLECTIONS.Accounts.switch(competitionID);
+        Meteor.COLLECTIONS.Athletes.switch(competitionID);
         return true;
     };
 
-    Meteor.COLLECTIONS.connect_and_switch = function (competitionName) {
-        Meteor.COLLECTIONS.connect(competitionName);
-        return Meteor.COLLECTIONS.switch(competitionName);
+    Meteor.COLLECTIONS.connect_and_switch = function (competitionID) {
+        Meteor.COLLECTIONS.connect(competitionID);
+        return Meteor.COLLECTIONS.switch(competitionID);
     };
 
     if (Meteor.isClient) {
@@ -44,10 +41,10 @@ function initDatabase() {
         });
     } else {
         const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        const allNames = genericData.contests.concat(genericData.editContests);
-        for (let nameID in allNames) {
-            if (!allNames.hasOwnProperty(nameID)) continue;
-            Meteor.COLLECTIONS.connect(allNames[nameID]);
+        const competitions = Meteor.COLLECTIONS.Contests.handle.find({}).fetch();
+        for (let competition in competitions) {
+            if (!competitions.hasOwnProperty(competition)) continue;
+            Meteor.COLLECTIONS.connect(competitions[competition]._id);
         }
         Meteor.COLLECTIONS.switch(genericData.activeContest);
     }
@@ -81,11 +78,11 @@ function clearDatabase() {
     removeData(MongoInternals.defaultRemoteCollectionDriver());
 
     Meteor.COLLECTIONS.Generic.createMockData();
+    Meteor.COLLECTIONS.Contests.createMockData();
 
     // init Data
     initDatabase();
 
-    Meteor.COLLECTIONS.Contest.createMockData();
     Meteor.COLLECTIONS.Accounts.createMockData();
     Meteor.COLLECTIONS.Athletes.createMockData();
 
@@ -103,7 +100,9 @@ export function initCollections() {
         Meteor.COLLECTIONS = {};
 
         let clearDB = false;
+        // let clearDB = true;
         initGeneric();
+        initContests();
 
         if (Meteor.isServer) {
             if (!Meteor.isProduction) {

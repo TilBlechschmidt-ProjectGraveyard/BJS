@@ -23,7 +23,7 @@ export let DBInterface = {
      */
     isReady: function () {
         return Meteor.COLLECTIONS.Generic.isReady() &&
-            Meteor.COLLECTIONS.Contest.isReady() &&
+            Meteor.COLLECTIONS.Contests.isReady() &&
             Meteor.COLLECTIONS.Accounts.isReady() &&
             Meteor.COLLECTIONS.Athletes.isReady();
     },
@@ -34,7 +34,7 @@ export let DBInterface = {
      */
     waitForReady: function (callback) {
         Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            Meteor.COLLECTIONS.Contest.onReady(function () {
+            Meteor.COLLECTIONS.Contests.onReady(function () {
                 Meteor.COLLECTIONS.Accounts.onReady(function () {
                     Meteor.COLLECTIONS.Athletes.onReady(function () {
                         callback();
@@ -63,16 +63,6 @@ export let DBInterface = {
     },
 
     /**
-     * Returns the id of the current or a given contest settings document.
-     * @param {Mongo.Collection} [dbHandle] - Handle of the db
-     * @returns {string} The id
-     */
-    getContestID: function (dbHandle) {
-        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
-        return dbHandle.findOne()._id;
-    },
-
-    /**
      *
      * @param {Log} log - A log object
      * @param {Account[]} accounts - The account
@@ -97,58 +87,62 @@ export let DBInterface = {
     },
 
     /**
+     * Returns the active contest database ID
+     * @returns {string}
+     */
+    getActiveContestID: function () {
+        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
+    },
+
+    /**
+     * Returns the active contest object
+     * @returns {object}
+     */
+    getActiveContest: function () {
+        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: DBInterface.getActiveContestID()});
+    },
+
+    getContestByID: function (contestID) {
+        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: contestID});
+    },
+
+    /**
      * Returns a list of the activated sports of the current competition
      * @returns {string[]}
      */
-    getActivatedSports: function (dbHandle) {
-        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
-        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).sportTypes;
+    getActivatedSports: function (contestID) {
+        if (!contestID) contestID = DBInterface.getActiveContestID();
+        return DBInterface.getContestByID(contestID).sportTypes;
     },
 
     /**
      * Returns the current or a given competition type id
-     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @param {Mongo.Collection} [contestID] - Handle of the db
      * @returns {number}
      */
-    getCompetitionTypeID: function (dbHandle) {
-        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
-        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).contestType;
+    getCompetitionTypeID: function (contestID) {
+        if (!contestID) contestID = DBInterface.getActiveContestID();
+        return DBInterface.getContestByID(contestID).type;
     },
 
     /**
      * Returns the current or a given competition type
-     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @param {Mongo.Collection} [contestID] - Handle of the db
      * @returns {object}
      */
-    getCompetitionType: function (dbHandle) {
-        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
-        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID(dbHandle));
+    getCompetitionType: function (contestID) {
+        if (!contestID) contestID = DBInterface.getActiveContestID();
+        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID(contestID));
     },
 
     /**
      * Returns the activated sport types of the current or a given competition
-     * @param {Mongo.Collection} [dbHandle] - Handle of the db
+     * @param {Mongo.Collection} [contestID] - Handle of the db
      * @returns {string[]}
      */
-    getCompetitionSportTypes: function (dbHandle) {
-        if (!dbHandle) dbHandle = Meteor.COLLECTIONS.Contest.handle;
-        return dbHandle.findOne({_id: DBInterface.getContestID(dbHandle)}).sportTypes;
-    },
-
-    /**
-     * Lists all competition
-     * @returns {string[]}
-     */
-    listCompetitions: function () {
-        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).contests;
-    },
-
-    /**
-     * Lists all editable competition
-     * @returns {string[]}
-     */
-    listEditCompetitions: function () {
-        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).editContests;
+    getCompetitionSportTypes: function (contestID) {
+        if (!contestID) contestID = DBInterface.getActiveContestID();
+        return DBInterface.getContestByID(contestID).sportTypes;
     },
 
     /**
@@ -156,7 +150,7 @@ export let DBInterface = {
      * @returns {string}
      */
     getCompetitionName: function () {
-        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
+        return DBInterface.getActiveContest().name;
     },
 
     /**

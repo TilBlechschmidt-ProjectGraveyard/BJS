@@ -30,9 +30,7 @@ export function initGeneric() {
         this.handle.insert({
             dbVersion: Meteor.config.dbVersion,
             cleanDB: true,
-            activeContest: "Beispiel Konfiguration",
-            contests: ["Beispiel Konfiguration"],
-            editContests: []
+            activeContest: "someveryrandomandweirddatabaseID"
         });
     };
 }

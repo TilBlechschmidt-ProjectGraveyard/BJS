@@ -118,10 +118,11 @@ export function ContestCollection(name, publicationFunction) {
         });
     };
 
-    col.switch = function (competition_name) {
+    col.switch = function (competitionID) {
         if (Meteor.isServer) {
-            col.name = competition_name.replace(/ /g, '') + "_" + col.basename;
-            col.handle = col.handles[competition_name];
+            console.log("SWITCH", competitionID);
+            col.name = competitionID + "_" + col.basename;
+            col.handle = col.handles[competitionID];
         }
     };
 }

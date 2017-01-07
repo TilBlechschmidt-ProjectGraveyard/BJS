@@ -1,0 +1,52 @@
+<template name="config">
+    <div class="pages">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
+                            class="f7-icons">help</i></a></div>
+                    <div class="center truncate">
+                        <div class="slider-title-wrapper">
+                            <div class="slider-title-overlay"></div>
+                            <div id="output-name-swiper" class="swiper-container full-height">
+                                <div class="swiper-wrapper">
+                                    {{#each g in groups}}
+                                        <div class="swiper-slide open-popover hover-underline group-name"
+                                             data-popover=".popover-groups">{{g.name}}</div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
+                                class="f7-icons">filter</i></a>
+                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
+                                class="f7-icons">sort</i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div id="output-swiper" class="swiper-container full-height">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" data-hash="{{c.hash}}">
+                            {{#each c in competitions}}
+                                {{>competition competition=c}}
+                            {{/each}}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination fraction"></div>
+            </div>
+
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <div class="item-link center"><a href="#" class="logout-button">Abmelden</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
