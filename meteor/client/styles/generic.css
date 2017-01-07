@@ -33,6 +33,12 @@ html, html * {
     text-align: justify;
 }
 
+.gap {
+    margin-bottom: 70px;
+    padding-bottom: 70px;
+    border-bottom: 1px solid rgb(200, 200, 200);
+}
+
 #__blaze-root{
     height: 100%;
 }
