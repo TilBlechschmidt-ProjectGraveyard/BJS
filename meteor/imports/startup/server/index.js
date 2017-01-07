@@ -1,6 +1,6 @@
 import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/DBInterface";
-import {Athlete} from "../../api/logic/athlete";
+import {Athlete, encryptedAthletesToGroups} from "../../api/logic/athlete";
 import {Log} from "../../api/log";
 import {checkAdminLogin, encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
