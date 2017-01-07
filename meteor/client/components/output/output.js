@@ -139,6 +139,7 @@ Template.output.events({
 });
 
 Template.output.onRendered(function () {
+    Meteor.f7.sortableOpen('.sortable');
     Meteor.f7.showIndicator();
     DBInterface.waitForReady(function () {
         refresh();

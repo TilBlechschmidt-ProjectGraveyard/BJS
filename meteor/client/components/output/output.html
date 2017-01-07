@@ -1,7 +1,7 @@
 <template name="output">
     {{> offline}}
     <div class="pages">
-        <div data-page="index" class="page navbar-fixed">
+        <div data-page="index" class="page navbar-fixed toolbar-fixed">
 
             <div class="navbar">
                 <div class="navbar-inner">
@@ -20,7 +20,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="right"><a href="#" class="logout-button">Abmelden</a></div>
+                    <div class="right">
+                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
+                                class="f7-icons">filter</i></a>
+                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
+                                class="f7-icons">sort</i></a>
+                    </div>
                 </div>
             </div>
 
@@ -35,6 +40,12 @@
                     </div>
                 </div>
                 <div class="swiper-pagination fraction"></div>
+            </div>
+
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <div class="item-link center"><a href="#" class="logout-button">Abmelden</a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -65,6 +76,80 @@
                     {{/each}}
                     <li>
                         <a href="#" class="list-button item-link refresh-link"><i class="f7-icons">reload</i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="popover popover-sorting">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block sortable">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">person</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Vorname</div>
+                            </div>
+                        </div>
+                        <!-- Sortable handler  -->
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">person</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Nachname</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">persons</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Gruppe</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">today</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Alter</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">tags</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Urkundenstatus</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">stopwatch</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Punkte</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">heart</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Geschlecht</div>
+                            </div>
+                        </div>
+                        <div class="sortable-handler"></div>
                     </li>
                 </ul>
             </div>
