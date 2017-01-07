@@ -10,101 +10,101 @@ Meteor.groups = [];
 Meteor.localCertificated = [];
 Meteor.groups_deps = new Tracker.Dependency();
 
-export let reloadSwiper = function () {
-    const outputNameSwiperEl = document.getElementById('output-name-swiper');
-    const outputSwiperEl = document.getElementById('output-swiper');
-    if (outputNameSwiperEl && outputSwiperEl && outputNameSwiperEl.swiper && outputSwiperEl.swiper) {
-        outputNameSwiperEl.swiper.destroy(false);
-        outputSwiperEl.swiper.destroy(false);
-    }
 
-    const nameSwiper = new Swiper('#output-name-swiper', {
-        loop: true,
+// after.update(function (userId, doc, fieldNames, modifier) {
+//     let updateRequired = false;
+//     if (modifier.hasOwnProperty('$set')) {
+//         for (let name in modifier.$set) {
+//             if (!modifier.$set.hasOwnProperty(name)) continue;
+//
+//             if (name === "certificateScore") {
+//                 updateRequired = true;
+//             }
+//         }
+//     }
+//
+//     if (updateRequired) {
+//         console.log(modifier);
+//     }
+// });
+
+
+export let loadFilterSwiper = function () {
+    const filterSwiper = new Swiper('#filter-swiper', {
         effect: 'slide',
         spaceBetween: 50,
         onlyExternal: true
     });
+};
 
-    new Swiper('#output-swiper', {
-        pagination: '.swiper-pagination',
-        paginationType: 'fraction',
-        hashnav: true,
-        hashnavWatchState: true,
-        replaceState: true,
-        parallax: true,
-        loop: true,
-        speed: 400,
-        spaceBetween: 50,
-        grabCursor: true,
-        shortSwipes: true,
-        control: nameSwiper
-    });
+export let getFilterSwiper = function () {
+    if (!document.getElementById('filter-swiper')) return false;
+    return document.getElementById('filter-swiper').swiper;
 };
 
 function refresh() {
-    DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
-        Meteor.groups = [];
+    // DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
+    //     Meteor.groups = [];
+    //
+    //     for (let g in data) {
+    //         if (!data.hasOwnProperty(g)) continue;
+    //         const athletes = data[g].athletes;
+    //
+    //         const group = {
+    //             name: data[g].name,
+    //             hash: btoa(data[g].name),
+    //             athleteCount: data[g].athletes.length,
+    //             validAthletes: [],
+    //             invalidAthletes: [],
+    //             doneAthletes: []
+    //         };
+    //
+    //         for (let athlete in athletes) {
+    //             if (!athletes.hasOwnProperty(athlete)) continue;
+    //             athlete = athletes[athlete];
+    //
+    //             if (athlete.valid && !athlete.certificateWritten && !lodash.includes(Meteor.localCertificated, athlete.id)) {
+    //                 group.validAthletes.push(athlete);
+    //             } else if (!athlete.valid && !athlete.certificateWritten) {
+    //                 group.invalidAthletes.push(athlete);
+    //             } else if (athlete.certificateWritten) {
+    //                 group.doneAthletes.push(athlete);
+    //             }
+    //         }
+    //
+    //         Meteor.groups.push(group);
+    //     }
+    //
+    //     Meteor.groups_deps.changed();
+    //     Tracker.afterFlush(function () {
+    //         Meteor.f7.hideIndicator();
+    //     });
+    // });
 
-        for (let g in data) {
-            if (!data.hasOwnProperty(g)) continue;
-            const athletes = data[g].athletes;
 
-            const group = {
-                name: data[g].name,
-                hash: btoa(data[g].name),
-                athleteCount: data[g].athletes.length,
-                validAthletes: [],
-                invalidAthletes: [],
-                doneAthletes: []
-            };
-
-            for (let athlete in athletes) {
-                if (!athletes.hasOwnProperty(athlete)) continue;
-                athlete = athletes[athlete];
-
-                if (athlete.valid && !athlete.certificateWritten && !lodash.includes(Meteor.localCertificated, athlete.id)) {
-                    group.validAthletes.push(athlete);
-                } else if (!athlete.valid && !athlete.certificateWritten) {
-                    group.invalidAthletes.push(athlete);
-                } else if (athlete.certificateWritten) {
-                    group.doneAthletes.push(athlete);
-                }
-            }
-
-            Meteor.groups.push(group);
+    DBInterface.generateCertificates(
+        AccountManager.getOutputAccount().account,
+        Meteor.COLLECTIONS.Athletes.handle.find({}).fetch(),
+        function (data) {
+            console.log(data);
         }
+    );
 
-        Meteor.groups_deps.changed();
+    Meteor.groups = ["Test1"];
+    Meteor.groups_deps.changed();
         Tracker.afterFlush(function () {
             Meteor.f7.hideIndicator();
         });
-    });
 }
 
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
-    groups: function () {
+    groupNames: function () {
         Meteor.groups_deps.depend();
 
-        for (let athleteID in Meteor.localCertificated) {
-            if (!Meteor.localCertificated.hasOwnProperty(athleteID)) continue;
-            athleteID = Meteor.localCertificated[athleteID];
-
-            for (let group in Meteor.groups) {
-                if (!Meteor.groups.hasOwnProperty(group)) continue;
-                group = Meteor.groups[group];
-
-                const athlete = lodash.find(group.validAthletes, {id: athleteID});
-                if (athlete === undefined) continue;
-
-                athlete.certificateUpdate = false;
-                athlete.certificateWritten = true;
-                athlete.certificateTime = new Date();
-                break;
-            }
-        }
-
-        return Meteor.groups;
+        return _.map(Meteor.groups, function (group) {
+            return group.name;
+        });
     }
 });
 
@@ -125,24 +125,35 @@ Template.output.events({
         Meteor.f7.closeModal();
         return false;
     },
-    'click .refresh-link': function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        Meteor.f7.closeModal();
-        Meteor.f7.showIndicator();
-        DBInterface.waitForReady(function () {
-            refresh();
-            reloadSwiper();
-        });
-        return false;
+    'click #filter-group-link': function (event) {
+        console.log('next');
+        console.log(getFilterSwiper());
+        getFilterSwiper().slideTo(2);
     }
 });
 
 Template.output.onRendered(function () {
     Meteor.f7.sortableOpen('.sortable');
+    loadFilterSwiper();
     Meteor.f7.showIndicator();
     DBInterface.waitForReady(function () {
+        if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
+            Meteor.COLLECTIONS.Athletes.changeDetector = true;
+            Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
+                changed: function (id, fields) {
+                    if (!AccountManager.getOutputAccount().logged_in) return;
+                    Meteor.f7.addNotification({
+                        title: "Neue Daten",
+                        message: "Es wurden neue Daten eingetragen!",
+                        hold: 2000,
+                        closeOnClick: true,
+                    });
+                    console.log(fields);
+                }
+            });
+        }
         refresh();
-        reloadSwiper();
     });
+
+
 });

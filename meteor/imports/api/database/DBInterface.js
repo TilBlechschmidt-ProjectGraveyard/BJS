@@ -283,11 +283,12 @@ export let DBInterface = {
     /**
      * Generates certificates for the current competition
      * @param {Account} account - Output account
+     * @param {object[]} athletes - List of encrypted athletes
      * @param [callback] - optional callback
      */
-    generateCertificates: function (account, callback) {
+    generateCertificates: function (account, athletes, callback) {
         const loginObject = getLoginObject(account);
-        Meteor.call('generateCertificates', loginObject, function (err, enc_data) {
+        Meteor.call('generateCertificates', loginObject, athletes, function (err, enc_data) {
             if (typeof callback === 'function') {
                 const log = new Log();
                 const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);

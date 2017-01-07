@@ -1,35 +1,11 @@
 import {initCollections} from "../../api/database/collections/index";
 import {DBInterface} from "../../api/database/DBInterface";
-import {Account, checkLogin} from "../../api/logic/account";
-import {Crypto} from "../../api/crypto/crypto";
-import {encryptedAthletesToGroups, Athlete} from "../../api/logic/athlete";
+import {Athlete} from "../../api/logic/athlete";
 import {Log} from "../../api/log";
+import {checkAdminLogin, encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
+import {Crypto} from "../../api/crypto/crypto";
+import {filterUndefined} from "../../api/logic/general";
 
-
-/**
- * Returns the admin account.
- * @returns {Account}
- */
-function getAdminAccount() {
-    return Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
-}
-
-/**
- *
- * @param {LoginObject} loginObject
- * @returns {boolean}
- */
-function checkAdminLogin(loginObject) { //TODO check isAdmin member
-    return checkLogin(getAdminAccount(), loginObject);
-}
-
-function encryptAsAdmin(data) {
-    return Crypto.encrypt(data, getAdminAccount().ac, getAdminAccount().ac);
-}
-
-function encryptAs(data, account) {
-    return Crypto.encrypt(data, account.ac, account.ac);
-}
 
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
@@ -37,14 +13,6 @@ export function onStartup() {
     if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
 
     initCollections();
-
-    const ac = Crypto.generateAC(Meteor.config.adminPassword, Meteor.config.adminSalt);
-    const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true, true);
-    Meteor.COLLECTIONS.Generic.handle.update(
-        {_id: DBInterface.getGenericID()},
-        {$set: {adminAccount: adminAccount}}
-    );
-
 
     Meteor.methods({
         'activateCompetition': function (loginObject, competitionID) {
@@ -117,7 +85,7 @@ export function onStartup() {
 
             return encryptAsAdmin(groups);
         },
-        'generateCertificates': function (loginObject) {
+        'generateCertificates': function (loginObject, athletes) {
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 
             if (!account) {
@@ -131,44 +99,52 @@ export function onStartup() {
             const log = new Log();
 
             const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handle.find().fetch();
 
-            const groups = encryptedAthletesToGroups(encryptedAthletes, accounts, true, true);
+            let mapAthletet = function (encryptedAthlete) {
+                const athlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, true);
+                const currentScoreObject = Crypto.tryDecrypt(log, athlete.currentScore, [getAdminAccount().ac]);
+                const stScoresObject = Crypto.tryDecrypt(log, athlete.stScores, [getAdminAccount().ac]);
+                const certificateObject = Crypto.tryDecrypt(log, athlete.certificate, [getAdminAccount().ac]);
+                const certificateScoreObject = Crypto.tryDecrypt(log, athlete.certificateScore, [getAdminAccount().ac]);
+                const certificateTimeObject = Crypto.tryDecrypt(log, athlete.certificateTime, [getAdminAccount().ac]);
+                const certificatedByObject = Crypto.tryDecrypt(log, athlete.certificatedBy, [getAdminAccount().ac]);
+                const validObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
 
-            let mapAthletet = function (athlete) {
-                const certificate = ct.generateCertificate(log, athlete, accounts, true);
+                if (!(currentScoreObject && currentScoreObject.signatureEnforced &&
+                    stScoresObject && stScoresObject.signatureEnforced &&
+                    certificateObject && certificateObject.signatureEnforced &&
+                    certificateScoreObject && certificateScoreObject.signatureEnforced &&
+                    certificateTimeObject && certificateTimeObject.signatureEnforced &&
+                    certificatedByObject && certificatedByObject.signatureEnforced &&
+                    validObject && validObject.signatureEnforced)) return undefined;
+
                 const stScores = [];
 
-                for (let stID in certificate.stScores) {
-                    if (!certificate.stScores.hasOwnProperty(stID)) continue;
+                for (let stID in stScoresObject.data) {
+                    if (!stScoresObject.data.hasOwnProperty(stID)) continue;
                     stScores.push({
                         stID: stID,
                         name: ct.getNameOfSportType(stID),
-                        score: certificate.stScores[stID]
+                        score: stScoresObject.data[stID]
                     });
                 }
 
                 return {
                     name: athlete.getFullName(),
                     id: athlete.id,
-                    certificateWritten: athlete.certificateScore === certificate.score,
-                    certificateUpdate: (athlete.certificateScore >= 0) && (athlete.certificateScore !== certificate.score),
-                    certificateTime: athlete.certificateTime,
-                    certificatedBy: athlete.certificatedBy,
-                    valid: ct.validate(log, athlete, accounts, true),
-                    score: certificate.score,
+                    certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
+                    certificateUpdate: (certificateScoreObject.data >= 0) && (certificateScoreObject.data !== currentScoreObject.data),
+                    certificateTime: certificateTimeObject.data,
+                    certificatedBy: certificatedByObject.data,
+                    valid: validObject.data,
+                    score: currentScoreObject.data,
                     stScores: stScores,
-                    certificate: certificate.certificate,
-                    certificateName: certificate.certificate === 2 ? "Ehrenurkunde" : (certificate.certificate === 1 ? "Siegerurkunde" : (certificate.certificate === 0 ? "Teilnehmerurkunde" : "Fehler"))
+                    certificate: certificateObject.data,
+                    certificateName: certificateObject.data === 2 ? "Ehrenurkunde" : (certificateObject.data === 1 ? "Siegerurkunde" : (certificateObject.data === 0 ? "Teilnehmerurkunde" : "Fehler"))
                 };
             };
 
-            for (let groupGroupID in groups) {
-                if (!groups.hasOwnProperty(groupGroupID)) continue;
-                groups[groupGroupID].athletes = _.map(groups[groupGroupID].athletes, mapAthletet);
-            }
-
-            return encryptAs(groups, account);
+            return encryptAs(filterUndefined(_.map(athletes, mapAthletet)), account);
         },
         'getServerIPs': function () {
             const os = require('os');
@@ -195,21 +171,20 @@ export function onStartup() {
                 return encryptAs(false, account);
             }
 
-            const log = new Log();
-            const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
-            const athlete = Athlete.decryptFromDatabase(log, Meteor.COLLECTIONS.Athletes.handle.findOne({_id: id}), accounts, true, true);
-            const ct = DBInterface.getCompetitionType();
+            const athlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: id});
+            const validityObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
 
-            if (ct.validate(log, athlete, accounts, true)) {
-                const certificate = ct.generateCertificate(log, athlete, accounts, true);
+            if (validityObject && validityObject.signatureEnforced && validityObject.data) {
                 Meteor.COLLECTIONS.Athletes.handle.update({_id: id}, {
                     $set: {
-                        certificateTime: Date.now(),
-                        certificateScore: certificate.score,
-                        certificatedBy: account.name
+                        certificateTime: encryptAsAdmin(Date.now()),
+                        certificateScore: encryptAsAdmin(certificate.score),
+                        certificatedBy: encryptAsAdmin(account.name)
                     }
                 });
+                return encryptAs(true, account);
             }
+            return encryptAs(false, account);
         }
     });
 

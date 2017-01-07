@@ -27,9 +27,13 @@ export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handi
     this.group = group;
     this.handicap = handicap;
     this.maxAge = maxAge;
-    this.certificateScore = -1;
-    this.certificateTime = -1;
+    this.currentScore = 0;
+    this.stScores = {};
+    this.certificate = 0;
+    this.certificateScore = 0;
+    this.certificateTime = 0;
     this.certificatedBy = "";
+    this.certificateValid = false;
     if (id && id.constructor == Array) {
         this.id = undefined;
     } else {
@@ -200,10 +204,6 @@ Athlete.prototype = {
         encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
 
         encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
-        encrypted.certificateScore = this.certificateScore;
-        encrypted.certificateTime = this.certificateTime;
-        encrypted.certificatedBy = this.certificatedBy;
-
 
         for (let dataGroupID in this.data.data) {
             if (!this.data.data.hasOwnProperty(dataGroupID)) continue;
@@ -276,15 +276,14 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
 
-        if (data.certificateScore) {
-            athlete.certificateScore = data.certificateScore;
-        }
-        if (data.certificateTime) {
-            athlete.certificateTime = data.certificateTime;
-        }
-        if (data.certificatedBy) {
-            athlete.certificatedBy = data.certificatedBy;
-        }
+
+        athlete.currentScore = data.currentScore;
+        athlete.stScores = data.stScores;
+        athlete.certificate = data.certificate;
+        athlete.certificateScore = data.certificateScore;
+        athlete.certificateTime = data.certificateTime;
+        athlete.certificatedBy = data.certificatedBy;
+        athlete.certificateValid = data.certificateValid;
 
         let measureData = [];
 
@@ -323,13 +322,6 @@ export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_s
         }
         groups[groupNames[decryptedAthlete.group]].athletes.push(decryptedAthlete);
 
-        // groups[groupNames[decryptedAthlete.group]].athletes.push({
-        //     firstName: decryptedAthlete.firstName,
-        //     lastName: decryptedAthlete.lastName,
-        //     ageGroup: decryptedAthlete.ageGroup,
-        //     isMale: decryptedAthlete.isMale,
-        //     handicap: decryptedAthlete.handicap
-        // });
     }
 
     return groups;
