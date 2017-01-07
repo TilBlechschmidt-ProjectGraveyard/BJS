@@ -120,7 +120,6 @@ export function ContestCollection(name, publicationFunction) {
 
     col.switch = function (competitionID) {
         if (Meteor.isServer) {
-            console.log("SWITCH", competitionID);
             col.name = competitionID + "_" + col.basename;
             col.handle = col.handles[competitionID];
         }
