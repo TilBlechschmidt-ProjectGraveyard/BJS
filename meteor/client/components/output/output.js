@@ -10,6 +10,25 @@ Meteor.groups = [];
 Meteor.localCertificated = [];
 Meteor.groups_deps = new Tracker.Dependency();
 
+
+// after.update(function (userId, doc, fieldNames, modifier) {
+//     let updateRequired = false;
+//     if (modifier.hasOwnProperty('$set')) {
+//         for (let name in modifier.$set) {
+//             if (!modifier.$set.hasOwnProperty(name)) continue;
+//
+//             if (name === "certificateScore") {
+//                 updateRequired = true;
+//             }
+//         }
+//     }
+//
+//     if (updateRequired) {
+//         console.log(modifier);
+//     }
+// });
+
+
 export let loadFilterSwiper = function () {
     const filterSwiper = new Swiper('#filter-swiper', {
         effect: 'slide',
@@ -71,7 +90,7 @@ function refresh() {
         }
     );
 
-    Meteor.groups = [];
+    Meteor.groups = ["Test1"];
     Meteor.groups_deps.changed();
         Tracker.afterFlush(function () {
             Meteor.f7.hideIndicator();
@@ -118,6 +137,23 @@ Template.output.onRendered(function () {
     loadFilterSwiper();
     Meteor.f7.showIndicator();
     DBInterface.waitForReady(function () {
+        if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
+            Meteor.COLLECTIONS.Athletes.changeDetector = true;
+            Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
+                changed: function (id, fields) {
+                    if (!AccountManager.getOutputAccount().logged_in) return;
+                    Meteor.f7.addNotification({
+                        title: "Neue Daten",
+                        message: "Es wurden neue Daten eingetragen!",
+                        hold: 2000,
+                        closeOnClick: true,
+                    });
+                    console.log(fields);
+                }
+            });
+        }
         refresh();
     });
+
+
 });
