@@ -1,0 +1,12 @@
+.accordion-item-expanded .fa {
+    opacity: 0;
+}
+
+span .fa {
+    opacity: 1;
+    -webkit-transition: opacity 200ms linear;
+    -moz-transition: opacity 200ms linear;
+    -o-transition: opacity 200ms linear;
+    -ms-transition: opacity 200ms linear;
+    transition: opacity 200ms linear;
+}

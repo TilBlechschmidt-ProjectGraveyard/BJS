@@ -9,12 +9,12 @@
                     <div class="center truncate">
                         <div class="slider-title-wrapper">
                             <div class="slider-title-overlay"></div>
-                            <div id="output-name-swiper" class="swiper-container full-height">
+                            <div id="config-name-swiper" class="swiper-container full-height">
                                 <div class="swiper-wrapper">
-                                    {{#each g in groups}}
-                                        <div class="swiper-slide open-popover hover-underline group-name"
-                                             data-popover=".popover-groups">{{g.name}}</div>
-                                    {{/each}}
+                                    <div class="swiper-slide">Wettkämpfe</div>
+                                    <div class="swiper-slide">Athleten</div>
+                                    <div class="swiper-slide">Sportarten</div>
+                                    <div class="swiper-slide">Zugangscodes</div>
                                 </div>
                             </div>
                         </div>
@@ -29,13 +29,20 @@
             </div>
 
             <div class="page-content">
-                <div id="output-swiper" class="swiper-container full-height">
+                <div id="config-swiper" class="swiper-container full-height">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" data-hash="{{c.hash}}">
-                            {{#each c in competitions}}
-                                {{>competition competition=c}}
-                            {{/each}}
-
+                        <div class="swiper-slide">
+                            {{>competitionList title="Konfigurierte Wettkämpfe" competitions=competitions.readOnly readOnly=true}}
+                            {{>competitionList title="Unvollständige Wettkämpfe" competitions=competitions.writable}}
+                        </div>
+                        <div class="swiper-slide">
+                            {{> athleteList}}
+                        </div>
+                        <div class="swiper-slide">
+                            Hi there
+                        </div>
+                        <div class="swiper-slide">
+                            I'm different
                         </div>
                     </div>
                 </div>
@@ -49,4 +56,11 @@
             </div>
         </div>
     </div>
+
+    {{#each c in competitions.readOnly}}
+        {{>sportTypePopup competition=c}}
+    {{/each}}
+    {{#each c in competitions.writable}}
+        {{>sportTypePopup competition=c}}
+    {{/each}}
 </template>

@@ -1,0 +1,17 @@
+<template name="sportTypePopup">
+    {{#with competition}}
+        <div class="popup popup-sportTypes-{{_id}}">
+            <div class="content-block">
+                <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
+                                                   style="float: left;">chevron_left</i></a>
+                <h1 class="t-center">{{name}}</h1>
+                <h5 class="t-center">Sportarten</h5>
+            <p id="description" style="text-align: justify">
+                {{#each sportTypes}}
+                    <p>{{this.name}}</p>
+                {{/each}}
+                </p>
+            </div>
+        </div>
+    {{/with}}
+</template>

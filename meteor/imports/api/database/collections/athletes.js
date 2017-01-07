@@ -44,7 +44,7 @@ export function initAthletes() {
         pTest.certificatedBy = "TheAlien";
         this.handle.insert(pTest.encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Klaus', 'Schmidt', 1999, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
-        this.handle.insert(new Athlete(log, 'Herbert', 'Gronewoldt', 1989, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
+        this.handle.insert(new Athlete(log, 'Herbert', 'Gronewoldt', 1989, true, 'Q#a', '2', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Morten', 'Meier', 1998, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Mark', 'Forster', 1988, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));
         this.handle.insert(new Athlete(log, 'Hans', 'Stüber', 1992, true, 'Q#a', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, serverAccount));

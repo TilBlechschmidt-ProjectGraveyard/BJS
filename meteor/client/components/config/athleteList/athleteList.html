@@ -1,0 +1,57 @@
+<template name="athleteList">
+    {{#each g in groups}}
+        <div class="autoWidthListBlock">
+            <div class="content-block-title">{{g.name}}</div>
+            <div class="list-block accordion-list">
+                <ul>
+                    {{#each a in g.athletes}}
+                        <li class="accordion-item">
+                            <a href="#" class="item-content item-link">
+                                {{#if not readOnly}}
+                                    <div class="item-media">{{> iconOK}}</div>{{/if}}
+                                <div class="item-inner">
+                                    <div class="item-title">{{a.firstName}}
+                                        &nbsp;{{a.lastName}} {{>athleteMetaIcons athlete=a}}</div>
+                                    <!--<div class="item-after">Irgendwas</div>-->
+                                </div>
+                            </a>
+                            <div class="accordion-item-content">
+                                <div class="content-block">
+                                    {{#with a}}
+                                        <p class="t-left">
+                                            Geburtsjahr:
+                                            <span class="align-right">{{ageGroup}}</span>
+                                        </p>
+                                        <p class="t-left">
+                                            Geschlecht:
+                                            <span class="align-right">{{#if isMale}}
+                                                Männlich{{else}}Weiblich{{/if}}</span>
+                                        </p>
+                                        <p class="t-left">
+                                            Behinderungsklasse:
+                                            <span class="align-right">{{handicap}}</span>
+                                        </p>
+                                    {{/with}}
+                                </div>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+                <!--<div class="list-block-label">List block label text goes here</div>-->
+            </div>
+        </div>
+    {{/each}}
+</template>
+
+<template name="athleteMetaIcons">
+    {{#with athlete}}
+        <span style="padding-left: 5px">
+            {{#if isMale}} {{>faIcon i="fa-mars" style="color: darkblue"}} {{else}} {{>faIcon i="fa-venus" style="color: darkred"}} {{/if}}
+            {{#if not (isZero handicap)}} {{>faIcon i="fa-wheelchair"}} {{/if}}
+        </span>
+    {{/with}}
+</template>
+
+<template name="faIcon">
+    <i class="fa {{i}}" style="{{style}}"></i>
+</template>

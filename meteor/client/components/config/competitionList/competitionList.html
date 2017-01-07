@@ -1,0 +1,30 @@
+<template name="competitionList">
+    <div class="autoWidthListBlock">
+        <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="1000">
+            {{title}}
+        </div>
+        <div class="list-block accordion-list">
+            <ul>
+                {{#each c in competitions}}
+                    {{>competition competition=c}}
+                {{/each}}
+                {{#if not readOnly}}
+                    <li class="button-highlight">
+                        <div class="item-content">
+                            <div class="item-media">
+                                <i class="f7-icons" style="margin-left: 10px;">add</i>
+                            </div>
+                            <div class="item-inner">
+                                <div style="display: inline-block">
+                                    <div class="item-title" style="display: inline-block; vertical-align: middle;">Neuen
+                                        Wettkampf erstellen
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</template>

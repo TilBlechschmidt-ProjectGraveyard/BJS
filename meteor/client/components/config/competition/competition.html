@@ -1,19 +1,58 @@
 <template name="competition">
-    <div class="autoWidthListBlock">
-        <!--<div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="500">-->
-        <!--<a href="#" data-popup=".popup-{{name}}" class="link-open-st-info open-popup">-->
-        <!--{{#with metadata}}{{name}}{{/with}} <i class="f7-icons" style="font-size: 12px">info</i>-->
-        <!--</a>-->
-        <!--</div>-->
-        <div class="list-block {{#if gap}}gap{{/if}}">
-            <ul>
-            <!--{{#each m in measurements}}-->
-                <!--{{>attempt n=@index measurement=m metadata=metadata showIcon=true}}-->
-                    <!--{{/each}}-->
-                    <!--{{#if scoreWritePermission metadata}}-->
-                <!--{{>attempt n=(length measurements) measurement=empty_measurement metadata=metadata showIcon=false}}-->
-                    <!--{{/if}}-->
-            </ul>
-        </div>
-    </div>
+    {{#with competition}}
+        <li class="accordion-item">
+            <a href="" class="item-link item-content">
+                <div class="item-media">
+                    {{#if readOnly}}
+                        {{#if active}}
+                            {{> iconOK}}
+                        {{else}}
+                            {{> iconReady}}
+                        {{/if}}
+                    {{else}}
+                        {{> iconWarn}}
+                    {{/if}}
+                </div>
+                <div class="item-inner">
+                    <div style="display: inline-block">
+                        <div class="item-title" style="display: inline-block; vertical-align: middle;">
+                            <input type="text" class="title-input" value="{{name}}" {{setReadOnly readOnly}}>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="accordion-item-content">
+                <div class="content-block" style="padding-left: 65px;">
+                    <p class="t-left">
+                        Wettkampfart <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
+                                        data-id="{{type}}">info_fill</i>
+                        <span class="align-right">{{type}}</span>
+                    </p>
+                    {{#if readOnly}}
+                        <p class="t-left">
+                            Sportarten
+                            <a href="" class="align-right t-right button-highlight open-popup"
+                               data-popup=".popup-sportTypes-{{_id}}">Auflistung <i class="f7-icons"
+                                                                                    style="font-size: 19px; display: inline-block; vertical-align: middle; padding-left: 5px">chevron_right</i></a>
+                        </p>
+                        <p class="t-left">
+                            Athleten
+                            <a href="" class="align-right t-right button-highlight show-athletes" data-id="{{_id}}">Anzeigen
+                                <i class="f7-icons"
+                                   style="font-size: 19px; display: inline-block; vertical-align: middle; padding-left: 5px">chevron_right</i></a>
+                        </p>
+                        {{#if not active}}
+                            <p>
+                                <a href="" class="item-link list-button">Wettkampf starten</a>
+                            </p>
+                        {{/if}}
+                    {{else}}
+                        <p>
+                            <a href="" class="item-link list-button">Bearbeiten</a>
+                        </p>
+                    {{/if}}
+                </div>
+            </div>
+        </li>
+    {{/with}}
 </template>

@@ -77,6 +77,9 @@ Template.registerHelper('inc', function (i) {
 Template.registerHelper('hasData', function (obj) {
     return Object.keys(obj).length > 0;
 });
+Template.registerHelper('isZero', function (num) {
+    return parseInt(num) == 0;
+});
 Template.registerHelper('isOffline', isOffline);
 
 Template.body.events({
@@ -87,6 +90,12 @@ Template.body.events({
     'click': function (event) {
         if (event.target.tagName !== "INPUT")
             event.target.blur();
-    }
+    },
+    'click .accordion-item': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
+        return false;
+    },
 });
 // }

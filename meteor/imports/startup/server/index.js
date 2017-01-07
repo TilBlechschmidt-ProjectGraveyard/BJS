@@ -107,6 +107,16 @@ export function onStartup() {
 
             return encryptAsAdmin(competitions);
         },
+        'getAthletesByCompetitionID': function (loginObject, competitionID) {
+            if (!checkAdminLogin(loginObject)) return undefined;
+
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[competitionID].find().fetch();
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competitionID].find().fetch();
+
+            const groups = encryptedAthletesToGroups(encryptedAthletes, accounts, true, true);
+
+            return encryptAsAdmin(groups);
+        },
         'generateCertificates': function (loginObject) {
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 

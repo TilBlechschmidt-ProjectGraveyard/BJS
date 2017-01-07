@@ -154,6 +154,24 @@ export let DBInterface = {
     },
 
     /**
+     * Returns a list of athletes by competition ID
+     */
+    getAthletesByCompetition: function (account, competitionID, callback) {
+        const loginObject = getLoginObject(account);
+        Meteor.call('getAthletesByCompetitionID', loginObject, competitionID, function (err, enc_data) {
+            if (typeof callback === 'function') {
+                const log = new Log();
+                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
+                if (data) {
+                    callback(data.data);
+                } else if (Meteor.isClient) {
+                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                }
+            }
+        });
+    },
+
+    /**
      * Creates a new competition
      * @param {Account} account - Admin account
      * @param {string} competitionName - The name of the competition

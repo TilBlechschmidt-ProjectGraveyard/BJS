@@ -29,12 +29,6 @@ Template.result.events({
         Meteor.f7.popup('.popup-detail-' + event.target.dataset.id);
         return false;
     },
-    'click .accordion-item': function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
-        return false;
-    },
     'click .signCertificate': function (event) {
         const athleteID = event.target.dataset.id;
         Meteor.localCertificated.push(athleteID);
