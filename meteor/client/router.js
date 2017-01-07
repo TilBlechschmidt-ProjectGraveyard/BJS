@@ -1,6 +1,4 @@
 import {AccountManager} from "../imports/api/account_managment/AccountManager";
-import "../imports/ui/components/views";
-import "../imports/ui/components/config";
 
 FlowRouter.triggers.enter(function () {
     Meteor.f7 = new Framework7({

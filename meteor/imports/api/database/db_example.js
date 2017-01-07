@@ -1,7 +1,7 @@
 import {Crypto} from "../crypto/crypto";
 import {Log} from "../log";
 import {Account, isGroupAccount, isStationAccount, getGroupNames, getStationNames} from "../logic/account";
-import {DBInterface} from "./db_access";
+import {DBInterface} from "./DBInterface";
 
 module.exports = function () {
 

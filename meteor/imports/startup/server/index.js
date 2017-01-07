@@ -1,5 +1,5 @@
 import {initCollections} from "../../api/database/collections/index";
-import {DBInterface} from "../../api/database/db_access";
+import {DBInterface} from "../../api/database/DBInterface";
 import {Account, checkLogin} from "../../api/logic/account";
 import {Crypto} from "../../api/crypto/crypto";
 import {encryptedAthletesToGroups, Athlete} from "../../api/logic/athlete";

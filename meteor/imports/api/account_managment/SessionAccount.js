@@ -1,4 +1,4 @@
-import {DBInterface} from "../database/db_access";
+import {DBInterface} from "../database/DBInterface";
 import {Crypto} from "../crypto/crypto";
 import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
 

@@ -1,4 +1,4 @@
-import {DBInterface} from "../../../../imports/api/database/db_access";
+import {DBInterface} from "../../../../imports/api/database/DBInterface";
 
 
 function hasClass(element, cls) {

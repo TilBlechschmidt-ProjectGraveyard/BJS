@@ -1,5 +1,5 @@
 import {SessionAccount} from "./SessionAccount";
-import {DBInterface} from "../database/db_access";
+import {DBInterface} from "../database/DBInterface";
 import {checkPermission} from "../../../client/components/login/router";
 
 

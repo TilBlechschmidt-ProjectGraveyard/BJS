@@ -2,7 +2,7 @@ import {initGeneric} from "./generic";
 import {initContest} from "./contest";
 import {initAccounts} from "./accounts";
 import {initAthletes} from "./athletes";
-import {DBInterface} from "../db_access";
+import {DBInterface} from "../DBInterface";
 
 function initDatabase() {
     initAccounts();

@@ -1,7 +1,7 @@
 import {Template} from "meteor/templating";
 import "./output.html";
 import "./resultCollapse.css";
-import {DBInterface} from "../../../imports/api/database/db_access";
+import {DBInterface} from "../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
 

@@ -4,7 +4,7 @@ import {Log} from "../../log";
 import {Crypto} from "../../crypto/crypto";
 import {ContestCollection} from "./collection";
 import {Account} from "../../logic/account";
-import {DBInterface} from "../db_access";
+import {DBInterface} from "../DBInterface";
 
 export function initAthletes() {
     Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes', function (name, handle) {

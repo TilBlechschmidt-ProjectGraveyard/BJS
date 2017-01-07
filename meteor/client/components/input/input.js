@@ -2,7 +2,7 @@ import {Template} from "meteor/templating";
 import "./input.html";
 import "./input.css";
 import {Log} from "../../../imports/api/log";
-import {DBInterface} from "../../../imports/api/database/db_access";
+import {DBInterface} from "../../../imports/api/database/DBInterface";
 import {arrayify, getAthletes, getLastLogin} from "../helpers";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {checkPermission, updateSwiperProgress} from "../login/router";
