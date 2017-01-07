@@ -13,6 +13,10 @@ html, html * {
     text-align: center;
 }
 
+.t-right {
+    text-align: right;
+}
+
 .full-width {
     width: 100%;
 }
@@ -29,6 +33,11 @@ html, html * {
     float: right;
 }
 
+.button-highlight {
+    color: #007aff;
+    cursor: pointer;
+}
+
 .justify {
     text-align: justify;
 }
@@ -37,6 +46,14 @@ html, html * {
     margin-bottom: 70px;
     padding-bottom: 70px;
     border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+.bg-color-transition {
+    -webkit-transition: background-color 1000ms linear;
+    -moz-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
 }
 
 #__blaze-root{
