@@ -18,11 +18,9 @@ export function checkAdminLogin(loginObject) { //TODO check isAdmin member
     return checkLogin(getAdminAccount(), loginObject);
 }
 
-export const encryptAsAdmin = function (data) {
+export function encryptAsAdmin(data) {
     return Crypto.encrypt(data, getAdminAccount().ac, getAdminAccount().ac);
-};
-module.exports.encryptAsAdmin = encryptAsAdmin;
-
+}
 
 export function encryptAs(data, account) {
     return Crypto.encrypt(data, account.ac, account.ac);

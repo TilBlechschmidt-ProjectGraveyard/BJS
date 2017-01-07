@@ -9,7 +9,7 @@ import {DBInterface} from "../DBInterface";
 let encryptAsAdmin;
 
 if (Meteor.isServer) {
-    encryptAsAdmin = require("../../../startup/server/helpers");
+    encryptAsAdmin = require("../../../startup/server/helpers").encryptAsAdmin;
 }
 
 export function initAthletes() {
