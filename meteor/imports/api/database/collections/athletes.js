@@ -6,6 +6,12 @@ import {ContestCollection} from "./collection";
 import {Account} from "../../logic/account";
 import {DBInterface} from "../DBInterface";
 
+let encryptAsAdmin;
+
+if (Meteor.isServer) {
+    encryptAsAdmin = require("../../../startup/server/helpers");
+}
+
 export function initAthletes() {
     Meteor.COLLECTIONS.Athletes = new ContestCollection('Athletes', function (name, handle) {
         handle.before.update(function (userId, doc, fieldNames, modifier) {
@@ -20,14 +26,55 @@ export function initAthletes() {
             }
         });
 
-        Meteor.publish(name, function () {
-            return handle.find({}, {
-                fields: {
-                    'certificateScore': false,
-                    'certificateTime': false,
-                    'certificatedBy': false
+        handle.after.update(function (userId, doc, fieldNames, modifier) {
+            let updateRequired = false;
+            if (modifier.hasOwnProperty('$set')) {
+                for (let name in modifier.$set) {
+                    if (!modifier.$set.hasOwnProperty(name)) continue;
+
+                    if (name.substr(0, 2) === "m_") {
+                        updateRequired = true;
+                    }
+                }
+            }
+
+            if (updateRequired) {
+                const ct = DBInterface.getCompetitionType();
+                const log = new Log();
+                const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
+                const athlete = Athlete.decryptFromDatabase(log, doc, accounts, true, true);
+                const valid = ct.validate(log, athlete, accounts, true);
+                const certificate = ct.generateCertificate(log, athlete, accounts, true);
+
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: doc._id}, {
+                    $set: {
+                        currentScore: encryptAsAdmin(certificate.score),
+                        stScores: encryptAsAdmin(certificate.stScores),
+                        certificate: encryptAsAdmin(certificate.certificate),
+                        certificateValid: encryptAsAdmin(valid)
+                    }
+                });
+            }
+        });
+
+        handle.after.insert(function (userId, doc, fieldNames, modifier) {
+            Meteor.COLLECTIONS.Athletes.handle.update({_id: doc._id}, {
+                $set: {
+                    currentScore: encryptAsAdmin(0),
+                    stScores: encryptAsAdmin({}),
+                    certificate: encryptAsAdmin(0),
+                    certificateScore: encryptAsAdmin(0),
+                    certificateTime: encryptAsAdmin(0),
+                    certificatedBy: encryptAsAdmin(""),
+                    certificateValid: encryptAsAdmin(false)
                 }
             });
+        });
+
+
+
+        Meteor.publish(name, function () {
+            return handle.find({});
         });
     });
 

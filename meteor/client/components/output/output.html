@@ -8,20 +8,10 @@
                     <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
                             class="f7-icons">help</i></a></div>
                     <div class="center truncate">
-                        <div class="slider-title-wrapper">
-                            <div class="slider-title-overlay"></div>
-                            <div id="output-name-swiper" class="swiper-container full-height">
-                                <div class="swiper-wrapper">
-                                    {{#each g in groups}}
-                                        <div class="swiper-slide open-popover hover-underline group-name"
-                                             data-popover=".popover-groups">{{g.name}}</div>
-                                    {{/each}}
-                                </div>
-                            </div>
-                        </div>
+                        Alle
                     </div>
                     <div class="right">
-                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
+                        <a href="#" data-popover=".popover-filter" class="open-popover"><i
                                 class="f7-icons">filter</i></a>
                         <a href="#" data-popover=".popover-sorting" class="open-popover"><i
                                 class="f7-icons">sort</i></a>
@@ -30,57 +20,42 @@
             </div>
 
             <div class="page-content">
-                <div id="output-swiper" class="swiper-container full-height">
-                    <div class="swiper-wrapper">
-                        {{#each g in groups}}
-                            <div class="swiper-slide" data-hash="{{g.hash}}">
-                                {{>groupCertificates group=g}}
-                            </div>
-                        {{/each}}
-                    </div>
-                </div>
-                <div class="swiper-pagination fraction"></div>
+                <!--<div id="output-swiper" class="swiper-container full-height">-->
+                <!--<div class="swiper-wrapper">-->
+                    <!--{{#each g in groups}}-->
+                <!--<div class="swiper-slide" data-hash="{{g.hash}}">-->
+                <!--{{>groupCertificates group=g}}-->
+                <!--</div>-->
+                    <!--{{/each}}-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="swiper-pagination fraction"></div>-->
             </div>
 
             <div class="toolbar">
                 <div class="toolbar-inner">
+                    <div class="item-link left"></div>
                     <div class="item-link center"><a href="#" class="logout-button">Abmelden</a></div>
+                    <div class="item-link right"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{#each g in groups}}
-        {{#with g}}
-            <!-- Detailed result popups -->
-            {{#each a in validAthletes}}
-                {{>detailedResults athlete=a}}
-            {{/each}}
-            {{#each a in invalidAthletes}}
-                {{>detailedResults athlete=a}}
-            {{/each}}
-            {{#each a in doneAthletes}}
-                {{>detailedResults athlete=a}}
-            {{/each}}
-        {{/with}}
-    {{/each}}
-
-    <div class="popover popover-groups">
-        <div class="popover-angle"></div>
-        <div class="popover-inner">
-            <div class="list-block hide-scrollbar limit-vertical-height">
-                <ul>
-                    {{#each groups}}
-                        <li><a href="#" class="list-button item-link group-link"
-                               data-target="{{@index}}">{{this.name}}</a></li>
-                    {{/each}}
-                    <li>
-                        <a href="#" class="list-button item-link refresh-link"><i class="f7-icons">reload</i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+        <!--{{#each g in groups}}-->
+        <!--{{#with g}}-->
+        <!--&lt;!&ndash; Detailed result popups &ndash;&gt;-->
+            <!--{{#each a in validAthletes}}-->
+            <!--{{>detailedResults athlete=a}}-->
+                <!--{{/each}}-->
+            <!--{{#each a in invalidAthletes}}-->
+            <!--{{>detailedResults athlete=a}}-->
+                <!--{{/each}}-->
+            <!--{{#each a in doneAthletes}}-->
+            <!--{{>detailedResults athlete=a}}-->
+                <!--{{/each}}-->
+            <!--{{/with}}-->
+        <!--{{/each}}-->
 
     <div class="popover popover-sorting">
         <div class="popover-angle"></div>
@@ -153,6 +128,167 @@
                     </li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <div class="popover popover-filter">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block accordion-list">
+                <ul>
+                    <li class="accordion-item">
+                        <a href="" class="item-link item-content">
+                            <div class="item-media"><i class="f7-icons">persons</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Gruppen</div>
+                                <div class="item-after">Alle</div>
+                            </div>
+                        </a>
+                        <div class="accordion-item-content" style="padding-left: 5%;">
+                            <div class="list-block">
+                                <ul>
+                                    {{#each g in groupNames}}
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">{{g}}</div>
+                                                    <div class="item-input">
+                                                        <label class="label-switch">
+                                                            <input type="checkbox">
+                                                            <div class="checkbox"></div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="accordion-item">
+                        <a href="" class="item-link item-content">
+                            <div class="item-media"><i class="f7-icons">heart</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Geschlecht</div>
+                                <div class="item-after">Alle</div>
+                            </div>
+                        </a>
+                        <div class="accordion-item-content" style="padding-left: 5%;">
+                            <div class="list-block">
+                                <ul>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">Männlich</div>
+                                                <div class="item-input">
+                                                    <label class="label-switch">
+                                                        <input type="checkbox">
+                                                        <div class="checkbox"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">Weiblich</div>
+                                                <div class="item-input">
+                                                    <label class="label-switch">
+                                                        <input type="checkbox">
+                                                        <div class="checkbox"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="accordion-item">
+                        <a href="" class="item-link item-content">
+                            <div class="item-media"><i class="f7-icons">tags</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Urkundenstatus</div>
+                                <div class="item-after">Alle</div>
+                            </div>
+                        </a>
+                        <div class="accordion-item-content" style="padding-left: 5%;">
+                            <div class="list-block">
+                                <ul>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">Bereit</div>
+                                                <div class="item-input">
+                                                    <label class="label-switch">
+                                                        <input type="checkbox">
+                                                        <div class="checkbox"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">Nicht Bereit</div>
+                                                <div class="item-input">
+                                                    <label class="label-switch">
+                                                        <input type="checkbox">
+                                                        <div class="checkbox"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">Fertig</div>
+                                                <div class="item-input">
+                                                    <label class="label-switch">
+                                                        <input type="checkbox">
+                                                        <div class="checkbox"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!--<div class="list-block accordion-list">-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<div class="item-media"><i class="f7-icons">persons</i></div>-->
+            <!--<div class="item-inner">-->
+            <!--<div class="item-title">Gruppen</div>-->
+            <!--<div class="item-after">Alle</div>-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<div class="item-media"><i class="f7-icons">heart</i></div>-->
+            <!--<div class="item-inner">-->
+            <!--<div class="item-title">Geschlecht</div>-->
+            <!--<div class="item-after">Alle</div>-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<div class="item-media"><i class="f7-icons">tags</i></div>-->
+            <!--<div class="item-inner">-->
+            <!--<div class="item-title">Urkundenstatus</div>-->
+            <!--<div class="item-after">Alle</div>-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</div>-->
         </div>
     </div>
 
