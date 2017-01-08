@@ -1,0 +1,34 @@
+.gender {
+    -webkit-transition: color 300ms ease, opacity 300ms ease;
+    -moz-transition: color 300ms ease, opacity 300ms ease;
+    -o-transition: color 300ms ease, opacity 300ms ease;
+    -ms-transition: color 300ms ease, opacity 300ms ease;
+    transition: color 300ms ease, opacity 300ms ease;
+    cursor: default;
+}
+
+.gender-male:hover {
+    opacity: 1;
+    color: #5283c1;
+}
+
+.gender-male {
+    opacity: 1;
+    color: #5283c1;
+}
+
+.gender-female:hover {
+    opacity: 1;
+    color: #6d426d;
+}
+
+.gender-female {
+    opacity: 1;
+    color: #6d426d;
+}
+
+.not-selected {
+    opacity: 0.5;
+    color: #4D4E53;
+    cursor: pointer;
+}

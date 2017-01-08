@@ -78,27 +78,43 @@ Template.athleteList.helpers({
     }
 });
 
-Template.athleteList.events({
-    'blur input.name-input': function (event) {
-        const id = event.target.dataset.id;
-        const name = event.target.value;
-        var firstName = name.split(' ').slice(0, -1).join(' ').trim();
-        var lastName = name.split(' ').slice(-1).join(' ').trim();
-        const lgroups = localGroups.get();
-        for (let group in lgroups) {
-            if (!lgroups.hasOwnProperty(group)) continue;
-            let athletes = lgroups[group].athletes;
-            for (let athlete in athletes) {
-                if (!athletes.hasOwnProperty(athlete)) continue;
-                let athlete = athletes[athlete];
-                if (athlete.id == id) {
-                    athlete.firstName = firstName;
-                    athlete.lastName = lastName;
-                    localGroups.set(lgroups);
-                    return;
-                }
+function modifyAthlete(id, callback) {
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        let athletes = lgroups[group].athletes;
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            let athlete = athletes[athlete];
+            if (athlete.id == id) {
+                callback(athlete);
+                localGroups.set(lgroups);
+                return;
             }
         }
+    }
+}
+
+Template.athleteList.events({
+    'click .gender': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const id = event.target.closest("li").dataset.id;
+        const isMale = lodash.includes(event.target.className, 'gender-male');
+        modifyAthlete(id, function (athlete) {
+            athlete.isMale = isMale;
+        });
+        return false;
+    },
+    'blur input.name-input': function (event) {
+        const id = event.target.closest("li").dataset.id;
+        const name = event.target.value;
+        const firstName = name.split(' ').slice(0, -1).join(' ').trim();
+        const lastName = name.split(' ').slice(-1).join(' ').trim();
+        modifyAthlete(id, function (athlete) {
+            athlete.firstName = firstName;
+            athlete.lastName = lastName;
+        });
     },
     'click input': function () {
         if (editMode.get()) {

@@ -1,0 +1,26 @@
+<template name="startClassesPopup">
+    {{>popup class="popup-startclass" title="Behinderungsklassifizierung" subtitle=name content="startClassesPopupContent"}}
+</template>
+
+<template name="startClassesPopupContent">
+    <div class="list-block media-list">
+        <ul>
+            {{#each c in (arrayify startClasses)}}
+                {{#with c}}
+                    <li>
+                        <a href="#" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">{{name}}</div>
+                                    <div class="item-after">{{old_object_name}}</div>
+                                </div>
+                                <div class="item-text"
+                                     style="overflow: visible; height: auto; min-height: 42px; display: block;">{{description}}</div>
+                            </div>
+                        </a>
+                    </li>
+                {{/with}}
+            {{/each}}
+        </ul>
+    </div>
+</template>

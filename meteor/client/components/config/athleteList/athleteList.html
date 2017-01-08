@@ -5,7 +5,7 @@
             <div class="list-block accordion-list">
                 <ul>
                     {{#each a in g.athletes}}
-                        <li class="accordion-item">
+                        <li class="accordion-item" data-id="{{a.id}}">
                             <a href="#" class="item-content item-link">
                                 {{#if not readOnly}}
                                     {{#if validAthlete a}}
@@ -38,8 +38,15 @@
                                         </p>
                                         <p class="t-left">
                                             Geschlecht:
-                                            <span class="align-right">{{#if isMale}}
-                                                Männlich{{else}}Weiblich{{/if}}</span>
+                                            <span class="align-right">
+                                                {{#if readOnly}}
+                                                    {{#if isMale}}Männlich{{else}}Weiblich{{/if}}
+                                                {{else}}
+                                                    <span class="gender gender-male {{#if not
+                                                                                          isMale}}not-selected{{/if}}">Männlich</span> / <span
+                                                        class="gender gender-female {{#if isMale}}not-selected{{/if}}">Weiblich</span>
+                                                {{/if}}
+                                            </span>
                                         </p>
                                         <p class="t-left">
                                             Behinderungsklasse:
