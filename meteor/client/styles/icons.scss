@@ -65,6 +65,24 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: stroke .3s $curve .8s forwards;
 }
 
+// --- Not animated pats ---
+
+.icon.not-animated .i__dot {
+  stroke-dashoffset: 0;
+}
+
+.icon.not-animated .i__dash {
+  stroke-dashoffset: 0;
+}
+
+.icon.not-animated .i__circle {
+  stroke-dashoffset: 0;
+}
+
+.icon.not-animated .i__check {
+  stroke-dashoffset: 0;
+}
+
 // -- Specific icon styles --
 
 // OK-Icon  |  .i-ok
@@ -76,6 +94,10 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: fill-green .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
+.i-ok.not-animated {
+  box-shadow: inset 0 0 0 30px $color--green;
+}
+
 // Warn-Icon  |  .i-warn
 .i-warn .i__circle {
   stroke: $color--yellow;
@@ -83,6 +105,10 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 .i-warn.animated {
   animation: fill-yellow .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.i-warn.not-animated {
+  box-shadow: inset 0 0 0 30px $color--yellow;
 }
 
 // Ready-Icon  |  .i-ready
@@ -94,6 +120,10 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
   animation: fill-blue .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
 }
 
+.i-ready.not-animated {
+  box-shadow: inset 0 0 0 30px $color--blue;
+}
+
 // Err-Icon  |  .i-err
 .i-err .i__circle {
   stroke: $color--red;
@@ -101,6 +131,10 @@ $curve: cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 .i-err.animated {
   animation: fill-red .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.i-err.not-animated {
+  box-shadow: inset 0 0 0 30px $color--red;
 }
 
 // --------- Keyframes ---------
