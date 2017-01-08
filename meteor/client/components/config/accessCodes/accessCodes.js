@@ -1,4 +1,6 @@
-Meteor.test = new ReactiveVar([
+import {genRandomCode} from "../../../../imports/api/crypto/pwdgen";
+import {Account} from "../../../../imports/api/logic/account";
+let accessCodes = new ReactiveVar([
     {
         name: "Stationspasswörter",
         codes: [
@@ -10,9 +12,17 @@ Meteor.test = new ReactiveVar([
     {name: "Eigene Zugangsdaten"},
 ]);
 
+function createAccount(name, groups, sportTypes, resultPermission, adminPermission) {
+    const password = genRandomCode();
+
+    const account = new Account(name, groups, sportTypes, Crypto.generateAC(password), resultPermission, adminPermission);
+
+    // TODO Dump into reactive var and store in local storage
+}
+
 Template.accessCodes.helpers({
     codeGroups: function () {
-        return Meteor.test.get();
+        return accessCodes.get();
     }
 });
 

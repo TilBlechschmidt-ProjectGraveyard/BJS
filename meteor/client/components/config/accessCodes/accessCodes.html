@@ -1,39 +1,30 @@
 <template name="accessCodes">
     <div class="autoWidthListBlock">
         {{#each g in codeGroups}}
-            <div class="content-block-title">{{g.name}}</div>
-            <div class="list-block">
-                <ul class="container">
-                    {{#each c in (g.codes)}}
-                        <li class="result-accordion item">
-                            <div class="item-content">
-                                {{#if c.code}}
-                                    <div class="item-media">{{> iconOK}}</div>
-                                {{else}}
-                                    <div class="item-media">
-                                        {{> iconPreloader}}
+            {{#if not (isEmpty g.codes)}}
+                <div class="content-block-title">{{g.name}}</div>
+                <div class="list-block">
+                    <ul class="container">
+                        {{#each c in (g.codes)}}
+                            <li class="result-accordion item">
+                                <div class="item-content">
+                                    {{#if c.code}}
+                                        <div class="item-media">{{> iconOK}}</div>
+                                    {{else}}
+                                        <div class="item-media">
+                                            {{> iconPreloader}}
+                                        </div>
+                                    {{/if}}
+                                    <div class="item-inner">
+                                        <div class="item-title">{{c.title}}</div>
+                                        <div class="item-after">{{c.code}}</div>
                                     </div>
-                                {{/if}}
-                                <div class="item-inner">
-                                    <div class="item-title">{{c.title}}</div>
-                                    <div class="item-after">{{c.code}}</div>
                                 </div>
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
-                <!--<div class="list-block-label">List block label text goes here</div>-->
-            </div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if}}
         {{/each}}
     </div>
-
-    <style>
-        .fade-in {
-
-        }
-
-        .fade-out {
-
-        }
-    </style>
 </template>
