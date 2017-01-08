@@ -17,60 +17,95 @@ const baseSortingData = [
         name: "Urkundenstatus",
         icon: "tags",
         sort: function (a, b) {
-            return 0;
+            return statusToNumber(a) - statusToNumber(b);
+        },
+        getGroupName: function (a) {
+            if (isReady(a)) return "Bereit";
+            if (isUpdate(a)) return "Neu Erstellen";
+            if (isNotReady(a)) return "Nicht Bereit";
+            if (isFinish(a)) return "Fertig";
         }
     },
     {
         id: 1,
-        name: "Nachname",
-        icon: "person",
+        name: "Urkundentype",
+        icon: "document_text",
         sort: function (a, b) {
-            return a.lastName.localeCompare(b.lastName);
+            return b.certificate - a.certificate;
+        },
+        getGroupName: function (a) {
+            return a.certificateName;
         }
     },
     {
         id: 2,
-        name: "Vorname",
+        name: "Nachname",
         icon: "person",
         sort: function (a, b) {
-            return a.firstName.localeCompare(b.firstName);
+            return a.lastName.localeCompare(b.lastName);
+        },
+        getGroupName: function (a) {
+            return "Alle";
         }
     },
     {
         id: 3,
-        name: "Punkte",
-        icon: "stopwatch",
+        name: "Vorname",
+        icon: "person",
         sort: function (a, b) {
-            return b.score - a.score;
+            return a.firstName.localeCompare(b.firstName);
+        },
+        getGroupName: function (a) {
+            return "Alle";
         }
     },
     {
         id: 4,
-        name: "Alter",
-        icon: "today",
+        name: "Punkte",
+        icon: "stopwatch",
         sort: function (a, b) {
-            return b.ageGroup - a.ageGroup;
+            return b.score - a.score;
+        },
+        getGroupName: function (a) {
+            return "Alle";
         }
     },
     {
         id: 5,
-        name: "Gruppe",
-        icon: "persons",
+        name: "Alter",
+        icon: "today",
         sort: function (a, b) {
-            return a.group.localeCompare(b.group);
+            return b.ageGroup - a.ageGroup;
+        },
+        getGroupName: function (a) {
+            return a.ageGroup.toString();
         }
     },
     {
         id: 6,
+        name: "Gruppe",
+        icon: "persons",
+        sort: function (a, b) {
+            return a.group.localeCompare(b.group);
+        },
+        getGroupName: function (a) {
+            return a.group;
+        }
+    },
+    {
+        id: 7,
         name: "Geschlecht",
         icon: "heart",
         sort: function (a, b) {
             return b.isMale - a.isMale;
+        },
+        getGroupName: function (a) {
+            return a.isMale ? "Männlich" : "Weiblich";
         }
     }
 ];
 
-const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6]);
+const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
 
 function loadAllAthlets() {
     DBInterface.generateCertificates(
@@ -124,51 +159,28 @@ function countTrue(list) {
     return counter;
 }
 
-function refresh() {
-    // DBInterface.generateCertificates(AccountManager.getOutputAccount().account, function (data) {
-    //     Meteor.groups = [];
-    //
-    //     for (let g in data) {
-    //         if (!data.hasOwnProperty(g)) continue;
-    //         const athletes = data[g].athletes;
-    //
-    //         const group = {
-    //             name: data[g].name,
-    //             hash: btoa(data[g].name),
-    //             athleteCount: data[g].athletes.length,
-    //             validAthletes: [],
-    //             invalidAthletes: [],
-    //             doneAthletes: []
-    //         };
-    //
-    //         for (let athlete in athletes) {
-    //             if (!athletes.hasOwnProperty(athlete)) continue;
-    //             athlete = athletes[athlete];
-    //
-    //             if (athlete.valid && !athlete.certificateWritten && !lodash.includes(Meteor.localCertificated, athlete.id)) {
-    //                 group.validAthletes.push(athlete);
-    //             } else if (!athlete.valid && !athlete.certificateWritten) {
-    //                 group.invalidAthletes.push(athlete);
-    //             } else if (athlete.certificateWritten) {
-    //                 group.doneAthletes.push(athlete);
-    //             }
-    //         }
-    //
-    //         Meteor.groups.push(group);
-    //     }
-    //
-    //     Meteor.groups_deps.changed();
-    //     Tracker.afterFlush(function () {
-    //         Meteor.f7.hideIndicator();
-    //     });
-    // });
 
+function statusToNumber(athlete) {
+    if (isReady(athlete)) return 0;
+    if (isUpdate(athlete)) return 1;
+    if (isNotReady(athlete)) return 2;
+    if (isFinish(athlete)) return 3;
+}
 
-    // Meteor.groups = ["Test1"];
-    // Meteor.groups_deps.changed();
-    //     Tracker.afterFlush(function () {
-    //         Meteor.f7.hideIndicator();
-    //     });
+function isReady(athlete) {
+    return athlete.valid && !athlete.certificateWritten && !athlete.certificateUpdate;
+}
+
+function isNotReady(athlete) {
+    return !athlete.valid;
+}
+
+function isUpdate(athlete) {
+    return athlete.valid && athlete.certificateUpdate;
+}
+
+function isFinish(athlete) {
+    return athlete.valid && athlete.certificateWritten && !athlete.certificateUpdate;
 }
 
 //noinspection JSUnusedGlobalSymbols
@@ -208,15 +220,17 @@ Template.output.helpers({
         const status = statusSettings.get();
         const sorting = sortingSettings.get();
 
+        //filter
         const athletes = _.filter(allAthletes, function (athlete) {
             return (gender.m || !athlete.isMale) && (gender.w || athlete.isMale) &&
-                (status.ready || !(athlete.valid && athlete.certificateWritten)) &&
-                (status.notReady || athlete.valid) &&
-                (status.finish || !(athlete.valid && athlete.certificateWritten)) &&
-                (status.update || !(athlete.valid && athlete.certificateUpdate)) &&
+                (status.ready || !isReady(athlete)) &&
+                (status.notReady || !isNotReady(athlete)) &&
+                (status.finish || !isFinish(athlete)) &&
+                (status.update || !isUpdate(athlete)) &&
                 groups[athlete.group];
         });
 
+        //sorting
         const athletesSorted = athletes.sort(function (a, b) {
             let currentIndex = 0;
             let lastComparison = 0;
@@ -227,7 +241,21 @@ Template.output.helpers({
             return lastComparison;
         });
 
-        let result = [{title: "Alle", athletes: athletesSorted}];
+
+        //grouping
+        let result = [];
+        let currentGroup = undefined;
+
+        _.forEach(athletesSorted, function (athlete) {
+
+            const groupName = baseSortingData[sorting[0]].getGroupName(athlete);
+            if (!currentGroup || groupName != currentGroup.title) {
+                if (currentGroup) result.push(currentGroup);
+                currentGroup = {title: groupName, athletes: []};
+            }
+            currentGroup.athletes.push(athlete);
+        });
+        result.push(currentGroup); //final push
 
         return result;
     }
