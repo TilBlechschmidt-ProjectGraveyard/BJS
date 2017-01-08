@@ -157,7 +157,7 @@ export function onStartup() {
                     ageGroup: athlete.ageGroup,
                     id: athlete.id,
                     certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
-                    certificateUpdate: (certificateScoreObject.data >= 0) && (certificateScoreObject.data !== currentScoreObject.data),
+                    certificateUpdate: (certificateScoreObject.data > 0) && (certificateScoreObject.data !== currentScoreObject.data),
                     certificateTime: certificateTimeObject.data,
                     certificatedBy: certificatedByObject.data,
                     valid: validObject.data,
@@ -195,6 +195,7 @@ export function onStartup() {
                 return encryptAs(false, account);
             }
 
+            const log = new Log();
             const athlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: id});
             const validityObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
 
@@ -202,7 +203,7 @@ export function onStartup() {
                 Meteor.COLLECTIONS.Athletes.handle.update({_id: id}, {
                     $set: {
                         certificateTime: encryptAsAdmin(Date.now()),
-                        certificateScore: encryptAsAdmin(certificate.score),
+                        certificateScore: athlete.currentScore,
                         certificatedBy: encryptAsAdmin(account.name)
                     }
                 });

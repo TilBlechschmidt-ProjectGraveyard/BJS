@@ -7,8 +7,8 @@
                 <div class="navbar-inner">
                     <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
                             class="f7-icons">help</i></a></div>
-                    <div class="center truncate">
-                        Alle
+                    <div class="center">
+                        Urkunden
                     </div>
                     <div class="right">
                         <a href="#" data-popover=".popover-filter" class="open-popover"><i
@@ -19,22 +19,8 @@
                 </div>
             </div>
 
-            <div class="page-content">
-                <div class="autoWidthListBlock">
-                    {{#each u in uiElements}}
-                        {{#with u}}
-                            {{#if showTitle title}}
-                                <div class="content-block-title">{{title}}</div>{{/if}}
-                            <div class="list-block">
-                                <ul>
-                                    {{#each a in athletes}}
-                                        {{>result athlete=a}}
-                                    {{/each}}
-                                </ul>
-                            </div>
-                        {{/with}}
-                    {{/each}}
-                </div>
+            <div class="page-content" id="outputContentWrapper">
+
             </div>
 
             <div class="toolbar">
@@ -236,4 +222,23 @@
         </div>
     </div>
 
+</template>
+
+
+<template name="outputContent">
+    {{#each u in uiElements}}
+        {{#with u}}
+            <div class="autoWidthListBlock collapsible">
+                {{#if showTitle title}}
+                    <div class="content-block-title">{{title}}</div>{{/if}}
+                <div class="list-block">
+                    <ul>
+                        {{#each a in athletes}}
+                            {{>result athlete=a}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{/with}}
+    {{/each}}
 </template>

@@ -1,7 +1,8 @@
 <template name="result">
-    {{#with athlete}}
-        <li class="accordion-item result-accordion {{#if not certificateWritten}}{{#if
-                valid}}accordion-item-expanded{{/if}}{{/if}} {{#if moved}}fade-open{{/if}}">
+    {{#if show athlete}}
+        <li class="accordion-item result-accordion {{#if autoOpen athlete}}accordion-item-expanded{{/if}}"
+            id="accordion_athlete_{{#with athlete}}{{id}}{{/with}}" data-athlete_id="{{#with athlete}}{{id}}{{/with}}">
+            {{#with athlete}}
             <a href="#" class="item-content item-link">
                 <div class="item-media">
 
@@ -73,6 +74,7 @@
                     {{/if}}
                 </div>
             </div>
+            {{/with}}
         </li>
-    {{/with}}
+    {{/if}}
 </template>
