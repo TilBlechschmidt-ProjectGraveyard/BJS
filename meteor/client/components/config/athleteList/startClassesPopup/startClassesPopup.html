@@ -7,8 +7,8 @@
         <ul>
             {{#each c in (arrayify startClasses)}}
                 {{#with c}}
-                    <li>
-                        <a href="#" class="item-link item-content">
+                    <li data-id="{{old_object_name}}">
+                        <a href="#" class="item-link item-content startClassSelect">
                             <div class="item-inner">
                                 <div class="item-title-row">
                                     <div class="item-title">{{name}}</div>

@@ -4,12 +4,31 @@ import {AccountManager} from "../../../../imports/api/account_managment/AccountM
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 
+const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
 
 const groups = new ReactiveVar([]);
 const localGroups = new ReactiveVar([]);
+export const selectedAthlete = new ReactiveVar(undefined);
 
 let loaded;
+
+export let modifyAthlete = function (id, callback) {
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        let athletes = lgroups[group].athletes;
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            let athlete = athletes[athlete];
+            if (athlete.id == id) {
+                callback(athlete);
+                localGroups.set(lgroups);
+                return;
+            }
+        }
+    }
+};
 
 // Load from storage
 Tracker.autorun(function () {
@@ -75,25 +94,11 @@ Template.athleteList.helpers({
         const fullName = athlete.getFullName();
         if (fullName === " ") return;
         return fullName;
+    },
+    startClassName: function (startClass) {
+        return startClasses[startClass].name;
     }
 });
-
-function modifyAthlete(id, callback) {
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        let athletes = lgroups[group].athletes;
-        for (let athlete in athletes) {
-            if (!athletes.hasOwnProperty(athlete)) continue;
-            let athlete = athletes[athlete];
-            if (athlete.id == id) {
-                callback(athlete);
-                localGroups.set(lgroups);
-                return;
-            }
-        }
-    }
-}
 
 Template.athleteList.events({
     'click .gender': function (event) {
@@ -104,6 +109,14 @@ Template.athleteList.events({
         modifyAthlete(id, function (athlete) {
             athlete.isMale = isMale;
         });
+        return false;
+    },
+    'click .startClassSelectOpen': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const id = event.target.closest("li").dataset.id;
+        selectedAthlete.set(id);
+        Meteor.f7.popup(".popup-startclass");
         return false;
     },
     'blur input.name-input': function (event) {
