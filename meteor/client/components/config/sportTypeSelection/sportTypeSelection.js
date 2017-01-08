@@ -45,11 +45,8 @@ Template.sportTypeSelection.helpers({
 Template.sportTypeSelection.events({
     'click .checkbox-sportType': function (event) {
         const checkbox = event.target;
-        const id = checkbox.dataset.id;
-        const value = checkbox.checked;
-        console.log(id, value);
-        DBInterface.setSportTypeState(AccountManager.getAdminAccount().account, currentCompID.get(), id, value, function () {
-            console.log("IT WORKED");
+        DBInterface.setSportTypeState(AccountManager.getAdminAccount().account, currentCompID.get(), checkbox.dataset.id, checkbox.checked, function () {
+            // console.log("IT WORKED");
         });
     }
 });
