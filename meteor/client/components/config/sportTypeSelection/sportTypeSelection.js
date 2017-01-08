@@ -28,7 +28,6 @@ DBInterface.waitForReady(function () {
                 cats[sportType.category].sportTypes.push(sportType);
             }
 
-            console.log(cats);
             categories.set(cats);
 
             Tracker.afterFlush(Meteor.f7.hideIndicator);

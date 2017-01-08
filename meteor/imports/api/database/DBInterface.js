@@ -173,6 +173,11 @@ export let DBInterface = {
 
     /**
      * Set the state of a sportType for a given competition ID
+     * @param account
+     * @param competitionID
+     * @param sportTypeID
+     * @param state
+     * @param callback
      */
     setSportTypeState: function (account, competitionID, sportTypeID, state, callback) {
         const loginObject = getLoginObject(account);

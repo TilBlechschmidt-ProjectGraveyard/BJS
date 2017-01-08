@@ -8,11 +8,23 @@
                         <li class="accordion-item">
                             <a href="#" class="item-content item-link">
                                 {{#if not readOnly}}
-                                    <div class="item-media">{{> iconOK}}</div>{{/if}}
+                                    {{#if validAthlete a}}
+                                        <div class="item-media">{{> iconOK}}</div>
+                                    {{else}}
+                                        <div class="item-media">{{> iconErr}}</div>
+                                    {{/if}}
+                                {{/if}}
                                 <div class="item-inner">
-                                    <div class="item-title">{{a.firstName}}
-                                        &nbsp;{{a.lastName}} {{>athleteMetaIcons athlete=a}}</div>
-                                    <!--<div class="item-after">Irgendwas</div>-->
+                                    <div class="item-title"
+                                         style="display: inline-block; vertical-align: middle; width: 75%">
+                                        {{#if readOnly}}
+                                            {{a.firstName}}&nbsp;{{a.lastName}}
+                                            {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
+                                        {{else}}
+                                            <input type="text" style="display: inline-block; width: 100%"
+                                                   value="{{a.fullName}}" placeholder="Vor-/Nachname">
+                                        {{/if}}
+                                    </div>
                                 </div>
                             </a>
                             <div class="accordion-item-content">
@@ -36,11 +48,33 @@
                             </div>
                         </li>
                     {{/each}}
+                    {{#if not readOnly}}
+                        <li class="button-highlight add-athlete" data-id="{{g.name}}">
+                            <div class="item-content">
+                                <div class="item-media">
+                                    <i class="f7-icons" style="margin-left: 10px;">add</i>
+                                </div>
+                                <div class="item-inner">
+                                    <div style="display: inline-block">
+                                        <div class="item-title" style="display: inline-block; vertical-align: middle;">
+                                            Athleten hinzufügen
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {{/if}}
                 </ul>
                 <!--<div class="list-block-label">List block label text goes here</div>-->
             </div>
         </div>
     {{/each}}
+    {{#if not readOnly}}
+        <div class="content-block t-center button-highlight add-group"><i class="f7-icons"
+                                                                          style="display:inline-block; vertical-align: middle; padding-right: 10px">add</i>
+            Gruppe hinzufügen
+        </div>
+    {{/if}}
 </template>
 
 <template name="athleteMetaIcons">

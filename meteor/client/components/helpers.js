@@ -80,6 +80,9 @@ Template.registerHelper('hasData', function (obj) {
 Template.registerHelper('isZero', function (num) {
     return parseInt(num) == 0;
 });
+Template.registerHelper('setReadOnly', function (bool) {
+    return bool ? "disabled" : "";
+});
 Template.registerHelper('isOffline', isOffline);
 
 Template.body.events({

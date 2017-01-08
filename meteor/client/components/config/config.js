@@ -1,7 +1,11 @@
 import {DBInterface} from "../../../imports/api/database/DBInterface";
+import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
 import {updateSwiperProgress} from "../login/router";
+
+Meteor.config = {};
+Meteor.config.log = new Log();
 
 export const dbReady = new Tracker.Dependency();
 
