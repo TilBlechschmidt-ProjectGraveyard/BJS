@@ -21,8 +21,10 @@
                                             {{a.firstName}}&nbsp;{{a.lastName}}
                                             {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
                                         {{else}}
-                                            <input type="text" style="display: inline-block; width: 100%"
-                                                   value="{{a.fullName}}" placeholder="Vor-/Nachname">
+                                            <input type="text" class="name-input"
+                                                   style="display: inline-block; width: 100%"
+                                                   value="{{fullName a}}" placeholder="Vor-/Nachname"
+                                                   data-id="{{a.id}}">
                                         {{/if}}
                                     </div>
                                 </div>

@@ -2,6 +2,9 @@ import {currentCompID, editMode, dbReady} from "../config";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
 import {Athlete} from "../../../../imports/api/logic/athlete";
+import {genUUID} from "../../../../imports/api/crypto/pwdgen";
+
+const defaultBirthYear = new Date().getFullYear() - 17;
 
 const groups = new ReactiveVar([]);
 const localGroups = new ReactiveVar([]);
@@ -21,6 +24,7 @@ Tracker.autorun(function () {
                     return Athlete.fromObject(Meteor.config.log, athlete);
                 });
             }
+            console.log(parsed);
             localGroups.set(parsed);
         }
         loaded = compID;
@@ -44,18 +48,6 @@ DBInterface.waitForReady(function () {
             const competitionID = currentCompID.get();
             if (!competitionID) return;
             DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, function (data) {
-                // Tracker.nonreactive(function () {
-                //     // Remove duplicated groups from the localGroups object
-                //     const lgroups = localGroups.get();
-                //     lodash.remove(lgroups, function (group) {
-                //         for (let g in data) {
-                //             if (!data.hasOwnProperty(g)) continue;
-                //             if (group.name == data[g].name) return false;
-                //         }
-                //         return true;
-                //     });
-                //     localGroups.set(lgroups);
-                // });
                 groups.set(data);
                 Tracker.afterFlush(Meteor.f7.hideIndicator);
             });
@@ -78,10 +70,36 @@ Template.athleteList.helpers({
             return athlete.check(Meteor.config.log);
         else
             return true;
+    },
+    fullName: function (athlete) {
+        const fullName = athlete.getFullName();
+        if (fullName === " ") return;
+        return fullName;
     }
 });
 
 Template.athleteList.events({
+    'blur input.name-input': function (event) {
+        const id = event.target.dataset.id;
+        const name = event.target.value;
+        var firstName = name.split(' ').slice(0, -1).join(' ').trim();
+        var lastName = name.split(' ').slice(-1).join(' ').trim();
+        const lgroups = localGroups.get();
+        for (let group in lgroups) {
+            if (!lgroups.hasOwnProperty(group)) continue;
+            let athletes = lgroups[group].athletes;
+            for (let athlete in athletes) {
+                if (!athletes.hasOwnProperty(athlete)) continue;
+                let athlete = athletes[athlete];
+                if (athlete.id == id) {
+                    athlete.firstName = firstName;
+                    athlete.lastName = lastName;
+                    localGroups.set(lgroups);
+                    return;
+                }
+            }
+        }
+    },
     'click input': function () {
         if (editMode.get()) {
             event.stopImmediatePropagation();
@@ -111,7 +129,7 @@ Template.athleteList.events({
         }
 
         const ct = DBInterface.getCompetitionType(compID);
-        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", 2000, true, groupName, '0', ct.maxAge, ct));
+        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, true, groupName, '0', ct.maxAge, ct, genUUID()));
 
         localGroups.set(lgroups);
     }
