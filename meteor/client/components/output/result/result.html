@@ -1,23 +1,28 @@
 <template name="result">
-    <li class="certificate accordion-item result-accordion collapsible {{#if autoOpen
+    <li class="certificate accordion-item result-accordion collapsible {{#with athlete}}{{classes}}{{/with}} {{#if
+            autoOpen
                                                                              athlete}}accordion-item-expanded{{/if}}"
         id="accordion_athlete_{{#with athlete}}{{id}}{{/with}}" data-athlete_id="{{#with athlete}}{{id}}{{/with}}">
         {{#with athlete}}
             <a href="#" class="item-content item-link">
-                <div class="item-media">
+                <div class="item-media" id="iconWrapper{{id}}">
 
-                    {{#if valid}}
-                        {{#if certificateUpdate}}
+                    {{#if isEqual iconID 0}}
+                        {{> iconReady}}
+                    {{else}}
+                        {{#if isEqual iconID 1}}
                             {{> iconWarn}}
                         {{else}}
-                            {{#if certificateWritten}}
-                                {{> iconOK}}
+                            {{#if isEqual iconID 2}}
+                                {{> iconErr}}
                             {{else}}
-                                {{> iconReady class="todo-svg"}}
+                                {{#if isEqual iconID 3}}
+                                    {{> iconOK}}
+                                {{else}}
+                                    {{> iconPreloader}}
+                                {{/if}}
                             {{/if}}
                         {{/if}}
-                    {{else}}
-                        {{> iconErr}}
                     {{/if}}
                 </div>
                 <div class="item-inner">

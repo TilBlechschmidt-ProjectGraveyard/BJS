@@ -1,5 +1,6 @@
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
+import {findIndexOfAthlete} from "../helpers";
 
 
 Template.result.helpers({
@@ -28,6 +29,9 @@ Template.result.helpers({
         } else {
             return athlete.valid && !athlete.certificateWritten;
         }
+    },
+    isEqual: function (a, b) {
+        return a == b;
     }
 });
 
@@ -39,8 +43,12 @@ Template.result.events({
         return false;
     },
     'click .signCertificate': function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, event.target.dataset.id);
+        const id = event.target.dataset.id;
+        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, id);
+
+        const athletes = Meteor.reactiveAthletes.get();
+        const index = findIndexOfAthlete(athletes, id);
+        athletes[index].iconID = 4;
+        Meteor.reactiveAthletes.set(athletes);
     }
 });

@@ -5,8 +5,9 @@ import {DBInterface} from "../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
 import {ReactiveVar} from "meteor/reactive-var";
+import {findIndexOfAthlete, isReady, isUpdate, isNotReady, isFinish, statusToNumber} from "./helpers";
 
-const reactiveAthletes = new ReactiveVar([]);
+Meteor.reactiveAthletes = new ReactiveVar([]);
 const groupSettings = new ReactiveVar({text: "Keine"});
 const genderSettings = new ReactiveVar({m: true, w: true, text: "Alle"});
 const statusSettings = new ReactiveVar({ready: true, update: true, notReady: true, finish: true, text: "Alle"});
@@ -114,7 +115,10 @@ function loadAllAthlets() {
             return enc_athlete._id
         }),
         function (data) {
-            reactiveAthletes.set(data);
+            Meteor.reactiveAthletes.set(_.map(data, function (athlete) {
+                athlete.iconID = statusToNumber(athlete);
+                return athlete;
+            }));
             updatedGroups();
             Meteor.f7.hideIndicator();
         }
@@ -123,7 +127,7 @@ function loadAllAthlets() {
 
 function getGroupsFromAthletes() {
     const groupNames = [];
-    const athletes = reactiveAthletes.get();
+    const athletes = Meteor.reactiveAthletes.get();
 
     for (let athleteIndex in athletes) {
         if (!athletes.hasOwnProperty(athleteIndex)) continue;
@@ -147,47 +151,13 @@ function updatedGroups() {
     groupSettings.set(settingData);
 }
 
-function countTrue(list) {
-    let counter = 0;
 
-    for (let a in list) {
-        if (!list.hasOwnProperty(a)) continue;
-        if (list[a] == true) { //== true required because list[a] might be an object
-            counter += 1;
-        }
-    }
-    return counter;
-}
-
-
-function statusToNumber(athlete) {
-    if (isReady(athlete)) return 0;
-    if (isUpdate(athlete)) return 1;
-    if (isNotReady(athlete)) return 2;
-    if (isFinish(athlete)) return 3;
-}
-
-function isReady(athlete) {
-    return athlete.valid && !athlete.certificateWritten && !athlete.certificateUpdate;
-}
-
-function isNotReady(athlete) {
-    return !athlete.valid;
-}
-
-function isUpdate(athlete) {
-    return athlete.valid && athlete.certificateUpdate;
-}
-
-function isFinish(athlete) {
-    return athlete.valid && athlete.certificateWritten && !athlete.certificateUpdate;
-}
 
 
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
     allAthletes: function () {
-        return reactiveAthletes.get();
+        return Meteor.reactiveAthletes.get();
     },
     genderSettings: function () {
         return genderSettings.get();
@@ -220,7 +190,12 @@ Template.outputContent.helpers({
         return title !== "";
     },
     uiElements: function () {
-        const allAthletes = reactiveAthletes.get();
+        const allAthletes = _.map(Meteor.reactiveAthletes.get(), function (athlete) {
+            if (!athlete.classes) {
+                athlete.classes = "";
+            }
+            return athlete;
+        });
 
         const groups = groupSettings.get();
         const gender = genderSettings.get();
@@ -271,7 +246,7 @@ Template.outputContent.helpers({
 Template.outputContent.events({
     'accordion:open': function (event) {
         let id = event.target.dataset.athlete_id;
-        const athletes = reactiveAthletes.get();
+        const athletes = Meteor.reactiveAthletes.get();
         for (let i in athletes) {
             if (!athletes.hasOwnProperty(i)) continue;
             if (athletes[i].id == id) {
@@ -279,11 +254,11 @@ Template.outputContent.events({
                 break;
             }
         }
-        reactiveAthletes.set(athletes);
+        Meteor.reactiveAthletes.set(athletes);
     },
     'accordion:close': function (event) {
         let id = event.target.dataset.athlete_id;
-        const athletes = reactiveAthletes.get();
+        const athletes = Meteor.reactiveAthletes.get();
         for (let i in athletes) {
             if (!athletes.hasOwnProperty(i)) continue;
             if (athletes[i].id == id) {
@@ -291,7 +266,7 @@ Template.outputContent.events({
                 break;
             }
         }
-        reactiveAthletes.set(athletes);
+        Meteor.reactiveAthletes.set(athletes);
     }
 });
 
@@ -363,22 +338,17 @@ Template.output.events({
 });
 
 
-function replaceAthletes(index, data) {
-    const athletes = reactiveAthletes.get();
-    athletes[index] = data;
-    Blaze.remove(Meteor.outputTemplate);
-    Meteor.outputTemplate = Blaze.render(Template.outputContent, document.getElementById("outputContentWrapper"));
-    reactiveAthletes.set(athletes);
+function replaceAthletes(index, newAthlete) {
+    const athletes = Meteor.reactiveAthletes.get();
+    newAthlete.iconID = statusToNumber(newAthlete);
+    athletes[index] = newAthlete;
+    Meteor.reactiveAthletes.set(athletes);
 }
 
 Template.output.onRendered(function () {
-    Meteor.outputTemplate = Blaze.render(Template.outputContent, document.getElementById("outputContentWrapper"));
-
-
     Meteor.f7.sortableOpen('.sortable');
-
-
     Meteor.f7.showIndicator();
+
     DBInterface.waitForReady(function () {
         if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
             Meteor.COLLECTIONS.Athletes.changeDetector = true;
@@ -387,10 +357,8 @@ Template.output.onRendered(function () {
                     if (!AccountManager.getOutputAccount().logged_in) return;
 
                     let dataChanged = false;
-
                     for (let name in fields) {
                         if (!fields.hasOwnProperty(name)) continue;
-
                         if (name.substr(0, 2) === "m_") {
                             dataChanged = true;
                         }
@@ -406,39 +374,39 @@ Template.output.onRendered(function () {
 
                     DBInterface.generateCertificates(
                         AccountManager.getOutputAccount().account, [id], function (data) {
-                            let index = 0;
-                            const athletes = reactiveAthletes.get();
-                            for (let i in athletes) {
-                                if (!athletes.hasOwnProperty(i)) continue;
-                                if (athletes[i].id == id) {
-                                    index = i;
-                                    break;
+                            const athlete = data[0];
+                            const athletes = Meteor.reactiveAthletes.get();
+                            const index = findIndexOfAthlete(athletes, id);
+                            athletes[index].iconID = statusToNumber(athlete);
+                            Meteor.reactiveAthletes.set(athletes);
+
+                            setTimeout(function () {
+                                const sorting = sortingSettings.get();
+
+                                const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
+                                const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+
+                                //TODO check index
+                                if (newGroupName === oldGroupName) {
+                                    //group not changed -> no animations required
+                                    replaceAthletes(index, athlete);
+                                } else {
+                                    ///group changed -> start animation
+                                    const athletes = Meteor.reactiveAthletes.get();
+                                    athletes[index].classes = "collapsed";
+                                    Meteor.reactiveAthletes.set(athletes);
+
+
+                                    // const parent = accordionItem.parentNode;
+                                    // if (parent.childElementCount == 1) {
+                                    //     parent.parentNode.parentNode.style.maxHeight = "0";
+                                    // }
+                                    //waiting for collapsing
+                                    setTimeout(function () {
+                                        replaceAthletes(index, athlete);
+                                    }, 1000);
                                 }
-                            }
-
-                            const accordionItem = document.getElementById("accordion_athlete_" + id);
-                            const sorting = sortingSettings.get();
-
-                            const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
-                            const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
-
-
-                            //TODO check index
-                            if (newGroupName === oldGroupName || !accordionItem) {
-                                //group not changed -> no animations required
-                                replaceAthletes(index, data[0]);
-                            } else {
-                                ///group changed -> start animation
-                                accordionItem.className += " collapsed";
-                                const parent = accordionItem.parentNode;
-                                if (parent.childElementCount == 1) {
-                                    parent.parentNode.parentNode.style.maxHeight = "0";
-                                }
-                                //waiting for collapsing
-                                setTimeout(function () {
-                                    replaceAthletes(index, data[0]);
-                                }, 1000);
-                            }
+                            }, 1000);
                         }
                     );
                 }

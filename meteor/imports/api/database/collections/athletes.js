@@ -119,14 +119,14 @@ export function initAthletes() {
         p2.addMeasurement(log, 'st_ball_200', [5.55], groupAccountA, serverAccount);
         p2.addMeasurement(log, 'st_sprint_100', [9.32], groupAccountA, serverAccount);
 
-        const p3s = DBInterface.getAthletesOfAccounts(log, [groupAccountB], false);
+        const p3s = DBInterface.getAthletesOfAccounts(log, [groupAccountA], false);
         for (let i = 0; i < 6; i++) {
             const p3 = p3s[i];
-            p3.addMeasurement(log, 'st_long_jump', [7.33], groupAccountB, serverAccount);
-            p3.addMeasurement(log, 'st_ball_200', [5.55], groupAccountB, serverAccount);
-            p3.addMeasurement(log, 'st_sprint_100', [9.32], groupAccountB, serverAccount);
-            p3.addMeasurement(log, 'st_endurance_1000', [200], groupAccountB, serverAccount);
-            p3.addMeasurement(log, 'st_endurance_3000', [540], groupAccountB, serverAccount);
+            p3.addMeasurement(log, 'st_long_jump', [7.33], groupAccountA, serverAccount);
+            p3.addMeasurement(log, 'st_ball_200', [5.55], groupAccountA, serverAccount);
+            p3.addMeasurement(log, 'st_sprint_100', [9.32], groupAccountA, serverAccount);
+            p3.addMeasurement(log, 'st_endurance_1000', [200], groupAccountA, serverAccount);
+            p3.addMeasurement(log, 'st_endurance_3000', [540], groupAccountA, serverAccount);
         }
     };
 }
