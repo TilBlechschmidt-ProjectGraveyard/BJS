@@ -11,9 +11,66 @@ const groupSettings = new ReactiveVar({text: "Keine"});
 const genderSettings = new ReactiveVar({m: true, w: true, text: "Alle"});
 const statusSettings = new ReactiveVar({ready: true, update: true, notReady: true, finish: true, text: "Alle"});
 
-const baseSortingData = require('./baseSortingData.json');
+const baseSortingData = [
+    {
+        id: 0,
+        name: "Urkundenstatus",
+        icon: "tags",
+        sort: function (a, b) {
+            return 0;
+        }
+    },
+    {
+        id: 1,
+        name: "Nachname",
+        icon: "person",
+        sort: function (a, b) {
+            return a.lastName.localeCompare(b.lastName);
+        }
+    },
+    {
+        id: 2,
+        name: "Vorname",
+        icon: "person",
+        sort: function (a, b) {
+            return a.firstName.localeCompare(b.firstName);
+        }
+    },
+    {
+        id: 3,
+        name: "Punkte",
+        icon: "stopwatch",
+        sort: function (a, b) {
+            return b.score - a.score;
+        }
+    },
+    {
+        id: 4,
+        name: "Alter",
+        icon: "today",
+        sort: function (a, b) {
+            return b.ageGroup - a.ageGroup;
+        }
+    },
+    {
+        id: 5,
+        name: "Gruppe",
+        icon: "persons",
+        sort: function (a, b) {
+            return a.group.localeCompare(b.group);
+        }
+    },
+    {
+        id: 6,
+        name: "Geschlecht",
+        icon: "heart",
+        sort: function (a, b) {
+            return b.isMale - a.isMale;
+        }
+    }
+];
 
-const sortingSettings = new ReactiveVar(baseSortingData);
+const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6]);
 
 function loadAllAthlets() {
     DBInterface.generateCertificates(
@@ -141,24 +198,36 @@ Template.output.helpers({
         return getGroupsFromAthletes();
     },
     uiElements: function () {
-        console.log(reactiveAthletes.get());
         const allAthletes = _.map(reactiveAthletes.get(), function (athlete) {
             athlete.typeID = 0;
             return athlete;
         });
 
+        const groups = groupSettings.get();
         const gender = genderSettings.get();
         const status = statusSettings.get();
+        const sorting = sortingSettings.get();
 
         const athletes = _.filter(allAthletes, function (athlete) {
             return (gender.m || !athlete.isMale) && (gender.w || athlete.isMale) &&
                 (status.ready || !(athlete.valid && athlete.certificateWritten)) &&
                 (status.notReady || athlete.valid) &&
                 (status.finish || !(athlete.valid && athlete.certificateWritten)) &&
-                (status.update || !(athlete.valid && athlete.certificateUpdate));
+                (status.update || !(athlete.valid && athlete.certificateUpdate)) &&
+                groups[athlete.group];
         });
 
-        let result = [{title: "Alle", athletes: athletes}];
+        const athletesSorted = athletes.sort(function (a, b) {
+            let currentIndex = 0;
+            let lastComparison = 0;
+            while (lastComparison == 0 && currentIndex < baseSortingData.length) {
+                lastComparison = baseSortingData[sorting[currentIndex]].sort(a, b);
+                currentIndex += 1;
+            }
+            return lastComparison;
+        });
+
+        let result = [{title: "Alle", athletes: athletesSorted}];
 
         return result;
     }
