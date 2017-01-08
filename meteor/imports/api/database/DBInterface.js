@@ -165,7 +165,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -183,7 +183,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -209,7 +209,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -230,7 +230,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -251,7 +251,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -271,7 +271,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -292,7 +292,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
@@ -313,7 +313,7 @@ export let DBInterface = {
                 if (data) {
                     callback(data.data);
                 } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab eine Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.");
+                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
                 }
             }
         });
