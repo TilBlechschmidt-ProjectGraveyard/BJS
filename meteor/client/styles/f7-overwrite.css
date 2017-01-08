@@ -16,10 +16,6 @@
     transform-origin: 50% 100%;
 }
 
-.accordion-item-content {
-    margin-left: 45px;
-}
-
 /* Alignment of left/right navbar elements */
 .navbar-inner .left, .navbar-inner .right {
     width: calc((100% - 250px) / 2);
