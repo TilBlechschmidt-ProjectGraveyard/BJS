@@ -1,5 +1,11 @@
 {
   "name": "Leichtathletik",
   "general": "",
-  "rating": ""
+  "rating": "",
+  "categoryNames": [
+    "Sprint",
+    "Lauf",
+    "Sprung",
+    "Wurf/Stoß"
+  ]
 }

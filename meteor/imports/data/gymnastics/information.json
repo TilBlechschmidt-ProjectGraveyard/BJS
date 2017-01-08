@@ -1,5 +1,13 @@
 {
   "name": "Geräteturnen",
   "general": "",
-  "rating": ""
+  "rating": "",
+  "categoryNames": [
+    "Boden",
+    "Reck",
+    "Barren",
+    "Balancieren",
+    "Sprung",
+    "Miteinander"
+  ]
 }

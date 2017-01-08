@@ -1,5 +1,13 @@
 {
   "name": "Schwimmen",
   "general": "",
-  "rating": ""
+  "rating": "",
+  "categoryNames": [
+    "Zeitschwimmen Freistil in Bauchlage",
+    "Zeitschwimmen in Rückenlage",
+    "Streckentauchen mit Abstoß vom Rand",
+    "Zeitschwimmen Schmetterling I",
+    "Zeitschwimmen Schmetterling II",
+    "Zeitschwimmen Brust oder Kraul"
+  ]
 }
