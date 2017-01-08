@@ -135,6 +135,7 @@ export function onStartup() {
                     firstName: athlete.firstName,
                     lastName: athlete.lastName,
                     group: athlete.group,
+                    isMale: athlete.isMale,
                     id: athlete.id,
                     certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
                     certificateUpdate: (certificateScoreObject.data >= 0) && (certificateScoreObject.data !== currentScoreObject.data),

@@ -1,0 +1,37 @@
+[
+  {
+    "id": 0,
+    "name": "Urkundenstatus",
+    "icon": "tags"
+  },
+  {
+    "id": 1,
+    "name": "Nachname",
+    "icon": "person"
+  },
+  {
+    "id": 2,
+    "name": "Vorname",
+    "icon": "person"
+  },
+  {
+    "id": 3,
+    "name": "Punkte",
+    "icon": "stopwatch"
+  },
+  {
+    "id": 4,
+    "name": "Alter",
+    "icon": "today"
+  },
+  {
+    "id": 5,
+    "name": "Gruppe",
+    "icon": "persons"
+  },
+  {
+    "id": 6,
+    "name": "Geschlecht",
+    "icon": "heart"
+  }
+]

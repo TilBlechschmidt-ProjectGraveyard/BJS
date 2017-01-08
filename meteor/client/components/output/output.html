@@ -20,49 +20,20 @@
             </div>
 
             <div class="page-content">
-            <!--{{#each u in uiElements}}-->
-
-                    <!--{{/each}}-->
-
-                <div class="list-block">
-                    <ul>
-                        {{#each g in groupNames}}
-                            <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title label">{{g}}</div>
-                                        <div class="item-input">
-                                            <label class="label-switch">
-                                                <input type="checkbox">
-                                                <div class="checkbox"></div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        {{/each}}
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">Bla</div>
-                                    <div class="item-input">
-                                        <input type="text">
-                                    </div>
-                                </div>
+                <div class="autoWidthListBlock">
+                    {{#each u in uiElements}}
+                        {{#with u}}
+                            <div class="content-block-title">{{title}}</div>
+                            <div class="list-block">
+                                <ul>
+                                    {{#each a in athletes}}
+                                        {{>result athlete=a}}
+                                    {{/each}}
+                                </ul>
                             </div>
-                        </li>
-                    </ul>
+                        {{/with}}
+                    {{/each}}
                 </div>
-                <!--<div id="output-swiper" class="swiper-container full-height">-->
-                <!--<div class="swiper-wrapper">-->
-                    <!--{{#each g in groups}}-->
-                <!--<div class="swiper-slide" data-hash="{{g.hash}}">-->
-                <!--{{>groupCertificates group=g}}-->
-                <!--</div>-->
-                    <!--{{/each}}-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="swiper-pagination fraction"></div>-->
             </div>
 
             <div class="toolbar">
@@ -93,72 +64,22 @@
     <div class="popover popover-sorting">
         <div class="popover-angle"></div>
         <div class="popover-inner">
-            <div class="list-block sortable">
+            <div class="list-block sortable" id="sortOrderSorter">
                 <ul>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">person</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Vorname</div>
-                            </div>
-                        </div>
-                        <!-- Sortable handler  -->
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">person</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Nachname</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">persons</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Gruppe</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">today</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Alter</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">tags</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Urkundenstatus</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">stopwatch</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Punkte</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">heart</i></div>
-                            <div class="item-inner">
-                                <div class="item-title">Geschlecht</div>
-                            </div>
-                        </div>
-                        <div class="sortable-handler"></div>
-                    </li>
+                    {{#each s in baseSortingSettings}}
+                        {{#with s}}
+                            <li>
+                                <div class="item-content" data-id="{{id}}">
+                                    <div class="item-media"><i class="f7-icons">{{icon}}</i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">{{name}}</div>
+                                    </div>
+                                </div>
+                                <!-- Sortable handler  -->
+                                <div class="sortable-handler"></div>
+                            </li>
+                        {{/with}}
+                    {{/each}}
                 </ul>
             </div>
         </div>
@@ -276,6 +197,20 @@
                                         <li>
                                             <div class="item-content">
                                                 <div class="item-inner">
+                                                    <div class="item-title label">Neu Erstellen</div>
+                                                    <div class="item-input">
+                                                        <label class="label-switch">
+                                                            <input type="checkbox" {{checked update}}>
+                                                            <div class="checkbox" data-type="status"
+                                                                 data-attr="update"></div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
                                                     <div class="item-title label">Nicht Bereit</div>
                                                     <div class="item-input">
                                                         <label class="label-switch">
@@ -308,32 +243,6 @@
                     {{/with}}
                 </ul>
             </div>
-
-            <!--<div class="list-block accordion-list">-->
-            <!--<ul>-->
-            <!--<li>-->
-            <!--<div class="item-media"><i class="f7-icons">persons</i></div>-->
-            <!--<div class="item-inner">-->
-            <!--<div class="item-title">Gruppen</div>-->
-            <!--<div class="item-after">Alle</div>-->
-            <!--</div>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<div class="item-media"><i class="f7-icons">heart</i></div>-->
-            <!--<div class="item-inner">-->
-            <!--<div class="item-title">Geschlecht</div>-->
-            <!--<div class="item-after">Alle</div>-->
-            <!--</div>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<div class="item-media"><i class="f7-icons">tags</i></div>-->
-            <!--<div class="item-inner">-->
-            <!--<div class="item-title">Urkundenstatus</div>-->
-            <!--<div class="item-after">Alle</div>-->
-            <!--</div>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</div>-->
         </div>
     </div>
 

@@ -9,7 +9,11 @@ import {ReactiveVar} from "meteor/reactive-var";
 const reactiveAthletes = new ReactiveVar([]);
 const groupSettings = new ReactiveVar({text: "Keine"});
 const genderSettings = new ReactiveVar({m: true, w: true, text: "Alle"});
-const statusSettings = new ReactiveVar({ready: true, notReady: true, finish: true, text: "Alle"});
+const statusSettings = new ReactiveVar({ready: true, update: true, notReady: true, finish: true, text: "Alle"});
+
+const baseSortingData = require('./baseSortingData.json');
+
+const sortingSettings = new ReactiveVar(baseSortingData);
 
 function loadAllAthlets() {
     DBInterface.generateCertificates(
@@ -121,6 +125,12 @@ Template.output.helpers({
     groupSettings: function () {
         return groupSettings.get();
     },
+    sortingSettings: function () {
+        return sortingSettings.get();
+    },
+    baseSortingSettings: function () {
+        return baseSortingData;
+    },
     groupChecked: function (name) {
         return groupSettings.get()[name] ? "checked" : "";
     },
@@ -131,7 +141,26 @@ Template.output.helpers({
         return getGroupsFromAthletes();
     },
     uiElements: function () {
+        console.log(reactiveAthletes.get());
+        const allAthletes = _.map(reactiveAthletes.get(), function (athlete) {
+            athlete.typeID = 0;
+            return athlete;
+        });
 
+        const gender = genderSettings.get();
+        const status = statusSettings.get();
+
+        const athletes = _.filter(allAthletes, function (athlete) {
+            return (gender.m || !athlete.isMale) && (gender.w || athlete.isMale) &&
+                (status.ready || !(athlete.valid && athlete.certificateWritten)) &&
+                (status.notReady || athlete.valid) &&
+                (status.finish || !(athlete.valid && athlete.certificateWritten)) &&
+                (status.update || !(athlete.valid && athlete.certificateUpdate));
+        });
+
+        let result = [{title: "Alle", athletes: athletes}];
+
+        return result;
     }
 });
 
@@ -172,18 +201,15 @@ Template.output.events({
             const data = statusSettings.get();
             data[event.target.dataset.attr] = !data[event.target.dataset.attr];
             const cTrue = countTrue(data);
-            if (cTrue == 3) data.text = "Alle";
-            else if (cTrue == 0) data.text = "Keine";
+            if (cTrue == 0) data.text = "Keine";
             else if (cTrue == 1) {
                 if (data.ready) data.text = "Bereit";
+                else if (data.update) data.text = "Neu Erstellen";
                 else if (data.notReady) data.text = "Nicht Bereit";
                 else data.text = "Fertig";
             }
-            else {
-                if (!data.ready) data.text = "Außer Bereit";
-                else if (!data.notReady) data.text = "Bereit und Fertig";
-                else data.text = "Außer Fertig";
-            }
+            else if (cTrue == Object.keys(data).length - 1) data.text = "Alle";
+            else data.text = "Mehrere";
             statusSettings.set(data);
         } else if (event.target.dataset.type === "group") {
             const data = groupSettings.get();
@@ -203,11 +229,19 @@ Template.output.events({
             else data.text = "Mehrere";
             groupSettings.set(data);
         }
+    },
+    'sort #sortOrderSorter': function (event) {
+        const newOrder = _.map(document.getElementById("sortOrderSorter").getElementsByClassName("item-content"), function (obj) {
+            return obj.dataset.id;
+        });
+        sortingSettings.set(newOrder);
     }
 });
 
 Template.output.onRendered(function () {
     Meteor.f7.sortableOpen('.sortable');
+
+
     Meteor.f7.showIndicator();
     DBInterface.waitForReady(function () {
         if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
