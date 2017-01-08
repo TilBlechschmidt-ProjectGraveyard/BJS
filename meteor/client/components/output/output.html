@@ -23,7 +23,8 @@
                 <div class="autoWidthListBlock">
                     {{#each u in uiElements}}
                         {{#with u}}
-                            <div class="content-block-title">{{title}}</div>
+                            {{#if showTitle title}}
+                                <div class="content-block-title">{{title}}</div>{{/if}}
                             <div class="list-block">
                                 <ul>
                                     {{#each a in athletes}}

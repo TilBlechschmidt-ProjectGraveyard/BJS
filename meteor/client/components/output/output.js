@@ -45,7 +45,7 @@ const baseSortingData = [
             return a.lastName.localeCompare(b.lastName);
         },
         getGroupName: function (a) {
-            return "Alle";
+            return "";
         }
     },
     {
@@ -56,7 +56,7 @@ const baseSortingData = [
             return a.firstName.localeCompare(b.firstName);
         },
         getGroupName: function (a) {
-            return "Alle";
+            return "";
         }
     },
     {
@@ -67,7 +67,7 @@ const baseSortingData = [
             return b.score - a.score;
         },
         getGroupName: function (a) {
-            return "Alle";
+            return "";
         }
     },
     {
@@ -185,6 +185,9 @@ function isFinish(athlete) {
 
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
+    showTitle: function (title) {
+        return title !== "";
+    },
     genderSettings: function () {
         return genderSettings.get();
     },
