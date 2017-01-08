@@ -188,6 +188,9 @@ Template.output.helpers({
     showTitle: function (title) {
         return title !== "";
     },
+    allAthletes: function () {
+        return reactiveAthletes.get();
+    },
     genderSettings: function () {
         return genderSettings.get();
     },

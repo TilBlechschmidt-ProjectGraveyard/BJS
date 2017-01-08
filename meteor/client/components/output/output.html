@@ -47,20 +47,9 @@
         </div>
     </div>
 
-        <!--{{#each g in groups}}-->
-        <!--{{#with g}}-->
-        <!--&lt;!&ndash; Detailed result popups &ndash;&gt;-->
-            <!--{{#each a in validAthletes}}-->
-            <!--{{>detailedResults athlete=a}}-->
-                <!--{{/each}}-->
-            <!--{{#each a in invalidAthletes}}-->
-            <!--{{>detailedResults athlete=a}}-->
-                <!--{{/each}}-->
-            <!--{{#each a in doneAthletes}}-->
-            <!--{{>detailedResults athlete=a}}-->
-                <!--{{/each}}-->
-            <!--{{/with}}-->
-        <!--{{/each}}-->
+    {{#each a in allAthletes}}
+        {{>detailedResults athlete=a}}
+    {{/each}}
 
     <div class="popover popover-sorting">
         <div class="popover-angle"></div>
