@@ -19,6 +19,7 @@
     /*-o-transition: max-height 1s;*/
     /*transition: max-height 0s;*/
     max-height: 800px;
+
 }
 
 .result-accordion.collapsed {
