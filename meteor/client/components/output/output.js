@@ -183,11 +183,9 @@ function isFinish(athlete) {
     return athlete.valid && athlete.certificateWritten && !athlete.certificateUpdate;
 }
 
+
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
-    showTitle: function (title) {
-        return title !== "";
-    },
     allAthletes: function () {
         return reactiveAthletes.get();
     },
@@ -214,12 +212,15 @@ Template.output.helpers({
     },
     groupNames: function () {
         return getGroupsFromAthletes();
+    }
+});
+
+Template.outputContent.helpers({
+    showTitle: function (title) {
+        return title !== "";
     },
     uiElements: function () {
-        const allAthletes = _.map(reactiveAthletes.get(), function (athlete) {
-            athlete.typeID = 0;
-            return athlete;
-        });
+        const allAthletes = reactiveAthletes.get();
 
         const groups = groupSettings.get();
         const gender = genderSettings.get();
@@ -267,6 +268,33 @@ Template.output.helpers({
     }
 });
 
+Template.outputContent.events({
+    'accordion:open': function (event) {
+        let id = event.target.dataset.athlete_id;
+        const athletes = reactiveAthletes.get();
+        for (let i in athletes) {
+            if (!athletes.hasOwnProperty(i)) continue;
+            if (athletes[i].id == id) {
+                athletes[i].manual = true;
+                break;
+            }
+        }
+        reactiveAthletes.set(athletes);
+    },
+    'accordion:close': function (event) {
+        let id = event.target.dataset.athlete_id;
+        const athletes = reactiveAthletes.get();
+        for (let i in athletes) {
+            if (!athletes.hasOwnProperty(i)) continue;
+            if (athletes[i].id == id) {
+                athletes[i].manual = false;
+                break;
+            }
+        }
+        reactiveAthletes.set(athletes);
+    }
+});
+
 Template.output.events({
     'click .logout-button': function () {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
@@ -276,13 +304,6 @@ Template.output.events({
             updateSwiperProgress(0);
             return false;
         });
-    },
-    'click .group-link': function (event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        document.getElementById("output-swiper").swiper.slideTo(parseFloat(event.target.dataset.target) + 1);
-        Meteor.f7.closeModal();
-        return false;
     },
     'click .checkbox': function (event) {
         event.preventDefault();
@@ -341,7 +362,19 @@ Template.output.events({
     }
 });
 
+
+function replaceAthletes(index, data) {
+    const athletes = reactiveAthletes.get();
+    athletes[index] = data;
+    Blaze.remove(Meteor.outputTemplate);
+    Meteor.outputTemplate = Blaze.render(Template.outputContent, document.getElementById("outputContentWrapper"));
+    reactiveAthletes.set(athletes);
+}
+
 Template.output.onRendered(function () {
+    Meteor.outputTemplate = Blaze.render(Template.outputContent, document.getElementById("outputContentWrapper"));
+
+
     Meteor.f7.sortableOpen('.sortable');
 
 
@@ -352,24 +385,60 @@ Template.output.onRendered(function () {
             Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
                 changed: function (id, fields) {
                     if (!AccountManager.getOutputAccount().logged_in) return;
-                    Meteor.f7.addNotification({
-                        title: "Neue Daten",
-                        message: "Es wurden neue Daten eingetragen!",
-                        hold: 2000,
-                        closeOnClick: true,
-                    });
+
+                    let dataChanged = false;
+
+                    for (let name in fields) {
+                        if (!fields.hasOwnProperty(name)) continue;
+
+                        if (name.substr(0, 2) === "m_") {
+                            dataChanged = true;
+                        }
+                    }
+                    if (dataChanged) {
+                        Meteor.f7.addNotification({
+                            title: "Neue Daten",
+                            message: "Es wurden neue Daten eingetragen!",
+                            hold: 2000,
+                            closeOnClick: true,
+                        });
+                    }
 
                     DBInterface.generateCertificates(
                         AccountManager.getOutputAccount().account, [id], function (data) {
+                            let index = 0;
                             const athletes = reactiveAthletes.get();
                             for (let i in athletes) {
                                 if (!athletes.hasOwnProperty(i)) continue;
                                 if (athletes[i].id == id) {
-                                    athletes[i] = data[0];
+                                    index = i;
+                                    break;
                                 }
                             }
-                            reactiveAthletes.set(athletes);
-                            updatedGroups();
+
+                            const accordionItem = document.getElementById("accordion_athlete_" + id);
+                            const sorting = sortingSettings.get();
+
+                            const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
+                            const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+
+
+                            //TODO check index
+                            if (newGroupName === oldGroupName || !accordionItem) {
+                                //group not changed -> no animations required
+                                replaceAthletes(index, data[0]);
+                            } else {
+                                ///group changed -> start animation
+                                accordionItem.className += " collapsed";
+                                const parent = accordionItem.parentNode;
+                                if (parent.childElementCount == 1) {
+                                    parent.parentNode.parentNode.style.maxHeight = "0";
+                                }
+                                //waiting for collapsing
+                                setTimeout(function () {
+                                    replaceAthletes(index, data[0]);
+                                }, 1000);
+                            }
                         }
                     );
                 }
