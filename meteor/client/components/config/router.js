@@ -3,3 +3,9 @@ FlowRouter.route('/config', {
         BlazeLayout.render('config', {});
     }
 });
+
+FlowRouter.route('/codes', {
+    action: function () {
+        BlazeLayout.render('accessCodes', {});
+    }
+});

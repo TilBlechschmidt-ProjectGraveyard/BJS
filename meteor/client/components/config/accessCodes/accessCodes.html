@@ -3,9 +3,9 @@
         {{#each g in codeGroups}}
             <div class="content-block-title">{{g.name}}</div>
             <div class="list-block">
-                <ul>
+                <ul class="container">
                     {{#each c in (g.codes)}}
-                        <li class="result-accordion fade-open">
+                        <li class="result-accordion item">
                             <div class="item-content">
                                 {{#if c.code}}
                                     <div class="item-media">{{> iconOK}}</div>
@@ -26,4 +26,14 @@
             </div>
         {{/each}}
     </div>
+
+    <style>
+        .fade-in {
+
+        }
+
+        .fade-out {
+
+        }
+    </style>
 </template>
