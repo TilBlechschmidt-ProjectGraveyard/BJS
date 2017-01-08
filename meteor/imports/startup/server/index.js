@@ -85,7 +85,7 @@ export function onStartup() {
 
             return encryptAsAdmin(groups);
         },
-        'generateCertificates': function (loginObject, athletes) {
+        'generateCertificates': function (loginObject, athleteIDs) {
             const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 
             if (!account) {
@@ -100,7 +100,8 @@ export function onStartup() {
 
             const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
 
-            let mapAthletet = function (encryptedAthlete) {
+            let mapAthletet = function (athleteID) {
+                const encryptedAthlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: athleteID});
                 const athlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, true);
                 const currentScoreObject = Crypto.tryDecrypt(log, athlete.currentScore, [getAdminAccount().ac]);
                 const stScoresObject = Crypto.tryDecrypt(log, athlete.stScores, [getAdminAccount().ac]);
@@ -131,6 +132,9 @@ export function onStartup() {
 
                 return {
                     name: athlete.getFullName(),
+                    firstName: athlete.firstName,
+                    lastName: athlete.lastName,
+                    group: athlete.group,
                     id: athlete.id,
                     certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
                     certificateUpdate: (certificateScoreObject.data >= 0) && (certificateScoreObject.data !== currentScoreObject.data),
@@ -144,7 +148,7 @@ export function onStartup() {
                 };
             };
 
-            return encryptAs(filterUndefined(_.map(athletes, mapAthletet)), account);
+            return encryptAs(filterUndefined(_.map(athleteIDs, mapAthletet)), account);
         },
         'getServerIPs': function () {
             const os = require('os');

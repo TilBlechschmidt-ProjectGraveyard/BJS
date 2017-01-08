@@ -276,7 +276,6 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
 
         let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
 
-
         athlete.currentScore = data.currentScore;
         athlete.stScores = data.stScores;
         athlete.certificate = data.certificate;
