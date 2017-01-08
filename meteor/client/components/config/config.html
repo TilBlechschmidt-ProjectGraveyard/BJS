@@ -12,8 +12,8 @@
                             <div id="config-name-swiper" class="swiper-container full-height">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">Wettkämpfe</div>
+                                    <div class="swiper-slide">{{#if edit}}Sportarten{{else}}Athleten{{/if}}</div>
                                     <div class="swiper-slide">Athleten</div>
-                                    <div class="swiper-slide">Sportarten</div>
                                     <div class="swiper-slide">Zugangscodes</div>
                                 </div>
                             </div>
@@ -36,10 +36,14 @@
                             {{>competitionList title="Unvollständige Wettkämpfe" competitions=competitions.writable}}
                         </div>
                         <div class="swiper-slide">
-                            {{> athleteList}}
+                            {{#if edit}}
+                                {{> sportTypeSelection}}
+                            {{else}}
+                                {{> athleteList}}
+                            {{/if}}
                         </div>
                         <div class="swiper-slide">
-                            Hi there
+                            {{> athleteList}}
                         </div>
                         <div class="swiper-slide">
                             {{> accessCodes}}

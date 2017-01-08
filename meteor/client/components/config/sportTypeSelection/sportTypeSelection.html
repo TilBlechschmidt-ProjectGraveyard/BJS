@@ -1,0 +1,26 @@
+<template name="sportTypeSelection">
+    {{#each c in categories}}
+        <div class="autoWidthListBlock">
+            <div class="content-block-title">{{c.name}}</div>
+            <div class="list-block">
+                <ul>
+                    {{#each s in c.sportTypes}}
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label" style="width: 75%;">{{s.name}}</div>
+                                    <label class="label-switch">
+                                        <input {{s.checked}} type="checkbox" class="checkbox-sportType"
+                                                             data-id="{{s.id}}">
+                                        <div class="checkbox"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+                <!--<div class="list-block-label">List block label text goes here</div>-->
+            </div>
+        </div>
+    {{/each}}
+</template>

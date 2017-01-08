@@ -1,14 +1,19 @@
 import {DBInterface} from "../../../imports/api/database/DBInterface";
+import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
 import {updateSwiperProgress} from "../login/router";
+
+Meteor.config = {};
+Meteor.config.log = new Log();
 
 export const dbReady = new Tracker.Dependency();
 
 export const competitions = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
+export const editMode = new ReactiveVar(false);
 
-function registerContestHelper() {
+DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
         Meteor.f7.showIndicator();
         dbReady.depend();
@@ -53,20 +58,37 @@ function registerContestHelper() {
             Tracker.afterFlush(Meteor.f7.hideIndicator);
         });
     });
-}
+});
 
 
 Template.config.helpers({
     competitions: function () {
         return competitions.get();
+    },
+    edit: function () {
+        return editMode.get();
     }
 });
+
+function setState(event, edit) {
+    const accordion = event.target.closest(".accordion-item-content");
+    currentCompID.set(accordion.dataset.id);
+    editMode.set(edit);
+}
+
 
 Template.config.events({
     'click .show-athletes': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        currentCompID.set(event.target.dataset.id);
+        setState(event, false);
+        document.getElementById("config-swiper").swiper.slideNext();
+        return false;
+    },
+    'click .edit-button': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setState(event, true);
         document.getElementById("config-swiper").swiper.slideNext();
         return false;
     },
@@ -82,7 +104,6 @@ Template.config.events({
 });
 
 Template.config.onRendered(function () {
-    registerContestHelper();
     DBInterface.waitForReady(function () {
         dbReady.changed();
 

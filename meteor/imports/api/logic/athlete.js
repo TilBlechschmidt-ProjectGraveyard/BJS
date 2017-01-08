@@ -214,6 +214,10 @@ Athlete.prototype = {
     }
 };
 
+Athlete.fromObject = function (log, obj) {
+    return new Athlete(log, obj.firstName, obj.lastName, obj.ageGroup, obj.isMale, obj.group, obj.handicap, obj.maxAge, obj.sports, obj.id);
+};
+
 /**
  * Decrypts the data from the database
  * @param {Log} log Logger instance to use
