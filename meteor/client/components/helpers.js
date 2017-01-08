@@ -53,6 +53,18 @@ export function isOffline() {
     }
 }
 
+export function countTrue(list) {
+    let counter = 0;
+
+    for (let a in list) {
+        if (!list.hasOwnProperty(a)) continue;
+        if (list[a] == true) { //== true required because list[a] might be an object
+            counter += 1;
+        }
+    }
+    return counter;
+}
+
 // export let registerHelpers = function () {
 Meteor.pageVisitTime = new Date().getTime();
 
