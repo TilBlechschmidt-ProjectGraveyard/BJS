@@ -1,0 +1,30 @@
+<template name="accessCodes">
+    <div class="autoWidthListBlock">
+        {{#each g in codeGroups}}
+            <div class="content-block-title">{{g.name}}</div>
+            <div class="list-block">
+                <ul>
+                    {{#each c in (g.codes)}}
+                        <li class="result-accordion fade-open">
+                            <div class="item-content">
+                                {{#if c.code}}
+                                    <div class="item-media">{{> iconOK}}</div>
+                                {{else}}
+                                    <div class="item-media">
+                                        <span class="preloader"
+                                              style="position: static; margin: 0 0 0 10px; width:20px; height:20px"></span>
+                                    </div>
+                                {{/if}}
+                                <div class="item-inner">
+                                    <div class="item-title">{{c.title}}</div>
+                                    <div class="item-after">{{c.code}}</div>
+                                </div>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+                <!--<div class="list-block-label">List block label text goes here</div>-->
+            </div>
+        {{/each}}
+    </div>
+</template>
