@@ -22,9 +22,6 @@ Template.result.helpers({
 
         return hours + ':' + minutes + ':' + seconds; //', ' + day + ' ' + monthNames[monthIndex] + ' ' + year;
     },
-    show: function (athlete) {
-        return athlete.id !== "_old_";
-    },
     autoOpen: function (athlete) {
         if (athlete.manual != undefined) {
             return athlete.manual;
