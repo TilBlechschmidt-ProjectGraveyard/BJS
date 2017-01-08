@@ -1,7 +1,6 @@
 <template name="result">
-    <li class="certificate accordion-item result-accordion collapsible {{#with athlete}}{{classes}}{{/with}} {{#if
-            autoOpen
-                                                                             athlete}}accordion-item-expanded{{/if}}"
+    <li class="certificate accordion-item result-accordion {{#with athlete}}{{classes}}{{/with}}
+        {{#if autoOpen athlete}}accordion-item-expanded{{/if}}"
         id="accordion_athlete_{{#with athlete}}{{id}}{{/with}}" data-athlete_id="{{#with athlete}}{{id}}{{/with}}">
         {{#with athlete}}
             <a href="#" class="item-content item-link">

@@ -5,7 +5,7 @@ import {DBInterface} from "../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {updateSwiperProgress} from "../login/router";
 import {ReactiveVar} from "meteor/reactive-var";
-import {findIndexOfAthlete, isReady, isUpdate, isNotReady, isFinish, statusToNumber} from "./helpers";
+import {findIndexOfAthlete, isReady, isUpdate, isNotReady, isFinish, statusToNumber, countTrue} from "./helpers";
 
 Meteor.reactiveAthletes = new ReactiveVar([]);
 const groupSettings = new ReactiveVar({text: "Keine"});
@@ -374,39 +374,41 @@ Template.output.onRendered(function () {
 
                     DBInterface.generateCertificates(
                         AccountManager.getOutputAccount().account, [id], function (data) {
-                            const athlete = data[0];
-                            const athletes = Meteor.reactiveAthletes.get();
-                            const index = findIndexOfAthlete(athletes, id);
-                            athletes[index].iconID = statusToNumber(athlete);
-                            Meteor.reactiveAthletes.set(athletes);
-
                             setTimeout(function () {
-                                const sorting = sortingSettings.get();
+                                const athlete = data[0];
+                                const athletes = Meteor.reactiveAthletes.get();
+                                const index = findIndexOfAthlete(athletes, id);
+                                athletes[index].iconID = statusToNumber(athlete);
+                                Meteor.reactiveAthletes.set(athletes);
 
-                                const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
-                                const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+                                setTimeout(function () {
+                                    const sorting = sortingSettings.get();
 
-                                //TODO check index
-                                if (newGroupName === oldGroupName) {
-                                    //group not changed -> no animations required
-                                    replaceAthletes(index, athlete);
-                                } else {
-                                    ///group changed -> start animation
-                                    const athletes = Meteor.reactiveAthletes.get();
-                                    athletes[index].classes = "collapsed";
-                                    Meteor.reactiveAthletes.set(athletes);
+                                    const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
+                                    const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
 
-
-                                    // const parent = accordionItem.parentNode;
-                                    // if (parent.childElementCount == 1) {
-                                    //     parent.parentNode.parentNode.style.maxHeight = "0";
-                                    // }
-                                    //waiting for collapsing
-                                    setTimeout(function () {
+                                    //TODO check index
+                                    if (newGroupName === oldGroupName) {
+                                        //group not changed -> no animations required
                                         replaceAthletes(index, athlete);
-                                    }, 1000);
-                                }
-                            }, 1000);
+                                    } else {
+                                        ///group changed -> start animation
+                                        const athletes = Meteor.reactiveAthletes.get();
+                                        athletes[index].classes = "collapsed";
+                                        Meteor.reactiveAthletes.set(athletes);
+
+
+                                        // const parent = accordionItem.parentNode;
+                                        // if (parent.childElementCount == 1) {
+                                        //     parent.parentNode.parentNode.style.maxHeight = "0";
+                                        // }
+                                        //waiting for collapsing
+                                        setTimeout(function () {
+                                            replaceAthletes(index, athlete);
+                                        }, 1000);
+                                    }
+                                }, 1000);
+                            }, 100);
                         }
                     );
                 }
