@@ -71,8 +71,6 @@ export function initAthletes() {
             });
         });
 
-
-
         Meteor.publish(name, function () {
             return handle.find({});
         });

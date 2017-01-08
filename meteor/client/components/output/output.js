@@ -117,6 +117,7 @@ function loadAllAthlets() {
         function (data) {
             Meteor.reactiveAthletes.set(_.map(data, function (athlete) {
                 athlete.iconID = statusToNumber(athlete);
+                athlete.animateNext = true;
                 return athlete;
             }));
             updatedGroups();
@@ -194,6 +195,8 @@ Template.outputContent.helpers({
             if (!athlete.classes) {
                 athlete.classes = "";
             }
+            athlete.noAnimation = !athlete.animateNext;
+            athlete.animateNext = false;
             return athlete;
         });
 
@@ -341,8 +344,15 @@ Template.output.events({
 function replaceAthletes(index, newAthlete) {
     const athletes = Meteor.reactiveAthletes.get();
     newAthlete.iconID = statusToNumber(newAthlete);
+    newAthlete.animateNext = true;
+    // newAthlete.classes = "collapsed";
     athletes[index] = newAthlete;
     Meteor.reactiveAthletes.set(athletes);
+    // Tracker.afterFlush(function () {
+    //     const athletes = Meteor.reactiveAthletes.get();
+    //     athletes[index].classes = "";
+    //     Meteor.reactiveAthletes.set(athletes);
+    // });
 }
 
 Template.output.onRendered(function () {
@@ -379,6 +389,7 @@ Template.output.onRendered(function () {
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
                                 athletes[index].iconID = statusToNumber(athlete);
+                                athletes[index].animateNext = true;
                                 Meteor.reactiveAthletes.set(athletes);
 
                                 setTimeout(function () {

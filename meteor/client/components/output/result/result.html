@@ -7,16 +7,16 @@
                 <div class="item-media" id="iconWrapper{{id}}">
 
                     {{#if isEqual iconID 0}}
-                        {{> iconReady}}
+                        {{> iconReady noAnimation=noAnimation}}
                     {{else}}
                         {{#if isEqual iconID 1}}
-                            {{> iconWarn}}
+                            {{> iconWarn noAnimation=noAnimation}}
                         {{else}}
                             {{#if isEqual iconID 2}}
-                                {{> iconErr}}
+                                {{> iconErr noAnimation=noAnimation}}
                             {{else}}
                                 {{#if isEqual iconID 3}}
-                                    {{> iconOK}}
+                                    {{> iconOK noAnimation=noAnimation}}
                                 {{else}}
                                     {{> iconPreloader}}
                                 {{/if}}
