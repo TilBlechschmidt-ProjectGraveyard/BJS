@@ -64,6 +64,24 @@ export function onStartup() {
 
             return encryptAsAdmin(true);
         },
+        'setSportTypeState': function (loginObject, competitionID, sportTypeID, state) {
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
+            let sportTypes = Meteor.COLLECTIONS.Contests.handle.findOne({_id: competitionID}).sportTypes;
+
+            if (state === true && !lodash.includes(sportTypes, sportTypeID)) {
+                sportTypes.push(sportTypeID);
+            } else if (state === false) {
+                lodash.remove(sportTypes, function (stID) {
+                    return stID !== sportTypeID
+                });
+            }
+
+            Meteor.COLLECTIONS.Contests.handle.update({_id: competitionID}, {
+                $set: {sportTypes: sportTypes}
+            });
+
+            return encryptAsAdmin(true);
+        },
         'getCompetitions': function (loginObject) {
             if (!checkAdminLogin(loginObject)) return undefined;
             let competitions = Meteor.COLLECTIONS.Contests.find().fetch();
