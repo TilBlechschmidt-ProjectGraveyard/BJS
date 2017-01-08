@@ -90,6 +90,8 @@ Template.config.events({
         event.stopImmediatePropagation();
         setState(event, true);
         document.getElementById("config-swiper").swiper.slideNext();
+        document.getElementById("config-swiper").swiper.slideNext();
+        document.getElementById("config-swiper").swiper.slideNext();
         return false;
     },
     'click .logout-button': function () {
