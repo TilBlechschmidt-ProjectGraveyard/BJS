@@ -1,23 +1,24 @@
 <template name="result">
-    <li class="certificate accordion-item result-accordion {{#with athlete}}{{classes}}{{/with}}
+    {{#if show athlete}}
+        <li class="certificate accordion-item result-accordion {{athlete.classes}}
         {{#if autoOpen athlete}}accordion-item-expanded{{/if}}"
-        id="accordion_athlete_{{#with athlete}}{{id}}{{/with}}" data-athlete_id="{{#with athlete}}{{id}}{{/with}}">
+            id="accordion_athlete_{{athlete.id}}" data-athlete_id="{{athlete.id}}">
 
             <a href="#" class="item-content item-link">
                 {{#with athlete}}
                     <div class="item-media" id="iconWrapper{{id}}">
 
                         {{#if isEqual iconID 0}}
-                            {{> iconReady noAnimation=noAnimation text="Diese Urkunde kann jetzt erstellt werden."}}
+                            {{> iconReady text="Diese Urkunde kann jetzt erstellt werden."}}
                         {{else}}
                             {{#if isEqual iconID 1}}
-                                {{> iconWarn noAnimation=noAnimation text="Diese Urkunde muss neu erstellt werden."}}
+                                {{> iconWarn text="Diese Urkunde muss neu erstellt werden."}}
                             {{else}}
                                 {{#if isEqual iconID 2}}
-                                    {{> iconErr noAnimation=noAnimation text="Es müssen noch Punkte eingetragen werden."}}
+                                    {{> iconErr text="Es müssen noch Punkte eingetragen werden."}}
                                 {{else}}
                                     {{#if isEqual iconID 3}}
-                                        {{> iconOK noAnimation=noAnimation text="Diese Urkunde wurde bereits erstellt"}}
+                                        {{> iconOK text="Diese Urkunde wurde bereits erstellt"}}
                                     {{else}}
                                         {{> iconPreloader}}
                                     {{/if}}
@@ -28,8 +29,8 @@
                 {{/with}}
                 <div class="item-inner">
                     <div style="display: inline-block">
-                        <div class="item-title" style="display: inline-block; vertical-align: middle;">{{#with
-                                athlete}}{{name}}{{/with}}{{>outputAthleteMetaIcons athlete=athlete}}</div>
+                        <div class="item-title"
+                             style="display: inline-block; vertical-align: middle;">{{athlete.name}}{{>outputAthleteMetaIcons athlete=athlete}}</div>
                     </div>
                 </div>
             </a>
@@ -97,6 +98,7 @@
             </div>
         {{/with}}
     </li>
+    {{/if}}
 </template>
 
 <template name="outputAthleteMetaIcons">

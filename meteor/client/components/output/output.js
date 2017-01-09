@@ -117,7 +117,6 @@ function loadAllAthlets() {
         function (data) {
             Meteor.reactiveAthletes.set(_.map(data, function (athlete) {
                 athlete.iconID = statusToNumber(athlete);
-                athlete.animateNext = true;
                 return athlete;
             }));
             updatedGroups();
@@ -195,8 +194,6 @@ Template.outputContent.helpers({
             if (!athlete.classes) {
                 athlete.classes = "";
             }
-            athlete.noAnimation = !athlete.animateNext;
-            athlete.animateNext = false;
             return athlete;
         });
 
@@ -344,15 +341,10 @@ Template.output.events({
 function replaceAthletes(index, newAthlete) {
     const athletes = Meteor.reactiveAthletes.get();
     newAthlete.iconID = statusToNumber(newAthlete);
-    newAthlete.animateNext = true;
-    // newAthlete.classes = "collapsed";
-    athletes[index] = newAthlete;
+    athletes[index].id = "_old_";
+    athletes[index].name = "removed";
+    athletes.push(newAthlete);
     Meteor.reactiveAthletes.set(athletes);
-    // Tracker.afterFlush(function () {
-    //     const athletes = Meteor.reactiveAthletes.get();
-    //     athletes[index].classes = "";
-    //     Meteor.reactiveAthletes.set(athletes);
-    // });
 }
 
 Template.output.onRendered(function () {
@@ -389,7 +381,6 @@ Template.output.onRendered(function () {
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
                                 athletes[index].iconID = statusToNumber(athlete);
-                                athletes[index].animateNext = true;
                                 Meteor.reactiveAthletes.set(athletes);
 
                                 setTimeout(function () {
@@ -430,29 +421,3 @@ Template.output.onRendered(function () {
 
 
 });
-
-
-// Template.layout.animations({
-//     ".certificate": {
-//         container: ".certificate-list", // container of the ".item" elements
-//         insert: {
-//             class: "fade-in", // class applied to inserted elements
-//             before: function(attrs, element, template) {}, // callback before the insert animation is triggered
-//             after: function(attrs, element, template) {}, // callback after an element gets inserted
-//             delay: 500 // Delay before inserted items animate
-//         },
-//         remove: {
-//             class: "collapsed", // class applied to removed elements
-//             before: function(attrs, element, template) {
-//                 console.log("hiding");
-//             }, // callback before the remove animation is triggered
-//             after: function(attrs, element, template) {
-//                 console.log("hidden");
-//             }, // callback after an element gets removed
-//             delay: 500 // Delay before removed items animate
-//         },
-//         animateInitial: true, // animate the elements already rendered
-//         animateInitialStep: 200, // Step between animations for each initial item
-//         animateInitialDelay: 500 // Delay before the initial items animate
-//     }
-// });

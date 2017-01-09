@@ -32,6 +32,9 @@ Template.result.helpers({
     },
     isEqual: function (a, b) {
         return a == b;
+    },
+    show: function (athlete) {
+        return athlete.id !== "_old_";
     }
 });
 
