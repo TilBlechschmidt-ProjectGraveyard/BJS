@@ -5,11 +5,7 @@
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="left">
-                        {{#if both_logged_in}}
-                            <a href="#" class="logout-button">{{last_login}} abmelden</a>
-                        {{else}}
-                            <a href="#" class="return-to-login">Übersicht</a>
-                        {{/if}}
+
                     </div>
                     <div class="center truncate">
                         <div class="slider-title-wrapper">
@@ -72,7 +68,11 @@
                 <div class="toolbar-inner">
                     <a href="" id="link_prev" class="item-link hideOnMobile left">Vorheriger</a>
                     <div class="item-link center">
-
+                        {{#if both_logged_in}}
+                            <a href="#" class="logout-button">Speichern und {{last_login}} abmelden</a>
+                        {{else}}
+                            <a href="#" class="return-to-login">Übersicht</a>
+                        {{/if}}
                     </div>
                     <a href="" id="link_next" class="item-link hideOnMobile right">Nächster</a>
                 </div>

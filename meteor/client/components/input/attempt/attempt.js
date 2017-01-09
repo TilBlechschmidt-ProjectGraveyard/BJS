@@ -66,9 +66,9 @@ function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
 }
 
 Template.attempt.helpers({
-    isReadOnly: function (measurement) {
+    disabledText: function (measurement) {
         return measurement.read_only ? "disabled" : "";
-    },
+    }
 });
 
 Template.attempt.events({

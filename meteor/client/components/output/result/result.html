@@ -8,16 +8,16 @@
                     <div class="item-media" id="iconWrapper{{id}}">
 
                         {{#if isEqual iconID 0}}
-                            {{> iconReady noAnimation=noAnimation}}
+                            {{> iconReady noAnimation=noAnimation text="Diese Urkunde kann jetzt erstellt werden."}}
                         {{else}}
                             {{#if isEqual iconID 1}}
-                                {{> iconWarn noAnimation=noAnimation}}
+                                {{> iconWarn noAnimation=noAnimation text="Diese Urkunde muss neu erstellt werden."}}
                             {{else}}
                                 {{#if isEqual iconID 2}}
-                                    {{> iconErr noAnimation=noAnimation}}
+                                    {{> iconErr noAnimation=noAnimation text="Es müssen noch Punkte eingetragen werden."}}
                                 {{else}}
                                     {{#if isEqual iconID 3}}
-                                        {{> iconOK noAnimation=noAnimation}}
+                                        {{> iconOK noAnimation=noAnimation text="Diese Urkunde wurde bereits erstellt"}}
                                     {{else}}
                                         {{> iconPreloader}}
                                     {{/if}}

@@ -5,13 +5,17 @@
                 {{#if showIcon}}
                     {{#with measurement}}
                         {{#if synced}}
-                            {{> iconOK}}
+                            {{> iconOK text="Dieser Wert wurde erfolgreich synchronisiert."}}
                         {{else}}
-                            {{> iconErr}}
+                            {{#if read_only}}
+                                {{> iconWarn text="Es wird auf eine Verbindung gewartet."}}
+                            {{else}}
+                                {{> iconWarn text="Dieser Wert wurde noch nicht gespeichert."}}
+                            {{/if}}
                         {{/if}}
                     {{/with}}
                 {{else}}
-                    {{> iconReady}}
+                    {{> iconReady text="Es können Daten eingegeben werden."}}
                 {{/if}}
             </div>
             <div class="item-inner">
@@ -23,7 +27,7 @@
                            data-attempt="{{inc n}}"
                            data-stID="{{#with metadata}}{{id}}{{/with}}"
                            class="{{#with measurement}}{{class}}{{/with}}"
-                        {{isReadOnly measurement}}
+                        {{disabledText measurement}}
                     >
                 </div>
             </div>
