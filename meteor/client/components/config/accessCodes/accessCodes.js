@@ -5,11 +5,19 @@ import {currentCompID} from "../config";
 import {localGroups} from "../athleteList/athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 
-let accessCodes = new ReactiveVar([
+let totalProgress = 0;
+const progress = new ReactiveVar(undefined);
+const accessCodes = new ReactiveVar([
     {name: "Gruppenpasswörter", codes: []},
     {name: "Stationspasswörter", codes: []},
     {name: "Eigene Zugangsdaten", codes: []}
 ]);
+
+Tracker.autorun(function () {
+    const prog = progress.get();
+    if (!prog) return;
+    Meteor.f7.setProgressbar(".generateCodes", prog, 400);
+});
 
 function upsertCode(code, name, type) {
     const acodes = accessCodes.get();
@@ -51,18 +59,31 @@ function createAccount(name, groups, sportTypes, resultPermission, adminPermissi
 }
 
 function processCodes(codes) {
+    console.log((totalProgress - codes.length) / codes.length * 100);
+    progress.set((totalProgress - codes.length) / codes.length * 100);
     if (codes.length > 0) {
         const code = codes.pop();
         setTimeout(function () {
             createAccount(code.name, code.groups, code.sportTypes, code.resultPermission, code.adminPermission);
             processCodes(codes);
         }, 200);
+    } else {
+        Meteor.f7.hidePreloader();
     }
 }
 
 Template.accessCodes.helpers({
     codeGroups: function () {
         return accessCodes.get();
+    },
+    customCodesGroup: function () {
+        return {
+            name: "Eigene Zugangscodes",
+            codes: [] //TODO Replace with data
+        }
+    },
+    progressDone: function () {
+        return progress.get() == 100;
     }
 });
 
@@ -80,7 +101,6 @@ Template.accessCodes.events({
         for (let sportType in sportTypes) {
             if (!sportTypes.hasOwnProperty(sportType)) continue;
             sportType = sportTypes[sportType];
-            // console.log(sportType.name, sportType.id);
             codes.push({
                 name: sportType.name,
                 groups: [],
@@ -103,8 +123,14 @@ Template.accessCodes.events({
             });
         }
 
+        Meteor.f7.showPreloader("Generiere Zugangscodes");
+        totalProgress = codes.length;
         processCodes(codes);
     }
+});
+
+Template.accessCodes.onRendered(function () {
+    progress.set(100);
 });
 
 // Template.accessCodes.animations({

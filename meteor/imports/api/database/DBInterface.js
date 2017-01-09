@@ -223,12 +223,12 @@ export let DBInterface = {
     /**
      * Activates a competition with a given name
      * @param {Account} account - Admin account
-     * @param {string} competitionName - The name of the competition
+     * @param {string} competitionID - The id of the competition
      * @param [callback] - optional callback
      */
-    activateCompetition: function (account, competitionName, callback) {
+    activateCompetition: function (account, competitionID, callback) {
         const loginObject = getLoginObject(account);
-        Meteor.call('activateCompetition', loginObject, competitionName, function (err, enc_data) {
+        Meteor.call('activateCompetition', loginObject, competitionID, function (err, enc_data) {
             if (typeof callback === 'function') {
                 const log = new Log();
                 const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);

@@ -49,11 +49,24 @@ html, html * {
 }
 
 .bg-color-transition {
-    -webkit-transition: background-color 1000ms linear;
-    -moz-transition: background-color 1000ms linear;
-    -o-transition: background-color 1000ms linear;
-    -ms-transition: background-color 1000ms linear;
-    transition: background-color 1000ms linear;
+    -webkit-transition: background-color 1000ms ease;
+    -moz-transition: background-color 1000ms ease;
+    -o-transition: background-color 1000ms ease;
+    -ms-transition: background-color 1000ms ease;
+    transition: background-color 1000ms ease;
+}
+
+.fade {
+    -webkit-transition: opacity 1000ms ease;
+    -moz-transition: opacity 1000ms ease;
+    -o-transition: opacity 1000ms ease;
+    -ms-transition: opacity 1000ms ease;
+    transition: opacity 1000ms ease;
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
 }
 
 #__blaze-root{

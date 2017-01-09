@@ -12,6 +12,8 @@ export const dbReady = new Tracker.Dependency();
 export const competitions = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
 export const editMode = new ReactiveVar(false);
+const forwardButton = new ReactiveVar(undefined);
+const forwardButtonShown = new ReactiveVar(false);
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
@@ -67,7 +69,13 @@ Template.config.helpers({
     },
     edit: function () {
         return editMode.get();
-    }
+    },
+    forwardButtonShown: function () {
+        return forwardButtonShown.get();
+    },
+    forwardButton: function () {
+        return forwardButton.get();
+    },
 });
 
 function setState(event, edit) {
@@ -78,6 +86,26 @@ function setState(event, edit) {
 
 
 Template.config.events({
+    'click .fwd-button': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        // Check if current one is valid
+        if (forwardButton.get() == "Fertigstellen") {
+            Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
+                Meteor.f7.showPreloader("Speichere Wettkampf");
+                console.log("writing thingy");
+            });
+        } else {
+            document.getElementById("config-swiper").swiper.slideNext();
+        }
+        return false;
+    },
+    'click .back-button': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.getElementById("config-swiper").swiper.slidePrev();
+        return false;
+    },
     'click .show-athletes': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -89,8 +117,6 @@ Template.config.events({
         event.preventDefault();
         event.stopImmediatePropagation();
         setState(event, true);
-        document.getElementById("config-swiper").swiper.slideNext();
-        document.getElementById("config-swiper").swiper.slideNext();
         document.getElementById("config-swiper").swiper.slideNext();
         return false;
     },
@@ -109,19 +135,40 @@ Template.config.onRendered(function () {
     DBInterface.waitForReady(function () {
         dbReady.changed();
 
+        const leftButtonSwiper = new Swiper('#config-left-button-swiper', {
+            effect: 'slide',
+            spaceBetween: 50,
+            onlyExternal: true
+        });
+
         const nameSwiper = new Swiper('#config-name-swiper', {
             effect: 'slide',
             spaceBetween: 50,
             onlyExternal: true
         });
 
-        new Swiper('#config-swiper', {
+        const configSwiper = new Swiper('#config-swiper', {
             replaceState: true,
             parallax: true,
             speed: 400,
             spaceBetween: 50,
             onlyExternal: true,
             control: nameSwiper
+        });
+
+        configSwiper.on('transitionStart', function (swiper) {
+            if (swiper.activeIndex == 3) {
+                leftButtonSwiper.slideTo(1);
+                if (editMode.get()) forwardButtonShown.set(true);
+                forwardButton.set("Fertigstellen");
+            } else if (swiper.activeIndex > 0) {
+                leftButtonSwiper.slideTo(1);
+                if (editMode.get()) forwardButtonShown.set(true);
+                forwardButton.set("Weiter");
+            } else {
+                leftButtonSwiper.slideTo(0);
+                forwardButtonShown.set(false);
+            }
         });
     });
 });

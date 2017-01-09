@@ -4,8 +4,22 @@
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
-                            class="f7-icons">help</i></a></div>
+                    <div class="item-link left full-height">
+                        <div class="slider-title-wrapper" style="width: calc((100% - 250px) / 2);">
+                            <div id="config-left-button-swiper" class="swiper-container full-height">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" style="text-align: center; display: table; height: 100%">
+                                        <a style="display: table-cell; vertical-align: middle;" href="#"
+                                           class="logout-button t-left">Abmelden</a>
+                                    </div>
+                                    <div class="swiper-slide" style="text-align: center; display: table; height: 100%">
+                                        <a style="display: table-cell; vertical-align: middle;" href="#"
+                                           class="back-button t-left">Zurück</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="center truncate">
                         <div class="slider-title-wrapper">
                             <div class="slider-title-overlay"></div>
@@ -20,10 +34,8 @@
                         </div>
                     </div>
                     <div class="right">
-                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
-                                class="f7-icons">filter</i></a>
-                        <a href="#" data-popover=".popover-sorting" class="open-popover"><i
-                                class="f7-icons">sort</i></a>
+                        <a href="#"
+                           class="fwd-button t-left fade {{#if forwardButtonShown}}fade-in{{/if}}">{{forwardButton}}</a>
                     </div>
                 </div>
             </div>

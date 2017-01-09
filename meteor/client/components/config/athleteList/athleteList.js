@@ -61,7 +61,8 @@ Tracker.autorun(function () {
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
-        Meteor.f7.showIndicator();
+        Meteor.f7.showIndicator(); // TODO This doesn't get shown
+        if (!DBInterface.isReady()) return;
         dbReady.depend();
         DBInterface.waitForReady(function () {
             const competitionID = currentCompID.get();
@@ -91,9 +92,11 @@ Template.athleteList.helpers({
             return true;
     },
     fullName: function (athlete) {
-        const fullName = athlete.getFullName();
-        if (fullName === " ") return;
-        return fullName;
+        if (editMode.get()) {
+            const fullName = athlete.getFullName();
+            if (fullName === " ") return;
+            return fullName;
+        }
     },
     startClassName: function (startClass) {
         return startClasses[startClass].name;
