@@ -232,7 +232,7 @@ Template.outputContent.helpers({
                 if (currentGroup) result.push(currentGroup);
                 currentGroup = {title: groupName, athletes: [], show: false};
             }
-            if (athlete.id != "_old_") {
+            if (!athlete.hide) {
                 currentGroup.show = true;
             }
             currentGroup.athletes.push(athlete);
@@ -342,7 +342,7 @@ function replaceAthletes(index, newAthlete) {
     const athletes = Meteor.reactiveAthletes.get();
     newAthlete.iconID = statusToNumber(newAthlete);
     athletes[index].id = "_old_";
-    athletes[index].name = "removed";
+    athletes[index].hide = true;
     athletes.push(newAthlete);
     Meteor.reactiveAthletes.set(athletes);
 }
@@ -357,6 +357,7 @@ Template.output.onRendered(function () {
             Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
                 changed: function (id, fields) {
                     if (!AccountManager.getOutputAccount().logged_in) return;
+
 
                     let dataChanged = false;
                     for (let name in fields) {
@@ -373,40 +374,44 @@ Template.output.onRendered(function () {
                             closeOnClick: true,
                         });
                     }
-
-                    DBInterface.generateCertificates(
-                        AccountManager.getOutputAccount().account, [id], function (data) {
-                            setTimeout(function () {
+                    if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
+                        DBInterface.generateCertificates(
+                            AccountManager.getOutputAccount().account, [id], function (data) {
                                 const athlete = data[0];
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
-                                athletes[index].iconID = statusToNumber(athlete);
-                                Meteor.reactiveAthletes.set(athletes);
+                                clearTimeout(athletes[index].timeout); //clear any running animation
 
-                                setTimeout(function () {
-                                    const sorting = sortingSettings.get();
+                                athletes[index].timeout = setTimeout(function () {
+                                    const athletes = Meteor.reactiveAthletes.get();
+                                    athletes[index].iconID = statusToNumber(athlete);
+                                    athletes[index].timeout = setTimeout(function () {
 
-                                    const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
-                                    const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+                                        const sorting = sortingSettings.get();
+                                        const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
+                                        const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
 
-                                    //TODO check index
-                                    if (newGroupName === oldGroupName) {
-                                        //group not changed -> no animations required
-                                        replaceAthletes(index, athlete);
-                                    } else {
-                                        ///group changed -> start animation
-                                        const athletes = Meteor.reactiveAthletes.get();
-                                        athletes[index].classes = "collapsed";
-                                        Meteor.reactiveAthletes.set(athletes);
-
-                                        setTimeout(function () {
+                                        //TODO check index
+                                        if (newGroupName === oldGroupName) {
+                                            //group not changed -> no animations required
                                             replaceAthletes(index, athlete);
-                                        }, 1000);
-                                    }
-                                }, 1000);
-                            }, 100);
-                        }
-                    );
+                                        } else {
+                                            ///group changed -> start animation
+                                            const athletes = Meteor.reactiveAthletes.get();
+                                            athletes[index].classes = "collapsed";
+
+                                            athletes[index].timeout = setTimeout(function () {
+                                                replaceAthletes(index, athlete);
+                                            }, 1000);
+                                            Meteor.reactiveAthletes.set(athletes);
+                                        }
+                                    }, 1000);
+                                    Meteor.reactiveAthletes.set(athletes);
+                                }, 100);
+                                Meteor.reactiveAthletes.set(athletes);
+                            }
+                        );
+                    }
                 }
             });
         }

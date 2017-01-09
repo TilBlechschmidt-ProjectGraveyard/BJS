@@ -140,9 +140,6 @@ Athlete.prototype = {
         if (typeof(this.ageGroup) != 'number') {
             log.error('Der Jahrgang des Athleten ist ungültig.');
             result = false;
-        } else if (this.age < 8) {
-            log.error('Der Sportler ist zu jung um an den Bundesjugendspielen teilzunehmen.');
-            result = false;
         }
         if (typeof(this.isMale) != 'boolean') {
             log.error('Das Geschlecht des Athleten ist ungültig');

@@ -20,7 +20,9 @@ export function initAthletes() {
                     if (!modifier.$set.hasOwnProperty(name)) continue;
 
                     if (name.substr(0, 2) === "m_") {
-                        modifier.$set[name].synced = true;
+                        if (!doc.hasOwnProperty(name)) {
+                            modifier.$set[name].synced = true;
+                        }
                     }
                 }
             }
