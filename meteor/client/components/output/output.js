@@ -360,7 +360,7 @@ Template.output.onRendered(function () {
                 changed: function (id, fields) {
                     if (!AccountManager.getOutputAccount().logged_in) return;
 
-
+                    //search for changes in data
                     let dataChanged = false;
                     for (let name in fields) {
                         if (!fields.hasOwnProperty(name)) continue;
@@ -368,6 +368,8 @@ Template.output.onRendered(function () {
                             dataChanged = true;
                         }
                     }
+
+                    //show message about new data
                     if (dataChanged) {
                         Meteor.f7.addNotification({
                             title: "Neue Daten",
@@ -376,17 +378,28 @@ Template.output.onRendered(function () {
                             closeOnClick: true,
                         });
                     }
+
+                    //change of certificate information -> update
                     if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
                         DBInterface.generateCertificates(
                             AccountManager.getOutputAccount().account, [id], function (data) {
+
+                                //load athletes
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
+
+                                //update current data
                                 athletes[index].newAthlete = data[0];
+
+                                //an animation is already running -> return
                                 if (athletes[index].animation) {
                                     Meteor.reactiveAthletes.set(athletes);
                                     return;
                                 }
+
+                                //start the animation
                                 athletes[index].animation = true;
+                                athletes[index].iconID = 4;
                                 Meteor.reactiveAthletes.set(athletes);
 
                                 //load group names
