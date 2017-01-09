@@ -2,34 +2,38 @@
     <li class="certificate accordion-item result-accordion {{#with athlete}}{{classes}}{{/with}}
         {{#if autoOpen athlete}}accordion-item-expanded{{/if}}"
         id="accordion_athlete_{{#with athlete}}{{id}}{{/with}}" data-athlete_id="{{#with athlete}}{{id}}{{/with}}">
-        {{#with athlete}}
-            <a href="#" class="item-content item-link">
-                <div class="item-media" id="iconWrapper{{id}}">
 
-                    {{#if isEqual iconID 0}}
-                        {{> iconReady noAnimation=noAnimation}}
-                    {{else}}
-                        {{#if isEqual iconID 1}}
-                            {{> iconWarn noAnimation=noAnimation}}
+            <a href="#" class="item-content item-link">
+                {{#with athlete}}
+                    <div class="item-media" id="iconWrapper{{id}}">
+
+                        {{#if isEqual iconID 0}}
+                            {{> iconReady noAnimation=noAnimation}}
                         {{else}}
-                            {{#if isEqual iconID 2}}
-                                {{> iconErr noAnimation=noAnimation}}
+                            {{#if isEqual iconID 1}}
+                                {{> iconWarn noAnimation=noAnimation}}
                             {{else}}
-                                {{#if isEqual iconID 3}}
-                                    {{> iconOK noAnimation=noAnimation}}
+                                {{#if isEqual iconID 2}}
+                                    {{> iconErr noAnimation=noAnimation}}
                                 {{else}}
-                                    {{> iconPreloader}}
+                                    {{#if isEqual iconID 3}}
+                                        {{> iconOK noAnimation=noAnimation}}
+                                    {{else}}
+                                        {{> iconPreloader}}
+                                    {{/if}}
                                 {{/if}}
                             {{/if}}
                         {{/if}}
-                    {{/if}}
-                </div>
+                    </div>
+                {{/with}}
                 <div class="item-inner">
                     <div style="display: inline-block">
-                        <div class="item-title" style="display: inline-block; vertical-align: middle;">{{name}}</div>
+                        <div class="item-title" style="display: inline-block; vertical-align: middle;">{{#with
+                                athlete}}{{name}}{{/with}}{{>outputAthleteMetaIcons athlete=athlete}}</div>
                     </div>
                 </div>
             </a>
+        {{#with athlete}}
             <div style="clear: both"></div>
             <div class="accordion-item-content">
                 <div class="content-block" style="padding-left: 65px;">
@@ -53,6 +57,19 @@
                                            data-id="{{id}}">info_fill</i>
                         <span class="align-right">{{score}}</span>
                     </p>
+                    <p class="t-left">
+                        Geburtsjahr
+                        <span class="align-right">
+                            {{ageGroup}}
+                        </span>
+                    </p>
+                    <p class="t-left">
+                        Gruppe
+                        <span class="align-right">
+                            {{group}}
+                        </span>
+                    </p>
+
                     {{#if not certificateWritten}}
                         {{#if valid}}
                             <p>
@@ -62,7 +79,7 @@
                         {{/if}}
                     {{else}}
                         <p class="t-left">
-                            Erstellungsdatum
+                            Erstellungszeitpunkt
                             <span class="align-right">
                                 {{humanReadableDate certificateTime}}
                             </span>
@@ -80,4 +97,13 @@
             </div>
         {{/with}}
     </li>
+</template>
+
+<template name="outputAthleteMetaIcons">
+    {{#with athlete}}
+        <span style="padding-left: 5px">
+            {{#if isMale}} {{>faIcon i="fa-mars" style="opacity: 1; color: darkblue"}} {{else}} {{>faIcon i="fa-venus" style="opacity: 1; color: darkred"}} {{/if}}
+            {{#if not (isZero handicap)}} {{>faIcon i="fa-wheelchair" style="opacity: 1;"}} {{/if}}
+        </span>
+    {{/with}}
 </template>

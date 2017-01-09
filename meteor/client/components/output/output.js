@@ -29,7 +29,7 @@ const baseSortingData = [
     },
     {
         id: 1,
-        name: "Urkundentype",
+        name: "Urkundentyp",
         icon: "document_text",
         sort: function (a, b) {
             return b.certificate - a.certificate;
