@@ -1,4 +1,4 @@
-import {genRandomCode} from "../../../../imports/api/crypto/pwdgen";
+import {genRandomCode, genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID} from "../config";
@@ -31,11 +31,11 @@ function upsertCode(code, name, type) {
     accessCodes.set(acodes);
 }
 
-function setCode(code, name, groups, sportTypes, resultPermission, adminPermission) {
-    if (groups.length > 0 && sportTypes.length == 0) {
+function setCode(code, name, groups, sportTypes, resultPermission, adminPermission, custom) {
+    if (groups.length > 0 && sportTypes.length == 0 && !custom) {
         // Group account
         upsertCode(code, name, 0);
-    } else if (sportTypes.length > 0 && !resultPermission && !adminPermission) {
+    } else if (sportTypes.length > 0 && groups.length == 0 && !resultPermission && !adminPermission && !custom) {
         // Station account
         upsertCode(code, name, 1);
     } else {
@@ -73,13 +73,10 @@ function processCodes(codes) {
 
 Template.accessCodes.helpers({
     codeGroups: function () {
-        return accessCodes.get();
+        return accessCodes.get().slice(0, -1); // Slice to remove the custom codes since they have a group on their own
     },
     customCodesGroup: function () {
-        return {
-            name: "Eigene Zugangscodes",
-            codes: [] //TODO Replace with data
-        }
+        return accessCodes.get().slice(-1)[0];
     },
     progressDone: function () {
         return progress.get() == 100;
@@ -87,6 +84,9 @@ Template.accessCodes.helpers({
 });
 
 Template.accessCodes.events({
+    'click .add-code': function () {
+        createAccount(genUUID(), ["Q#z"], ["st_long_jump"], false, false, true);
+    },
     'click .generateCodes': function () {
         const compID = currentCompID.get();
         const competitionType = DBInterface.getCompetitionType(compID);
