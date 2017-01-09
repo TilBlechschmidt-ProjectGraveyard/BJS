@@ -219,7 +219,7 @@
 <template name="outputContent">
     {{#each u in uiElements}}
         {{#with u}}
-            <div class="autoWidthListBlock collapsible">
+            <div class="autoWidthListBlock collapsible {{#if not u.show}}collapsed{{/if}}">
                 {{#if showTitle title}}
                     <div class="content-block-title">{{title}}</div>{{/if}}
                 <div class="list-block">

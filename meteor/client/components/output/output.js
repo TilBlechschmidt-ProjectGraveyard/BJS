@@ -151,9 +151,6 @@ function updatedGroups() {
     groupSettings.set(settingData);
 }
 
-
-
-
 //noinspection JSUnusedGlobalSymbols
 Template.output.helpers({
     allAthletes: function () {
@@ -233,7 +230,10 @@ Template.outputContent.helpers({
             const groupName = baseSortingData[sorting[0]].getGroupName(athlete);
             if (!currentGroup || groupName != currentGroup.title) {
                 if (currentGroup) result.push(currentGroup);
-                currentGroup = {title: groupName, athletes: []};
+                currentGroup = {title: groupName, athletes: [], show: false};
+            }
+            if (athlete.id != "_old_") {
+                currentGroup.show = true;
             }
             currentGroup.athletes.push(athlete);
         });
@@ -399,12 +399,6 @@ Template.output.onRendered(function () {
                                         athletes[index].classes = "collapsed";
                                         Meteor.reactiveAthletes.set(athletes);
 
-
-                                        // const parent = accordionItem.parentNode;
-                                        // if (parent.childElementCount == 1) {
-                                        //     parent.parentNode.parentNode.style.maxHeight = "0";
-                                        // }
-                                        //waiting for collapsing
                                         setTimeout(function () {
                                             replaceAthletes(index, athlete);
                                         }, 1000);
