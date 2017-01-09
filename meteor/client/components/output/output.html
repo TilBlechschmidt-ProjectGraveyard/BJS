@@ -1,12 +1,11 @@
 <template name="output">
     {{> offline}}
     <div class="pages">
-        <div data-page="index" class="page navbar-fixed toolbar-fixed">
+        <div data-page="index" class="page navbar-fixed">
 
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left"><a href="#" data-popup=".popup-help" class="open-popup"><i
-                            class="f7-icons">help</i></a></div>
+                    <div class="left"><a href="#" class="logout-button">Abmelden</a></div>
                     <div class="center">
                         Urkunden
                     </div>
@@ -21,14 +20,6 @@
 
             <div class="page-content" id="outputContentWrapper">
                 {{>outputContent}}
-            </div>
-
-            <div class="toolbar">
-                <div class="toolbar-inner">
-                    <div class="item-link left"></div>
-                    <div class="item-link center"><a href="#" class="logout-button">Abmelden</a></div>
-                    <div class="item-link right"></div>
-                </div>
             </div>
         </div>
     </div>
