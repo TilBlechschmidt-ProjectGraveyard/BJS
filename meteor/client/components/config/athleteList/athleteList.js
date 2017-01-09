@@ -8,7 +8,7 @@ const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
 
 const groups = new ReactiveVar([]);
-const localGroups = new ReactiveVar([]);
+export const localGroups = new ReactiveVar([]);
 export const selectedAthlete = new ReactiveVar(undefined);
 
 let loaded;

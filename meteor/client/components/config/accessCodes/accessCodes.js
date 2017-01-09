@@ -2,6 +2,7 @@ import {genRandomCode} from "../../../../imports/api/crypto/pwdgen";
 import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID} from "../config";
+import {localGroups} from "../athleteList/athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 
 let accessCodes = new ReactiveVar([
@@ -50,7 +51,6 @@ function createAccount(name, groups, sportTypes, resultPermission, adminPermissi
 }
 
 function processCodes(codes) {
-    console.log(codes);
     if (codes.length > 0) {
         const code = codes.pop();
         setTimeout(function () {
@@ -75,6 +75,8 @@ Template.accessCodes.events({
         });
 
         const codes = [];
+
+        // Station accounts
         for (let sportType in sportTypes) {
             if (!sportTypes.hasOwnProperty(sportType)) continue;
             sportType = sportTypes[sportType];
@@ -87,6 +89,20 @@ Template.accessCodes.events({
                 adminPermission: false
             });
         }
+
+        // Group accounts
+        const lgroups = localGroups.get();
+        for (let group in lgroups) {
+            if (!lgroups.hasOwnProperty(group)) continue;
+            codes.push({
+                name: lgroups[group].name,
+                groups: [lgroups[group].name],
+                sportTypes: [],
+                resultPermission: false,
+                adminPermission: false
+            });
+        }
+
         processCodes(codes);
     }
 });
