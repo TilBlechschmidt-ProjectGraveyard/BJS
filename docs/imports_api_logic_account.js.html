@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Data - Documentation</title>
+    <title>imports/api/logic/account.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,832 +27,157 @@
 
 <div id="main">
     
-    <h1 class="page-title">Data</h1>
-    
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        Data
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    <h4 class="name" id="Data"><span class="type-signature"></span>new Data<span class="signature">(data)</span><span class="type-signature"></span></h4>
-
-    
-    <p class="summary">Creates an empty object containing arbitrary data in an encrypted fashion.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line10">line 10</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="findEncrypted"><span class="type-signature"></span>findEncrypted<span class="signature">(log, stID, acs)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-    <p class="summary">Finds and returns the dataObject with the given sport (stID).</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line73">line 73</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Finds and returns the dataObject with the given sport (stID).</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the sport the returned data should be part of</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>acs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#AuthenticationCode">AuthenticationCode</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>List of authentication codes that should be used for decryption</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getPlain"><span class="type-signature"></span>getPlain<span class="signature">(log, accounts, requireSignature, groupID)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#PlainData">PlainData</a>>}</span></h4>
-
-    
-    <p class="summary">Returns the data in plain text.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line35">line 35</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Returns the data in plain text.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>accounts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Accounts that should be used for decryption</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requireSignature</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>whether or not to enable signature enforcing</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the group this data is from</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;<a href="global.html#PlainData">PlainData</a>></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="push"><span class="type-signature"></span>push<span class="signature">(log, stID, newMeasurements, groupAC, stationAC)</span><span class="type-signature"></span></h4>
-
-    
-    <p class="summary">Updates the data of a given stID.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line88">line 88</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Updates the data of a given stID.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the sport the returned data should be part of</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>newMeasurements</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The measurements that should be inserted</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupAC</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Authentication code of the group</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stationAC</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Authentication code of the specified sport type</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">imports/api/logic/account.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Crypto} from "./../crypto/crypto";
+
+/**
+ * Object containing information about a specific account.
+ * @param {string} name - Name of the account
+ * @param {string[]} group_permissions - List of group names.
+ * @param {string[]} score_write_permissions - List of sport type ids.
+ * @param {AuthenticationCode} ac
+ * @param {boolean=} canViewResults - Specifies whether the account has permissions to view the results.
+ * @param {boolean=} isAdmin - Specifies whether the account has admin permissions.
+ * @constructor
+ */
+export function Account(name, group_permissions, score_write_permissions, ac, canViewResults = false, isAdmin = false) {
+    this.name = name;
+    this.score_write_permissions = score_write_permissions;
+    this.group_permissions = group_permissions;
+    this.ac = ac;
+    this.canViewResults = canViewResults;
+    this.isAdmin = isAdmin;
+}
+
+/**
+ * Returns whether the account has permissions for at least one group.
+ * @param {Account} account - The Account
+ * @return {boolean}
+ */
+export function isGroupAccount(account) {
+    return account.group_permissions.length > 0;
+}
+
+/**
+ * Returns whether the account has permissions for at least one station.
+ * @param {Account} account - The Account
+ * @return {boolean}
+ */
+export function isStationAccount(account) {
+    return account.score_write_permissions.length > 0;
+}
+
+/**
+ * Returns whether the account has permissions to view the results.
+ * @param {Account} account - The Account
+ * @return {boolean}
+ */
+export function canViewResults(account) {
+    return account.canViewResults;
+}
+
+/**
+ * Returns whether the account has admin permissions.
+ * @param {Account} account - The Account
+ * @return {boolean}
+ */
+export function isAdminAccount(account) {
+    return account.isAdmin;
+}
+
+/**
+ * Returns a comma separated list of the group names.
+ * @param {Account} account - The Account
+ * @return {string}
+ */
+export function getGroupNames(account) {
+    return account.group_permissions.join(", ");
+}
+
+/**
+ * Returns a login token used for Meteor.call.
+ * @param {Account} account - The Account
+ * @return {string}
+ */
+export function getLoginToken(account) {
+    return Crypto.generateLoginToken(account.ac.privHash, account.ac.salt);
+}
+
+/**
+ * @typedef {Object} LoginObject
+ * @property {string} pubHash - The public Hash of the Code
+ * @property {string} loginToken - The loginToken generated
+ */
+
+/**
+ * Returns a login object used for Meteor.call.
+ * @param {Account} account - The Account
+ * @return {LoginObject}
+ */
+export function getLoginObject(account) {
+    return {
+        pubHash: account.ac.pubHash,
+        loginToken: getLoginToken(account)
+    };
+}
+
+/**
+ * Returns a login object used for Meteor.call.
+ * @param {Account} account - The Account
+ * @param {LoginObject} loginObject - The long object
+ * @return {boolean}
+ */
+export function checkLogin(account, loginObject) {
+    if (loginObject.pubHash !== account.ac.pubHash) return false;
+
+    const loginToken = getLoginToken(account);
+
+    return loginObject.loginToken === loginToken;
+}
+
+/**
+ * Returns a array of the human-readable station names.
+ * @param {Account} account - The Account
+ * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
+ * @return {string[]}
+ */
+export function getStationNamesAsArray(account, ct) {
+    return _.map(account.score_write_permissions, function (stID) {
+        return ct.getNameOfSportType(stID);
+    });
+}
+
+/**
+ * Returns a comma separated list of the human-readable station names.
+ * @param {Account} account - The Account
+ * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
+ * @return {string}
+ */
+export function getStationNames(account, ct) {
+    return getStationNamesAsArray(account, ct).join(", ");
+}
+
+/**
+ * Return the ACs from all passed accounts.
+ * @param {Account[]} accounts
+ * @returns {AuthenticationCode[]}
+ */
+export function getAcsFromAccounts(accounts) {
+    return _.map(accounts, function (account) {
+        return account.ac;
+    });
+}</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>imports/api/crypto/crypto.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="Athlete.html">Athlete</a><ul class='methods'><li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li><li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li><li data-type='method'><a href="Athlete.html#check">check</a></li><li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li><li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li><li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li><li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li></ul></li><li><a href="Data.html">Data</a><ul class='methods'><li data-type='method'><a href="Data.html#findEncrypted">findEncrypted</a></li><li data-type='method'><a href="Data.html#getPlain">getPlain</a></li><li data-type='method'><a href="Data.html#push">push</a></li></ul></li><li><a href="Log.html">Log</a><ul class='methods'><li data-type='method'><a href="Log.html#clear">clear</a></li><li data-type='method'><a href="Log.html#custom">custom</a></li><li data-type='method'><a href="Log.html#disable">disable</a></li><li data-type='method'><a href="Log.html#enable">enable</a></li><li data-type='method'><a href="Log.html#error">error</a></li><li data-type='method'><a href="Log.html#getAsString">getAsString</a></li><li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li><li data-type='method'><a href="Log.html#getAsStringWithMinLevel">getAsStringWithMinLevel</a></li><li data-type='method'><a href="Log.html#info">info</a></li><li data-type='method'><a href="Log.html#merge">merge</a></li><li data-type='method'><a href="Log.html#warning">warning</a></li></ul></li><li><a href="SessionAccount.html">SessionAccount</a><ul class='methods'><li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li><li data-type='method'><a href="SessionAccount.html#get">get</a></li><li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li><li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li><li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li><li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li><li data-type='method'><a href="SessionAccount.html#login">login</a></li><li data-type='method'><a href="SessionAccount.html#logout">logout</a></li><li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li><li data-type='method'><a href="SessionAccount.html#store">store</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="AccountManager.html">AccountManager</a><ul class='methods'><li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li><li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li><li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li><li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li><li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li><li data-type='method'><a href="AccountManager.html#.login">login</a></li><li data-type='method'><a href="AccountManager.html#.logout">logout</a></li><li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li><li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li></ul></li><li><a href="Athletics.html">Athletics</a><ul class='methods'><li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li><li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li><li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li><li data-type='method'><a href="Athletics.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Athletics.html#.validate">validate</a></li></ul></li><li><a href="Crypto.html">Crypto</a><ul class='methods'><li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li><li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li><li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li><li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li><li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li><li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li></ul></li><li><a href="DBInterface.html">DBInterface</a><ul class='methods'><li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li><li data-type='method'><a href="DBInterface.html#.certificateUpdate">certificateUpdate</a></li><li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li><li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li><li data-type='method'><a href="DBInterface.html#.getActiveContest">getActiveContest</a></li><li data-type='method'><a href="DBInterface.html#.getActiveContestID">getActiveContestID</a></li><li data-type='method'><a href="DBInterface.html#.getAthletesByCompetition">getAthletesByCompetition</a></li><li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li><li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li><li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li><li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li><li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li><li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li><li data-type='method'><a href="DBInterface.html#.setSportTypeState">setSportTypeState</a></li><li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li><li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li></ul></li><li><a href="Gymnastics.html">Gymnastics</a><ul class='methods'><li data-type='method'><a href="Gymnastics.html#.calculate">calculate</a></li><li data-type='method'><a href="Gymnastics.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Gymnastics.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Gymnastics.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Gymnastics.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Gymnastics.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Gymnastics.html#.getSports">getSports</a></li><li data-type='method'><a href="Gymnastics.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Gymnastics.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li></ul></li><li><a href="Swimming.html">Swimming</a><ul class='methods'><li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li><li data-type='method'><a href="Swimming.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Swimming.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li><li data-type='method'><a href="Swimming.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Swimming.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Swimming.html#.validate">validate</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#canViewResults">canViewResults</a></li><li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#filterUndefined">filterUndefined</a></li><li><a href="global.html#genRandomCode">genRandomCode</a></li><li><a href="global.html#genUUID">genUUID</a></li><li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li><li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li><li><a href="global.html#getAdminAccount">getAdminAccount</a></li><li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li><li><a href="global.html#getGroupNames">getGroupNames</a></li><li><a href="global.html#getLoginObject">getLoginObject</a></li><li><a href="global.html#getLoginToken">getLoginToken</a></li><li><a href="global.html#getStationNames">getStationNames</a></li><li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li><li><a href="global.html#initCollections">initCollections</a></li><li><a href="global.html#isAdminAccount">isAdminAccount</a></li><li><a href="global.html#isGroupAccount">isGroupAccount</a></li><li><a href="global.html#isStationAccount">isStationAccount</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">imports/api/crypto/crypto.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import CryptoJS from "crypto-js";
+
+const TYPE1_PEPPER = 'n+sbYWqp@D_E%eTg!ae$NEJ--HzkRze&amp;8MqbcfGA&amp;M^jw^tRZFPabB9SqmuZQd6KpAVZky5tjK^k=yf_4gk35rN7v2f?p&amp;Yq5=C5tRf&amp;#2g-8L@CYM?fkPM=jhMhWR_?sjYA=aj+9?EL+uKpb!BT5Pr&amp;#BTLgAf5h_*#QmVm&amp;cL!7YRaLDY+5#DnWdcq4gg_C+6!ub$!YjRfh^DE4D=xmQY^tBb6z=x6x=d4gW5Wqq+5zRj?Yf6GGc6whx$Xru_3qsVL6$Gj@c=N_fdn!nR8!MNj=wVRu-Fu=GpQ7zB!eS5T-+Z-XjJ9W==Z%uf5wZ85?YPVq6$XJAa*BdyV_pCs9faCx2pZ!8vjX#Df_t4k34q7frU&amp;#!P=ssE@9Z!&amp;cbzw9KcNGAxNDRATQ9b&amp;3n@=LgvZ&amp;gbujefX&amp;fd8yGgPYaZ7VR2SSpb%9sYa524a2nQNA%vmZ+qL-*6kRZyQGu!2rCu_xbmYv@acd8PAqc2Yz_v2ybR!4^XE3ZGPh3xC5GqHhY_MQrQ@enUTj@JhG^MtjKKqJTpc6T7A=xvxc5CGAc#HG9fN-Y#uvdZpa@&amp;SUdX!JuMk@$dm%5*h4LewLAE3!dCqjQm?k%%L=#X!udLQ-Dz#+KTrvGCe8&amp;YgxM-_-2&amp;26e=RJ?q8nJP&amp;23eA58HM7$Q4g58tp&amp;-Wzd$JgjUYyLns%hGC6PUA^Ug3Rzpf9C5nQ+_TM+9dTu-#mn6b^EzBh3Fm6F=P^2vxkNkbbgx8MYF-sLJf5QRZzHsex&amp;b&amp;$&amp;EQeA%GvLqb9cftYTHuh6KB^tfYan83FX^k&amp;avE=_jByy2YAprevKpT-A3-jffc$GgBZR@?C$L-24Fs=MnYuxv%=TQ^A$$8*CjdyjxJqh#5NfE8XC%7wN%b4Zcm9rJ9_h+s_*2LbevZ8qDUkTYW-V76g3F!pzj$yxCPadKV6^@K&amp;pF485JjG9E_F&amp;=7hSQEf!c_nB2!d@WbQa&amp;=wq8SXWqMYSsumX4=*a-Ud?+%-5a^ctAbw8VPTge9z^rC^@M%pS?m3K-*fm!DUEv5gHM9FrnWWuypj!4?rJyrmm$%p#Z$^42RqqK$BPm-ARANn?2*Ty!*T_j5-Bp36AMKS7Q%#xYgRP*YP6vD^7KFv4b5yHNFgQ-ZV*QVhcTA_XsDBtrSnk#AU*&amp;RyW$=mzJ5az=NndGTQZgzM++GUt*Qs=s_C5Urkw9W?T%Gq3ktnWqxJcrZzX#D-h_73gD#+kLR3TRPBRVCS!SrvB*v_y-$$M$dHfumkeasR#p!n2NP*hYL?=Rf4GQ^*6e@ft+qk#C6@67dmwDkcDJFaL5=!NmMGenGngVuftPxfbeRQ&amp;MEfbyC+8Q&amp;EG3p=arbB_4KhhWz#hgcMja%73wfuwdLvc^%XgAvqf8F+bMkTZmAuy_GF@=xrBpKfpTRw6ALhYAVfAYr9gvtzY#FM6??&amp;DPSzKsDfvpY8KQaL7uY-EyNQBhf9*q+ASGe3gV+JrH*xtD_4TR@DES#xnyFu9V3g2$&amp;K4Lu5CBg94M_sRRf#92jzmZu9GR&amp;6VynKmwUcPk3USg?Zj_-W7?AW-QKMzQX+2LD6GqkQsLWMEgG3rPHx3jvme^#ykC^_2pH@$$r^*Z@H%zJsSUK+3F2pNXvLW_DpZHPQDXdL^Wq7xnWb4+4A^5Rg9Z3YGw?mYZDsu9RKwN^6bu-Bw*HPu2hdL4EG_HE*Q57NZr!x9+bQRcTw*^8zxaq7uT#TaqFRnPBjVN#StQzbM2!fj2Qf4ZDUm_F$LL!?ua9@CEfM_WZEYBQ4wz@LFJ#ynpHYDYKMYyvNNXT7WVypknph#kqQ!wUcqQ4-QGJK566ag93wquGjawG8^yzvf98E=?=Lmh8^Sbm6tupMNJUD4W6#7T5K=J7LX2mr8^y4FW9k*b9#T9ajACpzvuxqg964ddD4YJ6wVcW=5B4ZWwyQ4_y-HaR2@jkguhB43L8$W?=#rpFZKpZUsGtJyqVwA+B_CAXcLP-8AqTqWhDcuRRfWf!Rr8GtFN4pJUfw6!aAc8jay5w&amp;9TEhgk$YDx5GbW!YyKP@rCuJDRzcM^R';
+const TYPE2_PEPPER = 'B%SaY*RK#NTJEA-4D-9UkBc@rB9Y9aFAeK^5P*my$$2WZkht9*dY9aLrq$ruaHTT8QH*^Ty6eEL#P@zFLAaR9J7J#GQ3@A?3RBdMw8?=Lw9d?$y_Sw5kAnd&amp;xDk&amp;-=KJ3TA$SM*@FMtFGGy8w8?8Aj5n3C!DVLn*quqvGQpgcYAZd_Vku#Lb4J$RmH_=fKQREx&amp;gs%@ezyrLVQJUJZ*wUCFWM43T%6kH@J7@PLDeLbP!qN#6QuvS-TNK^emUBWGR@5EhEVz*NDM^%^PHSpKS5^#nj%6hJWtuK^*6rpFba8jFB=zWb&amp;BLbyfP9H8vSk^$+swj#mKkb^cf7SyPZB2%%v9uK+fbsrtYV8YKpUUBYdg9YnfUrMAL!?6tMzurDgS49mHkvK3%#g@*^vqz#zQzYg8-+&amp;%pXk49Bc$v$XQQ5a@zH@%p85TzMHP6uHQPjXeMU8CtHBWYf8u6g#4%+P@pH!JyDXS9=Bj#EegR^&amp;-xY^_7NX%8LNnMYph%7qv$YmhBDzA3TqDWJJC!V5fUeNV_$Qm=kdmzW8ZQT%q-7PCGKsPWH+5#*4UW@yKVZdtuqxkPC&amp;EpUwsns2d?VuB2XFc9puAg-&amp;jj@h?s*T8RXphK4HFd-n%N*vbVX8$WASC@v#4cu8ZYecy#duATyq5hQ_hK#hZ9eq6UzHzG++Gg4u?E*Vw8Bfp-XZ%SYRW$7pBxAqWU6A?595&amp;XqU#8L2q9kkZ7nWXXBeW4%L4PhXc@mG57kEX=A=kXHZkLZ28p&amp;34^pA6KM$t+rN#t6TLm!$S7t-77FQm3AZtsja#MYbW9Umd6F8h?w=jxhERWzJPY@q9kFA&amp;y^XUj=gZB#C%rvU8!J*nRU23@8N?L9N&amp;Z9K7bh5*y_47@AJsvpjvxup*G8Rry5v*DEunWKt#=fPWCfLBEkNt^2qQGL+cC3%*C+pSCJdbE_UQRQtLJ2N79xBp7ty#32nn2&amp;2e%2rjB2xkMsQ*fz2$BPZWMf&amp;prEffm4qM5D*_pN%7vuXub+Y#QR^J27DUQ!!Hu_@J3&amp;aUFTbv4-Ey@yQ7Zp_exUL*rAVBfZg%bAD@-xj-mvv6-*TP$MdRThr$2Uz!T8u4Wbz!DnYfTmcyERTxsKGfWcafyS*2F?2D9hRm!?NmWfnzN=mvu4-?hkqnJB#W-xq4U24SMM8bcE*GU7ZDEvS75FJTRbsuV46&amp;d^y4C3!cKVv%9^eJVDb8=DUQV-npzccqH?k#35hJd7PYm5xRCvqcnap2k!CJ-+*kq32nKKQyzXakuNJJrrnEs_Q&amp;PhWPs7PPtqaJ8*C#=JeN$m6STrsZh$H68pB^X&amp;V_%&amp;zsnyr^a-pq@Y6?gHntp5bvjx5V4+KHueMn#2aPKT2ewVF$^eU7cn!CUnyv@Khd_8pPCCfHuY=8KXF==*cNJz*9&amp;t_#p_Ssa^Cs!Rz6jv4WQGJRJZ9Nk3bRBZ8Af?Jg?C+d5fwQGP6a+wUT3rZ9dctvvrUkS!taJ!^ZMgHrUTdL++67nbh^!33T!3*Jt=PbRYF#nTSLdBVJMt*z*$?cv2?rfVSR_**YJe_AQ+4m6&amp;FjVvgX8+Zy7qC^uM4F!vvtth-!BrDv8nQw6x#=-&amp;b55BLjWRkHEYwcr$8B9GhPK$=8qm8MhMhUgs?wsBgEThdk7Uastf^kAzT2#J62r73aA6#ccNuG-qRE2FTfWMtD#%^73EHyHmeE%nP8Z=jKPwX&amp;y%SvrvhuSMfP57XXTM=jZaujv6UZjYUBH=J2t2%@kaK8ss!nZu_Zu+f6u_&amp;@UT?@zWp*?Q@huWX%eQh*^@CwWa8g7^HMAg^=qKrPtYg-HHu@X&amp;NL!!d7^Q%H_?mu$t2peM%YG%Dy*DLh&amp;c!HQk7aQ+EAZnCNy-v9nF*CBfV_^#?BeK%EzTB2awPYrm#wAFh$$6@H?Nq46zrzgc2zEJ=A#^nqS??aP-gC6YemWBtzVZE%3Sv@&amp;JGeD@hh$AcVB4GJJ5PkCzVCjRh_&amp;r_bKx2U3u3+hFzytSf9tSHdsdpZ#mtxeWJ4b&amp;UuTzB5WbTLW3bF%D&amp;?HPFR9LZpwkzsDJp9ZNv26rJQh';
+
+/**
+ * @typedef {Object} AuthenticationCode
+ * @property {string} salt - The salt used to create the public and private hash
+ * @property {string} pubHash - The public Hash of the Code
+ * @property {string} privHash - The private Hash of the Code
+ */
+
+/**
+ * @typedef {Object} SED - Collection of data and signatures that may be utilized to confirm the integrity of the data.
+ * @property {Signature} groupSignature - Signature created with the data and the group authentication code.
+ * @property {Signature} stationSignature - Signature created with the data and the station authentication code.
+ * @property {*} data - Data the signatures are based on.
+ */
+
+/**
+ * @typedef {Object} Signature
+ * @property {string} signature - Signature of the data generated with a specific authentication code.
+ * @property {string} pubHash - Public hash of the authentication code this signature was created with.
+ */
+
+/**
+ * Converts a word list to hexadecimal values.
+ * @private
+ * @param {CryptoJS.lib.WordArray} words - Word list to convert into hexadecimal values.
+ */
+function wordsToHex(words) {
+    //noinspection JSUnresolvedVariable
+    return CryptoJS.enc.Hex.stringify(words);
+}
+
+//
+/**
+ * Generate Hash-based message authentication code.
+ * @private
+ * @param {*} data - Arbitrary data to generate a HMAC for.
+ * @param {string} password - The key to use when hashing the data.
+ */
+function generateHMAC(data, password) {
+    //noinspection JSUnresolvedFunction
+    return wordsToHex(CryptoJS.HmacSHA512(JSON.stringify(data), password));
+}
+
+/**
+ * Sign the data with a passed authentication code.
+ * @private
+ * @param {*} data - Arbitrary data to sign.
+ * @param {AuthenticationCode} ac - Authentication to use when generating the signature.
+ * @returns {Signature} An Signature instance that contains the generated signature as well as the public hash of the authentication code used for the signature.
+ */
+function generateSignature(data, ac) {
+    return {
+        signature: generateHMAC(data, ac.privHash),
+        pubHash: ac.pubHash
+    };
+}
+
+/**
+ * Checks the signature of a SED package.
+ * @private
+ * @param {SED} SED - The signed and encrypted data.
+ * @param {*} data - The decrypted data.
+ * @param {AuthenticationCode} groupAC - The GroupAC used for checking.
+ * @param {AuthenticationCode} stationAC - The GroupAC used for checking.
+ * @returns {boolean}
+ */
+function checkSignature(SED, data, groupAC, stationAC) {
+    return (groupAC.pubHash == SED.groupSignature.pubHash &amp;&amp; generateHMAC(data, groupAC.privHash) == SED.groupSignature.signature) &amp;&amp;
+        ( typeof stationAC === 'object' ? (stationAC.pubHash == SED.stationSignature.pubHash &amp;&amp; generateHMAC(data, stationAC.privHash) == SED.stationSignature.signature) : true);
+}
+
+/**
+ * Decrypt the signed data and check the signatures.
+ * @private
+ * @param {SED} SED - Encrypted and signed data to decrypt.
+ * @param {AuthenticationCode} groupAC - Authentication code of the group used for encryption.
+ * @returns {{data: ?object, success: boolean}}    Either the decrypted data in case the encryption was successful or false if the signature verification failed.
+ */
+function decrypt(SED, groupAC) {
+    //noinspection JSUnresolvedVariable
+    const bytes = CryptoJS.Rabbit.decrypt(SED.data, groupAC.privHash);
+    //noinspection JSUnresolvedVariable
+    try {
+        //noinspection JSUnresolvedVariable
+        return {
+            data: JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),
+            success: true
+        };
+    } catch (err) {
+        return {
+            data: undefined,
+            success: false
+        };
+    }
+}
+
+/**
+ * Object containing various cryptography related tasks like encryption, decryption and signature verification.
+ * @public
+ * @namespace
+ * @type {{generateAC: Crypto.generateAC, encrypt: Crypto.encrypt, tryDecrypt: Crypto.tryDecrypt}}
+ */
+export let Crypto = {
+    /**
+     * Generate a private hash based on password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to add to the mix
+     * @returns {string}
+     */
+    generatePubHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE1_PEPPER, salt, {keySize: 512 / 32, iterations: 10}));
+    },
+
+    /**
+     * Generate a private hash based on password and salt
+     * @param password {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to add to the mix
+     * @returns {string}
+     */
+    generatePrivHash: function (password, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(password + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1000}));
+    },
+
+    /**
+     * Generates a login token used for Meteor.call
+     * @param privHash {string} - Phrase to use for encryption
+     * @param salt {string} - Salt to throw into the mix
+     * @returns {string}
+     */
+    generateLoginToken: function (privHash, salt) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction
+        return wordsToHex(CryptoJS.PBKDF2(privHash + TYPE2_PEPPER, salt, {keySize: 512 / 32, iterations: 1}));
+    },
+
+
+    /**
+     * Generates an authentication code for.
+     * @public
+     * @param password  {string}     Password to generate the authentication code from.
+     * @param salt      {string=}    Salt to recreate a specific authentication code.
+     * @returns {AuthenticationCode}   The resulting authentication code object.
+     */
+    generateAC: function (password, salt = CryptoJS.lib.WordArray.random(128 / 8)) {
+        if (typeof salt === 'string') { //noinspection JSUnresolvedVariable
+            salt = CryptoJS.enc.Hex.parse(salt);
+        }
+        //noinspection JSUnresolvedFunction,JSCheckFunctionSignatures
+        return {
+            salt: wordsToHex(salt),
+            pubHash: Crypto.generatePubHash(password, salt),
+            privHash: Crypto.generatePrivHash(password, salt)
+        };
+    },
+
+    /**
+     * Encrypt data and sign it.
+     * @public
+     * @param data {*} Data to encrypt.
+     * @param {AuthenticationCode} groupAC - Group authentication code used for encryption.
+     * @param {AuthenticationCode} stationAC - Station authentication code used for encryption.
+     * @returns {{groupSignature: Signature, stationSignature: Signature, data: (string|*)}}
+     */
+    encrypt: function (data, groupAC, stationAC) {
+        //noinspection JSUnresolvedVariable
+        return {
+            groupSignature: generateSignature(data, groupAC),
+            stationSignature: generateSignature(data, stationAC),
+            data: CryptoJS.Rabbit.encrypt(JSON.stringify(data), groupAC.privHash).toString()
+        };
+    },
+
+    /**
+     * Attempts to decrypt a given SED (signed and encrypted data) with the given ACs.
+     * @public
+     * @param {Log} log - A log object.
+     * @param {SED} SED - Encrypted and signed data to decrypt.
+     * @param {AuthenticationCode[]} acs - Array of authentication codes to attempt decryption with.
+     * @returns {Object|boolean} Object containing the data and the signatureEnforced property (whether or not the data has been checked against the station's AC) or false in case something went wrong or decryption/signature checking isn't possible or unsuccessful.
+     */
+    tryDecrypt: function (log, SED, acs) {
+
+        const loggerPresent = (typeof log === 'object' &amp;&amp; typeof log.warning === 'function');
+        if (!SED || !log || !loggerPresent || !(typeof SED === 'object' &amp;&amp; SED.hasOwnProperty('groupSignature') &amp;&amp; SED.hasOwnProperty('stationSignature') &amp;&amp; SED.hasOwnProperty('data'))
+        ) {
+            if (loggerPresent) log.error('Wrong parameters passed! (consult documentation)');
+            else throw new Error('Wrong parameters passed! (consult documentation)');
+            return false;
+        }
+
+        lodash.remove(acs, _.isUndefined);
+
+        const usedACs = {};
+
+        const groupAC = _.find(acs, function (ac, i) {
+            const match = SED.groupSignature.pubHash == ac.pubHash;
+            if (match) usedACs.groupAC = i;
+            return match;
+        });
+        if (!groupAC) {
+            log.error('GROUP AC NOT PROVIDED - FATAL - RETURNING');
+            return false;
+        }
+
+        const stationAC = _.find(acs, function (ac, i) {
+            const match = SED.stationSignature.pubHash == ac.pubHash;
+            if (match) usedACs.stationAC = i;
+            return match;
+        });
+        if (!stationAC) log.warning('STATION AC NOT PROVIDED! SKIPPING VALIDITY CHECK');
+
+        const decryptResult = decrypt(SED, groupAC);
+        if (decryptResult.success &amp;&amp; checkSignature(SED, decryptResult.data, groupAC, stationAC))
+            return {
+                data: decryptResult.data,
+                signatureEnforced: stationAC !== undefined,
+                usedACs: usedACs
+            };
+        return false;
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 09 2017 22:25:54 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

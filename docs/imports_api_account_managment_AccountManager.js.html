@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Data - Documentation</title>
+    <title>imports/api/account_managment/AccountManager.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,832 +27,213 @@
 
 <div id="main">
     
-    <h1 class="page-title">Data</h1>
-    
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        Data
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    <h4 class="name" id="Data"><span class="type-signature"></span>new Data<span class="signature">(data)</span><span class="type-signature"></span></h4>
-
-    
-    <p class="summary">Creates an empty object containing arbitrary data in an encrypted fashion.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line10">line 10</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="findEncrypted"><span class="type-signature"></span>findEncrypted<span class="signature">(log, stID, acs)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-    <p class="summary">Finds and returns the dataObject with the given sport (stID).</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line73">line 73</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Finds and returns the dataObject with the given sport (stID).</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the sport the returned data should be part of</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>acs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#AuthenticationCode">AuthenticationCode</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>List of authentication codes that should be used for decryption</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getPlain"><span class="type-signature"></span>getPlain<span class="signature">(log, accounts, requireSignature, groupID)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#PlainData">PlainData</a>>}</span></h4>
-
-    
-    <p class="summary">Returns the data in plain text.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line35">line 35</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Returns the data in plain text.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>accounts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Account.html">Account</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Accounts that should be used for decryption</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requireSignature</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>whether or not to enable signature enforcing</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the group this data is from</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;<a href="global.html#PlainData">PlainData</a>></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="push"><span class="type-signature"></span>push<span class="signature">(log, stID, newMeasurements, groupAC, stationAC)</span><span class="type-signature"></span></h4>
-
-    
-    <p class="summary">Updates the data of a given stID.</p>
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line88">line 88</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Updates the data of a given stID.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>log</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Log.html">Log</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Logger instance to use</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stID</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Identifier of the sport the returned data should be part of</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>newMeasurements</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The measurements that should be inserted</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>groupAC</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Authentication code of the group</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stationAC</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AuthenticationCode">AuthenticationCode</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Authentication code of the specified sport type</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">imports/api/account_managment/AccountManager.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {SessionAccount} from "./SessionAccount";
+import {DBInterface} from "../database/DBInterface";
+import {checkPermission} from "../../../client/components/login/router";
+
+
+let inputGroupAccount = new SessionAccount('input_group_account');
+let inputStationAccount = new SessionAccount('input_station_account');
+let inputAdminAccount = new SessionAccount('input_admin_account');
+let inputOutputAccount = new SessionAccount('input_output_account');
+
+function logout(type) {
+    if (type == "Gruppenleiter") {
+        Session.set("inputSlideIndex", undefined);
+        inputGroupAccount.logout();
+    } else if (type == "Station") {
+        inputStationAccount.logout();
+    } else if (type == "Administrator") {
+        inputAdminAccount.logout();
+    } else if (type == "Urkunden") {
+        inputOutputAccount.logout();
+    }
+}
+
+function saveData() {
+    const group_account = inputGroupAccount.get().account;
+    const station_account = inputStationAccount.get().account;
+    const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+
+    if (sessionStorage.getItem("measurements")) {
+        const measurements = JSON.parse(sessionStorage.getItem("measurements"));
+        // Loop through all athletes
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            athlete = athletes[athlete];
+            // Check if there is some data for the athlete in the session storage
+            if (measurements[athlete.id]) {
+                // Loop through the sport types
+                for (let stID in measurements[athlete.id]) {
+                    if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
+                    // Add all measurements for the sport type to the athlete
+                    athlete.addMeasurement(Meteor.input.log, stID,
+                        lodash.map(measurements[athlete.id][stID], function (measurement) {
+                            return measurement;
+                        }),
+                        group_account, station_account);
+                }
+            }
+        }
+
+        sessionStorage.setItem("measurements", "{}");
+    }
+}
+
+/**
+ * Object containing various function to manage account on the client.
+ * @public
+ * @namespace
+ */
+export let AccountManager = {
+    /**
+     * Returns the Group and station account
+     * @return {{GroupAccount: AccountManagerResult, StationAccount: AccountManagerResult}}
+     */
+    retrieveAccounts: function () {
+        return {
+            GroupAccount: inputGroupAccount.get(),
+            StationAccount: inputStationAccount.get(),
+            AdminAccount: inputAdminAccount.get(),
+            OutputAccount: inputOutputAccount.get()
+        };
+    },
+
+    /**
+     * Returns the group account
+     * @returns {?AccountManagerResult}
+     */
+    getGroupAccount: function () {
+        return inputGroupAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getStationAccount: function () {
+        return inputStationAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getAdminAccount: function () {
+        return inputAdminAccount.get();
+    },
+
+    /**
+     * Returns the station account
+     * @returns {?AccountManagerResult}
+     */
+    getOutputAccount: function () {
+        return inputOutputAccount.get();
+    },
+
+    /**
+     * Returns whether a group is logged in
+     * @returns {*}
+     */
+    viewPermitted: function () {
+        return inputGroupAccount.isLoggedIn();
+    },
+
+    /**
+     * Returns whether a group AND a station are logged in
+     * @returns {*}
+     */
+    inputPermitted: function () {
+        return inputGroupAccount.isLoggedIn() &amp;&amp; inputStationAccount.isLoggedIn();
+    },
+
+    /**
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {string} passphrase
+     * @param [callback] - optional callback
+     */
+    login: function (type, passphrase, callback) {
+        let account = inputGroupAccount;
+
+        if (type == "Station") account = inputStationAccount;
+        else if (type == "Administrator") account = inputAdminAccount;
+        else if (type == "Urkunden") account = inputOutputAccount;
+
+
+        account.setProcessing(true);
+        DBInterface.waitForReady(function () {
+            account.login(passphrase, function (logged_in) {
+                if (!logged_in) {
+                    if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");
+                } else if (type == "Gruppenleiter" &amp;&amp; !account.isGroupAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Gruppe an.");
+                } else if (type == "Station" &amp;&amp; !account.isStationAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Das Passwort gehört nicht einer Station an.");
+                } else if (type == "Administrator" &amp;&amp; !account.isAdminAccount()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benuzer hat keine Administrator Rechte.");
+                } else if (type == "Urkunden" &amp;&amp; !account.canViewResults()) {
+                    account.logout();
+                    if (typeof callback === 'function') callback(false, "Dieser Benutzer hat keine Berechtigung die Urkunden zu erstellen..");
+                } else if (typeof callback === 'function') callback(true);
+            });
+        });
+    },
+
+    /**
+     * Login for an account
+     * @param {string} type - The type of the account that will be logged in
+     * @param {boolean=} force - Skip confirmation
+     */
+    logout: function (type, force = false) {
+        if (inputGroupAccount.isLoggedIn() &amp;&amp; inputStationAccount.isLoggedIn()) {
+            if (force) {
+                saveData();
+                logout(type);
+                Meteor.inputDependency.changed();
+            } else {
+                Meteor.f7.confirm('Wenn Sie sich abmelden können die Daten nachträglich nicht mehr editiert werden!', 'Hinweis',
+                    function () {
+                        Meteor.f7.showPreloader('Speichere Daten');
+                        saveData();
+                        logout(type);
+                        Meteor.inputDependency.changed();
+                        setTimeout(function () {
+                            checkPermission();
+                            Meteor.f7.hidePreloader();
+                        }, 1500);
+                    }
+                );
+            }
+        } else {
+            logout(type);
+        }
+    },
+
+    logoutAll: function () {
+        inputAdminAccount.logout();
+        inputOutputAccount.logout();
+        inputStationAccount.logout();
+        inputGroupAccount.logout();
+        sessionStorage.removeItem("firstLogin");
+    }
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

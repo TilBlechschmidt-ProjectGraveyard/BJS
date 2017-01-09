@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>imports/api/logic/athlete.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="Athlete.html">Athlete</a><ul class='methods'><li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li><li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li><li data-type='method'><a href="Athlete.html#check">check</a></li><li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li><li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li><li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li><li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li></ul></li><li><a href="Data.html">Data</a><ul class='methods'><li data-type='method'><a href="Data.html#findEncrypted">findEncrypted</a></li><li data-type='method'><a href="Data.html#getPlain">getPlain</a></li><li data-type='method'><a href="Data.html#push">push</a></li></ul></li><li><a href="Log.html">Log</a><ul class='methods'><li data-type='method'><a href="Log.html#clear">clear</a></li><li data-type='method'><a href="Log.html#custom">custom</a></li><li data-type='method'><a href="Log.html#disable">disable</a></li><li data-type='method'><a href="Log.html#enable">enable</a></li><li data-type='method'><a href="Log.html#error">error</a></li><li data-type='method'><a href="Log.html#getAsString">getAsString</a></li><li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li><li data-type='method'><a href="Log.html#getAsStringWithMinLevel">getAsStringWithMinLevel</a></li><li data-type='method'><a href="Log.html#info">info</a></li><li data-type='method'><a href="Log.html#merge">merge</a></li><li data-type='method'><a href="Log.html#warning">warning</a></li></ul></li><li><a href="SessionAccount.html">SessionAccount</a><ul class='methods'><li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li><li data-type='method'><a href="SessionAccount.html#get">get</a></li><li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li><li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li><li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li><li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li><li data-type='method'><a href="SessionAccount.html#login">login</a></li><li data-type='method'><a href="SessionAccount.html#logout">logout</a></li><li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li><li data-type='method'><a href="SessionAccount.html#store">store</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="AccountManager.html">AccountManager</a><ul class='methods'><li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li><li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li><li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li><li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li><li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li><li data-type='method'><a href="AccountManager.html#.login">login</a></li><li data-type='method'><a href="AccountManager.html#.logout">logout</a></li><li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li><li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li></ul></li><li><a href="Athletics.html">Athletics</a><ul class='methods'><li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li><li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li><li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li><li data-type='method'><a href="Athletics.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Athletics.html#.validate">validate</a></li></ul></li><li><a href="Crypto.html">Crypto</a><ul class='methods'><li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li><li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li><li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li><li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li><li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li><li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li></ul></li><li><a href="DBInterface.html">DBInterface</a><ul class='methods'><li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li><li data-type='method'><a href="DBInterface.html#.certificateUpdate">certificateUpdate</a></li><li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li><li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li><li data-type='method'><a href="DBInterface.html#.getActiveContest">getActiveContest</a></li><li data-type='method'><a href="DBInterface.html#.getActiveContestID">getActiveContestID</a></li><li data-type='method'><a href="DBInterface.html#.getAthletesByCompetition">getAthletesByCompetition</a></li><li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li><li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li><li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li><li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li><li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li><li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li><li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li><li data-type='method'><a href="DBInterface.html#.setSportTypeState">setSportTypeState</a></li><li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li><li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li></ul></li><li><a href="Gymnastics.html">Gymnastics</a><ul class='methods'><li data-type='method'><a href="Gymnastics.html#.calculate">calculate</a></li><li data-type='method'><a href="Gymnastics.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Gymnastics.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Gymnastics.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Gymnastics.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Gymnastics.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Gymnastics.html#.getSports">getSports</a></li><li data-type='method'><a href="Gymnastics.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Gymnastics.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li></ul></li><li><a href="Swimming.html">Swimming</a><ul class='methods'><li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li><li data-type='method'><a href="Swimming.html#.canDoSportType">canDoSportType</a></li><li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li><li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li><li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li><li data-type='method'><a href="Swimming.html#.getNameOfSportType">getNameOfSportType</a></li><li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li><li data-type='method'><a href="Swimming.html#.getSportType">getSportType</a></li><li data-type='method'><a href="Swimming.html#.getValidData">getValidData</a></li><li data-type='method'><a href="Swimming.html#.validate">validate</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#canViewResults">canViewResults</a></li><li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#filterUndefined">filterUndefined</a></li><li><a href="global.html#genRandomCode">genRandomCode</a></li><li><a href="global.html#genUUID">genUUID</a></li><li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li><li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li><li><a href="global.html#getAdminAccount">getAdminAccount</a></li><li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li><li><a href="global.html#getGroupNames">getGroupNames</a></li><li><a href="global.html#getLoginObject">getLoginObject</a></li><li><a href="global.html#getLoginToken">getLoginToken</a></li><li><a href="global.html#getStationNames">getStationNames</a></li><li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li><li><a href="global.html#initCollections">initCollections</a></li><li><a href="global.html#isAdminAccount">isAdminAccount</a></li><li><a href="global.html#isGroupAccount">isGroupAccount</a></li><li><a href="global.html#isStationAccount">isStationAccount</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">imports/api/logic/athlete.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Data} from "./data";
+import {Crypto} from "./../crypto/crypto.js";
+import {genUUID} from "./../crypto/pwdgen";
+import {getAcsFromAccounts} from "./account";
+import {Log} from "../log";
+
+
+/**
+ * Creates a new Athlete with the given information.
+ * @param {Log} log Logger instance to use
+ * @param {string} firstName first-name of the athlete
+ * @param {string} lastName last-name of the athlete
+ * @param {number} ageGroup Age category of the athlete
+ * @param {boolean} isMale Whether or not the athlete is male
+ * @param {string} group Identifier of the group this athlete is part of
+ * @param {string} handicap Handicap id of the athlete
+ * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
+ * @param {String[]|object} ct List of sports the athlete can do or a competition type object
+ * @param {string|string[]} [id] - Mongo DB id or list of activated sports
+ * @constructor
+ */
+export function Athlete(log, firstName, lastName, ageGroup, isMale, group, handicap, maxAge, ct, id) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.ageGroup = ageGroup;
+    this.isMale = isMale;
+    this.group = group;
+    this.handicap = handicap;
+    this.maxAge = maxAge;
+    this.currentScore = 0;
+    this.stScores = {};
+    this.certificate = 0;
+    this.certificateScore = 0;
+    this.certificateTime = 0;
+    this.certificatedBy = "";
+    this.certificateValid = false;
+    if (id &amp;&amp; id.constructor == Array) {
+        this.id = undefined;
+    } else {
+        this.id = id;
+    }
+
+    if (ct.constructor == Array) {
+        this.sports = ct;
+    } else {
+        this.sports = [];
+
+        let sportTypes;
+        if (id &amp;&amp; id.constructor == Array) sportTypes = id;
+
+        const allSports = ct.getSports();
+        for (let sport in allSports) {
+            if (!allSports.hasOwnProperty(sport)) continue;
+
+            if (ct.canDoSportType(log, this, allSports[sport].id).canDoSport) {
+                const stID = allSports[sport].id;
+                if (!sportTypes || sportTypes.indexOf(stID) > 0) {
+                    this.sports.push(stID);
+                }
+            }
+        }
+    }
+
+    /// data is an array of objects with id (view getSports) and measurement
+    // example: [{id: 'st_sprint', measurement: 16}]
+    this.data = new Data();
+}
+
+Athlete.prototype = {
+    /**
+     * Returns the data in plain text.
+     * @param {Log} log Logger instance to use
+     * @param {Account[]} accounts
+     * @param {boolean} requireSignature
+     * @returns {PlainData[]}
+     */
+    getPlain: function (log, accounts, requireSignature) {
+        return this.data.getPlain(log, accounts, requireSignature, this.group);
+    },
+
+
+    /**
+     * Updates the data of a given sport (stID).
+     * @param {Log} log Logger instance to use
+     * @param {string} stID Identifier of the sport that should get updated/new values
+     * @param {number[]} newMeasurements New measurements that should be inserted
+     * @param {Account} groupAccount Account of the group this athlete is part of
+     * @param {Account} stationAccount Account of the station responsible for this sport type
+     * @returns {boolean} A boolean value that describes whether or not the update was successful
+     */
+    addMeasurement: function (log, stID, newMeasurements, groupAccount, stationAccount) {
+
+        let canWrite = true;
+
+        if (groupAccount.group_permissions.indexOf(this.group) == -1) {
+            log.error('Der Gruppen Account hat keine Berechtigung');
+            canWrite = false;
+        }
+
+        if (stationAccount.score_write_permissions.indexOf(stID) == -1) {
+            log.error('Der Stations Account hat keine Berechtigung');
+            canWrite = false;
+        }
+
+        if (this.sports.indexOf(stID) == -1) {
+            log.error('Der Athlete kann diese Sportarten nicht ausführen');
+            canWrite = false;
+        }
+
+        if (canWrite) {
+            this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            // write to db
+            if (this.id) {
+                let writeObject = {};
+                writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
+            }
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     * Checks whether the properties of the athlete are correct.
+     * @param {Log} log Logger instance to use
+     * @returns {boolean}
+     */
+    check: function (log) {
+        let result = true;
+
+        if ((typeof(this.firstName) != 'string') || (this.firstName === '')) {
+            log.error('Der Vorname des Athleten ist ungültig.');
+            result = false;
+        }
+        if ((typeof(this.lastName) != 'string') || (this.lastName === '')) {
+            log.error('Der Nachname des Athleten ist ungültig.');
+            result = false;
+        }
+        if (typeof(this.ageGroup) != 'number') {
+            log.error('Der Jahrgang des Athleten ist ungültig.');
+            result = false;
+        } else if (this.age &lt; 8) {
+            log.error('Der Sportler ist zu jung um an den Bundesjugendspielen teilzunehmen.');
+            result = false;
+        }
+        if (typeof(this.isMale) != 'boolean') {
+            log.error('Das Geschlecht des Athleten ist ungültig');
+            result = false;
+        }
+        return result;
+    },
+    /**
+     * Returns the full name (first name &amp; last name) of the athlete.
+     * @returns {string}
+     */
+    getFullName: function () {
+        return this.firstName + ' ' + this.lastName;
+    },
+    /**
+     * Returns a short version of the athletes name (first name &amp; last initial).
+     * @returns {string}
+     */
+    getShortName: function () {
+        return this.firstName + ' ' + this.lastName[0] + '.';
+    },
+    /**
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important.
+     * @returns {number}
+     */
+    get age() {
+        return new Date().getFullYear() - this.ageGroup;
+    },
+    /**
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
+     * @returns {number}
+     */
+    get tableAge() {
+        return Math.min(new Date().getFullYear() - this.ageGroup, this.maxAge);
+    },
+    /**
+     * Sets the age of the athlete.
+     * @param {integer} newAge - New age of the athlete
+     */
+    set age(newAge) {
+        this.ageGroup = new Date().getFullYear() - newAge;
+    },
+
+    /**
+     * Encrypts the athlete for the database
+     * @param {Account} groupAccount - Account of the group that this athlete is part of
+     * @param {Account} serverAccount - Master account (?) TODO Describe this in a meaningful fashion
+     * @returns {Object}
+     */
+    encryptForDatabase: function (groupAccount, serverAccount) {
+        const encrypted = {};
+
+        encrypted.firstName = Crypto.encrypt(this.firstName, groupAccount.ac, serverAccount.ac);
+        encrypted.lastName = Crypto.encrypt(this.lastName, groupAccount.ac, serverAccount.ac);
+        encrypted.ageGroup = Crypto.encrypt(this.ageGroup, groupAccount.ac, serverAccount.ac);
+        encrypted.isMale = Crypto.encrypt(this.isMale, groupAccount.ac, serverAccount.ac);
+        encrypted.group = Crypto.encrypt(this.group, groupAccount.ac, serverAccount.ac);
+        encrypted.handicap = Crypto.encrypt(this.handicap, groupAccount.ac, serverAccount.ac);
+        encrypted.maxAge = Crypto.encrypt(this.maxAge, groupAccount.ac, serverAccount.ac);
+
+        encrypted.sports = Crypto.encrypt(this.sports, groupAccount.ac, serverAccount.ac);
+
+        for (let dataGroupID in this.data.data) {
+            if (!this.data.data.hasOwnProperty(dataGroupID)) continue;
+            encrypted["m_" + genUUID()] = this.data[dataGroupID];
+        }
+
+        return encrypted;
+    }
+};
+
+Athlete.fromObject = function (log, obj) {
+    return new Athlete(log, obj.firstName, obj.lastName, obj.ageGroup, obj.isMale, obj.group, obj.handicap, obj.maxAge, obj.sports, obj.id);
+};
+
+/**
+ * Decrypts the data from the database
+ * @param {Log} log Logger instance to use
+ * @param {Object} data Encrypted athlete
+ * @param {Account[]} accounts List of accounts containing the one that was used for encryption
+ * @param {boolean} require_signature whether or not to enable signature enforcing
+ * @param {boolean} require_group_check whether or not to enable group permission check
+ * @returns {boolean|Athlete}
+ */
+Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, require_group_check = true) {
+    const acs = getAcsFromAccounts(accounts);
+    const firstName = Crypto.tryDecrypt(log, data.firstName, acs);
+    const lastName = Crypto.tryDecrypt(log, data.lastName, acs);
+    const ageGroup = Crypto.tryDecrypt(log, data.ageGroup, acs);
+    const isMale = Crypto.tryDecrypt(log, data.isMale, acs);
+    const group = Crypto.tryDecrypt(log, data.group, acs);
+    const handicap = Crypto.tryDecrypt(log, data.handicap, acs);
+    const maxAge = Crypto.tryDecrypt(log, data.maxAge, acs);
+    const sports = Crypto.tryDecrypt(log, data.sports, acs);
+
+    if (firstName &amp;&amp; lastName &amp;&amp; ageGroup &amp;&amp; isMale &amp;&amp; group &amp;&amp; handicap &amp;&amp; maxAge &amp;&amp; sports) {
+
+        if (require_group_check)
+        if (accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1 ||
+            accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) {
+            log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+            return false;
+        }
+
+        if (require_signature &amp;&amp; !(firstName.signatureEnforced &amp;&amp;
+            lastName.signatureEnforced &amp;&amp;
+            ageGroup.signatureEnforced &amp;&amp;
+            isMale.signatureEnforced &amp;&amp;
+            group.signatureEnforced &amp;&amp;
+            handicap.signatureEnforced &amp;&amp;
+            maxAge.signatureEnforced &amp;&amp;
+            sports.signatureEnforced)) {
+            log.error('Die Signatur des Athleten ' + firstName.data + ' ' + lastName.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
+            return false;
+        }
+
+        if (require_group_check)
+            if ((firstName.signatureEnforced &amp;&amp; accounts[firstName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (lastName.signatureEnforced &amp;&amp; accounts[lastName.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (ageGroup.signatureEnforced &amp;&amp; accounts[ageGroup.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (isMale.signatureEnforced &amp;&amp; accounts[isMale.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (group.signatureEnforced &amp;&amp; accounts[group.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (handicap.signatureEnforced &amp;&amp; accounts[handicap.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (maxAge.signatureEnforced &amp;&amp; accounts[maxAge.usedACs.groupAC].group_permissions.indexOf(group.data) == -1) ||
+                (sports.signatureEnforced &amp;&amp; accounts[sports.usedACs.groupAC].group_permissions.indexOf(group.data) == -1)) {
+            log.error('Der Server Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
+            return false;
+        }
+
+        let athlete = new Athlete(log, firstName.data, lastName.data, ageGroup.data, isMale.data, group.data, handicap.data, maxAge.data, sports.data, data._id);
+
+        athlete.currentScore = data.currentScore;
+        athlete.stScores = data.stScores;
+        athlete.certificate = data.certificate;
+        athlete.certificateScore = data.certificateScore;
+        athlete.certificateTime = data.certificateTime;
+        athlete.certificatedBy = data.certificatedBy;
+        athlete.certificateValid = data.certificateValid;
+
+        let measureData = [];
+
+        for (let memberName in data) {
+            if (memberName.substr(0, 2) === "m_") {
+                measureData.push(data[memberName]);
+            }
+        }
+
+
+        athlete.data = new Data(measureData);
+        return athlete;
+    }
+    log.error('Die Daten konnten nicht entschlüsselt werden.');
+    return false;
+};
+
+
+export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_signature, require_group_check) {
+    const log = new Log();
+    let groupNames = {};
+    let groups = [];
+
+
+    for (let athlete in encryptedAthletes) {
+        if (!encryptedAthletes.hasOwnProperty(athlete)) continue;
+        let encryptedAthlete = encryptedAthletes[athlete];
+        let decryptedAthlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, require_signature, require_group_check);
+
+        if (!groupNames.hasOwnProperty(decryptedAthlete.group)) {
+            groupNames[decryptedAthlete.group] = groups.length;
+            groups.push({
+                name: decryptedAthlete.group,
+                athletes: []
+            });
+        }
+        groups[groupNames[decryptedAthlete.group]].athletes.push(decryptedAthlete);
+
+    }
+
+    return groups;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 09 2017 22:25:54 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
