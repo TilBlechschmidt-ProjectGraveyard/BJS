@@ -1,6 +1,4 @@
 <template name="accessCodes">
-    <!--<a href="#" class="button button-big button-fill generateCodes">Passwörter erzeugen</a>-->
-
     <div class="progressbar button button-big generateCodes" style="border: none;" data-progress="100">
         <span class="t-center" style="{{#if progressDone}}color: white{{/if}}">Passwörter erzeugen</span>
     </div>
@@ -13,15 +11,6 @@
             {{/if}}
         {{/each}}
     </div>
-    <style>
-        .custom-progress-bar {
-            transition: all 0.45s;
-        }
-
-        .full-progress {
-            background: linear-gradient(90deg, #007aff 100%, white 100%, white);
-        }
-    </style>
 </template>
 
 <template name="addCode">
