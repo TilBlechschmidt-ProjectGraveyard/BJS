@@ -34,7 +34,7 @@ Template.result.helpers({
         return a == b;
     },
     show: function (athlete) {
-        return athlete.id !== "_old_";
+        return !athlete.hide;
     }
 });
 
