@@ -338,11 +338,13 @@ Template.output.events({
 });
 
 
-function replaceAthletes(index, newAthlete) {
+function replaceAthletes(index) {
     const athletes = Meteor.reactiveAthletes.get();
+    const newAthlete = athletes[index].newAthlete;
     newAthlete.iconID = statusToNumber(newAthlete);
     athletes[index].id = "_old_";
     athletes[index].hide = true;
+    athletes[index].animation = false;
     athletes.push(newAthlete);
     Meteor.reactiveAthletes.set(athletes);
 }
@@ -377,38 +379,49 @@ Template.output.onRendered(function () {
                     if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
                         DBInterface.generateCertificates(
                             AccountManager.getOutputAccount().account, [id], function (data) {
-                                const athlete = data[0];
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
-                                clearTimeout(athletes[index].timeout); //clear any running animation
+                                athletes[index].newAthlete = data[0];
+                                if (athletes[index].animation) {
+                                    Meteor.reactiveAthletes.set(athletes);
+                                    return;
+                                }
+                                athletes[index].animation = true;
+                                Meteor.reactiveAthletes.set(athletes);
 
-                                athletes[index].timeout = setTimeout(function () {
+                                //load group names
+                                const sorting = sortingSettings.get();
+                                const newGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index].newAthlete);
+                                const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+
+                                //waiting for indicator
+                                setTimeout(function () {
+
+                                    //update icon
                                     const athletes = Meteor.reactiveAthletes.get();
-                                    athletes[index].iconID = statusToNumber(athlete);
-                                    athletes[index].timeout = setTimeout(function () {
+                                    athletes[index].iconID = statusToNumber(athletes[index].newAthlete);
+                                    Meteor.reactiveAthletes.set(athletes);
 
-                                        const sorting = sortingSettings.get();
-                                        const newGroupName = baseSortingData[sorting[0]].getGroupName(data);
-                                        const oldGroupName = baseSortingData[sorting[0]].getGroupName(athletes[index]);
+                                    //waiting for icon
+                                    setTimeout(function () {
 
                                         //TODO check index
                                         if (newGroupName === oldGroupName) {
                                             //group not changed -> no animations required
-                                            replaceAthletes(index, athlete);
+                                            replaceAthletes(index);
                                         } else {
-                                            ///group changed -> start animation
+                                            ///group changed -> start collapsing animation
                                             const athletes = Meteor.reactiveAthletes.get();
                                             athletes[index].classes = "collapsed";
-
-                                            athletes[index].timeout = setTimeout(function () {
-                                                replaceAthletes(index, athlete);
-                                            }, 1000);
                                             Meteor.reactiveAthletes.set(athletes);
+
+                                            //waiting for collapsing
+                                            setTimeout(function () {
+                                                replaceAthletes(index);
+                                            }, 1000);
                                         }
                                     }, 1000);
-                                    Meteor.reactiveAthletes.set(athletes);
                                 }, 100);
-                                Meteor.reactiveAthletes.set(athletes);
                             }
                         );
                     }
