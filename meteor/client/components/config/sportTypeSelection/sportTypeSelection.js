@@ -6,12 +6,12 @@ const categories = new ReactiveVar([]);
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
-        Meteor.f7.showIndicator();
+        if (Meteor.f7) Meteor.f7.showIndicator();
         dbReady.depend();
         DBInterface.waitForReady(function () {
             const compID = currentCompID.get();
             if (!compID) {
-                Meteor.f7.hideIndicator();
+                if (Meteor.f7) Meteor.f7.hideIndicator();
                 return;
             }
             const competition = Meteor.COLLECTIONS.Contests.handle.findOne({_id: compID});
@@ -33,7 +33,9 @@ DBInterface.waitForReady(function () {
 
             categories.set(cats);
 
-            Tracker.afterFlush(Meteor.f7.hideIndicator);
+            Tracker.afterFlush(function () {
+                if (Meteor.f7) Meteor.f7.hideIndicator();
+            });
         });
     });
 });

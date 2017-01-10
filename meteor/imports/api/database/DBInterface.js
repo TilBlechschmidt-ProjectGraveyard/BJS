@@ -224,7 +224,7 @@ export let DBInterface = {
         });
     },
 
-    lockCompetition: function (account, competitionID) {
+    lockCompetition: function (account, competitionID, callback) {
         const loginObject = getLoginObject(account);
         Meteor.call('lockCompetition', loginObject, competitionID, function (err, enc_data) {
             if (typeof callback === 'function') {
