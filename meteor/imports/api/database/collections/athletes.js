@@ -60,8 +60,6 @@ export function initAthletes() {
         });
 
         handle.after.insert(function (userId, doc, fieldNames, modifier) {
-            console.log("setting fields");
-            console.log(doc);
             handle.update({_id: doc._id}, {
                 $set: {
                     currentScore: encryptAsAdmin(0),
