@@ -66,7 +66,7 @@ DBInterface.waitForReady(function () {
         DBInterface.waitForReady(function () {
             const competitionID = currentCompID.get();
             if (!competitionID) {
-                Meteor.f7.hideIndicator();
+                if (Meteor.f7) Meteor.f7.hideIndicator();
                 return;
             }
             DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, function (data) {
