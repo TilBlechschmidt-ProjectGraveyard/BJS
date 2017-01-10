@@ -44,7 +44,6 @@ export function onStartup() {
         },
         'writeAccounts': function (loginObject, competitionID, accounts) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            console.log("Hi");
 
             // create collections if they don't exist
             Meteor.COLLECTIONS.connect(competitionID);
@@ -64,6 +63,8 @@ export function onStartup() {
             Meteor.COLLECTIONS.Contests.handle.update({_id: competitionID}, {
                 $set: {readOnly: true}
             });
+
+            return encryptAsAdmin(true);
         },
         'setSportTypeState': function (loginObject, competitionID, sportTypeID, state) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
