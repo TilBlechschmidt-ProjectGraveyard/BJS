@@ -98,6 +98,51 @@ function processCodes(codes) {
     }
 }
 
+function generateAccessCodes() {
+
+    const sportTypes = getCurrentSportTypes();
+
+    const codes = [];
+    const customAccounts = accessCodes.get()[2].codes;
+
+    // Station accounts
+    for (let sportType in sportTypes) {
+        if (!sportTypes.hasOwnProperty(sportType)) continue;
+        sportType = sportTypes[sportType];
+        codes.push({
+            name: sportType.name,
+            groups: [],
+            sportTypes: [sportType.id],
+            resultPermission: false,
+            adminPermission: false
+        });
+    }
+
+    // Group accounts
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        codes.push({
+            name: lgroups[group].name,
+            groups: [lgroups[group].name],
+            sportTypes: [],
+            resultPermission: false,
+            adminPermission: false
+        });
+    }
+
+    // Custom accounts
+    const customAccountCodes = [];
+    for (let customAccount in customAccounts) {
+        if (!customAccounts.hasOwnProperty(customAccount)) continue;
+        customAccountCodes.push(customAccounts[customAccount]);
+    }
+
+    Meteor.f7.showPreloader("Generiere Zugangscodes");
+    totalProgress = codes.length;
+    processCodes(codes.concat(customAccountCodes.reverse()));
+}
+
 function getCurrentSportTypes() {
     const compID = currentCompID.get();
     const competitionType = DBInterface.getCompetitionType(compID);
@@ -115,6 +160,9 @@ Template.accessCodes.helpers({
     },
     progressDone: function () {
         return progress.get() == 100;
+    },
+    codesClean: function () {
+        return codesClean.get();
     },
     sportTypes: getCurrentSportTypes
 });
@@ -177,9 +225,9 @@ Template.accordionInnerListBlock.events({
 
 Template.accessCodes.events({
     'click .add-code': function () {
-        //noinspection JSCheckFunctionSignatures
-        codesClean.set(false);
         Meteor.f7.prompt("Wählen sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
+            //noinspection JSCheckFunctionSignatures
+            codesClean.set(false);
             upsertCode({
                 id: genUUID(),
                 name: name,
@@ -191,47 +239,13 @@ Template.accessCodes.events({
         }).querySelector("input").focus();
     },
     'click .generateCodes': function () {
-        const sportTypes = getCurrentSportTypes();
-
-        const codes = [];
-        const customAccounts = accessCodes.get()[2].codes;
-
-        // Station accounts
-        for (let sportType in sportTypes) {
-            if (!sportTypes.hasOwnProperty(sportType)) continue;
-            sportType = sportTypes[sportType];
-            codes.push({
-                name: sportType.name,
-                groups: [],
-                sportTypes: [sportType.id],
-                resultPermission: false,
-                adminPermission: false
+        if (codesClean.get()) {
+            Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
+                Meteor.f7.showPreloader("Speichere Wettkampf");
+                console.log("writing thingy");
             });
-        }
-
-        // Group accounts
-        const lgroups = localGroups.get();
-        for (let group in lgroups) {
-            if (!lgroups.hasOwnProperty(group)) continue;
-            codes.push({
-                name: lgroups[group].name,
-                groups: [lgroups[group].name],
-                sportTypes: [],
-                resultPermission: false,
-                adminPermission: false
-            });
-        }
-
-        // Custom accounts
-        const customAccountCodes = [];
-        for (let customAccount in customAccounts) {
-            if (!customAccounts.hasOwnProperty(customAccount)) continue;
-            customAccountCodes.push(customAccounts[customAccount]);
-        }
-
-        Meteor.f7.showPreloader("Generiere Zugangscodes");
-        totalProgress = codes.length;
-        processCodes(codes.concat(customAccountCodes.reverse()));
+        } else
+            generateAccessCodes();
     }
 });
 

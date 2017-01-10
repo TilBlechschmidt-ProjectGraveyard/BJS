@@ -1,6 +1,13 @@
 <template name="accessCodes">
     <div class="progressbar button button-big generateCodes" style="border: none;" data-progress="100">
-        <span class="t-center" style="{{#if progressDone}}color: white{{/if}}">Passwörter erzeugen</span>
+        <span class="t-center"
+              style="{{#if progressDone}}color: white;{{/if}} {{#if codesClean}}background-color: #7ac142;{{/if}}">
+            {{#if codesClean}}
+                Konfiguration abschließen
+            {{else}}
+                Passwörter erzeugen
+            {{/if}}
+        </span>
     </div>
 
     <div class="autoWidthListBlock">

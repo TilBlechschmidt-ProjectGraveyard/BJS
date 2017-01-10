@@ -90,14 +90,7 @@ Template.config.events({
         event.preventDefault();
         event.stopImmediatePropagation();
         // Check if current one is valid
-        if (forwardButton.get() == "Fertigstellen") {
-            Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
-                Meteor.f7.showPreloader("Speichere Wettkampf");
-                console.log("writing thingy");
-            });
-        } else {
-            document.getElementById("config-swiper").swiper.slideNext();
-        }
+        document.getElementById("config-swiper").swiper.slideNext();
         return false;
     },
     'click .back-button': function (event) {
@@ -157,16 +150,15 @@ Template.config.onRendered(function () {
         });
 
         configSwiper.on('transitionStart', function (swiper) {
-            if (swiper.activeIndex == 3) {
-                leftButtonSwiper.slideTo(1);
-                if (editMode.get()) forwardButtonShown.set(true);
-                forwardButton.set("Fertigstellen");
-            } else if (swiper.activeIndex > 0) {
+            if (swiper.activeIndex > 0 && swiper.activeIndex < 3) {
                 leftButtonSwiper.slideTo(1);
                 if (editMode.get()) forwardButtonShown.set(true);
                 forwardButton.set("Weiter");
             } else {
-                leftButtonSwiper.slideTo(0);
+                if (swiper.activeIndex == 3)
+                    leftButtonSwiper.slideTo(1);
+                else
+                    leftButtonSwiper.slideTo(0);
                 forwardButtonShown.set(false);
             }
         });
