@@ -65,44 +65,6 @@ export function onStartup() {
                 $set: {readOnly: true}
             });
         },
-        'writeCompetition': function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
-            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            Meteor.COLLECTIONS.Contests.handle.update({name: competitionName}, {
-                $set: {
-                    readOnly: final,
-                    name: competitionName,
-                    type: competitionTypeID,
-                    sportTypes: sportTypes
-                }
-            }, {upsert: true}, function (record) {
-                const competitionID = record._id;
-                // create collections if they don't exist
-                Meteor.COLLECTIONS.connect(competitionID);
-
-                // clear collections
-                Meteor.COLLECTIONS.Accounts.handles[competitionID].remove({});
-                Meteor.COLLECTIONS.Athletes.handles[competitionID].remove({});
-
-                // write data
-                //write athletes
-                for (let athlete in encrypted_athletes) {
-                    if (!encrypted_athletes.hasOwnProperty(athlete)) continue;
-                    Meteor.COLLECTIONS.Athletes.handles[competitionID].insert(encrypted_athletes[athlete]);
-                }
-
-                //write accounts
-                for (let account in accounts) {
-                    if (!accounts.hasOwnProperty(account)) continue;
-                    Meteor.COLLECTIONS.Accounts.handles[competitionID].insert(accounts[account]);
-                }
-
-                if (final) {
-                    Meteor.call('activateCompetition', loginObject, competitionID);
-                }
-            });
-
-            return encryptAsAdmin(true);
-        },
         'setSportTypeState': function (loginObject, competitionID, sportTypeID, state) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             let sportTypes = Meteor.COLLECTIONS.Contests.handle.findOne({_id: competitionID}).sportTypes;
