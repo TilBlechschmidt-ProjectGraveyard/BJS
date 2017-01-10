@@ -54,7 +54,7 @@
                     {{/if}}
                     {{#if custom}}
                         <div class="accordion-item-content">
-                            <div class="content-block" style="height: 500px; overflow-y: scroll;">
+                            <div class="content-block" style="max-height: 500px; overflow-y: scroll;">
                                 {{>accordionInnerListBlock title="Sportarten" entries=sportTypes checked=c.sportTypes}}
                                 {{>accordionInnerListBlock title="Sonstiges" entries=otherPermissions checked=(otherPermissionList c)}}
                             </div>

@@ -60,7 +60,7 @@ Tracker.autorun(function () {
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
-        Meteor.f7.showIndicator(); // TODO This doesn't get shown
+        if (Meteor.f7) Meteor.f7.showIndicator(); // TODO This doesn't get shown
         if (!DBInterface.isReady()) return;
         dbReady.depend();
         DBInterface.waitForReady(function () {
@@ -71,7 +71,9 @@ DBInterface.waitForReady(function () {
             }
             DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, function (data) {
                 groups.set(data);
-                Tracker.afterFlush(Meteor.f7.hideIndicator);
+                Tracker.afterFlush(function () {
+                    if (Meteor.f7) Meteor.f7.hideIndicator();
+                });
             });
         });
     });

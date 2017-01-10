@@ -18,7 +18,7 @@ const forwardButtonShown = new ReactiveVar(false);
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
-        Meteor.f7.showIndicator();
+        if (Meteor.f7) Meteor.f7.showIndicator();
         dbReady.depend();
         DBInterface.waitForReady(function () {
             const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
@@ -58,7 +58,9 @@ DBInterface.waitForReady(function () {
             }
 
             competitions.set(comps);
-            Tracker.afterFlush(Meteor.f7.hideIndicator);
+            Tracker.afterFlush(function () {
+                if (Meteor.f7) Meteor.f7.hideIndicator();
+            });
         });
     });
 });
