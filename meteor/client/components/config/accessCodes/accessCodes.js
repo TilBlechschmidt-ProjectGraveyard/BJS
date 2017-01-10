@@ -190,10 +190,10 @@ function finalizeContest() {
     setTimeout(function () {
         Meteor.f7.hidePreloader();
         document.getElementById("config-swiper").swiper.slideTo(0);
-        // localStorage.removeItem("config-groups-" + compID);
-        // accessCodes.set(baseACStructure);
-        // codesClean.set(false);
-        // localGroups.set([]);
+        localStorage.removeItem("config-groups-" + compID);
+        accessCodes.set(baseACStructure);
+        codesClean.set(false);
+        localGroups.set([]);
         currentCompID.set("");
     }, 500);
 }
