@@ -4,17 +4,20 @@ import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID} from "../config";
 import {localGroups} from "../athleteList/athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
 
 let totalProgress = 0;
+const baseACStructure = [
+    {name: "Gruppenpasswörter", codes: []},
+    {name: "Stationspasswörter", codes: []},
+    {name: "Eigene Zugangsdaten", codes: []}
+];
+
 const progress = new ReactiveVar(undefined);
 //noinspection JSCheckFunctionSignatures
 export const codesClean = new ReactiveVar(false);
 //noinspection JSCheckFunctionSignatures
-export const accessCodes = new ReactiveVar([
-    {name: "Gruppenpasswörter", codes: []},
-    {name: "Stationspasswörter", codes: []},
-    {name: "Eigene Zugangsdaten", codes: []}
-]);
+export const accessCodes = new ReactiveVar(baseACStructure);
 
 Tracker.autorun(function () {
     const prog = progress.get();
@@ -143,6 +146,58 @@ function generateAccessCodes() {
     processCodes(codes.concat(customAccountCodes.reverse()));
 }
 
+function finalizeContest() {
+    const compID = currentCompID.get();
+    // TODO: Check validity of athletes
+
+    // Get a list of accounts
+    const acodes = accessCodes.get();
+    const accounts = lodash.map(acodes[0].codes.concat(acodes[1].codes).concat(acodes[2].codes), function (code) {
+        return code.account;
+    });
+
+    // Get a list of athletes
+    const admin = AccountManager.getAdminAccount();
+    const lgroups = localGroups.get();
+    let athletes = [];
+    for (let group in lgroups) { // Loop through groups containing athletes for encryption
+        if (!lgroups.hasOwnProperty(group)) continue;
+        group = lgroups[group];
+        for (let accountGroup in acodes[0].codes) { // Loop through groups (with accounts) to find the corresponding account
+            if (!acodes[0].codes.hasOwnProperty(accountGroup)) continue;
+            accountGroup = acodes[0].codes[accountGroup];
+            if (group.name == accountGroup.name) {
+                athletes = athletes.concat(lodash.map(group.athletes, function (athlete) { // Encrypt the athletes using the account
+                    return athlete.encryptForDatabase(accountGroup.account, accountGroup.account);
+                }));
+                break;
+            }
+        }
+    }
+
+    DBInterface.writeAccounts(admin.account, compID, accounts, function () {
+        console.log("Accounts written successfully");
+    });
+
+    DBInterface.writeAthletes(admin.account, compID, athletes, function () {
+        console.log("Athletes written successfully");
+    });
+
+    DBInterface.lockCompetition(admin.account, compID, function () {
+        console.log("Locked competition successfully");
+    });
+
+    setTimeout(function () {
+        Meteor.f7.hidePreloader();
+        document.getElementById("config-swiper").swiper.slideTo(0);
+        // localStorage.removeItem("config-groups-" + compID);
+        // accessCodes.set(baseACStructure);
+        // codesClean.set(false);
+        // localGroups.set([]);
+        currentCompID.set("");
+    }, 500);
+}
+
 function getCurrentSportTypes() {
     const compID = currentCompID.get();
     const competitionType = DBInterface.getCompetitionType(compID);
@@ -242,7 +297,7 @@ Template.accessCodes.events({
         if (codesClean.get()) {
             Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
                 Meteor.f7.showPreloader("Speichere Wettkampf");
-                console.log("writing thingy");
+                finalizeContest();
             });
         } else
             generateAccessCodes();

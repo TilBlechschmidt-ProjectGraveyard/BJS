@@ -43,7 +43,6 @@ Tracker.autorun(function () {
                     return Athlete.fromObject(Meteor.config.log, athlete);
                 });
             }
-            console.log(parsed);
             localGroups.set(parsed);
         }
         loaded = compID;
@@ -66,7 +65,10 @@ DBInterface.waitForReady(function () {
         dbReady.depend();
         DBInterface.waitForReady(function () {
             const competitionID = currentCompID.get();
-            if (!competitionID) return;
+            if (!competitionID) {
+                Meteor.f7.hideIndicator();
+                return;
+            }
             DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, function (data) {
                 groups.set(data);
                 Tracker.afterFlush(Meteor.f7.hideIndicator);

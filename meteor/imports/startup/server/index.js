@@ -25,6 +25,46 @@ export function onStartup() {
             Meteor.COLLECTIONS.Contests.handle.remove({_id: competitionID});
             return encryptAsAdmin(true);
         },
+        'writeAthletes': function (loginObject, competitionID, encryptedAthletes) {
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
+
+            // create collections if they don't exist
+            Meteor.COLLECTIONS.connect(competitionID);
+
+            // clear collections
+            Meteor.COLLECTIONS.Athletes.handles[competitionID].remove({});
+
+            //write athletes
+            for (let athlete in encryptedAthletes) {
+                if (!encryptedAthletes.hasOwnProperty(athlete)) continue;
+                Meteor.COLLECTIONS.Athletes.handles[competitionID].insert(encryptedAthletes[athlete]);
+            }
+
+            return encryptAsAdmin(true);
+        },
+        'writeAccounts': function (loginObject, competitionID, accounts) {
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
+            console.log("Hi");
+
+            // create collections if they don't exist
+            Meteor.COLLECTIONS.connect(competitionID);
+
+            // clear collections
+            Meteor.COLLECTIONS.Accounts.handles[competitionID].remove({});
+
+            //write accounts
+            for (let account in accounts) {
+                if (!accounts.hasOwnProperty(account)) continue;
+                Meteor.COLLECTIONS.Accounts.handles[competitionID].insert(accounts[account]);
+            }
+
+            return encryptAsAdmin(true);
+        },
+        'lockCompetition': function (loginObject, competitionID) {
+            Meteor.COLLECTIONS.Contests.handle.update({_id: competitionID}, {
+                $set: {readOnly: true}
+            });
+        },
         'writeCompetition': function (loginObject, competitionName, competitionTypeID, sportTypes, encrypted_athletes, accounts, final) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             Meteor.COLLECTIONS.Contests.handle.update({name: competitionName}, {
@@ -42,7 +82,6 @@ export function onStartup() {
                 // clear collections
                 Meteor.COLLECTIONS.Accounts.handles[competitionID].remove({});
                 Meteor.COLLECTIONS.Athletes.handles[competitionID].remove({});
-                Meteor.COLLECTIONS.Contest.handles[competitionID].remove({});
 
                 // write data
                 //write athletes

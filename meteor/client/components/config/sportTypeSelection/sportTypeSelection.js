@@ -10,7 +10,10 @@ DBInterface.waitForReady(function () {
         dbReady.depend();
         DBInterface.waitForReady(function () {
             const compID = currentCompID.get();
-            if (!compID) return;
+            if (!compID) {
+                Meteor.f7.hideIndicator();
+                return;
+            }
             const competition = Meteor.COLLECTIONS.Contests.handle.findOne({_id: compID});
             const competitionType = DBInterface.getCompetitionType(compID);
             const sportTypes = competitionType.getSports();
