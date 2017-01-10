@@ -189,7 +189,6 @@ function populateAthlete(athlete) {
 
 
         if (element.metadata.unit === "min:s") {
-            element.metadata.inputType = "text";
             for (let m in element.measurements) {
                 if (!element.measurements.hasOwnProperty(m)) continue;
                 const min = Math.floor(element.measurements[m].value / 60);
@@ -199,12 +198,13 @@ function populateAthlete(athlete) {
                 } else {
                     element.measurements[m].strValue = min + ":" + s;
                 }
+                element.measurements[m].inputType = "text";
             }
         } else {
-            element.metadata.inputType = "number";
             for (let m in element.measurements) {
                 if (!element.measurements.hasOwnProperty(m)) continue;
                 element.measurements[m].strValue = element.measurements[m].value.toString();
+                element.measurements[m].inputType = (element.measurements[m].read_only) ? "text" : "number";
             }
         }
         return element;
