@@ -7,7 +7,10 @@
 
 /* Tooltip text */
 .tooltip .tooltiptext {
+    transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
+    -webkit-transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
     visibility: hidden;
+    opacity: 0;
     background-color: rgb(85, 85, 85);
     color: #fff;
     text-align: center;
@@ -17,14 +20,16 @@
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
+
+    left: 55px;
+    top: 6px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
+    opacity: 1;
     visibility: visible;
-    position: absolute;
-    left: 55px;
-    top: 6px;
+    transition-delay: 0s;
 }
 
 .tooltip .tooltiptext::after {
