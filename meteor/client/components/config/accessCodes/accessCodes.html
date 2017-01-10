@@ -4,7 +4,7 @@
     </div>
 
     <div class="autoWidthListBlock">
-        {{> accessCodeGroup g=customCodesGroup after="addCode"}}
+        {{> accessCodeGroup g=customCodesGroup after="addCode" custom=true sportTypes=sportTypes}}
         {{#each g in codeGroups}}
             {{#if not (isEmpty g.codes)}}
                 {{> accessCodeGroup g=g}}
@@ -32,26 +32,70 @@
 
 <template name="accessCodeGroup">
     <div class="content-block-title">{{g.name}}</div>
-    <div class="list-block">
+    <div class="list-block {{#if custom}}accordion-list{{/if}}">
         <ul class="container">
             {{#each c in (g.codes)}}
-                <li class="result-accordion item">
-                    <div class="item-content">
-                        {{#if c.code}}
-                            <div class="item-media">{{> iconOK}}</div>
-                        {{else}}
-                            <div class="item-media">
-                                {{> iconPreloader}}
-                            </div>
-                        {{/if}}
-                        <div class="item-inner">
-                            <div class="item-title">{{c.title}}</div>
-                            <div class="item-after">{{c.code}}</div>
+                <li class="result-accordion {{#if custom}}accordion-item{{else}}item{{/if}}" data-id="{{c.id}}">
+                    {{#if custom}}
+                        <a href="" class="item-link item-content">
+                            {{>ACitemContent c=c}}
+                        </a>
+                    {{else}}
+                        <div class="item-content">
+                            {{>ACitemContent c=c}}
                         </div>
-                    </div>
+                    {{/if}}
+                    {{#if custom}}
+                        <div class="accordion-item-content">
+                            <div class="content-block" style="height: 500px; overflow-y: scroll;">
+                                {{>accordionInnerListBlock title="Sportarten" entries=sportTypes checked=c.sportTypes}}
+                                {{>accordionInnerListBlock title="Sonstiges" entries=otherPermissions checked=(otherPermissionList c)}}
+                            </div>
+                        </div>
+                    {{/if}}
                 </li>
             {{/each}}
             {{>Template.dynamic template=after}}
         </ul>
+    </div>
+</template>
+
+<template name="accordionInnerListBlock">
+    <div class="content-block-title">{{title}}</div>
+    <div class="list-block">
+        <ul style="border: none;">
+            {{#each e in entries}}
+                <li data-stid="{{e.id}}">
+                    <div class="item-content" style="height: 8px;">
+                        <label class="label-checkbox item-content permission-input full-width"
+                               style="padding-right: 15px;">
+                            <input type="checkbox" {{isChecked checked e.id}}>
+                            <div class="item-media">
+                                <i class="icon icon-form-checkbox"></i>
+                            </div>
+                            <div style="padding-left: 15px;" class="item-inner">
+                                {{e.name}}
+                            </div>
+                        </label>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
+
+<template name="ACitemContent">
+    {{#if c.custom}}
+        <div class="item-media">{{> iconWarn text="Es wurde noch kein Passwort erzeugt."}}</div>
+    {{else}}
+        {{#if c.code}}
+            <div class="item-media">{{> iconOK text="Passwort erfolgreich erstellt."}}</div>
+        {{else}}
+            <div class="item-media">{{> iconPreloader}}</div>
+        {{/if}}
+    {{/if}}
+    <div class="item-inner">
+        <div class="item-title">{{c.name}}</div>
+        <div class="item-after">{{c.code}}</div>
     </div>
 </template>

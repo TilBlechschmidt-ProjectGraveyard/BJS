@@ -1,6 +1,6 @@
 <template name="athleteList">
-    {{#each g in groups}}
-        <div class="autoWidthListBlock">
+    <div class="autoWidthListBlock">
+        {{#each g in groups}}
             <div class="content-block-title">{{g.name}}</div>
             <div class="list-block accordion-list">
                 <ul>
@@ -77,14 +77,14 @@
                 </ul>
                 <!--<div class="list-block-label">List block label text goes here</div>-->
             </div>
-        </div>
-    {{/each}}
-    {{#if not readOnly}}
-        <div class="content-block t-center button-highlight add-group"><i class="f7-icons"
-                                                                          style="display:inline-block; vertical-align: middle; padding-right: 10px">add</i>
-            Gruppe hinzufügen
-        </div>
-    {{/if}}
+        {{/each}}
+        {{#if not readOnly}}
+            <div class="content-block t-center button-highlight add-group"><i class="f7-icons"
+                                                                              style="display:inline-block; vertical-align: middle; padding-right: 10px">add</i>
+                Gruppe hinzufügen
+            </div>
+        {{/if}}
+    </div>
 </template>
 
 <template name="athleteMetaIcons">

@@ -7,7 +7,10 @@ import {DBInterface} from "../../../../imports/api/database/DBInterface";
 
 let totalProgress = 0;
 const progress = new ReactiveVar(undefined);
-const accessCodes = new ReactiveVar([
+//noinspection JSCheckFunctionSignatures
+export const codesClean = new ReactiveVar(false);
+//noinspection JSCheckFunctionSignatures
+export const accessCodes = new ReactiveVar([
     {name: "Gruppenpasswörter", codes: []},
     {name: "Stationspasswörter", codes: []},
     {name: "Eigene Zugangsdaten", codes: []}
@@ -19,11 +22,23 @@ Tracker.autorun(function () {
     Meteor.f7.setProgressbar(".generateCodes", prog, 400);
 });
 
-function upsertCode(code, name, type) {
-    const acodes = accessCodes.get();
-    const index = lodash.findIndex(acodes[type].codes, function (code) {
-        return code.title == name;
+function getIndexOfCode(acodes, type, id, name) {
+    let index = lodash.findIndex(acodes[type].codes, function (c) {
+        return c.id == id;
     });
+    if (index == -1 && name) {
+        // Fallback for groups and stations since it would be a larger overhead
+        // to actually find and get the ID <-> sportType/group correlation
+        index = lodash.findIndex(acodes[type].codes, function (c) {
+            return c.name == name;
+        });
+    }
+    return index;
+}
+
+function upsertCode(code, type) {
+    const acodes = accessCodes.get();
+    const index = getIndexOfCode(acodes, type, code.id, code.name);
     if (index == -1)
         acodes[type].codes.push(code);
     else
@@ -31,44 +46,64 @@ function upsertCode(code, name, type) {
     accessCodes.set(acodes);
 }
 
-function setCode(code, name, groups, sportTypes, resultPermission, adminPermission, custom) {
-    if (groups.length > 0 && sportTypes.length == 0 && !custom) {
+function setCode(code, groups, sportTypes, resultPermission, adminPermission, custom) {
+    if (custom) {
+        // Custom account
+        upsertCode(code, 2);
+    } else if (groups.length > 0 && sportTypes.length == 0 && !custom) {
         // Group account
-        upsertCode(code, name, 0);
+        upsertCode(code, 0);
     } else if (sportTypes.length > 0 && groups.length == 0 && !resultPermission && !adminPermission && !custom) {
         // Station account
-        upsertCode(code, name, 1);
+        upsertCode(code, 1);
     } else {
         // Custom account
-        upsertCode(code, name, 2);
+        upsertCode(code, 2);
     }
 }
 
-function createAccount(name, groups, sportTypes, resultPermission, adminPermission) {
-    setCode({title: name}, name, groups, sportTypes, resultPermission, adminPermission);
+function createAccount(name, groups, sportTypes, resultPermission, adminPermission, custom, id) {
+    if (!id) id = genUUID();
+    setCode({id: id, name: name}, groups, sportTypes, resultPermission, adminPermission, custom);
 
     const password = genRandomCode();
 
     const account = new Account(name, groups, sportTypes, Crypto.generateAC(password), resultPermission, adminPermission);
 
     setCode({
-        title: name,
+        id: id,
+        name: name,
         account: account,
-        code: password
-    }, name, groups, sportTypes, resultPermission, adminPermission);
+        code: password,
+        groups: groups,
+        sportTypes: sportTypes,
+        resultPermission: resultPermission,
+        adminPermission: adminPermission
+    }, groups, sportTypes, resultPermission, adminPermission, custom);
 }
 
 function processCodes(codes) {
+    //noinspection JSCheckFunctionSignatures
     progress.set((totalProgress - codes.length) / totalProgress * 100);
     if (codes.length > 0) {
         const code = codes.pop();
-        setTimeout(function () {
-            createAccount(code.name, code.groups, code.sportTypes, code.resultPermission, code.adminPermission);
+        setTimeout(function () { // TODO: Find a better solution to de-lag the browser whilst this is happenin'
+            createAccount(code.name, code.groups, code.sportTypes, code.resultPermission, code.adminPermission, code.custom, code.id);
             processCodes(codes);
         }, 200);
     } else {
+        //noinspection JSCheckFunctionSignatures
+        codesClean.set(true);
         Meteor.f7.hidePreloader();
     }
+}
+
+function getCurrentSportTypes() {
+    const compID = currentCompID.get();
+    const competitionType = DBInterface.getCompetitionType(compID);
+    return lodash.map(DBInterface.getCompetitionSportTypes(compID), function (stID) {
+        return competitionType.getSportType(stID);
+    });
 }
 
 Template.accessCodes.helpers({
@@ -80,21 +115,86 @@ Template.accessCodes.helpers({
     },
     progressDone: function () {
         return progress.get() == 100;
+    },
+    sportTypes: getCurrentSportTypes
+});
+
+Template.accessCodeGroup.helpers({
+    otherPermissions: function () {
+        return [
+            {id: "resultPermission", name: "Urkunden erstellen"},
+            {id: "adminPermission", name: "Administratorzugriff"}
+        ];
+    },
+    otherPermissionList: function (code) {
+        const otherPermissions = [];
+        if (code.adminPermission) otherPermissions.push("adminPermission");
+        if (code.resultPermission) otherPermissions.push("resultPermission");
+        return otherPermissions;
+    }
+});
+
+Template.accordionInnerListBlock.helpers({
+    isChecked: function (checklist, id) {
+        return lodash.includes(checklist, id) ? "checked" : "";
+    }
+});
+
+Template.accordionInnerListBlock.events({
+    'click .permission-input': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const stid = event.target.closest("li[data-stid]").dataset.stid;
+        const id = event.target.closest("li[data-id]").dataset.id;
+        const acodes = accessCodes.get();
+        const index = getIndexOfCode(acodes, 2, id);
+        const code = acodes[2].codes[index];
+        code.account = undefined;
+        code.custom = true;
+        code.code = undefined;
+        if (stid == "resultPermission") {
+            code.resultPermission = !code.resultPermission;
+        } else if (stid == "adminPermission") {
+            code.adminPermission = !code.adminPermission;
+        } else {
+            if (lodash.includes(code.sportTypes, stid)) {
+                code.sportTypes.splice(code.sportTypes.indexOf(stid), 1);
+            } else if (code.sportTypes === undefined) {
+                code.sportTypes = [stid];
+            } else {
+                code.sportTypes.push(stid);
+            }
+        }
+
+        acodes[2].codes[index] = code;
+        accessCodes.set(acodes);
+        //noinspection JSCheckFunctionSignatures
+        codesClean.set(false);
+
+        return false;
     }
 });
 
 Template.accessCodes.events({
     'click .add-code': function () {
-        createAccount(genUUID(), ["Q#z"], ["st_long_jump"], false, false, true);
+        //noinspection JSCheckFunctionSignatures
+        codesClean.set(false);
+        Meteor.f7.prompt("Wählen sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
+            upsertCode({
+                id: genUUID(),
+                name: name,
+                custom: true,
+                sportTypes: [],
+                resultPermission: false,
+                adminPermission: false
+            }, 2);
+        }).querySelector("input").focus();
     },
     'click .generateCodes': function () {
-        const compID = currentCompID.get();
-        const competitionType = DBInterface.getCompetitionType(compID);
-        const sportTypes = lodash.map(DBInterface.getCompetitionSportTypes(compID), function (stID) {
-            return competitionType.getSportType(stID);
-        });
+        const sportTypes = getCurrentSportTypes();
 
         const codes = [];
+        const customAccounts = accessCodes.get()[2].codes;
 
         // Station accounts
         for (let sportType in sportTypes) {
@@ -122,13 +222,23 @@ Template.accessCodes.events({
             });
         }
 
+        // Custom accounts
+        const customAccountCodes = [];
+        for (let customAccount in customAccounts) {
+            if (!customAccounts.hasOwnProperty(customAccount)) continue;
+            customAccountCodes.push(customAccounts[customAccount]);
+        }
+
         Meteor.f7.showPreloader("Generiere Zugangscodes");
         totalProgress = codes.length;
-        processCodes(codes);
+        processCodes(codes.concat(customAccountCodes.reverse()));
     }
 });
 
 Template.accessCodes.onRendered(function () {
+    //noinspection JSCheckFunctionSignatures
+    codesClean.set(false);
+    //noinspection JSCheckFunctionSignatures
     progress.set(100);
 });
 

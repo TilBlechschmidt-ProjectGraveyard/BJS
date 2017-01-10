@@ -145,7 +145,7 @@ Template.athleteList.events({
             const lgroups = localGroups.get();
             lgroups.push({name: value, athletes: []});
             localGroups.set(lgroups);
-        });
+        }).querySelector("input").focus();
     },
     'click .add-athlete': function (event) {
         const groupName = event.target.closest(".add-athlete").dataset.id;

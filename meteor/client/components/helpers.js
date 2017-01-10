@@ -95,6 +95,9 @@ Template.registerHelper('isZero', function (num) {
 Template.registerHelper('setReadOnly', function (bool) {
     return bool ? "disabled" : "";
 });
+Template.registerHelper('contains', function (arr, obj) {
+    return lodash.includes(arr, obj);
+});
 Template.registerHelper('isOffline', isOffline);
 
 Template.body.events({
