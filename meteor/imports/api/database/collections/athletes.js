@@ -48,7 +48,7 @@ export function initAthletes() {
                 const valid = ct.validate(log, athlete, accounts, true);
                 const certificate = ct.generateCertificate(log, athlete, accounts, true);
 
-                Meteor.COLLECTIONS.Athletes.handle.update({_id: doc._id}, {
+                handle.update({_id: doc._id}, {
                     $set: {
                         currentScore: encryptAsAdmin(certificate.score),
                         stScores: encryptAsAdmin(certificate.stScores),
@@ -60,7 +60,7 @@ export function initAthletes() {
         });
 
         handle.after.insert(function (userId, doc, fieldNames, modifier) {
-            Meteor.COLLECTIONS.Athletes.handle.update({_id: doc._id}, {
+            handle.update({_id: doc._id}, {
                 $set: {
                     currentScore: encryptAsAdmin(0),
                     stScores: encryptAsAdmin({}),
