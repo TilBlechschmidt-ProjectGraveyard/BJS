@@ -3,6 +3,7 @@ import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
 import {updateSwiperProgress} from "../login/router";
+import {codesClean} from "./accessCodes/accessCodes";
 
 Meteor.config = {};
 Meteor.config.log = new Log();
@@ -97,6 +98,7 @@ Template.config.events({
         event.preventDefault();
         event.stopImmediatePropagation();
         document.getElementById("config-swiper").swiper.slidePrev();
+        codesClean.set(false);
         return false;
     },
     'click .show-athletes': function (event) {
