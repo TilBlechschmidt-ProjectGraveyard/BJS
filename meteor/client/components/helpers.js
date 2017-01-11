@@ -101,6 +101,9 @@ Template.registerHelper('contains', function (arr, obj) {
 Template.registerHelper('eq', function (a, b) {
     return a == b;
 });
+Template.registerHelper('isUndefined', function (a) {
+    return a === undefined;
+});
 Template.registerHelper('isOffline', isOffline);
 
 Template.body.events({

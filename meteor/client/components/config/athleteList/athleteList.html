@@ -47,9 +47,12 @@
                                                 {{#if readOnly}}
                                                     {{#if isMale}}Männlich{{else}}Weiblich{{/if}}
                                                 {{else}}
-                                                    <span class="gender gender-male {{#if not
-                                                                                          isMale}}not-selected{{/if}}">Männlich</span> / <span
-                                                        class="gender gender-female {{#if isMale}}not-selected{{/if}}">Weiblich</span>
+                                                    <span class="gender gender-male {{#if isUndefined
+                                                                                          isMale}}not-selected{{/if}}  {{#if
+                                                            not isMale}}not-selected{{/if}}">Männlich</span> / <span
+                                                        class="gender gender-female {{#if isUndefined
+                                                                                          isMale}}not-selected{{/if}}  {{#if
+                                                                isMale}}not-selected{{/if}}">Weiblich</span>
                                                 {{/if}}
                                             </span>
                                         </p>
