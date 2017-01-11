@@ -10,7 +10,11 @@ let totalProgress = 0;
 const baseACStructure = [
     {name: "Gruppenpasswörter", codes: []},
     {name: "Stationspasswörter", codes: []},
-    {name: "Eigene Zugangsdaten", codes: []}
+    {
+        name: "Eigene Zugangsdaten", codes: [
+        {name: "Urkundenzugang", resultPermission: true, id: "results", custom: true}
+    ]
+    }
 ];
 
 const progress = new ReactiveVar(undefined);
