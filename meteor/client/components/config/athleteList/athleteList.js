@@ -170,7 +170,8 @@ Template.athleteList.events({
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         modifyAthlete(id, function (athlete) {
             if (athlete.isMale === undefined) {
-                athlete.isMale = gender.guess(firstName).gender == "M";
+                const genderGuess = gender.guess(firstName);
+                if (genderGuess !== undefined && typeof genderGuess.gender === 'string') athlete.isMale = genderGuess.gender == "M";
             }
             athlete.firstName = firstName;
             athlete.lastName = lastName;
