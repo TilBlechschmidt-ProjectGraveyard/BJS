@@ -20,6 +20,13 @@
     margin-left: 45px;
 }
 
+.accordion-item-content input {
+    width: auto !important;
+    height: auto !important;
+    color: #6d6d72 !important;
+    font-size: 14px !important;
+}
+
 /* Alignment of left/right navbar elements */
 .navbar-inner .left, .navbar-inner .right {
     width: calc((100% - 250px) / 2);

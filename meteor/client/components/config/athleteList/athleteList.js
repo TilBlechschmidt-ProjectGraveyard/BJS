@@ -108,6 +108,24 @@ Template.athleteList.helpers({
 });
 
 Template.athleteList.events({
+    'keyup .ageGroup': function (event) {
+        event.stopImmediatePropagation();
+        const id = event.target.closest("li").dataset.id;
+        modifyAthlete(id, function (athlete) {
+            athlete.ageGroup = parseInt(event.target.value);
+        });
+    },
+    'mousewheel .ageGroup': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const e = event.originalEvent;
+        const delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        const id = event.target.closest("li").dataset.id;
+        modifyAthlete(id, function (athlete) {
+            athlete.ageGroup = athlete.ageGroup + delta;
+        });
+        return false;
+    },
     'click .gender': function (event) {
         event.stopImmediatePropagation();
         event.preventDefault();
