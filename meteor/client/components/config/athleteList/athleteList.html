@@ -8,10 +8,14 @@
                         <li class="accordion-item" data-id="{{a.id}}">
                             <a href="#" class="item-content item-link">
                                 {{#if not readOnly}}
-                                    {{#if validAthlete a}}
+                                    {{#if not (athleteTooltipLevel a)}}
                                         <div class="item-media">{{> iconOK}}</div>
                                     {{else}}
-                                        <div class="item-media">{{> iconErr}}</div>
+                                        {{#if (eq (athleteTooltipLevel a) 1)}}
+                                            <div class="item-media">{{> iconWarn text=(athleteTooltipMsg a)}}</div>
+                                        {{else}}
+                                            <div class="item-media">{{> iconErr text=(athleteTooltipMsg a)}}</div>
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                                 <div class="item-inner">

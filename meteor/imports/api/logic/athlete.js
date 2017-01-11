@@ -142,9 +142,14 @@ Athlete.prototype = {
             result = false;
         }
         if (typeof(this.isMale) != 'boolean') {
-            log.error('Das Geschlecht des Athleten ist ungültig');
+            log.error('Das Geschlecht des Athleten ist ungültig.');
             result = false;
         }
+
+        const currentYear = new Date().getFullYear();
+        if (this.ageGroup > currentYear || this.ageGroup < currentYear - 60)
+            log.warn('Das Alter des Athleten ist möglicherweise fehlerhaft.');
+
         return result;
     },
     /**

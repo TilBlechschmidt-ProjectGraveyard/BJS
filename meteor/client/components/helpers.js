@@ -98,6 +98,9 @@ Template.registerHelper('setReadOnly', function (bool) {
 Template.registerHelper('contains', function (arr, obj) {
     return lodash.includes(arr, obj);
 });
+Template.registerHelper('eq', function (a, b) {
+    return a == b;
+});
 Template.registerHelper('isOffline', isOffline);
 
 Template.body.events({

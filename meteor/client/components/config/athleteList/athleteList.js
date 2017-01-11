@@ -1,8 +1,10 @@
 import {currentCompID, editMode, dbReady} from "../config";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {Log} from "../../../../imports/api/log";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
+import gender from "gender-guess";
 
 const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
@@ -79,6 +81,17 @@ DBInterface.waitForReady(function () {
     });
 });
 
+function athleteTooltip(athlete) {
+    if (editMode.get()) {
+        const log = new Log();
+        athlete.check(log);
+        const msg = log.getLastMessage();
+        if (msg == undefined) return {};
+        return log.getLastMessage();
+    } else
+        return {};
+}
+
 Template.athleteList.helpers({
     groups: function () {
         if (editMode.get())
@@ -94,6 +107,12 @@ Template.athleteList.helpers({
             return athlete.check(Meteor.config.log);
         else
             return true;
+    },
+    athleteTooltipLevel: function (athlete) {
+        return athleteTooltip(athlete).level;
+    },
+    athleteTooltipMsg: function (athlete) {
+        return athleteTooltip(athlete).message;
     },
     fullName: function (athlete) {
         if (editMode.get()) {
@@ -150,6 +169,9 @@ Template.athleteList.events({
         const firstName = name.split(' ').slice(0, -1).join(' ').trim();
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         modifyAthlete(id, function (athlete) {
+            if (athlete.isMale === undefined) {
+                athlete.isMale = gender.guess(firstName).gender == "M";
+            }
             athlete.firstName = firstName;
             athlete.lastName = lastName;
         });
@@ -183,7 +205,7 @@ Template.athleteList.events({
         }
 
         const ct = DBInterface.getCompetitionType(compID);
-        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, true, groupName, '0', ct.maxAge, ct, genUUID()));
+        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, groupName, '0', ct.maxAge, ct, genUUID()));
 
         localGroups.set(lgroups);
     }

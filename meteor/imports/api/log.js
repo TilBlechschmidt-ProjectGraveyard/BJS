@@ -112,6 +112,11 @@ Log.prototype = {
         this.messages = [];
     },
 
+    getLastMessage: function () {
+        if (this.messages.length == 0) return undefined;
+        return this.messages[this.messages.length - 1];
+    },
+
     /**
      * Returns all messages as strings.
      * @public
