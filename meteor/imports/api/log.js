@@ -112,6 +112,10 @@ Log.prototype = {
         this.messages = [];
     },
 
+    /**
+     * Returns the most recently logged message
+     * @returns {*}
+     */
     getLastMessage: function () {
         if (this.messages.length == 0) return undefined;
         return this.messages[this.messages.length - 1];

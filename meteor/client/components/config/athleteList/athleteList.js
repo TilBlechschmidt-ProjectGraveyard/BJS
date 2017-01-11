@@ -159,7 +159,9 @@ Template.athleteList.events({
         event.stopImmediatePropagation();
         event.preventDefault();
         const id = event.target.closest("li").dataset.id;
-        selectedAthlete.set(id);
+        modifyAthlete(id, function (athlete) { //Abuse the function to get the athlete data
+            selectedAthlete.set(athlete);
+        });
         Meteor.f7.popup(".popup-startclass");
         return false;
     },
@@ -171,7 +173,7 @@ Template.athleteList.events({
         modifyAthlete(id, function (athlete) {
             if (athlete.isMale === undefined) {
                 const genderGuess = gender.guess(firstName);
-                if (genderGuess !== undefined && typeof genderGuess.gender === 'string') athlete.isMale = genderGuess.gender == "M";
+                if (genderGuess !== undefined && typeof genderGuess.gender === 'string' && genderGuess.confidence > 0.96) athlete.isMale = genderGuess.gender == "M";
             }
             athlete.firstName = firstName;
             athlete.lastName = lastName;
