@@ -78,9 +78,8 @@ Athlete.prototype = {
         return this.data.getPlain(log, accounts, requireSignature, this.group);
     },
 
-
     /**
-     * Updates the data of a given sport (stID).
+     * Adds multiple measurements of a given sport (stID).
      * @param {Log} log Logger instance to use
      * @param {string} stID Identifier of the sport that should get updated/new values
      * @param {number[]} newMeasurements New measurements that should be inserted
@@ -88,8 +87,23 @@ Athlete.prototype = {
      * @param {Account} stationAccount Account of the station responsible for this sport type
      * @returns {boolean} A boolean value that describes whether or not the update was successful
      */
-    addMeasurement: function (log, stID, newMeasurements, groupAccount, stationAccount) {
+    addMeasurements: function (log, stID, newMeasurements, groupAccount, stationAccount) {
+        for (let index in newMeasurements) {
+            if (!newMeasurements.hasOwnProperty(index)) continue;
+            this.addMeasurement(log, stID, newMeasurements[index], groupAccount, stationAccount);
+        }
+    },
 
+    /**
+     * Adds a measurement of a given sport (stID).
+     * @param {Log} log Logger instance to use
+     * @param {string} stID Identifier of the sport that should get updated/new values
+     * @param {number} newMeasurement New measurements that should be inserted
+     * @param {Account} groupAccount Account of the group this athlete is part of
+     * @param {Account} stationAccount Account of the station responsible for this sport type
+     * @returns {boolean} A boolean value that describes whether or not the update was successful
+     */
+    addMeasurement: function (log, stID, newMeasurement, groupAccount, stationAccount) {
         let canWrite = true;
 
         if (groupAccount.group_permissions.indexOf(this.group) == -1) {
@@ -108,7 +122,7 @@ Athlete.prototype = {
         }
 
         if (canWrite) {
-            this.data.push(log, stID, newMeasurements, groupAccount.ac, stationAccount.ac);
+            this.data.push(log, stID, newMeasurement, groupAccount.ac, stationAccount.ac);
             // write to db
             if (this.id) {
                 let writeObject = {};

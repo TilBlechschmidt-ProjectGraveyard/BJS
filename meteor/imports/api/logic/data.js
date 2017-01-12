@@ -36,28 +36,28 @@ Data.prototype = {
         return filterUndefined(_.map(this.data, function (dataObject) {
             const acs = getAcsFromAccounts(accounts);
             const stIDDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedStID, acs);
-            const measurementsDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedMeasurements, acs);
+            const measurementDecryptResult = Crypto.tryDecrypt(log, dataObject.encryptedMeasurement, acs);
 
-            if (requireSignature && !(stIDDecryptResult.signatureEnforced && measurementsDecryptResult.signatureEnforced)) {
+            if (requireSignature && !(stIDDecryptResult.signatureEnforced && measurementDecryptResult.signatureEnforced)) {
                 log.error('Die Signatur der Sport Art mit der ID ' + stIDDecryptResult.data + ' konnte nicht überprüft werden, obwohl sie benötigt wird.');
                 return undefined;
             }
 
             if (accounts[stIDDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1 ||
-                accounts[measurementsDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1) {
+                accounts[measurementDecryptResult.usedACs.groupAC].group_permissions.indexOf(groupID) == -1) {
                 log.error('Der Gruppen Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
                 return undefined;
             }
 
             if ((stIDDecryptResult.signatureEnforced && accounts[stIDDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1) ||
-                (measurementsDecryptResult.signatureEnforced && accounts[measurementsDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1)) {
+                (measurementDecryptResult.signatureEnforced && accounts[measurementDecryptResult.usedACs.stationAC].score_write_permissions.indexOf(stIDDecryptResult.data) == -1)) {
                 log.error('Der Stations Account, der verwendet wurde um die Daten zu speichern, hat dafür keine Berechtigung.');
                 return undefined;
             }
 
             return {
                 stID: stIDDecryptResult,
-                measurements: measurementsDecryptResult,
+                measurement: measurementDecryptResult,
                 synced: dataObject.synced
             };
         }));
@@ -81,18 +81,17 @@ Data.prototype = {
      * Updates the data of a given stID.
      * @param {Log} log - Logger instance to use
      * @param {string} stID - Identifier of the sport the returned data should be part of
-     * @param {number[]} newMeasurements The measurements that should be inserted
+     * @param {number} newMeasurement The measurements that should be inserted
      * @param {AuthenticationCode} groupAC - Authentication code of the group
      * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
      */
-    push: function (log, stID, newMeasurements, groupAC, stationAC) {
-
+    push: function (log, stID, newMeasurement, groupAC, stationAC) {
         const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
-        const newEncryptedMeasurements = Crypto.encrypt(newMeasurements, groupAC, stationAC);
+        const newEncryptedMeasurement = Crypto.encrypt(newMeasurement, groupAC, stationAC);
 
         this.data.push({
             encryptedStID: encryptedStID,
-            encryptedMeasurements: newEncryptedMeasurements,
+            encryptedMeasurement: newEncryptedMeasurement,
             synced: false
         });
     }

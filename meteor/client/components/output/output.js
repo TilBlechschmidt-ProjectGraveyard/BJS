@@ -334,6 +334,9 @@ Template.output.events({
             return obj.dataset.id;
         });
         sortingSettings.set(newOrder);
+    },
+    'click .sorting-reset-button': function (event) {
+        sortingSettings.set([0, 1, 2, 3, 4, 5, 6, 7]);
     }
 });
 

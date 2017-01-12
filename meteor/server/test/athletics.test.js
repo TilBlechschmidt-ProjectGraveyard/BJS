@@ -15,7 +15,7 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
 
         p.data.data.length.should.be.equal(1);
     });
@@ -24,12 +24,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount], false).should.be.equal(true);
     });
@@ -38,12 +38,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount, stationAccount], false).should.be.equal(true);
     });
@@ -52,12 +52,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount, stationAccount], true).should.be.equal(true);
     });
@@ -66,12 +66,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.validate(log, p, [groupAccount], true).should.be.equal(false);
     });
@@ -80,12 +80,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount], false).score.should.be.equal(2195);
     });
@@ -94,12 +94,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], false).score.should.be.equal(2195);
     });
@@ -108,12 +108,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount, stationAccount], true).score.should.be.equal(2195);
     });
@@ -122,12 +122,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         ct.calculate(log, p, [groupAccount], true).score.should.be.equal(0);
     });
@@ -136,12 +136,12 @@ describe('athletics', function () {
         const log = new Log();
         const p = new Athlete(log, 'Hans', 'Müller', 2000, true, 'Q#z', '0', ct.maxAge, ct);
         p.age = 16;
-        p.addMeasurement(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
-        p.addMeasurement(log, 'st_sprint_100', [10], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_long_jump', [7.33], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_ball_200', [69, 70], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_1000', [160], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_endurance_3000', [640], groupAccount, stationAccount);
+        p.addMeasurements(log, 'st_sprint_100', [10], groupAccount, stationAccount);
 
         const certificate = ct.generateCertificate(log, p, [groupAccount, stationAccount], true);
         certificate.score.should.be.equal(2195);

@@ -85,6 +85,7 @@ function populateAthlete(athlete) {
     const ct = DBInterface.getCompetitionType();
 
 
+
     athlete.nonPermittedSportTypes = [];
     if (stationAccount.account) {
         for (let sportTypeIndex in stationAccount.account.score_write_permissions) {
@@ -137,12 +138,10 @@ function populateAthlete(athlete) {
         if (!read_only_measurements.hasOwnProperty(measurement_block)) continue;
         measurement_block = read_only_measurements[measurement_block];
 
-        stID = measurement_block.stID.data;
+        const stID = measurement_block.stID.data;
         if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
-        athlete.sportType[stID].measurements = athlete.sportType[stID].measurements.concat(
-            lodash.map(measurement_block.measurements.data, function (measurement) {
-                return {read_only: true, value: measurement, synced: measurement_block.synced};
-            })
+        athlete.sportType[stID].measurements.push(
+            {read_only: true, value: measurement_block.measurement.data, synced: measurement_block.synced}
         );
     }
 

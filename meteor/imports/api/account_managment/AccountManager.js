@@ -38,7 +38,7 @@ function saveData() {
                 for (let stID in measurements[athlete.id]) {
                     if (!measurements[athlete.id].hasOwnProperty(stID)) continue;
                     // Add all measurements for the sport type to the athlete
-                    athlete.addMeasurement(Meteor.input.log, stID,
+                    athlete.addMeasurements(Meteor.input.log, stID,
                         lodash.map(measurements[athlete.id][stID], function (measurement) {
                             return measurement;
                         }),
@@ -46,7 +46,6 @@ function saveData() {
                 }
             }
         }
-
         sessionStorage.setItem("measurements", "{}");
     }
 }
