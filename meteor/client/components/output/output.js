@@ -271,7 +271,7 @@ Template.outputContent.events({
 });
 
 Template.output.events({
-    'click .logout-button': function () {
+    'click .logout-button': function (event) {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Urkunden");
             sessionStorage.removeItem("firstLogin");

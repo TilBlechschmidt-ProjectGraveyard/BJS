@@ -117,7 +117,7 @@ Template.config.events({
         document.getElementById("config-swiper").swiper.slideNext();
         return false;
     },
-    'click .logout-button': function () {
+    'click .logout-button': function (event) {
         Meteor.f7.confirm("Möchten Sie sich wirklich abmelden?", "Abmelden", function () {
             AccountManager.logout("Administrator");
             sessionStorage.removeItem("firstLogin");

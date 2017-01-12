@@ -3,7 +3,7 @@ import {AccountManager} from "../../../imports/api/account_managment/AccountMana
 import {updateSwiperProgress} from "../login/router";
 
 Template.offline.events({
-    'click #goToLoginButton': function () {
+    'click #goToLoginButton': function (event) {
         AccountManager.logoutAll();
         FlowRouter.go('/login');
         updateSwiperProgress(0);

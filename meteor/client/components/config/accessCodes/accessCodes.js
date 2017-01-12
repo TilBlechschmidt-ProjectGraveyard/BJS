@@ -283,7 +283,7 @@ Template.accordionInnerListBlock.events({
 });
 
 Template.accessCodes.events({
-    'click .add-code': function () {
+    'click .add-code': function (event) {
         Meteor.f7.prompt("Wählen sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
             //noinspection JSCheckFunctionSignatures
             codesClean.set(false);
@@ -297,7 +297,7 @@ Template.accessCodes.events({
             }, 2);
         }).querySelector("input").focus();
     },
-    'click .generateCodes': function () {
+    'click .generateCodes': function (event) {
         if (codesClean.get()) {
             Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
                 Meteor.f7.showPreloader("Speichere Wettkampf");

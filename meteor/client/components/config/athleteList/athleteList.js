@@ -179,7 +179,7 @@ Template.athleteList.events({
             athlete.lastName = lastName;
         });
     },
-    'click input': function () {
+    'click input': function (event) {
         if (editMode.get()) {
             event.stopImmediatePropagation();
             event.preventDefault();
@@ -187,7 +187,7 @@ Template.athleteList.events({
             return false;
         }
     },
-    'click .add-group': function () {
+    'click .add-group': function (event) {
         Meteor.f7.prompt('Wähle einen Namen für die Gruppe', 'Gruppe erstellen', function (value) {
             const lgroups = localGroups.get();
             lgroups.push({name: value, athletes: []});

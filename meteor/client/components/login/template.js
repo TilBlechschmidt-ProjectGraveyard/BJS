@@ -95,7 +95,7 @@ Template.login.events({
         }, 400);
         return false;
     },
-    'click .selection': function () {
+    'click .selection': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
         const type = event.target.dataset.type;
