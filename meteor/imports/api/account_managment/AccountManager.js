@@ -46,7 +46,6 @@ function saveData() {
                 }
             }
         }
-
         sessionStorage.setItem("measurements", "{}");
     }
 }
