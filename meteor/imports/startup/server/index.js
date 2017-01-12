@@ -69,12 +69,13 @@ export function onStartup() {
         },
         'addCompetition': function (loginObject, name, competitionType) {
             if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
-            Meteor.COLLECTIONS.Contests.handle.insert({
+            const _id = Meteor.COLLECTIONS.Contests.handle.insert({
                 name: name,
                 sportTypes: [],
                 readOnly: false,
                 type: competitionType
             });
+            Meteor.COLLECTIONS.connect(_id);
 
             return encryptAsAdmin(true);
         },
