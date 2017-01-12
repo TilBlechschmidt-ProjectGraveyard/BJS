@@ -9,9 +9,8 @@
                             <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title label" style="width: 75%;">{{s.name}}</div>
-                                    <label class="label-switch">
-                                        <input {{s.checked}} type="checkbox" class="checkbox-sportType"
-                                                             data-id="{{s.id}}">
+                                    <label class="label-switch checkbox-sportType" data-id="{{s.id}}">
+                                        <input {{s.checked}} type="checkbox">
                                         <div class="checkbox"></div>
                                     </label>
                                 </div>
@@ -19,7 +18,6 @@
                         </li>
                     {{/each}}
                 </ul>
-                <!--<div class="list-block-label">List block label text goes here</div>-->
             </div>
         </div>
     {{/each}}
