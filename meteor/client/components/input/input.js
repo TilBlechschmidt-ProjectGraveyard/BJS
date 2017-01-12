@@ -44,7 +44,8 @@ export let reloadSwiper = function (forceAthleteReload) {
         spaceBetween: 50,
         grabCursor: true,
         shortSwipes: true,
-        control: nameSwiper
+        control: nameSwiper,
+        keyboardControl: true
     });
 
     // inputSwiper.on('transitionEnd', function (swiper) {
