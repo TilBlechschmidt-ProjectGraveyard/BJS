@@ -91,7 +91,7 @@ html {
 }
 
 @media screen and (max-width: 630px) {
-    .modal-in {
+    .popup.modal-in {
         top: 2px;
         height: calc(100% - 2px);
     }
