@@ -106,10 +106,15 @@ export function onStartup() {
             return encryptAsAdmin(groups);
         },
         'generateCertificates': function (loginObject, athleteIDs) {
-            const account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
+            let account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 
             if (!account) {
-                return false;
+                const adminAccount = getAdminAccount();
+                if (loginObject.pubHash === adminAccount.ac.pubHash) {
+                    account = adminAccount;
+                } else {
+                    return false;
+                }
             }
             if (!account.canViewResults) {
                 return encryptAs(false, account);
@@ -173,7 +178,7 @@ export function onStartup() {
 
             return encryptAs(filterUndefined(_.map(athleteIDs, mapAthletet)), account);
         },
-        'getServerIPs': function () {
+        'getServerIPs': function (event) {
             const os = require('os');
             const ifaces = os.networkInterfaces();
             const ips = [];
