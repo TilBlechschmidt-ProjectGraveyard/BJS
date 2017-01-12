@@ -11,9 +11,10 @@ const baseACStructure = [
     {name: "Gruppenpasswörter", codes: []},
     {name: "Stationspasswörter", codes: []},
     {
-        name: "Eigene Zugangsdaten", codes: [
-        {name: "Urkundenzugang", resultPermission: true, id: "results", custom: true}
-    ]
+        name: "Eigene Zugangsdaten",
+        codes: [
+            {name: "Urkundenzugang", resultPermission: true, id: "results", custom: true}
+        ]
     }
 ];
 
