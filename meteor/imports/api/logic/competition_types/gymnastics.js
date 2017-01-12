@@ -119,7 +119,7 @@ export let Gymnastics = {
 
         //filter data with more then one point
         const tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements.data) > 0;
+            return dataObject.measurement.data;
         });
 
         // temporary store this in that
@@ -132,7 +132,7 @@ export let Gymnastics = {
 
             // add measurement to general information
             if (canDoSportObject.dataObject !== undefined) {
-                canDoSportObject.dataObject.measurements = dataObject.measurements.data;
+                canDoSportObject.dataObject.measurement = dataObject.measurement.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
         }));
@@ -181,21 +181,20 @@ export let Gymnastics = {
         const stScores = {};
         for (let vd in validData) {
             if (!validData.hasOwnProperty(vd)) continue;
-            const score = validData[vd].measurements;
-            const bestScore = _.max(score);
+            const score = validData[vd].measurement;
             const category = validData[vd].category;
 
             if (!stScores.hasOwnProperty(validData[vd].stID)) {
                 stScores[validData[vd].stID] = 0;
             }
-            if (stScores[validData[vd].stID] < bestScore) {
-                stScores[validData[vd].stID] = bestScore;
+            if (stScores[validData[vd].stID] < score) {
+                stScores[validData[vd].stID] = score;
             }
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' -> ' + score);
 
-            if (scores[category] < bestScore) {
-                scores[category] = bestScore;
+            if (scores[category] < score) {
+                scores[category] = score;
             }
         }
 

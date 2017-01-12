@@ -140,7 +140,7 @@ export let Swimming = {
 
         // filter data with more then on point
         const tmpData = _.filter(plain, function (dataObject) {
-            return _.max(dataObject.measurements.data) > 0;
+            return dataObject.measurement.data;
         });
 
         // temporary store this in that
@@ -153,7 +153,7 @@ export let Swimming = {
 
             // add measurement to general information
             if (canDoSportObject.dataObject !== undefined) {
-                canDoSportObject.dataObject.measurements = dataObject.measurements.data;
+                canDoSportObject.dataObject.measurement = dataObject.measurement.data;
             }
             return canDoSportObject.canDoSport ? canDoSportObject.dataObject : undefined;
         }));
@@ -187,22 +187,20 @@ export let Swimming = {
      * Calculates the score of one dataObject returned by the getValidData function.
      * @private
      * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
-     * @returns {number[]}
+     * @returns {number}
      */
     calculateOne: function (dataObject) {
-        return _.map(dataObject.measurements, function (measurement) {
-            const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * measurement;
-            let score = 0;
+        const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * dataObject.measurements;
+        let score = 0;
 
-            // select score from table
-            for (let i = 0; i <= 14; i++) {
-                if ((dataObject.unit === 'm' && tmp_measurement >= dataObject.scoreTable[i]) ||
-                    (dataObject.unit !== 'm' && tmp_measurement <= dataObject.scoreTable[i])) {
-                    score = i + 1;
-                }
+        // select score from table
+        for (let i = 0; i <= 14; i++) {
+            if ((dataObject.unit === 'm' && tmp_measurement >= dataObject.scoreTable[i]) ||
+                (dataObject.unit !== 'm' && tmp_measurement <= dataObject.scoreTable[i])) {
+                score = i + 1;
             }
-            return score;
-        });
+        }
+        return score;
     },
 
     /**
@@ -223,20 +221,19 @@ export let Swimming = {
         for (let vd in validData) {
             if (!validData.hasOwnProperty(vd)) continue;
             const score = this.calculateOne(validData[vd]);
-            const bestScore = _.max(score);
             const category = validData[vd].category;
 
             if (!stScores.hasOwnProperty(validData[vd].stID)) {
                 stScores[validData[vd].stID] = 0;
             }
-            if (stScores[validData[vd].stID] < bestScore) {
-                stScores[validData[vd].stID] = bestScore;
+            if (stScores[validData[vd].stID] < score) {
+                stScores[validData[vd].stID] = score;
             }
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' (' + score + ') -> ' + bestScore);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' -> ' + score);
 
-            if (scores[category] < bestScore) {
-                scores[category] = bestScore;
+            if (scores[category] < score) {
+                scores[category] = score;
             }
         }
 
