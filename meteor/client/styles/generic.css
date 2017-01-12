@@ -89,3 +89,11 @@ html, html * {
 html {
  -webkit-text-size-adjust: 100%;
 }
+
+@media screen and (max-width: 630px) {
+    .modal-in {
+        top: 2px;
+        height: calc(100% - 2px);
+    }
+}
+
