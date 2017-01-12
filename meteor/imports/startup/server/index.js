@@ -60,8 +60,20 @@ export function onStartup() {
             return encryptAsAdmin(true);
         },
         'lockCompetition': function (loginObject, competitionID) {
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
             Meteor.COLLECTIONS.Contests.handle.update({_id: competitionID}, {
                 $set: {readOnly: true}
+            });
+
+            return encryptAsAdmin(true);
+        },
+        'addCompetition': function (loginObject, name, competitionType) {
+            if (!checkAdminLogin(loginObject)) return encryptAsAdmin(false);
+            Meteor.COLLECTIONS.Contests.handle.insert({
+                name: name,
+                sportTypes: [],
+                readOnly: false,
+                type: competitionType
             });
 
             return encryptAsAdmin(true);

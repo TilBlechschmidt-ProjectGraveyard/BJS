@@ -1,0 +1,52 @@
+<template name="competitionTypePopup">
+    {{>popup class="popup-competitionType" title="Wettkampfarten" subtitle="Wählen sie die Wettkampfart" content="competitionTypePopupContent"}}
+</template>
+
+<template name="competitionTypePopupContent">
+    <div class="list-block media-list">
+        <ul>
+            {{#each c in competitionTypes}}
+                {{#with c}}
+                    <li data-id="{{id}}" class="swipeout addCompetition">
+                        {{#with c.object.getInformation}}
+                            <a href="#" class="swipeout-content item-link item-content startClassSelect">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">{{name}}</div>
+                                        <div class="item-after">Irgendwas</div>
+                                    </div>
+                                    <div class="item-text"
+                                         style="overflow: visible; height: auto; min-height: 42px; display: block;">{{description}}</div>
+                                </div>
+                            </a>
+                            <div class="swipeout-actions-right">
+                                <a href="#" class="name-action bg-blue">
+                                    <input type="text" class="competitionNameInput" style="color: #f4f4f4;"
+                                           placeholder="Wählen sie einen Namen"/>
+                                </a>
+                                <a href="#" class="name-action bg-green addCompetitionSubmit">
+                                    Wettkampf erstellen
+                                </a>
+                            </div>
+                        {{/with}}
+                    </li>
+                {{/with}}
+            {{/each}}
+        </ul>
+    </div>
+    <style>
+        input.competitionNameInput::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+            color: #c3c3c3;
+        }
+
+        input.competitionNameInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #c3c3c3;
+            opacity: 1;
+        }
+
+        input.competitionNameInput::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #c3c3c3;
+            opacity: 1;
+        }
+    </style>
+</template>
