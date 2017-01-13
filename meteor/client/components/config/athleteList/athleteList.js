@@ -22,9 +22,9 @@ export let modifyAthlete = function (id, callback) {
         let athletes = lgroups[group].athletes;
         for (let athlete in athletes) {
             if (!athletes.hasOwnProperty(athlete)) continue;
-            let athlete = athletes[athlete];
-            if (athlete.id == id) {
-                callback(athlete);
+            let a = athletes[athlete];
+            if (a.id == id) {
+                callback(a, group, athlete);
                 localGroups.set(lgroups);
                 return;
             }
@@ -224,6 +224,22 @@ Template.athleteList.events({
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
         localGroups.set(lgroups);
+    },
+    'click .remove-athlete': function (event) {
+        event.stopImmediatePropagation();
+        const id = event.target.closest("li").dataset.id;
+        Meteor.f7.confirm('Wollen sie den Athleten wirklich endgültig löschen?', 'Athleten löschen', function () {
+            let groupIndex, athleteIndex;
+            modifyAthlete(id, function (a, gIndex, aIndex) {
+                groupIndex = gIndex;
+                athleteIndex = aIndex;
+            });
+            if (groupIndex && athleteIndex) {
+                const lgroups = localGroups.get();
+                lgroups[groupIndex].athletes.splice(athleteIndex, 1);
+                localGroups.set(lgroups);
+            }
+        });
     },
     'click .rename-group': function (event) {
         const gid = event.target.dataset.gid;
