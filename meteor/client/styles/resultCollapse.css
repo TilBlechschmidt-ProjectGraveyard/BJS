@@ -7,16 +7,21 @@
     }
 }
 
+.collapse-height-100 {
+    max-height: 100px;
+}
+
+.collapsible:not(.collapse-height-100) {
+    max-height: 4000px;
+}
+
 .collapsible {
     overflow: hidden;
-    -webkit-transition: max-height 1s;
-    -moz-transition: max-height 1s;
-    -ms-transition: max-height 1s;
-    -o-transition: max-height 1s;
-    transition: max-height 1s;
-    max-height: 4000px;
-    animation-name: slide-in-animation;
-    animation-duration: 1s;
+    -webkit-transition: max-height 0.5s ease-in-out;
+    -moz-transition: max-height 0.5s ease-in-out;
+    -ms-transition: max-height 0.5s ease-in-out;
+    -o-transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
 }
 
 .collapsible.collapsed {
@@ -24,6 +29,11 @@
     max-height: 0;
 }
 
+.collapsible.collapsed::after {
+    max-height: 0;
+}
+
+/* TODO Replace this w/ the above class and an additional collapse-height-800 class */
 .result-accordion {
     -webkit-transition: max-height 1s;
     -moz-transition: max-height 1s;
