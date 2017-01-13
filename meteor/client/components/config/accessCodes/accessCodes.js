@@ -58,10 +58,10 @@ function setCode(code, groups, sportTypes, resultPermission, adminPermission, cu
     if (custom) {
         // Custom account
         upsertCode(code, 2);
-    } else if (groups.length > 0 && sportTypes.length == 0 && !custom) {
+    } else if (groups !== undefined && groups.length > 0 && (sportTypes === undefined || sportTypes.length == 0) && !custom) {
         // Group account
         upsertCode(code, 0);
-    } else if (sportTypes.length > 0 && groups.length == 0 && !resultPermission && !adminPermission && !custom) {
+    } else if (sportTypes !== undefined && sportTypes.length > 0 && (groups === undefined || groups.length == 0) && !resultPermission && !adminPermission && !custom) {
         // Station account
         upsertCode(code, 1);
     } else {
@@ -95,6 +95,7 @@ function processCodes(codes) {
     progress.set((totalProgress - codes.length) / totalProgress * 100);
     if (codes.length > 0) {
         const code = codes.pop();
+        console.log(code);
         setTimeout(function () { // TODO: Find a better solution to de-lag the browser whilst this is happenin'
             createAccount(code.name, code.groups, code.sportTypes, code.resultPermission, code.adminPermission, code.custom, code.id);
             processCodes(codes);
