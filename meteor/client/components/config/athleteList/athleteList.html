@@ -8,7 +8,8 @@
                    data-gid="{{g.id}}"></i>
                 <i class="fa fa-remove remove-group" aria-hidden="true" style="cursor: pointer; padding-left:5px"
                    data-gid="{{g.id}}"></i>
-                <div class="align-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer;">
+                <div class="align-right fade {{#if not (isEmpty g.athletes)}}fade-in{{/if}}"
+                     style="position: absolute; bottom: 0; right: 0; cursor: pointer;">
                     <i class="f7-icons collapse-group" style="font-size: 14px;" data-gid="{{g.id}}">chevron_up</i>
                 </div>
             </div>
