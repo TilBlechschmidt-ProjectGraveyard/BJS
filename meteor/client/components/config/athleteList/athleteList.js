@@ -32,6 +32,18 @@ export let modifyAthlete = function (id, callback) {
     }
 };
 
+export let modifyGroup = function (id, callback) {
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        if (lgroups[group].id === id) {
+            callback(lgroups[group], group);
+            localGroups.set(lgroups);
+            return;
+        }
+    }
+};
+
 // Load from storage
 Tracker.autorun(function () {
     const compID = currentCompID.get();
@@ -41,6 +53,7 @@ Tracker.autorun(function () {
             const parsed = JSON.parse(stored);
             for (let group in parsed) {
                 if (!parsed.hasOwnProperty(group)) continue;
+                parsed[group].collapsed = false;
                 parsed[group].athletes = lodash.map(parsed[group].athletes, function (athlete) {
                     return Athlete.fromObject(Meteor.config.log, athlete);
                 });
@@ -190,26 +203,58 @@ Template.athleteList.events({
     'click .add-group': function (event) {
         Meteor.f7.prompt('Wähle einen Namen für die Gruppe', 'Gruppe erstellen', function (value) {
             const lgroups = localGroups.get();
-            lgroups.push({name: value, athletes: []});
+            lgroups.push({name: value, athletes: [], collapsed: false, id: genUUID()});
             localGroups.set(lgroups);
         }).querySelector("input").focus();
     },
     'click .add-athlete': function (event) {
-        const groupName = event.target.closest(".add-athlete").dataset.id;
+        const gid = event.target.closest(".add-athlete").dataset.id;
         const compID = currentCompID.get();
         const lgroups = localGroups.get();
         let groupID;
         for (let group in lgroups) {
             if (!lgroups.hasOwnProperty(group)) continue;
-            if (lgroups[group].name === groupName) {
+            if (lgroups[group].id === gid) {
                 groupID = group;
                 break;
             }
         }
 
         const ct = DBInterface.getCompetitionType(compID);
-        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, groupName, '0', ct.maxAge, ct, genUUID()));
+        lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
         localGroups.set(lgroups);
+    },
+    'click .rename-group': function (event) {
+        const gid = event.target.dataset.gid;
+        Meteor.f7.prompt('Wähle einen neuen Namen für die Gruppe', 'Gruppe umbenennen', function (newName) {
+            modifyGroup(gid, function (group) {
+                group.name = newName;
+            });
+        }).querySelector("input").focus();
+    },
+    'click .remove-group': function (event) {
+        const gid = event.target.dataset.gid;
+        Meteor.f7.confirm('Wollen sie die Gruppe samt ihrer Athleten endgültig löschen?', 'Gruppe löschen', function () {
+            let groupIndex;
+            const lgroups = localGroups.get();
+            for (let group in lgroups) {
+                if (!lgroups.hasOwnProperty(group)) continue;
+                if (lgroups[group].id == gid) {
+                    groupIndex = group;
+                }
+            }
+            lgroups.splice(groupIndex, 1);
+            localGroups.set(lgroups);
+        });
+    },
+    'click .collapse-group': function (event) {
+        event.stopImmediatePropagation();
+        const gid = event.target.dataset.gid || event.target.closest("li").dataset.gid;
+        modifyGroup(gid, function (group) {
+            group.collapsed = !group.collapsed;
+        });
+        const spans = $(".groupTitle-" + gid + " span");
+        spans.fadeToggle(300);
     }
 });

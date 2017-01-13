@@ -1,12 +1,27 @@
 <template name="athleteList">
     <div class="autoWidthListBlock">
         {{#each g in groups}}
-            <div class="content-block-title">{{g.name}}</div>
+            <div class="content-block-title collapsible collapse-height-100 {{#if g.collapsed}}collapsed{{/if}}"
+                 style="position: relative">
+                {{g.name}}
+                <i class="fa fa-pencil rename-group" aria-hidden="true" style="cursor: pointer; padding-left:5px"
+                   data-gid="{{g.id}}"></i>
+                <i class="fa fa-remove remove-group" aria-hidden="true" style="cursor: pointer; padding-left:5px"
+                   data-gid="{{g.id}}"></i>
+                <div class="align-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer;">
+                    <i class="f7-icons collapse-group" style="font-size: 14px;" data-gid="{{g.id}}">chevron_up</i>
+                </div>
+            </div>
             <div class="list-block accordion-list">
                 <ul>
                     {{#each a in g.athletes}}
-                        <li class="accordion-item" data-id="{{a.id}}">
-                            <a href="#" class="item-content item-link">
+                        <li class="accordion-item bg-color-transition"
+                            style="{{#if g.collapsed}}background-color: #ECEFF1{{/if}}"
+                            data-gid="{{g.id}}" data-id="{{a.id}}">
+                            <a href="#" class="item-content item-link  collapsible collapse-height-100
+                                    {{#if g.collapsed}}{{#if not
+                                                             (eq @index 0)}}collapsed{{else}}collapse-group{{/if}}{{/if}}"
+                               style="min-height: 0;">
                                 {{#if not readOnly}}
                                     {{#if not (athleteTooltipLevel a)}}
                                         <div class="item-media">{{> iconOK}}</div>
@@ -25,10 +40,16 @@
                                             {{a.firstName}}&nbsp;{{a.lastName}}
                                             {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
                                         {{else}}
-                                            <input type="text" class="name-input"
-                                                   style="display: inline-block; width: 100%"
-                                                   value="{{fullName a}}" placeholder="Vor-/Nachname"
-                                                   data-id="{{a.id}}">
+                                            <p style="margin:0;position:relative;"
+                                               class="{{#if (eq @index 0)}}groupTitle-{{g.id}}{{/if}}">
+                                                <span>
+                                                    <input type="text" class="name-input"
+                                                           style="display: inline-block; width: 100%"
+                                                           value="{{fullName a}}" placeholder="Vor-/Nachname"
+                                                           data-id="{{a.id}}">
+                                                </span>
+                                                <span style="display: none">{{g.name}}</span>
+                                            </p>
                                         {{/if}}
                                     </div>
                                 </div>
@@ -67,7 +88,8 @@
                         </li>
                     {{/each}}
                     {{#if not readOnly}}
-                        <li class="button-highlight add-athlete" data-id="{{g.name}}">
+                        <li class="button-highlight add-athlete collapsible collapse-height-100
+                            {{#if g.collapsed}}collapsed{{/if}}" data-id="{{g.id}}">
                             <div class="item-content">
                                 <div class="item-media">
                                     <i class="f7-icons" style="margin-left: 10px;">add</i>
