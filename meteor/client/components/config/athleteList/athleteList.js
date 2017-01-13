@@ -268,8 +268,11 @@ Template.athleteList.events({
         event.stopImmediatePropagation();
         const gid = event.target.dataset.gid || event.target.closest("li").dataset.gid;
         modifyGroup(gid, function (group) {
-            if (!group.collapsed)
-                Meteor.f7.accordionClose(document.querySelector("#athlete-list-" + gid + " li.accordion-item-expanded"));
+            if (!group.collapsed) {
+                const accordion = document.querySelector("#athlete-list-" + gid + " li.accordion-item-expanded");
+                if (accordion)
+                    Meteor.f7.accordionClose(accordion);
+            }
             group.collapsed = !group.collapsed;
         });
         const spans = $(".groupTitle-" + gid + " span");
