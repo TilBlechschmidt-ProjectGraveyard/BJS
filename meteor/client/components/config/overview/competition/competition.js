@@ -14,7 +14,6 @@ Template.competition.events({
     },
     'click .launch-competition': function (event) {
         const id = event.target.closest(".accordion-item-content").dataset.id;
-        DBInterface.activateCompetition(AccountManager.getAdminAccount().account, id, function () {
-        });
+        DBInterface.activateCompetition(AccountManager.getAdminAccount().account, id);
     }
 });
