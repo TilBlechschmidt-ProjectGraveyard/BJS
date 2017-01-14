@@ -7,16 +7,17 @@
                         {{#if active}}
                             {{> iconOK text="Dieser Wettkampf ist aktiv."}}
                         {{else}}
-                            {{> iconReady text="Dieser Wettkampf ist konfiguriert jedoch nicht aktiv"}}
+                            {{> iconReady text="Dieser Wettkampf ist konfiguriert jedoch nicht aktiv."}}
                         {{/if}}
                     {{else}}
-                        {{> iconWarn text="Die Konfiguration dieses Wettkampfes ist noch nicht abgeschlossen"}}
+                        {{> iconWarn text="Die Konfiguration dieses Wettkampfes ist noch nicht abgeschlossen."}}
                     {{/if}}
                 </div>
                 <div class="item-inner">
                     <div style="display: inline-block">
                         <div class="item-title" style="display: inline-block; vertical-align: middle;">
-                            <input type="text" class="title-input" value="{{name}}" {{setReadOnly readOnly}}>
+                            <input type="text" class="title-input" data-id="{{_id}}" value="{{name}}" {{setReadOnly
+                                    readOnly}}>
                         </div>
                     </div>
                 </div>

@@ -216,6 +216,17 @@ export let DBInterface = {
     },
 
     /**
+     * Renames a competition with a given name
+     * @param {Account} account - Admin account
+     * @param {string} competitionID - The id of the competition
+     * @param {string} newName - The new name
+     * @param [callback] - optional callback
+     */
+    renameCompetition: function (account, competitionID, newName, callback) {
+        runServerFunction('renameCompetition', account, {competitionID: competitionID, newName: newName}, callback);
+    },
+
+    /**
      * Activates a competition with a given name
      * @param {Account} account - Admin account
      * @param {string} competitionID - The id of the competition

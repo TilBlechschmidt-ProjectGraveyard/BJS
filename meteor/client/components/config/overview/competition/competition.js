@@ -15,5 +15,8 @@ Template.competition.events({
     'click .launch-competition': function (event) {
         const id = event.target.closest(".accordion-item-content").dataset.id;
         DBInterface.activateCompetition(AccountManager.getAdminAccount().account, id);
+    },
+    'blur .title-input': function (event) {
+        DBInterface.renameCompetition(AccountManager.getAdminAccount().account, event.target.dataset.id, event.target.value)
     }
 });
