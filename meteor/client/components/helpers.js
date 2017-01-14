@@ -101,8 +101,14 @@ Template.registerHelper('contains', function (arr, obj) {
 Template.registerHelper('eq', function (a, b) {
     return a == b;
 });
+Template.registerHelper('add', function (a, b) {
+    return a + b
+});
 Template.registerHelper('isUndefined', function (a) {
     return a === undefined;
+});
+Template.registerHelper('toSimplePopupData', function (data) {
+    return {data: data};
 });
 Template.registerHelper('isOffline', isOffline);
 
