@@ -242,7 +242,7 @@ Template.athleteList.events({
         });
     },
     'click .rename-group': function (event) {
-        const gid = event.target.dataset.gid;
+        const gid = event.target.closest("[data-gid]").dataset.gid;
         Meteor.f7.prompt('Wähle einen neuen Namen für die Gruppe', 'Gruppe umbenennen', function (newName) {
             modifyGroup(gid, function (group) {
                 group.name = newName;
@@ -250,7 +250,7 @@ Template.athleteList.events({
         }).querySelector("input").focus();
     },
     'click .remove-group': function (event) {
-        const gid = event.target.dataset.gid;
+        const gid = event.target.closest("[data-gid]").dataset.gid;
         Meteor.f7.confirm('Wollen sie die Gruppe samt ihrer Athleten endgültig löschen?', 'Gruppe löschen', function () {
             let groupIndex;
             const lgroups = localGroups.get();
@@ -266,7 +266,7 @@ Template.athleteList.events({
     },
     'click .collapse-group': function (event) {
         event.stopImmediatePropagation();
-        const gid = event.target.dataset.gid || event.target.closest("li").dataset.gid;
+        const gid = event.target.closest("[data-gid]").dataset.gid || event.target.closest("li").dataset.gid;
         modifyGroup(gid, function (group) {
             if (!group.collapsed) {
                 const accordion = document.querySelector("#athlete-list-" + gid + " li.accordion-item-expanded");
