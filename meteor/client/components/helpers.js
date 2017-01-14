@@ -65,7 +65,6 @@ export function countTrue(list) {
     return counter;
 }
 
-// export let registerHelpers = function () {
 Meteor.pageVisitTime = new Date().getTime();
 
 Template.registerHelper('arrayify', arrayify);
@@ -135,4 +134,3 @@ Template.body.events({
             event.target.blur();
     }
 });
-// }
