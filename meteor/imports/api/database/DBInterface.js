@@ -188,7 +188,6 @@ export let DBInterface = {
                 let athletes = [];
                 for (let athleteIndex in groups[groupIndex].athletes) {
                     if (!groups[groupIndex].athletes.hasOwnProperty(athleteIndex)) continue;
-                    console.log(groups[groupIndex].athletes[athleteIndex]);
                     athletes.push(Athlete.fromObject(log, groups[groupIndex].athletes[athleteIndex]));
                 }
                 groups[groupIndex].athletes = athletes;
