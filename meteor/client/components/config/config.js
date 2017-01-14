@@ -17,13 +17,8 @@ export const dbReady = new Tracker.Dependency();
 export const competitions = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
 export const editMode = new ReactiveVar(false);
-let printButton = new ReactiveVar(false);
 const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
-
-export function setPrintButton (state) {
-    printButton.set(state);
-};
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
@@ -89,8 +84,7 @@ Template.config.helpers({
         return forwardButton.get();
     },
     printButtonShown: function () {
-        return printButton.get();
-
+        return codesClean.get();
     },
 });
 
@@ -114,7 +108,6 @@ Template.config.events({
         event.stopImmediatePropagation();
         document.getElementById("config-swiper").swiper.slidePrev();
         codesClean.set(false);
-        printButton.set(false);
         return false;
     },
     'click .show-athletes': function (event) {
