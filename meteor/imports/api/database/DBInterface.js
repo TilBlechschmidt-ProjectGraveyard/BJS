@@ -11,6 +11,28 @@ if (Meteor.isClient) {
 }
 
 /**
+ * Runs a function on the server and handels de/encryption and callback handling.
+ * @param {string} name - The name of the server function
+ * @param {Account} account - The account that is used to authenticate
+ * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
+ * @param callback - A callback with one parameter: The return value of the server function
+ */
+function runServerFunction(name, account, data, callback) {
+    const loginObject = getLoginObject(account);
+    Meteor.call('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
+        if (typeof callback === 'function') {
+            const log = new Log();
+            const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
+            if (data) {
+                callback(data.data);
+            } else if (Meteor.isClient) {
+                Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
+            }
+        }
+    });
+}
+
+/**
  * Object containing all information and functions required for Swimming contest.
  * @public
  * @namespace
@@ -157,18 +179,7 @@ export let DBInterface = {
      * Returns a list of athletes by competition ID
      */
     getAthletesByCompetition: function (account, competitionID, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('getAthletesByCompetitionID', loginObject, competitionID, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('getAthletesByCompetitionID', account, {competitionID: competitionID}, callback);
     },
 
     /**
@@ -180,74 +191,30 @@ export let DBInterface = {
      * @param callback
      */
     setSportTypeState: function (account, competitionID, sportTypeID, state, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('setSportTypeState', loginObject, competitionID, sportTypeID, state, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('getAthletesByCompetitionID', account, {
+            competitionID: competitionID,
+            sportTypeID: sportTypeID,
+            state: state
+        }, callback);
     },
 
     writeAthletes: function (account, competitionID, encryptedAthletes, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('writeAthletes', loginObject, competitionID, encryptedAthletes, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('writeAthletes', account, {
+            competitionID: competitionID,
+            encryptedAthletes: encryptedAthletes
+        }, callback);
     },
 
     writeAccounts: function (account, competitionID, accounts, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('writeAccounts', loginObject, competitionID, accounts, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('writeAccounts', account, {competitionID: competitionID, accounts: accounts}, callback);
     },
 
     lockCompetition: function (account, competitionID, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('lockCompetition', loginObject, competitionID, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('lockCompetition', account, {competitionID: competitionID}, callback);
     },
 
     addCompetition: function (account, name, competitionType) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('addCompetition', loginObject, name, competitionType, function (err, enc_data) {
-            const log = new Log();
-            const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-            if (Meteor.isClient && !data) {
-                Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-            }
-        });
+        runServerFunction('addCompetition', account, {name: name, competitionType: competitionType});
     },
 
     /**
@@ -257,18 +224,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     activateCompetition: function (account, competitionID, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('activateCompetition', loginObject, competitionID, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('addCompetition', account, {competitionID: competitionID}, callback);
     },
 
     /**
@@ -278,18 +234,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     removeCompetition: function (account, competitionName, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('removeCompetition', loginObject, competitionName, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('removeCompetition', account, {competitionName: competitionName}, callback);
     },
     /**
      * Returns information about a competition in edit mode with a given name.
@@ -298,18 +243,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     getEditInformation: function (account, competitionName, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('getEditInformation', loginObject, competitionName, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('generateCertificates', account, {competitionName: competitionName}, callback);
     },
 
     /**
@@ -319,18 +253,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     certificateUpdate: function (account, id, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('certificateUpdate', loginObject, id, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('certificateUpdate', account, {id: id}, callback);
     },
 
     /**
@@ -340,18 +263,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     generateCertificates: function (account, athleteIDs, callback) {
-        const loginObject = getLoginObject(account);
-        Meteor.call('generateCertificates', loginObject, athleteIDs, function (err, enc_data) {
-            if (typeof callback === 'function') {
-                const log = new Log();
-                const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-                if (data) {
-                    callback(data.data);
-                } else if (Meteor.isClient) {
-                    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-                }
-            }
-        });
+        runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
     },
 
     /**
@@ -359,10 +271,6 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     getServerIPs: function (callback) {
-        Meteor.call('getServerIPs', function (err, data) {
-            if (typeof callback === 'function') {
-                callback(data);
-            }
-        });
+        runServerFunction('getServerIPs', account, {}, callback);
     }
 };

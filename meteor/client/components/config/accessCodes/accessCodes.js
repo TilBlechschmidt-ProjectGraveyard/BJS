@@ -5,7 +5,6 @@ import {currentCompID} from "../config";
 import {localGroups} from "../athleteList/athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
-import {setPrintButton} from "./../config.js";
 
 
 let totalProgress = 0;
@@ -168,7 +167,6 @@ function finalizeContest() {
     const admin = AccountManager.getAdminAccount();
     const lgroups = localGroups.get();
     let athletes = [];
-    setPrintButton(false);
     for (let group in lgroups) { // Loop through groups containing athletes for encryption
         if (!lgroups.hasOwnProperty(group)) continue;
         group = lgroups[group];
@@ -341,7 +339,6 @@ Template.accessCodes.events({
         }).querySelector("input").focus();
     },
     'click .generateCodes': function (event) {
-        setPrintButton(true);
         if (codesClean.get()) {
             Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
                 Meteor.f7.showPreloader("Speichere Wettkampf");
