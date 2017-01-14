@@ -20,14 +20,12 @@ if (Meteor.isClient) {
 function runServerFunction(name, account, data, callback) {
     const loginObject = getLoginObject(account);
     Meteor.call('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
-        if (typeof callback === 'function') {
-            const log = new Log();
-            const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
-            if (data) {
-                callback(data.data);
-            } else if (Meteor.isClient) {
-                Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-            }
+        const log = new Log();
+        const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
+        if (data) {
+            if (typeof callback === 'function') callback(data.data);
+        } else if (Meteor.isClient) {
+            Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
         }
     });
 }
@@ -191,7 +189,7 @@ export let DBInterface = {
      * @param callback
      */
     setSportTypeState: function (account, competitionID, sportTypeID, state, callback) {
-        runServerFunction('getAthletesByCompetitionID', account, {
+        runServerFunction('setSportTypeState', account, {
             competitionID: competitionID,
             sportTypeID: sportTypeID,
             state: state
