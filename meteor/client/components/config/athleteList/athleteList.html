@@ -22,13 +22,25 @@
                                                              (eq @index 0)}}collapsed{{else}}collapse-group{{/if}}{{/if}}"
                                style="min-height: 0;">
                                 {{#if not readOnly}}
-                                    {{#if not (athleteTooltipLevel a)}}
-                                        <div class="item-media">{{> iconOK}}</div>
+                                    {{#if (and g.collapsed (eq @index 0))}}
+                                        {{#if (eq g.errorLevel 0)}}
+                                            <div class="item-media">{{> iconOK}}</div>
+                                        {{/if}}
+                                        {{#if (eq g.errorLevel 1)}}
+                                            <div class="item-media">{{> iconWarn}}</div>
+                                        {{/if}}
+                                        {{#if (eq g.errorLevel 2)}}
+                                            <div class="item-media">{{> iconErr}}</div>
+                                        {{/if}}
                                     {{else}}
-                                        {{#if (eq (athleteTooltipLevel a) 1)}}
-                                            <div class="item-media">{{> iconWarn text=(athleteTooltipMsg a)}}</div>
+                                        {{#if not (athleteTooltipLevel a)}}
+                                            <div class="item-media">{{> iconOK}}</div>
                                         {{else}}
-                                            <div class="item-media">{{> iconErr text=(athleteTooltipMsg a)}}</div>
+                                            {{#if (eq (athleteTooltipLevel a) 1)}}
+                                                <div class="item-media">{{> iconWarn text=(athleteTooltipMsg a)}}</div>
+                                            {{else}}
+                                                <div class="item-media">{{> iconErr text=(athleteTooltipMsg a)}}</div>
+                                            {{/if}}
                                         {{/if}}
                                     {{/if}}
                                 {{/if}}
