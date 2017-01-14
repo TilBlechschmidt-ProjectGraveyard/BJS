@@ -119,6 +119,21 @@ export function onStartup() {
             return true;
         },
         /**
+         * Renames a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, newName: string}} data - Data object
+         * @returns {boolean}
+         */
+        renameCompetition: function (account, data) {
+            console.log("renameCompetition");
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {name: data.newName}
+            });
+            return true;
+        },
+
+        /**
          * Adds a competition
          * @param {Account} account - An admin account
          * @param {{competitionID: string, sportTypeID: string, state}} data - Data object
