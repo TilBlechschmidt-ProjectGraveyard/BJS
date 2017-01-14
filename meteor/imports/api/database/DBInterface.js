@@ -222,7 +222,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     activateCompetition: function (account, competitionID, callback) {
-        runServerFunction('addCompetition', account, {competitionID: competitionID}, callback);
+        runServerFunction('activateCompetition', account, {competitionID: competitionID}, callback);
     },
 
     /**
@@ -241,7 +241,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     getEditInformation: function (account, competitionName, callback) {
-        runServerFunction('generateCertificates', account, {competitionName: competitionName}, callback);
+        runServerFunction('getEditInformation', account, {competitionName: competitionName}, callback);
     },
 
     /**
