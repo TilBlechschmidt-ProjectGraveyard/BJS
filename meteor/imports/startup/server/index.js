@@ -186,7 +186,7 @@ export function onStartup() {
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
 
-            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch();
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
 
             return encryptedAthletesToGroups(encryptedAthletes, accounts, true, true);
