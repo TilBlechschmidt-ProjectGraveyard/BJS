@@ -93,6 +93,7 @@ function createAccount(name, groups, sportTypes, resultPermission, adminPermissi
 }
 
 function processCodes(codes) {
+    console.log((totalProgress - codes.length) / totalProgress * 100);
     //noinspection JSCheckFunctionSignatures
     progress.set((totalProgress - codes.length) / totalProgress * 100);
     if (codes.length > 0) {
@@ -112,7 +113,7 @@ function generateAccessCodes() {
 
     const sportTypes = getCurrentSportTypes();
 
-    const codes = [];
+    let codes = [];
     const customAccounts = accessCodes.get()[2].codes;
 
     // Station accounts
@@ -148,9 +149,11 @@ function generateAccessCodes() {
         customAccountCodes.push(customAccounts[customAccount]);
     }
 
+    codes = codes.concat(customAccountCodes.reverse());
+
     Meteor.f7.showPreloader("Generiere Zugangscodes");
     totalProgress = codes.length;
-    processCodes(codes.concat(customAccountCodes.reverse()));
+    processCodes(codes);
 }
 
 function finalizeContest() {
