@@ -1,4 +1,4 @@
-import {selectedAthlete, modifyAthlete} from "../athleteList";
+import {selectedAthlete, modifyAthlete, refreshErrorState} from "../athleteList";
 
 const startClasses = require('../../../../../imports/data/start_classes.json');
 
@@ -28,6 +28,7 @@ Template.startClassesPopupContent.events({
 
             selectedAthlete.set(undefined);
             Meteor.f7.closeModal(".popup-startclass");
+            refreshErrorState();
         }
         return false;
     }

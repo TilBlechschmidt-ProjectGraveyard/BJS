@@ -1,4 +1,4 @@
-import {currentCompID, editMode, dbReady} from "../config";
+import {currentCompID, editMode, dbReady, forwardIcon} from "../config";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {Log} from "../../../../imports/api/log";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
@@ -64,6 +64,37 @@ function groupExists(name) {
     return false;
 }
 
+export function refreshErrorState() {
+    // Calculate the group state
+    const lgroups = localGroups.get();
+    let errorLevel = 0;
+
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        group = lgroups[group];
+
+        const log = new Log();
+        for (let athlete in group.athletes) {
+            if (!group.athletes.hasOwnProperty(athlete)) continue;
+            group.athletes[athlete].check(log);
+        }
+        const lvl = log.getHighestLevel();
+        group.errorLevel = lvl;
+        if (lvl > errorLevel) errorLevel = lvl;
+    }
+
+    if (errorLevel > 0)
+        forwardIcon.set({
+            level: errorLevel,
+            template: errorLevel == 1 ? "iconWarn" : "iconErr",
+            data: {text: errorLevel == 1 ? "Einer der Athleten hat womöglich ungültige Daten" : "Einer der Athleten beinhaltet einen Fehler"}
+        });
+    else
+        forwardIcon.set(undefined);
+
+    localGroups.set(lgroups);
+}
+
 // Load from storage
 Tracker.autorun(function () {
     const compID = currentCompID.get();
@@ -79,6 +110,7 @@ Tracker.autorun(function () {
                 });
             }
             localGroups.set(parsed);
+            Tracker.nonreactive(refreshErrorState);
         }
         loaded = compID;
     }
@@ -155,6 +187,7 @@ Template.athleteList.events({
         modifyAthlete(id, function (athlete) {
             athlete.ageGroup = parseInt(event.target.value);
         });
+        refreshErrorState();
     },
     'mousewheel .ageGroup': function (event) {
         event.stopImmediatePropagation();
@@ -165,6 +198,7 @@ Template.athleteList.events({
         modifyAthlete(id, function (athlete) {
             athlete.ageGroup = athlete.ageGroup + delta;
         });
+        refreshErrorState();
         return false;
     },
     'click .gender': function (event) {
@@ -175,6 +209,7 @@ Template.athleteList.events({
         modifyAthlete(id, function (athlete) {
             athlete.isMale = isMale;
         });
+        refreshErrorState();
         return false;
     },
     'click .startClassSelectOpen': function (event) {
@@ -200,6 +235,7 @@ Template.athleteList.events({
             athlete.firstName = firstName;
             athlete.lastName = lastName;
         });
+        refreshErrorState();
     },
     'click input': function (event) {
         if (editMode.get()) {
@@ -225,6 +261,8 @@ Template.athleteList.events({
         const ct = DBInterface.getCompetitionType(compID);
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
+        refreshErrorState();
+
         localGroups.set(lgroups);
     },
     'click .remove-athlete': function (event) {
@@ -241,6 +279,7 @@ Template.athleteList.events({
                 lgroups[groupIndex].athletes.splice(athleteIndex, 1);
                 localGroups.set(lgroups);
             }
+            refreshErrorState();
         });
     },
     'click .add-group': function (event) {
@@ -252,6 +291,7 @@ Template.athleteList.events({
                 lgroups.push({name: value, athletes: [], collapsed: false, id: genUUID()});
                 localGroups.set(lgroups);
             }
+            refreshErrorState();
         }).querySelector("input").focus();
     },
     'click .rename-group': function (event) {
@@ -264,6 +304,7 @@ Template.athleteList.events({
                     group.name = newName;
                 });
             }
+            refreshErrorState();
         }).querySelector("input").focus();
     },
     'click .remove-group': function (event) {
@@ -279,6 +320,7 @@ Template.athleteList.events({
             }
             lgroups.splice(groupIndex, 1);
             localGroups.set(lgroups);
+            refreshErrorState();
         });
     },
     'click .collapse-group': function (event) {
@@ -286,14 +328,6 @@ Template.athleteList.events({
         const gid = event.target.closest("[data-gid]").dataset.gid || event.target.closest("li").dataset.gid;
         modifyGroup(gid, function (group) {
             if (!group.collapsed) {
-                // Calculate the group state
-                const log = new Log();
-                for (let athlete in group.athletes) {
-                    if (!group.athletes.hasOwnProperty(athlete)) continue;
-                    group.athletes[athlete].check(log);
-                }
-                group.errorLevel = log.getHighestLevel();
-
                 // Collapse accordions
                 const accordion = document.querySelector("#athlete-list-" + gid + " li.accordion-item-expanded");
                 if (accordion)

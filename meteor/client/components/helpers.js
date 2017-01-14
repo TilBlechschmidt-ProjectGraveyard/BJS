@@ -130,5 +130,9 @@ Template.body.events({
         Meteor.f7.accordionToggle(event.target.closest(".accordion-item"));
         return false;
     },
+    'keypress input': function (event) {
+        if (event.keyCode == 13)
+            event.target.blur();
+    }
 });
 // }

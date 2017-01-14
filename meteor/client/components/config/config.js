@@ -17,9 +17,11 @@ Meteor.config.log = new Log();
 
 export const dbReady = new Tracker.Dependency();
 
+export const currentSlide = new ReactiveVar(0);
 export const competitions = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
 export const editMode = new ReactiveVar(false);
+export const forwardIcon = new ReactiveVar(undefined);
 const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
 
@@ -89,6 +91,12 @@ Template.config.helpers({
     printButtonShown: function () {
         return codesClean.get();
     },
+    forwardIcon: function () {
+        if (currentSlide.get() == 2)
+            return forwardIcon.get();
+        else
+            return undefined;
+    }
 });
 
 function setState(event, edit) {
@@ -182,6 +190,7 @@ Template.config.onRendered(function () {
         });
 
         configSwiper.on('transitionStart', function (swiper) {
+            currentSlide.set(swiper.activeIndex);
             if (swiper.activeIndex > 0 && swiper.activeIndex < 3) {
                 leftButtonSwiper.slideTo(1);
                 if (editMode.get()) forwardButtonShown.set(true);
