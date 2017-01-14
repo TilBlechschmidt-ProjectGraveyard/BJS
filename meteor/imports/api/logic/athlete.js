@@ -326,7 +326,6 @@ export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_s
     let groupNames = {};
     let groups = [];
 
-
     for (let athlete in encryptedAthletes) {
         if (!encryptedAthletes.hasOwnProperty(athlete)) continue;
         let encryptedAthlete = encryptedAthletes[athlete];

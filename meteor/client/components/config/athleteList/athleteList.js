@@ -110,6 +110,12 @@ Tracker.autorun(function () {
                 });
             }
             localGroups.set(parsed);
+            console.log("parsed", parsed);
+
+            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, function (groups) {
+                console.log("from db", groups);
+            });
+
             Tracker.nonreactive(refreshErrorState);
         }
         loaded = compID;
@@ -122,6 +128,19 @@ Tracker.autorun(function () {
     if (loaded == compID) {
         const lgroups = localGroups.get();
         localStorage.setItem("config-groups-" + compID, JSON.stringify(lgroups));
+
+        const adminAccount = AccountManager.getAdminAccount().account;
+        const encryptedAthletes = [];
+        for (let group in lgroups) {
+            if (!lgroups.hasOwnProperty(group)) continue;
+            group = lgroups[group];
+            for (let athlete in group.athletes) {
+                if (!group.athletes.hasOwnProperty(athlete)) continue;
+                athlete = group.athletes[athlete];
+                encryptedAthletes.push(athlete.encryptForDatabase(adminAccount, adminAccount));
+            }
+        }
+        DBInterface.writeAthletes(adminAccount, compID, encryptedAthletes);
     }
 });
 
