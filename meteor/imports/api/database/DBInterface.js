@@ -174,14 +174,27 @@ export let DBInterface = {
     },
 
     /**
-     * Returns a list of athletes by competition ID
+     * Returns a list of groups by competition ID
      */
     getAthletesByCompetition: function (account, competitionID, require_signature, require_group_check, callback) {
+        const log = new Log();
         runServerFunction('getAthletesByCompetitionID', account, {
             competitionID: competitionID,
             require_signature: require_signature,
             require_group_check: require_group_check
-        }, callback);
+        }, function (groups) {
+            for (let groupIndex in groups) {
+                if (!groups.hasOwnProperty(groupIndex)) continue;
+                let athletes = [];
+                for (let athleteIndex in groups[groupIndex].athletes) {
+                    if (!groups[groupIndex].athletes.hasOwnProperty(athleteIndex)) continue;
+                    console.log(groups[groupIndex].athletes[athleteIndex]);
+                    athletes.push(Athlete.fromObject(log, groups[groupIndex].athletes[athleteIndex]));
+                }
+                groups[groupIndex].athletes = athletes;
+            }
+            callback(groups);
+        });
     },
 
     /**
