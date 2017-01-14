@@ -19,7 +19,11 @@ Template.competition.events({
     'blur .title-input': function (event) {
         DBInterface.renameCompetition(AccountManager.getAdminAccount().account, event.target.dataset.id, event.target.value)
     },
-    'click .delete-button': function (event) {
-        DBInterface.removeCompetition(AccountManager.getAdminAccount().account, event.target.closest(".delete-button").dataset.id);
+    'click .delete-competition': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        Meteor.f7.confirm("Möchten sie den Wettbewerb wirklich entgültig löschen?", "Wettbewerb löschen", function () {
+            DBInterface.removeCompetition(AccountManager.getAdminAccount().account, event.target.closest(".delete-competition").dataset.id);
+        });
     }
 });
