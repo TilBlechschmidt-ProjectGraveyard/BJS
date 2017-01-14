@@ -213,6 +213,21 @@ function getCurrentSportTypes() {
     });
 }
 
+// Remove group and station ACs
+export function clearACs() {
+    const acs = accessCodes.get();
+    if (acs[0])
+        acs[0].codes = [];
+    if (acs[1])
+        acs[1].codes = [];
+    for (let ac in acs[2].codes) {
+        if (!acs[2].codes.hasOwnProperty(ac)) continue;
+        acs[2].codes[ac].code = undefined;
+        acs[2].codes[ac].custom = true;
+    }
+    accessCodes.set(acs);
+}
+
 Template.accessCodes.helpers({
     codeGroups: function () {
         return accessCodes.get().slice(0, -1); // Slice to remove the custom codes since they have a group on their own
@@ -254,19 +269,19 @@ export function getCompetitionName() {
         return CurrentComp.name;
     } else
         return '';
-};
+}
 export function loginStations() {
     const ACs = accessCodes.get();
     return  ACs[1].codes;
-};
+}
 export function loginGroups() {
     const ACs = accessCodes.get();
     return  ACs[0].codes;
-};
+}
 export function loginCustom() {
     const ACs = accessCodes.get();
     return  ACs[2].codes;
-};
+}
 Template.accessCodeGroup.helpers({
     otherPermissions: function () {
         return [

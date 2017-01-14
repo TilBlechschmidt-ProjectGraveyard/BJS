@@ -3,11 +3,14 @@ import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
 import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
 import {updateSwiperProgress} from "../login/router";
-import {codesClean} from "./accessCodes/accessCodes";
-import {getCompetitionName} from "./accessCodes/accessCodes";
-import {loginStations} from "./accessCodes/accessCodes";
-import {loginGroups} from "./accessCodes/accessCodes";
-import {loginCustom} from "./accessCodes/accessCodes";
+import {
+    codesClean,
+    clearACs,
+    getCompetitionName,
+    loginStations,
+    loginGroups,
+    loginCustom
+} from "./accessCodes/accessCodes";
 
 Meteor.config = {};
 Meteor.config.log = new Log();
@@ -106,8 +109,15 @@ Template.config.events({
     'click .back-button': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        document.getElementById("config-swiper").swiper.slidePrev();
-        codesClean.set(false);
+        const swiper = document.getElementById("config-swiper").swiper;
+        if (swiper.activeIndex == 3 && codesClean.get()) {
+            Meteor.f7.confirm("Wenn sie diese Seite verlassen werden alle Zugangsdaten gelöscht und müssen neu erzeugt werden!", "Warnung", function () {
+                swiper.slidePrev();
+                codesClean.set(false);
+                clearACs();
+            });
+        } else
+            swiper.slidePrev();
         return false;
     },
     'click .show-athletes': function (event) {
