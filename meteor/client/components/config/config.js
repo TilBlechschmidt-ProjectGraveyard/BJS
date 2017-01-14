@@ -141,15 +141,16 @@ Template.config.events({
         });
     },
     'click .print-button': function (event) {
-        Blaze.saveAsPDF(Template.codes_print,{
-            filename: "Zugangscodes_BJS.pdf",
-            data: {
-                competition_name: getCompetitionName,
-                login_stations: loginStations(),
-                login_groups: loginGroups(),
-                login_custom: loginCustom
-            },
-        });
+        //Blaze.saveAsPDF(Template.codes_print,{
+        //    filename: "Zugangscodes_BJS.pdf",
+        //    data: {
+        //        competition_name: getCompetitionName,
+        //        login_stations: loginStations(),
+         //       login_groups: loginGroups(),
+         //       login_custom: loginCustom
+         //   },
+       // });
+        window.print();
     }
 });
 
