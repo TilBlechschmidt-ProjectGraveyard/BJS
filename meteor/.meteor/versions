@@ -44,6 +44,7 @@ gwendall:body-events@0.1.6
 gwendall:jquery-animation-callback@0.1.2
 gwendall:template-animations@0.2.2
 gwendall:ui-hooks@0.1.7
+harrison:papa-parse@1.1.1
 hot-code-push@1.0.4
 html-tools@1.0.11
 htmljs@1.0.11
@@ -64,7 +65,6 @@ jquery@1.11.10
 kadira:blaze-layout@2.3.0
 kadira:flow-router@2.12.1
 launch-screen@1.1.0
-less@2.7.8
 livedata@1.0.18
 logging@1.1.16
 matb33:collection-hooks@0.8.4
