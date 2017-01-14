@@ -52,6 +52,13 @@
                             <a href="" class="item-link list-button edit-button">Bearbeiten</a>
                         </p>
                     {{/if}}
+
+                    {{#if not active}}
+                        <p>
+                            <a href="" class="item-link list-button delete-button" data-id="{{_id}}"
+                               style="color: red;">Löschen</a>
+                        </p>
+                    {{/if}}
                 </div>
             </div>
         </li>
