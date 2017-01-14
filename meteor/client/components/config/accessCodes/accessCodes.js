@@ -182,17 +182,11 @@ function finalizeContest() {
         }
     }
 
-    DBInterface.writeAccounts(admin.account, compID, accounts, function () {
-        console.log("Accounts written successfully");
-    });
+    DBInterface.writeAccounts(admin.account, compID, accounts);
 
-    DBInterface.writeAthletes(admin.account, compID, athletes, function () {
-        console.log("Athletes written successfully");
-    });
+    DBInterface.writeAthletes(admin.account, compID, athletes);
 
-    DBInterface.lockCompetition(admin.account, compID, function () {
-        console.log("Locked competition successfully");
-    });
+    DBInterface.lockCompetition(admin.account, compID);
 
     setTimeout(function () {
         Meteor.f7.hidePreloader();

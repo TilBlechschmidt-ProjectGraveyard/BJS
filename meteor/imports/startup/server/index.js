@@ -132,7 +132,7 @@ export function onStartup() {
                 sportTypes.push(data.sportTypeID);
             } else if (data.state === false) {
                 lodash.remove(sportTypes, function (stID) {
-                    return stID !== data.sportTypeID
+                    return stID === data.sportTypeID
                 });
             }
 
