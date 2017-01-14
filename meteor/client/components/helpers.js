@@ -101,6 +101,9 @@ Template.registerHelper('contains', function (arr, obj) {
 Template.registerHelper('eq', function (a, b) {
     return a == b;
 });
+Template.registerHelper('and', function (a, b) {
+    return a && b;
+});
 Template.registerHelper('add', function (a, b) {
     return a + b
 });

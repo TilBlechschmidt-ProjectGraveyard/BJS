@@ -112,6 +112,15 @@ Log.prototype = {
         this.messages = [];
     },
 
+    getHighestLevel: function () {
+        let logLevel = 0;
+        for (let msg in this.messages) {
+            if (!this.messages.hasOwnProperty(msg)) continue;
+            if (this.messages[msg].level > logLevel) logLevel = this.messages[msg].level;
+        }
+        return logLevel;
+    },
+
     /**
      * Returns the most recently logged message
      * @returns {*}

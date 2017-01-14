@@ -161,7 +161,7 @@ Athlete.prototype = {
         }
 
         const currentYear = new Date().getFullYear();
-        if (this.ageGroup > currentYear || this.ageGroup < currentYear - 60)
+        if (this.ageGroup > currentYear - 5 || this.ageGroup < currentYear - 60)
             log.warn('Das Alter des Athleten ist möglicherweise fehlerhaft.');
 
         return result;

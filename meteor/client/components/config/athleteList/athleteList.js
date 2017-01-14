@@ -286,6 +286,15 @@ Template.athleteList.events({
         const gid = event.target.closest("[data-gid]").dataset.gid || event.target.closest("li").dataset.gid;
         modifyGroup(gid, function (group) {
             if (!group.collapsed) {
+                // Calculate the group state
+                const log = new Log();
+                for (let athlete in group.athletes) {
+                    if (!group.athletes.hasOwnProperty(athlete)) continue;
+                    group.athletes[athlete].check(log);
+                }
+                group.errorLevel = log.getHighestLevel();
+
+                // Collapse accordions
                 const accordion = document.querySelector("#athlete-list-" + gid + " li.accordion-item-expanded");
                 if (accordion)
                     Meteor.f7.accordionClose(accordion);
