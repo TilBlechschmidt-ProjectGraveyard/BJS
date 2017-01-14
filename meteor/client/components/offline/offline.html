@@ -1,5 +1,5 @@
 <template name="offline">
-    <div class="login-screen offline {{#if isOffline}}c{{/if}}">
+    <div class="login-screen offline {{#if isOffline}}modal-in{{/if}}">
     </div>
     <div class="popup login-screen {{#if isOffline}}modal-in{{/if}}">
         <div class="content-block">
@@ -19,18 +19,6 @@
     </div>
 
     <style>
-        .hidden {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        .show {
-            visibility: visible;
-            opacity: 1;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
         .big-button {
             width: 50%;
             margin-left: 25%;
