@@ -25,7 +25,8 @@
     </div>
 
     {{#each a in allAthletes}}
-        {{>detailedResults athlete=a}}
+        {{>popup class=(add "popup-detail-" a.id) title=a.name subtitle=(add "Gesamtpunktzahl: " a.score) content="detailedResults" data=(toSimplePopupData a)}}
+        <!--{{>detailedResults athlete=a}}-->
     {{/each}}
 
     <div class="popover popover-sorting">

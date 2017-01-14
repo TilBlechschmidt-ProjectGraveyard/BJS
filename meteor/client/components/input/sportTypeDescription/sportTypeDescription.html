@@ -1,25 +1,6 @@
 <template name="sportTypeDescriptions">
     {{#each s in sportTypes}}
-        {{#with s}}
-            <div class="popup popup-{{id}}">
-                <div class="content-block">
-                    <a href="#" class="close-popup"><i class="f7-icons vcenterIcon link"
-                                                       style="float: left;">chevron_left</i></a>
-                    <h1 class="t-center">{{name}}</h1>
-                    <h5 class="t-center">Einheit: {{unit}}</h5>
-                    <p id="description" style="text-align: justify">{{{description}}}</p>
-                    <!--Three { are required for html Tags!-->
-                    {{#with m}}
-                        <p> Jungen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}</p>
-
-                    {{/with}}
-                    {{#with w}}
-                        <p>Mädchen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}</p>
-                    {{/with}}
-                    <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
-                </div>
-            </div>
-        {{/with}}
+        {{>popup class=(add "popup-" s.id) title=s.name subtitle="Informationen" content="sportTypeDescriptionsPopup" data=(toSimplePopupData s)}}
     {{/each}}
     <style>
         .vcenterIcon {
@@ -33,4 +14,21 @@
             margin: auto;
         }
     </style>
+</template>
+
+
+<template name="sportTypeDescriptionsPopup">
+    {{#with data}}
+        <h5 class="t-center">Einheit: {{unit}}</h5>
+        {{#with m}}
+            <h5 class="t-center">Jungen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}{{#if not (isEmpty age)}}
+                Jahre{{/if}}</h5>
+        {{/with}}
+        {{#with w}}
+            <h5 class="t-center">Mädchen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}{{#if not (isEmpty age)}}
+                Jahre{{/if}}</h5>
+        {{/with}}
+        <!--Three { are required for html Tags!-->
+        <p id="description" style="text-align: justify">{{{description}}}</p>
+    {{/with}}
 </template>
