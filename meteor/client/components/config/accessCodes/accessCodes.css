@@ -1,0 +1,87 @@
+@media print {
+    html, body, body * {
+        width: 100%;
+        visibility: hidden;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    tr {
+        border-bottom: 1px solid rgba(236, 239, 241, .75);
+    }
+
+    tr:nth-child(even) {
+        background-color: #ECEFF1;
+    }
+
+    .printcontent * {
+        visibility: visible;
+    }
+}
+    .printcontent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 710px;
+        height: 100%;
+    }
+
+    .printcontent-content {
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        height: 100%;
+    }
+
+    .print-password-title {
+        width: 100%;
+        font-size: xx-large;
+        padding-left: 15pt;
+    }
+
+    .print-block-header {
+        border-style: solid;
+        border-width: 1px;
+        background-color: #ced1d3;
+    }
+
+    .print-block-content {
+        border-bottom: solid;
+        border-right: solid;
+        border-left: solid;
+        border-width: 1px
+    }
+
+    .print-name-subtitle {
+        font-size: x-large;
+        font-weight: normal;
+        padding-left: 15pt;
+    }
+
+    .print-password-subtitle {
+        font-size: x-large;
+        font-weight: normal;;
+        float: right;
+        padding-right: 15pt;
+    }
+
+    .print-name-field {
+        text-align: left;
+        font-size: x-large;
+        height: 45pt;
+        padding-left: 15pt;
+        line-height: 45pt;
+    }
+
+    .print-password-field {
+        text-align: right;
+        font-size: x-large;
+        height: 45pt;
+        padding-right: 15pt;
+        line-height: 45pt;
+    }
+

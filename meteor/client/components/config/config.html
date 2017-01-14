@@ -37,6 +37,11 @@
                     <div class="right">
                         <a href="#"
                            class="fwd-button t-left fade {{#if forwardButtonShown}}fade-in{{/if}}">{{forwardButton}}</a>
+                        {{#if printButtonShown}}
+                        <a href="#"
+                           class="print-button t-left fade fade-in">
+                            <i class="f7-icons">download</i></a>
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -84,3 +89,4 @@
         {{>sportTypePopup competition=c}}
     {{/each}}
 </template>
+

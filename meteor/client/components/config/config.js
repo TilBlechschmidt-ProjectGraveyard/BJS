@@ -4,6 +4,10 @@ import {AccountManager} from "../../../imports/api/account_managment/AccountMana
 import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
 import {updateSwiperProgress} from "../login/router";
 import {codesClean} from "./accessCodes/accessCodes";
+import {getCompetitionName} from "./accessCodes/accessCodes";
+import {loginStations} from "./accessCodes/accessCodes";
+import {loginGroups} from "./accessCodes/accessCodes";
+import {loginCustom} from "./accessCodes/accessCodes";
 
 Meteor.config = {};
 Meteor.config.log = new Log();
@@ -13,8 +17,13 @@ export const dbReady = new Tracker.Dependency();
 export const competitions = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
 export const editMode = new ReactiveVar(false);
+let printButton = new ReactiveVar(false);
 const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
+
+export function setPrintButton (state) {
+    printButton.set(state);
+};
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
@@ -79,6 +88,10 @@ Template.config.helpers({
     forwardButton: function () {
         return forwardButton.get();
     },
+    printButtonShown: function () {
+        return printButton.get();
+
+    },
 });
 
 function setState(event, edit) {
@@ -101,6 +114,7 @@ Template.config.events({
         event.stopImmediatePropagation();
         document.getElementById("config-swiper").swiper.slidePrev();
         codesClean.set(false);
+        printButton.set(false);
         return false;
     },
     'click .show-athletes': function (event) {
@@ -126,6 +140,17 @@ Template.config.events({
             return false;
         });
     },
+    'click .print-button': function (event) {
+        Blaze.saveAsPDF(Template.codes_print,{
+            filename: "Zugangscodes_BJS.pdf",
+            data: {
+                competition_name: getCompetitionName,
+                login_stations: loginStations(),
+                login_groups: loginGroups(),
+                login_custom: loginCustom
+            },
+        });
+    }
 });
 
 Template.config.onRendered(function () {
