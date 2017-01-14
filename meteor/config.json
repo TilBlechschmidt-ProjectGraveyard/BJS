@@ -1,7 +1,4 @@
 {
-  "dbVersion": "0.0.45",
-  "competitionMongoURL": "EQUAL",
-  "adminPassword": "supersecret",
-  "adminSalt": "w873bv34dj98rys9ly8x9cnr26f7843btyvqap89c2390q3cy70384rsy98q",
-  "notice": "Nach dem Ändern vom Admin Passwort oder admin salt ist kein zugriff auf die Athleten von gespeicherten aber noch nicht gestarteten wettkämpfen mehr möglich! Wenn das Passwort und der salt zurück geändert werden, kann man wieder auf die Athleten zugreifen."
+  "dbVersion": "0.0.48",
+  "competitionMongoURL": "EQUAL"
 }

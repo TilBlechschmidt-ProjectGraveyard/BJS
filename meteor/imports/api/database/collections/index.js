@@ -3,19 +3,6 @@ import {initContests} from "./contests";
 import {initAccounts} from "./accounts";
 import {initAthletes} from "./athletes";
 import {DBInterface} from "../DBInterface";
-import {Crypto} from "../../crypto/crypto";
-import {Account} from "../../logic/account";
-
-function addAdminAccount() {
-    if (Meteor.isServer) {
-        const ac = Crypto.generateAC(Meteor.config.adminPassword, Meteor.config.adminSalt);
-        const adminAccount = new Account("Administrator", ['Q#z'], [], ac, true, true);
-        Meteor.COLLECTIONS.Generic.handle.update(
-            {_id: DBInterface.getGenericID()},
-            {$set: {adminAccount: adminAccount}}
-        );
-    }
-}
 
 function initDatabase() {
     initAccounts();
@@ -92,8 +79,6 @@ function clearDatabase() {
 
     Meteor.COLLECTIONS.Generic.createMockData();
 
-    addAdminAccount();
-
     Meteor.COLLECTIONS.Contests.createMockData();
 
     // init Data
@@ -137,7 +122,6 @@ export function initCollections() {
             clearDatabase();
         } else {
             initDatabase();
-            addAdminAccount();
         }
     }
 }

@@ -14,6 +14,9 @@ export function onStartup() {
 
     initCollections();
 
+    console.log('Your utmost secure and highly trustworthy administrator password reads "' + Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).adminPassword + '".');
+    console.log("Remember that with great power comes great responsibility, so you shall use it wisely!");
+    console.log("Now go and use all that voodoo power that comes with it and do some good to your people.");
 
     const serverFunctions = {
         /**
