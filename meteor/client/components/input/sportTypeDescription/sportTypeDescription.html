@@ -10,9 +10,11 @@
                     <p id="description" style="text-align: justify">{{{description}}}</p>
                     <!--Three { are required for html Tags!-->
                     {{#with m}}
-                        {{#each a in age}}
-                            {{a}}
-                        {{/each}}
+                        <p> Jungen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}</p>
+
+                    {{/with}}
+                    {{#with w}}
+                        <p>Mädchen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}</p>
                     {{/with}}
                     <!-- TODO Add female participant age and display it and the one for males in a meaningful manner instead of just listing them -->
                 </div>
