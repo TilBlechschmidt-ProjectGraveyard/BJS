@@ -224,7 +224,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     activateCompetition: function (account, competitionID, callback) {
-        runServerFunction('addCompetition', account, {competitionID: competitionID});
+        runServerFunction('addCompetition', account, {competitionID: competitionID}, callback);
     },
 
     /**
@@ -234,7 +234,7 @@ export let DBInterface = {
      * @param [callback] - optional callback
      */
     removeCompetition: function (account, competitionName, callback) {
-        runServerFunction('removeCompetition', account, {competitionName: competitionName});
+        runServerFunction('removeCompetition', account, {competitionName: competitionName}, callback);
     },
     /**
      * Returns information about a competition in edit mode with a given name.
