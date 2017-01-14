@@ -93,7 +93,6 @@ function createAccount(name, groups, sportTypes, resultPermission, adminPermissi
 }
 
 function processCodes(codes) {
-    console.log((totalProgress - codes.length) / totalProgress * 100);
     //noinspection JSCheckFunctionSignatures
     progress.set((totalProgress - codes.length) / totalProgress * 100);
     if (codes.length > 0) {
