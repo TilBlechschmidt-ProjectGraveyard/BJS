@@ -112,7 +112,7 @@ Tracker.autorun(function () {
             localGroups.set(parsed);
             console.log("parsed", parsed);
 
-            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, function (groups) {
+            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (groups) {
                 console.log("from db", groups);
             });
 
@@ -155,7 +155,7 @@ DBInterface.waitForReady(function () {
                 if (Meteor.f7) Meteor.f7.hideIndicator();
                 return;
             }
-            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, function (data) {
+            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, false, false, function (data) {
                 groups.set(data);
                 Tracker.afterFlush(function () {
                     if (Meteor.f7) Meteor.f7.hideIndicator();

@@ -176,8 +176,12 @@ export let DBInterface = {
     /**
      * Returns a list of athletes by competition ID
      */
-    getAthletesByCompetition: function (account, competitionID, callback) {
-        runServerFunction('getAthletesByCompetitionID', account, {competitionID: competitionID}, callback);
+    getAthletesByCompetition: function (account, competitionID, require_signature, require_group_check, callback) {
+        runServerFunction('getAthletesByCompetitionID', account, {
+            competitionID: competitionID,
+            require_signature: require_signature,
+            require_group_check: require_group_check
+        }, callback);
     },
 
     /**

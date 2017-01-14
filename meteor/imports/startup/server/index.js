@@ -180,16 +180,20 @@ export function onStartup() {
         /**
          * Adds a competition
          * @param {Account} account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{competitionID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
          * @returns {boolean|[]}
          */
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
 
             const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
 
-            return encryptedAthletesToGroups(encryptedAthletes, accounts, true, true);
+            console.log(encryptedAthletes);
+
+
+            return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },
         /**
          * Adds a competition
