@@ -239,22 +239,12 @@ export let DBInterface = {
     /**
      * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
      * @param {Account} account - Admin account
-     * @param {string} competitionName - The name of the competition
+     * @param {string} competitionID - The name of the competition
      * @param [callback] - optional callback
      */
-    removeCompetition: function (account, competitionName, callback) {
-        runServerFunction('removeCompetition', account, {competitionName: competitionName}, callback);
+    removeCompetition: function (account, competitionID, callback) {
+        runServerFunction('removeCompetition', account, {competitionID: competitionID}, callback);
     },
-    /**
-     * Returns information about a competition in edit mode with a given name.
-     * @param {Account} account - Admin account
-     * @param {string} competitionName - The name of the competition
-     * @param [callback] - optional callback
-     */
-    getEditInformation: function (account, competitionName, callback) {
-        runServerFunction('getEditInformation', account, {competitionName: competitionName}, callback);
-    },
-
     /**
      * Marks the certificate of an athlete as written.
      * @param {Account} account - Output account
