@@ -71,15 +71,15 @@ export function onStartup() {
             if (!account.isAdmin) return false;
 
             // create collections if they don't exist
-            Meteor.COLLECTIONS.connect(competitionID);
+            Meteor.COLLECTIONS.connect(data.competitionID);
 
             // clear collections
-            Meteor.COLLECTIONS.Accounts.handles[competitionID].remove({});
+            Meteor.COLLECTIONS.Accounts.handles[data.competitionID].remove({});
 
             //write accounts
-            for (let account in accounts) {
-                if (!accounts.hasOwnProperty(account)) continue;
-                Meteor.COLLECTIONS.Accounts.handles[competitionID].insert(accounts[account]);
+            for (let account in data.accounts) {
+                if (!data.accounts.hasOwnProperty(account)) continue;
+                Meteor.COLLECTIONS.Accounts.handles[data.competitionID].insert(data.accounts[account]);
             }
 
             return true;
