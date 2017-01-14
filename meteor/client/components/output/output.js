@@ -12,101 +12,9 @@ const groupSettings = new ReactiveVar({text: "Keine"});
 const genderSettings = new ReactiveVar({m: true, w: true, text: "Alle"});
 const statusSettings = new ReactiveVar({ready: true, update: true, notReady: true, finish: true, text: "Alle"});
 
-const baseSortingData = [
-    {
-        id: 0,
-        name: "Urkundenstatus",
-        icon: "tags",
-        sort: function (a, b) {
-            return statusToNumber(a) - statusToNumber(b);
-        },
-        getGroupName: function (a) {
-            if (isReady(a)) return "Bereit";
-            if (isUpdate(a)) return "Neu Erstellen";
-            if (isNotReady(a)) return "Nicht Bereit";
-            if (isFinish(a)) return "Fertig";
-        }
-    },
-    {
-        id: 1,
-        name: "Urkundentyp",
-        icon: "document_text",
-        sort: function (a, b) {
-            return b.certificate - a.certificate;
-        },
-        getGroupName: function (a) {
-            return a.certificateName;
-        }
-    },
-    {
-        id: 2,
-        name: "Nachname",
-        icon: "person",
-        sort: function (a, b) {
-            return a.lastName.localeCompare(b.lastName);
-        },
-        getGroupName: function (a) {
-            return "";
-        }
-    },
-    {
-        id: 3,
-        name: "Vorname",
-        icon: "person",
-        sort: function (a, b) {
-            return a.firstName.localeCompare(b.firstName);
-        },
-        getGroupName: function (a) {
-            return "";
-        }
-    },
-    {
-        id: 4,
-        name: "Punkte",
-        icon: "stopwatch",
-        sort: function (a, b) {
-            return b.score - a.score;
-        },
-        getGroupName: function (a) {
-            return "";
-        }
-    },
-    {
-        id: 5,
-        name: "Alter",
-        icon: "today",
-        sort: function (a, b) {
-            return b.ageGroup - a.ageGroup;
-        },
-        getGroupName: function (a) {
-            return a.ageGroup.toString();
-        }
-    },
-    {
-        id: 6,
-        name: "Gruppe",
-        icon: "persons",
-        sort: function (a, b) {
-            return a.group.localeCompare(b.group);
-        },
-        getGroupName: function (a) {
-            return a.group;
-        }
-    },
-    {
-        id: 7,
-        name: "Geschlecht",
-        icon: "heart",
-        sort: function (a, b) {
-            return b.isMale - a.isMale;
-        },
-        getGroupName: function (a) {
-            return a.isMale ? "Männlich" : "Weiblich";
-        }
-    }
-];
-
+const baseSortingData = require('./baseSortingData');
 const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
+
 
 function loadAllAthlets() {
     DBInterface.generateCertificates(
@@ -151,11 +59,7 @@ function updatedGroups() {
     groupSettings.set(settingData);
 }
 
-//noinspection JSUnusedGlobalSymbols
-Template.output.helpers({
-    allAthletes: function () {
-        return Meteor.reactiveAthletes.get();
-    },
+Template.outputFilterPopover.helpers({
     genderSettings: function () {
         return genderSettings.get();
     },
@@ -165,12 +69,6 @@ Template.output.helpers({
     groupSettings: function () {
         return groupSettings.get();
     },
-    sortingSettings: function () {
-        return sortingSettings.get();
-    },
-    baseSortingSettings: function () {
-        return baseSortingData;
-    },
     groupChecked: function (name) {
         return groupSettings.get()[name] ? "checked" : "";
     },
@@ -179,6 +77,19 @@ Template.output.helpers({
     },
     groupNames: function () {
         return getGroupsFromAthletes();
+    }
+});
+
+Template.outputSortingPopover.helpers({
+    baseSortingSettings: function () {
+        return baseSortingData;
+    }
+});
+
+//noinspection JSUnusedGlobalSymbols
+Template.output.helpers({
+    allAthletes: function () {
+        return Meteor.reactiveAthletes.get();
     }
 });
 
@@ -336,6 +247,7 @@ Template.output.events({
         sortingSettings.set(newOrder);
     },
     'click .sorting-reset-button': function (event) {
+        location.reload();
         sortingSettings.set([0, 1, 2, 3, 4, 5, 6, 7]);
     }
 });

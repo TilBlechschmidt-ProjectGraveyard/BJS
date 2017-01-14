@@ -1,0 +1,26 @@
+<template name="outputSortingPopover">
+    <div class="popover popover-sorting">
+        <div class="popover-angle"></div>
+        <div class="popover-inner">
+            <div class="list-block sortable" id="sortOrderSorter">
+                <ul>
+                    {{#each s in baseSortingSettings}}
+                        {{#with s}}
+                            <li>
+                                <div class="item-content" data-id="{{id}}">
+                                    <div class="item-media"><i class="f7-icons">{{icon}}</i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">{{name}}</div>
+                                    </div>
+                                </div>
+                                <!-- Sortable handler  -->
+                                <div class="sortable-handler"></div>
+                            </li>
+                        {{/with}}
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="button-highlight sorting-reset-button">Reset</div>
+        </div>
+    </div>
+</template>
