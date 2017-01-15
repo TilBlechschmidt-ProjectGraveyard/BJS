@@ -11,6 +11,7 @@ import {
     loginGroups,
     loginCustom
 } from "./accessCodes/accessCodes";
+import {showIndicator, hideIndicator} from "../helpers";
 
 Meteor.config = {};
 Meteor.config.log = Log.getLogObject();
@@ -28,11 +29,11 @@ const ServerIPs = new ReactiveVar([]);
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(async function () {
-        if (Meteor.f7) Meteor.f7.showIndicator();
+        showIndicator();
         dbReady.depend();
 
         if (!AccountManager.getAdminAccount().account) {
-            if (Meteor.f7) Meteor.f7.hideIndicator();
+            hideIndicator();
             return undefined;
         }
 
@@ -76,9 +77,7 @@ DBInterface.waitForReady(function () {
         }
 
         competitions.set(comps);
-        Tracker.afterFlush(function () {
-            if (Meteor.f7) Meteor.f7.hideIndicator();
-        });
+        Tracker.afterFlush(hideIndicator);
     });
 });
 

@@ -6,6 +6,7 @@ import {AccountManager} from "../../../imports/api/account_managment/AccountMana
 import {updateSwiperProgress} from "../login/router";
 import {ReactiveVar} from "meteor/reactive-var";
 import {findIndexOfAthlete, isReady, isUpdate, isNotReady, isFinish, statusToNumber, countTrue} from "./helpers";
+import {showIndicator, hideIndicator} from "../helpers";
 
 Meteor.reactiveAthletes = new ReactiveVar([]);
 const groupSettings = new ReactiveVar({text: "Keine"});
@@ -28,7 +29,7 @@ function loadAllAthlets() {
                 return athlete;
             }));
             updatedGroups();
-            Meteor.f7.hideIndicator();
+            hideIndicator();
         }
     );
 }
@@ -266,7 +267,7 @@ function replaceAthletes(index) {
 
 Template.output.onRendered(function () {
     Meteor.f7.sortableOpen('.sortable');
-    Meteor.f7.showIndicator();
+    showIndicator();
 
     DBInterface.waitForReady(function () {
         if (!Meteor.COLLECTIONS.Athletes.changeDetector) {

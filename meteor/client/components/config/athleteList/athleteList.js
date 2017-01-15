@@ -5,6 +5,7 @@ import {AccountManager} from "../../../../imports/api/account_managment/AccountM
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import gender from "gender-guess";
+import {showIndicator, hideIndicator} from "../../helpers";
 
 const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
@@ -98,7 +99,7 @@ function checkAthleteName(id, newName) {
  */
 export function refreshErrorState(id, firstName, lastName) {
     // Calculate the group state
-    const lgroups = localGroups.get();
+    let lgroups = localGroups.get();
     let errorLevel = 0;
 
     const errorStates = {};
@@ -128,6 +129,16 @@ export function refreshErrorState(id, firstName, lastName) {
         if (groupErrLevel > errorLevel) errorLevel = groupErrLevel;
     }
 
+    // Set the error level of the group
+    if (!id && !firstName && !lastName) {
+        lgroups = localGroups.get();
+        for (let group in lgroups) {
+            if (!lgroups.hasOwnProperty(group)) continue;
+            lgroups[group].errorLevel = errorStates[lgroups[group].name].level;
+        }
+        localGroups.set(lgroups);
+    }
+
     if (errorLevel > 0)
         forwardIcon.set({
             level: errorLevel,
@@ -145,6 +156,9 @@ export function refreshErrorState(id, firstName, lastName) {
 Tracker.autorun(function () {
     const compID = currentCompID.get();
     if (compID) {
+        showIndicator();
+        //noinspection JSCheckFunctionSignatures
+        localGroups.set([]);
         DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (data) {
             for (let group in data) {
                 if (!data.hasOwnProperty(group)) continue;
@@ -154,6 +168,7 @@ Tracker.autorun(function () {
             }
             localGroups.set(data);
             refreshErrorState();
+            hideIndicator();
         });
 
         Tracker.nonreactive(refreshErrorState);
@@ -189,6 +204,7 @@ Template.athleteList.helpers({
                 name: group.name,
                 id: group.id,
                 collapsed: group.collapsed,
+                errorLevel: group.errorLevel,
                 athletes: _.filter(group.athletes, function (athlete) {
                     const fullName = athlete.getFullName();
                     for (let filter in nFilter) {
