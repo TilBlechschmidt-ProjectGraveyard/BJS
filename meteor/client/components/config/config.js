@@ -26,53 +26,52 @@ const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
 
 DBInterface.waitForReady(function () {
-    Tracker.autorun(function () {
+    Tracker.autorun(async function () {
         if (Meteor.f7) Meteor.f7.showIndicator();
         dbReady.depend();
-        DBInterface.waitForReady(async function () {
-            const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
-            const comps = {
-                writable: [],
-                readOnly: []
-            };
 
-            const activeCompetition = DBInterface.getActiveContestID();
-            for (let competition in allCompetitions) {
-                if (!allCompetitions.hasOwnProperty(competition)) continue;
-                competition = allCompetitions[competition];
+        const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
+        const comps = {
+            writable: [],
+            readOnly: []
+        };
 
-                // --- Populate data ---
+        const activeCompetition = DBInterface.getActiveContestID();
+        for (let competition in allCompetitions) {
+            if (!allCompetitions.hasOwnProperty(competition)) continue;
+            competition = allCompetitions[competition];
 
-                // Athlete count (wait for promise to resolve)
-                competition.athleteCount = await DBInterface.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
+            // --- Populate data ---
 
-                // Competition type name
-                const competitionType = getCompetitionTypeByID(competition.type);
-                competition.type = competitionType.getInformation().name;
+            // Athlete count (wait for promise to resolve)
+            competition.athleteCount = await DBInterface.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
 
-                // Active property
-                competition.active = activeCompetition == competition._id;
+            // Competition type name
+            const competitionType = getCompetitionTypeByID(competition.type);
+            competition.type = competitionType.getInformation().name;
 
-                // Sport types metadata
-                const sportTypes = [];
-                for (let sportType in competition.sportTypes) {
-                    if (!competition.sportTypes.hasOwnProperty(sportType)) continue;
-                    sportTypes.push(competitionType.getSportType(competition.sportTypes[sportType]));
-                }
-                competition.sportTypes = sportTypes;
+            // Active property
+            competition.active = activeCompetition == competition._id;
 
-                // --- Sort by readOnly attribute ---
-                if (competition.readOnly) {
-                    comps.readOnly.push(competition);
-                } else {
-                    comps.writable.push(competition);
-                }
+            // Sport types metadata
+            const sportTypes = [];
+            for (let sportType in competition.sportTypes) {
+                if (!competition.sportTypes.hasOwnProperty(sportType)) continue;
+                sportTypes.push(competitionType.getSportType(competition.sportTypes[sportType]));
             }
+            competition.sportTypes = sportTypes;
 
-            competitions.set(comps);
-            Tracker.afterFlush(function () {
-                if (Meteor.f7) Meteor.f7.hideIndicator();
-            });
+            // --- Sort by readOnly attribute ---
+            if (competition.readOnly) {
+                comps.readOnly.push(competition);
+            } else {
+                comps.writable.push(competition);
+            }
+        }
+
+        competitions.set(comps);
+        Tracker.afterFlush(function () {
+            if (Meteor.f7) Meteor.f7.hideIndicator();
         });
     });
 });
