@@ -64,11 +64,11 @@
                 <div id="config-swiper" class="swiper-container full-height">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
+                            {{>competitionList title="Konfigurierte Wettkämpfe" competitions=competitions.readOnly readOnly=true}}
+                            {{>competitionList title="Unvollständige Wettkämpfe" competitions=competitions.writable}}
                             <div class="content-block">
                                 <p style="text-align: center;">Dieser Server ist erreichbar unter: <br />{{#each ServerIPList}}{{this}}:3000{{#if eq (dec (length ServerIPList)) @index}}{{else}} | {{/if}}{{/each}}</p>
                             </div>
-                            {{>competitionList title="Konfigurierte Wettkämpfe" competitions=competitions.readOnly readOnly=true}}
-                            {{>competitionList title="Unvollständige Wettkämpfe" competitions=competitions.writable}}
                         </div>
                         <div class="swiper-slide">
                             {{#if edit}}
