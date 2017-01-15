@@ -1,7 +1,7 @@
 {
   "name": "Leichtathletik",
-  "general": "",
-  "rating": "",
+  "general": "Dies ist Leichtatletik. TODO: Add better description.",
+  "rating": "Beim Leichtatletik gibt es 4 Kategorien: Sprint, Lauf, Sprung und Wurf/Stoß. Jeder Teilnehmer kann beliebig viele Disziplinen aus diesen Kategorien durchführen. Für die Bewertung werden aus drei Kategorien die Punktzahl für das beste Einzelergebnis addiert. Wer weniger als in 3 Kategorien Dissziplinen durchgeführt hat erhält keine Urkunde, es sei denn es gelten aufgrund der Startklasse Sonderbestimmungen.",
   "categoryNames": [
     "Sprint",
     "Lauf",

@@ -1,0 +1,16 @@
+<template name="competitionTypeInformationPopups">
+    {{#each i in getInformation}}
+        {{>popup class=(add "popup-competitionType-" i.name) title=i.name subtitle="Informationen" content="competitionTypeInformationContent" data=(toSimplePopupData i)}}
+    {{/each}}
+</template>
+
+<template name="competitionTypeInformationContent">
+    <h2>Beschreibung</h2>
+    <div style="text-align: center;">
+        {{data.general}}
+    </div>
+    <h2>Bewertung</h2>
+    <div style="text-align: center;">
+        {{data.rating}}
+    </div>
+</template>

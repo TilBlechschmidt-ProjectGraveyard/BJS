@@ -78,15 +78,13 @@
     </div>
 
     {{>startClassesPopup}}
-    {{>competitionTypePopup}}
+    {{>competitionTypeCreatePopup}}
+    {{>competitionTypeInformationPopups}}
 
     {{#each c in competitions.readOnly}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}
-        <!--{{>sportTypePopup competition=c}}-->
     {{/each}}
     {{#each c in competitions.writable}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}
-        <!--{{>sportTypePopup competition=c}}-->
     {{/each}}
 </template>
-
