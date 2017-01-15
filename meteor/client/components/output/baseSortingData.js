@@ -61,7 +61,7 @@ module.exports = [
     },
     {
         id: 5,
-        name: "Alter",
+        name: "Jahrgang",
         icon: "today",
         sort: function (a, b) {
             return b.ageGroup - a.ageGroup;
