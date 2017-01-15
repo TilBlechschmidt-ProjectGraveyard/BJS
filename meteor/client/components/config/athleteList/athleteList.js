@@ -10,6 +10,7 @@ const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
 
 export const localGroups = new ReactiveVar([]);
+export const athleteErrorState = new ReactiveVar({});
 export const selectedAthlete = new ReactiveVar(undefined);
 
 let loaded;
@@ -43,17 +44,6 @@ export let modifyGroup = function (id, callback) {
     }
 };
 
-function athleteTooltip(athlete) {
-    if (editMode.get()) {
-        const log = new Log();
-        athlete.check(log);
-        const msg = log.getLastMessage();
-        if (msg == undefined) return {};
-        return log.getLastMessage();
-    } else
-        return {};
-}
-
 function groupExists(name) {
     const lgroups = localGroups.get();
     for (let group in lgroups) {
@@ -63,23 +53,59 @@ function groupExists(name) {
     return false;
 }
 
-export function refreshErrorState() {
+function checkAthleteName(id, newName) {
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        let athletes = lgroups[group].athletes;
+        for (let athlete in athletes) {
+            if (!athletes.hasOwnProperty(athlete)) continue;
+            let a = athletes[athlete];
+            if (a.id == id) {
+                callback(a, group, athlete);
+                localGroups.set(lgroups);
+                return;
+            }
+        }
+    }
+    // athleteErrorState
+}
+/**
+ *
+ * @param {string} [id]
+ * @param {string} [firstName]
+ * @param {string} [lastName]
+ */
+export function refreshErrorState(id, firstName, lastName) {
     // Calculate the group state
     const lgroups = localGroups.get();
     let errorLevel = 0;
+
+    const errorStates = {};
 
     for (let group in lgroups) {
         if (!lgroups.hasOwnProperty(group)) continue;
         group = lgroups[group];
 
-        const log = new Log();
+        let groupErrLevel = 0;
         for (let athlete in group.athletes) {
             if (!group.athletes.hasOwnProperty(athlete)) continue;
-            group.athletes[athlete].check(log);
+            const athleteLog = new Log();
+
+            let athlete = group.athletes[athlete];
+            if (athlete.id === id) {
+                athlete.firstName = firstName;
+                athlete.lastName = lastName;
+            }
+
+            athlete.check(athleteLog);
+            const athleteMessage = athleteLog.getHighestLevelMessage();
+            errorStates[athlete.id] = athleteLog.getLastMessage();
+            if (athleteMessage.level > groupErrLevel) groupErrLevel = athleteMessage.level;
         }
-        const lvl = log.getHighestLevel();
-        group.errorLevel = lvl;
-        if (lvl > errorLevel) errorLevel = lvl;
+
+        errorStates[group.name] = {level: groupErrLevel};
+        if (groupErrLevel > errorLevel) errorLevel = groupErrLevel;
     }
 
     if (errorLevel > 0)
@@ -91,7 +117,8 @@ export function refreshErrorState() {
     else
         forwardIcon.set(undefined);
 
-    localGroups.set(lgroups);
+    console.log(errorStates);
+    athleteErrorState.set(errorStates);
 }
 
 // Load from storage
@@ -148,10 +175,10 @@ Template.athleteList.helpers({
             return true;
     },
     athleteTooltipLevel: function (athlete) {
-        return athleteTooltip(athlete).level;
+        return athleteErrorState.get()[athlete.id].level;
     },
     athleteTooltipMsg: function (athlete) {
-        return athleteTooltip(athlete).message;
+        return athleteErrorState.get()[athlete.id].message;
     },
     fullName: function (athlete) {
         if (editMode.get()) {
@@ -221,6 +248,13 @@ Template.athleteList.events({
             athlete.lastName = lastName;
         });
         refreshErrorState();
+    },
+    'keyup input.name-input': function (event) {
+        const id = event.target.closest("li").dataset.id;
+        const name = event.target.value;
+        const firstName = name.split(' ').slice(0, -1).join(' ').trim();
+        const lastName = name.split(' ').slice(-1).join(' ').trim();
+        refreshErrorState(id, firstName, lastName);
     },
     'click input': function (event) {
         if (editMode.get()) {
