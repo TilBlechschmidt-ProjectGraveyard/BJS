@@ -20,16 +20,26 @@ if (Meteor.isClient) {
 function runServerFunction(name, account, data, callback) {
     const loginObject = getLoginObject(account);
     const log = new Log();
-    const errorMessage = Meteor.f7.alert.bind(null, "Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
-
     const returnPromise = typeof callback !== 'function';
     const callFunction = returnPromise ? Meteor.callPromise : Meteor.call;
+    const throwError = function () {
+        const err = new Error("Error whilst calling a server function.");
+        console.error("-------- Error Context --------");
+        console.error("Function called:", name);
+        console.error("Account used:", account);
+        console.error("Data to be transmitted:", data);
+        console.error("Callback passed:", callback);
+        console.error("Return type:", returnPromise ? "Promise" : "Callback");
+        Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
+        throw err;
+    };
+
     const promise = callFunction('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
         const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
         if (data) {
             if (typeof callback === 'function') callback(data.data);
         } else if (Meteor.isClient) {
-            errorMessage();
+            throwError();
         }
     });
 
@@ -38,7 +48,7 @@ function runServerFunction(name, account, data, callback) {
             const decrypted_data = Crypto.tryDecrypt(log, data, [account.ac]);
 
             if (!decrypted_data && Meteor.isClient)
-                errorMessage();
+                throwError();
             else
                 return decrypted_data.data;
         });
