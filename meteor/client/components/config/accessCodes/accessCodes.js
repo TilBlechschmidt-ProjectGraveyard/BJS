@@ -323,6 +323,8 @@ Template.accordionInnerListBlock.events({
             }
         }
 
+        code.noPermission = !code.resultPermission && !code.adminPermission && code.sportTypes.length == 0;
+
         acodes[2].codes[index] = code;
         accessCodes.set(acodes);
         //noinspection JSCheckFunctionSignatures
@@ -343,7 +345,8 @@ Template.accessCodes.events({
                 custom: true,
                 sportTypes: [],
                 resultPermission: false,
-                adminPermission: false
+                adminPermission: false,
+                noPermission: true
             }, 2);
         }).querySelector("input").focus();
     },
