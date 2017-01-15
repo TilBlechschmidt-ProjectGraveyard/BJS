@@ -101,19 +101,16 @@ Tracker.autorun(function () {
     if (compID) {
         const stored = localStorage.getItem("config-groups-" + compID);
         if (stored) {
-            const parsed = JSON.parse(stored);
-            for (let group in parsed) {
-                if (!parsed.hasOwnProperty(group)) continue;
-                parsed[group].collapsed = false;
-                parsed[group].athletes = lodash.map(parsed[group].athletes, function (athlete) {
-                    return Athlete.fromObject(Meteor.config.log, athlete);
-                });
-            }
-            localGroups.set(parsed);
-            console.log("parsed", parsed);
 
             DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (groups) {
-                console.log("from db", groups);
+                for (let group in groups) {
+                    if (!groups.hasOwnProperty(group)) continue;
+                    group = groups[group];
+                    group.id = genUUID();
+                    group.collapsed = false;
+                }
+                localGroups.set(groups);
+                refreshErrorState();
             });
 
             Tracker.nonreactive(refreshErrorState);
@@ -127,8 +124,6 @@ Tracker.autorun(function () {
     const compID = currentCompID.get();
     if (loaded == compID) {
         const lgroups = localGroups.get();
-        localStorage.setItem("config-groups-" + compID, JSON.stringify(lgroups));
-
         const adminAccount = AccountManager.getAdminAccount().account;
         const encryptedAthletes = [];
         for (let group in lgroups) {
