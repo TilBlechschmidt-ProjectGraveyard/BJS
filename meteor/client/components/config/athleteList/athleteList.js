@@ -119,7 +119,7 @@ export function refreshErrorState(id, firstName, lastName) {
     else
         forwardIcon.set(undefined);
 
-    console.log(errorStates);
+    //noinspection JSCheckFunctionSignatures
     athleteErrorState.set(errorStates);
 }
 
@@ -194,7 +194,6 @@ Template.athleteList.helpers({
             return true;
     },
     athleteTooltipLevel: function (athlete) {
-        console.log(athleteErrorState.get());
         return athleteErrorState.get()[athlete.id].level;
     },
     athleteTooltipMsg: function (athlete) {
