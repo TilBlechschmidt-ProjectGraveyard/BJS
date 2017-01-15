@@ -49,13 +49,14 @@ export function initAccounts() {
         this.handle.insert(new Account('Ausdauerlauf 3000m', [], ['st_endurance_3000'], Crypto.generateAC('Erhebung98Asylant', 'pepper')));
         this.handle.insert(new Account('Weitsprung', [], ['st_long_jump'], Crypto.generateAC('Joch338Bohne', 'pepper')));
         this.handle.insert(new Account('Hochsprung', [], ['st_high_jump'], Crypto.generateAC('Fuß622Einkünft', 'pepper')));
-        this.handle.insert(new Account('Schleuderball 1kg', [], ['st_rounders'], Crypto.generateAC('Pfanne927Chirurg', 'pepper')));
+        this.handle.insert(new Account('Schlagball 80g', [], ['st_rounders'], Crypto.generateAC('Anwohner860Hass', 'pepper')));
         this.handle.insert(new Account('Kugelstoßen 3kg', [], ['st_shot_put_3'], Crypto.generateAC('Quark360Leerlauf', 'pepper')));
         this.handle.insert(new Account('Kugelstoßen 4kg', [], ['st_shot_put_4'], Crypto.generateAC('Knöchel357Datum', 'pepper')));
         this.handle.insert(new Account('Kugelstoßen 5kg', [], ['st_shot_put_5'], Crypto.generateAC('Tiefkühltruhe144Kunde', 'pepper')));
         this.handle.insert(new Account('Kugelstoßen 6kg', [], ['st_shot_put_6'], Crypto.generateAC('Hafen375Führerschein', 'pepper')));
         this.handle.insert(new Account('Kugelstoßen 7,26kg', [], ['st_shot_put_7.26'], Crypto.generateAC('Bügeleisen4Sprechstundenhilfe', 'pepper')));
         this.handle.insert(new Account('Ball 200g', [], ['st_ball_200'], Crypto.generateAC('Dreiheit97Anspruch', 'pepper')));
+        this.handle.insert(new Account('Schleuderball 1kg', [], ['st_ball_with_throwing_strap_1'], Crypto.generateAC('Pfanne927Chirurg', 'pepper')));
         this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('Ermutigung328Wäschestände', 'pepper'), true));
     };
 }
