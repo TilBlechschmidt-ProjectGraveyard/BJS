@@ -8,6 +8,12 @@ Template.competitionTypePopupContent.helpers({
 });
 
 Template.competitionTypePopupContent.events({
+    'keypress .competitionNameInput': function (event) {
+        if (event.keyCode == 13) {
+            const submitButton = event.target.closest("div.swipeout-actions-right").querySelector(".addCompetitionSubmit");
+            submitButton.click();
+        }
+    },
     'click .addCompetition': function (event) {
         const swipeout = event.target.closest("li.swipeout");
         const input = swipeout.querySelector("input");
@@ -27,6 +33,7 @@ Template.competitionTypePopupContent.events({
                 break;
             }
         }
+
         DBInterface.addCompetition(AccountManager.getAdminAccount().account, name, id);
         Meteor.f7.closeModal(".popup-competitionType");
     }

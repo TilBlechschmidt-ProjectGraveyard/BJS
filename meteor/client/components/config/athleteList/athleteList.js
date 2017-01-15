@@ -1,4 +1,4 @@
-import {currentCompID, editMode, dbReady, forwardIcon} from "../config";
+import {currentCompID, editMode, forwardIcon} from "../config";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {Log} from "../../../../imports/api/log";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
@@ -9,7 +9,6 @@ import gender from "gender-guess";
 const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
 
-const groups = new ReactiveVar([]);
 export const localGroups = new ReactiveVar([]);
 export const selectedAthlete = new ReactiveVar(undefined);
 
@@ -99,22 +98,18 @@ export function refreshErrorState() {
 Tracker.autorun(function () {
     const compID = currentCompID.get();
     if (compID) {
-        const stored = localStorage.getItem("config-groups-" + compID);
-        if (stored) {
+        DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (data) {
+            for (let group in data) {
+                if (!data.hasOwnProperty(group)) continue;
+                group = data[group];
+                group.id = genUUID();
+                group.collapsed = false;
+            }
+            localGroups.set(data);
+            refreshErrorState();
+        });
 
-            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (groups) {
-                for (let group in groups) {
-                    if (!groups.hasOwnProperty(group)) continue;
-                    group = groups[group];
-                    group.id = genUUID();
-                    group.collapsed = false;
-                }
-                localGroups.set(groups);
-                refreshErrorState();
-            });
-
-            Tracker.nonreactive(refreshErrorState);
-        }
+        Tracker.nonreactive(refreshErrorState);
         loaded = compID;
     }
 });
@@ -139,33 +134,9 @@ Tracker.autorun(function () {
     }
 });
 
-DBInterface.waitForReady(function () {
-    Tracker.autorun(function () {
-        if (Meteor.f7) Meteor.f7.showIndicator(); // TODO This doesn't get shown
-        if (!DBInterface.isReady()) return;
-        dbReady.depend();
-        DBInterface.waitForReady(function () {
-            const competitionID = currentCompID.get();
-            if (!competitionID) {
-                if (Meteor.f7) Meteor.f7.hideIndicator();
-                return;
-            }
-            DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, competitionID, false, false, function (data) {
-                groups.set(data);
-                Tracker.afterFlush(function () {
-                    if (Meteor.f7) Meteor.f7.hideIndicator();
-                });
-            });
-        });
-    });
-});
-
 Template.athleteList.helpers({
     groups: function () {
-        if (editMode.get())
-            return localGroups.get();
-        else
-            return groups.get();
+        return localGroups.get();
     },
     readOnly: function () {
         return !editMode.get();

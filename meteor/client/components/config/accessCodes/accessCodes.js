@@ -281,13 +281,11 @@ export function loginCustom() {
 Template.accessCodeGroup.helpers({
     otherPermissions: function () {
         return [
-            {id: "resultPermission", name: "Urkunden erstellen"},
-            {id: "adminPermission", name: "Administratorzugriff"}
+            {id: "resultPermission", name: "Urkunden erstellen"}
         ];
     },
     otherPermissionList: function (code) {
         const otherPermissions = [];
-        if (code.adminPermission) otherPermissions.push("adminPermission");
         if (code.resultPermission) otherPermissions.push("resultPermission");
         return otherPermissions;
     },
@@ -325,11 +323,28 @@ Template.accordionInnerListBlock.events({
             }
         }
 
+        code.noPermission = !code.resultPermission && !code.adminPermission && code.sportTypes.length == 0;
+
         acodes[2].codes[index] = code;
         accessCodes.set(acodes);
         //noinspection JSCheckFunctionSignatures
         codesClean.set(false);
 
+        return false;
+    }
+});
+
+Template.ACitemContent.events({
+    'click .remove-custom-code': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const id = event.target.closest("li[data-id]").dataset.id;
+        Meteor.f7.confirm("Wollen sie den Zugangscode wirklich endgültig löschen?", "Zugangscode löschen", function () {
+            const acodes = accessCodes.get();
+            const index = getIndexOfCode(acodes, 2, id);
+            acodes[2].codes.splice(index, 1);
+            accessCodes.set(acodes);
+        });
         return false;
     }
 });
@@ -345,7 +360,8 @@ Template.accessCodes.events({
                 custom: true,
                 sportTypes: [],
                 resultPermission: false,
-                adminPermission: false
+                adminPermission: false,
+                noPermission: true
             }, 2);
         }).querySelector("input").focus();
     },

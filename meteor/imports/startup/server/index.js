@@ -5,6 +5,7 @@ import {Log} from "../../api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
+import {getCompetitionTypeByID} from "../../api/logic/competition_type";
 
 
 export function onStartup() {
@@ -111,9 +112,16 @@ export function onStartup() {
         addCompetition: function (account, data) {
             if (!account.isAdmin) return false;
 
+            console.log(data);
+
+            const competitionType = getCompetitionTypeByID(data.competitionType);
+            const sportTypes = lodash.map(competitionType.getSports(), function (ct) {
+                return ct.id;
+            });
+
             const _id = Meteor.COLLECTIONS.Contests.handle.insert({
                 name: data.name,
-                sportTypes: [],
+                sportTypes: sportTypes,
                 readOnly: false,
                 type: data.competitionType
             });
@@ -128,7 +136,6 @@ export function onStartup() {
          * @returns {boolean}
          */
         renameCompetition: function (account, data) {
-            console.log("renameCompetition");
             if (!account.isAdmin) return false;
             Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
                 $set: {name: data.newName}
@@ -185,15 +192,20 @@ export function onStartup() {
          */
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
-
             const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
-
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
 
-            console.log(encryptedAthletes);
-
-
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
+        },
+        /**
+         * Gets the amount of athletes in a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        getAthleteCount: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find({}).count();
         },
         /**
          * Adds a competition
