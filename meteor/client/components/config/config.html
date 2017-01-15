@@ -83,6 +83,7 @@
     {{>startClassesPopup}}
     {{>competitionTypeCreatePopup}}
     {{>competitionTypeInformationPopups}}
+    {{>popup title="Athleten importieren" subtitle="CSV Import" content="csvImport" class="popup-csv-import"}}
 
     {{#each c in competitions.readOnly}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}

@@ -377,3 +377,59 @@ Template.athleteList.events({
         spans.fadeToggle(300);
     }
 });
+
+function findIndexByRegex(headerFields, regex) {
+    return lodash.findIndex(headerFields, function (field) {
+        const regexRes = field.match(regex);
+        return regexRes !== null ? regexRes.length > 0 : false;
+    });
+}
+
+function hasDuplicates(a) {
+    return _.uniq(a).length !== a.length;
+}
+
+function correlateHeaders(headerFields) {
+    const firstname = findIndexByRegex(headerFields, /(vor|tauf|ruf|first|fore|given|christian)/gi);
+
+    const lastname = findIndexByRegex(headerFields, /(nach|eigen|familien|vater|last|sur|family)/gi);
+
+    const ageGroup = findIndexByRegex(headerFields, /(alter|geburt|jahr|generation|stufe|geb|age|year|birth|life)/gi);
+
+    const gender = findIndexByRegex(headerFields, /(geschlecht|gattung|sex|gender)/gi);
+
+    const group = findIndexByRegex(headerFields, /(gruppe|klasse|verband|gesell|team|verein|gemein|bund|mannschaft|group|col)/gi);
+
+    const headerIndices = [firstname, lastname, ageGroup, gender, group];
+    if (hasDuplicates(headerIndices)) {
+        console.log("DUPLICATE FIELDS!!!!");
+    }
+
+    const headerMapping = {
+        firstName: headerFields[firstname],
+        lastName: headerFields[lastname],
+        ageGroup: headerFields[ageGroup],
+        gender: headerFields[gender], // TODO: Filter this by m/w
+        group: headerFields[group]
+    };
+
+    console.log(headerMapping);
+}
+
+Template.csvImport.events({
+    'change input[type=file]#csv-upload': function (event) {
+        const files = event.target.files;
+        for (let file in files) {
+            if (!files.hasOwnProperty(file)) continue;
+            file = files[file];
+            Papa.parse(file, {
+                header: true,
+                complete: function (results, file) {
+                    // console.log("PARSING DONE", results, file);
+                    correlateHeaders(results.meta.fields);
+                    console.log(results.data[0]);
+                },
+            });
+        }
+    }
+});

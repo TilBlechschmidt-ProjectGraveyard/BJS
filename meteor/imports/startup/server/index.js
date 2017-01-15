@@ -126,7 +126,8 @@ export function onStartup() {
                 name: data.name,
                 sportTypes: sportTypes,
                 readOnly: false,
-                type: data.competitionType
+                type: data.competitionType,
+                customAccounts: []
             });
             Meteor.COLLECTIONS.connect(_id);
 
@@ -231,7 +232,7 @@ export function onStartup() {
          */
         retrieveCustomAccounts: function (account, data) {
             if (!account.isAdmin) return false;
-            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts;
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts || [];
         },
         /**
          * Adds a competition
