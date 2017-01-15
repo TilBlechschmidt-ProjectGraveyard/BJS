@@ -281,13 +281,11 @@ export function loginCustom() {
 Template.accessCodeGroup.helpers({
     otherPermissions: function () {
         return [
-            {id: "resultPermission", name: "Urkunden erstellen"},
-            {id: "adminPermission", name: "Administratorzugriff"}
+            {id: "resultPermission", name: "Urkunden erstellen"}
         ];
     },
     otherPermissionList: function (code) {
         const otherPermissions = [];
-        if (code.adminPermission) otherPermissions.push("adminPermission");
         if (code.resultPermission) otherPermissions.push("resultPermission");
         return otherPermissions;
     },
@@ -325,6 +323,8 @@ Template.accordionInnerListBlock.events({
             }
         }
 
+        code.noPermission = !code.resultPermission && !code.adminPermission && code.sportTypes.length == 0;
+
         acodes[2].codes[index] = code;
         accessCodes.set(acodes);
         //noinspection JSCheckFunctionSignatures
@@ -345,7 +345,8 @@ Template.accessCodes.events({
                 custom: true,
                 sportTypes: [],
                 resultPermission: false,
-                adminPermission: false
+                adminPermission: false,
+                noPermission: true
             }, 2);
         }).querySelector("input").focus();
     },

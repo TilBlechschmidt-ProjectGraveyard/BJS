@@ -1,5 +1,6 @@
 import {DBInterface} from "../../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../../imports/api/account_managment/AccountManager";
+
 Template.competition.events({
     'click .title-input': function (event) {
         event.preventDefault();
@@ -14,8 +15,12 @@ Template.competition.events({
     },
     'click .launch-competition': function (event) {
         const id = event.target.closest(".accordion-item-content").dataset.id;
-        DBInterface.activateCompetition(AccountManager.getAdminAccount().account, id);
-    },
+
+        Meteor.f7.confirm("Soll der Wettkampf \""+ DBInterface.getContestByID(id).name + "\" wirklich aktiviert werden? Der aktuelle Wettkampf \"" + DBInterface.getCompetitionName() +"\" wird dadurch deaktiviert! Daher müssen alle Ein- und Ausgabegeräte neu mit diesem Server verbunden werden.", "Warnung", function () {
+            //const id = event.target.closest(".accordion-item-content").dataset.id;
+            DBInterface.activateCompetition(AccountManager.getAdminAccount().account, id);
+            });
+        },
     'blur .title-input': function (event) {
         DBInterface.renameCompetition(AccountManager.getAdminAccount().account, event.target.dataset.id, event.target.value)
     },

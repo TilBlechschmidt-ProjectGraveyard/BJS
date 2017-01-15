@@ -98,13 +98,17 @@
 </template>
 
 <template name="ACitemContent">
-    {{#if c.custom}}
-        <div class="item-media">{{> iconWarn text="Es wurde noch kein Passwort erzeugt."}}</div>
+    {{#if c.noPermission}}
+        <div class="item-media">{{> iconErr text="Dieser Zugang besitzt keinerlei Berechtigungen."}}</div>
     {{else}}
-        {{#if c.code}}
-            <div class="item-media">{{> iconOK text="Passwort erfolgreich erstellt."}}</div>
+        {{#if c.custom}}
+            <div class="item-media">{{> iconWarn text="Es wurde noch kein Passwort erzeugt."}}</div>
         {{else}}
-            <div class="item-media">{{> iconPreloader}}</div>
+            {{#if c.code}}
+                <div class="item-media">{{> iconOK text="Passwort erfolgreich erstellt."}}</div>
+            {{else}}
+                <div class="item-media">{{> iconPreloader}}</div>
+            {{/if}}
         {{/if}}
     {{/if}}
     <div class="item-inner">
