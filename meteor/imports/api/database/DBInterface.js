@@ -290,6 +290,7 @@ export let DBInterface = {
     removeCompetition: function (account, competitionID, callback) {
         runServerFunction('removeCompetition', account, {competitionID: competitionID}, callback);
     },
+
     /**
      * Updates a certificate of an athlete.
      * @param {Account} account - Output account

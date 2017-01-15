@@ -6,6 +6,7 @@ import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import gender from "gender-guess";
 import {showIndicator, hideIndicator} from "../../helpers";
+import {filterUndefined} from "../../../../imports/api/logic/general";
 
 const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
@@ -199,22 +200,27 @@ Tracker.autorun(function () {
 Template.athleteList.helpers({
     groups: function () {
         const nFilter = nameFilter.get();
-        return _.map(localGroups.get(), function (group) {
+        return filterUndefined(_.map(localGroups.get(), function (group) {
+            const athletes = _.filter(group.athletes, function (athlete) {
+                const fullName = athlete.getFullName();
+                for (let filter in nFilter) {
+                    if (!nFilter.hasOwnProperty(filter)) continue;
+                    if (fullName.indexOf(nFilter[filter]) == -1) return false;
+                }
+                return true;
+            });
+
+            if (!editMode.get() && athletes.length == 0) return undefined;
+
+
             return {
                 name: group.name,
                 id: group.id,
                 collapsed: group.collapsed,
                 errorLevel: group.errorLevel,
-                athletes: _.filter(group.athletes, function (athlete) {
-                    const fullName = athlete.getFullName();
-                    for (let filter in nFilter) {
-                        if (!nFilter.hasOwnProperty(filter)) continue;
-                        if (fullName.indexOf(nFilter[filter]) == -1) return false;
-                    }
-                    return true;
-                })
-            };
-        });
+                athletes: athletes
+            }
+        }));
     },
     readOnly: function () {
         return !editMode.get();
