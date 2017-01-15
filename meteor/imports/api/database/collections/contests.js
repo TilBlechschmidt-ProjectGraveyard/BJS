@@ -16,7 +16,11 @@ export function initContests() {
         });
 
         Meteor.publish(name, function () {
-            return handle.find();
+            return handle.find({}, {
+                fields: {
+                    'customAccounts': false
+                }
+            });
         });
     });
 

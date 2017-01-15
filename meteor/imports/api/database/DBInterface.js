@@ -249,6 +249,17 @@ export let DBInterface = {
         runServerFunction('addCompetition', account, {name: name, competitionType: competitionType});
     },
 
+    storeCustomAccounts: function (account, competitionID, customAccounts) {
+        runServerFunction('storeCustomAccounts', account, {
+            competitionID: competitionID,
+            customAccounts: customAccounts
+        });
+    },
+
+    retrieveCustomAccounts: function (account, competitionID) {
+        return runServerFunction('retrieveCustomAccounts', account, {competitionID: competitionID});
+    },
+
     /**
      * Renames a competition with a given name
      * @param {Account} account - Admin account
