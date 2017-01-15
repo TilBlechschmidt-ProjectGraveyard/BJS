@@ -20,7 +20,33 @@
                     {{/each}}
                 </ul>
             </div>
-            <div class="button-highlight sorting-reset-button">Reset</div>
+            <div class="button-highlight sorting-button">
+                <div class="left open-popup" data-popup=".popup-help">Hilfe</div>
+                <div class="Right sorting-reset-button">Auf Standart Zurücksetzen</div>
+            </div>
         </div>
+    </div>
+
+    {{>popup class="popup-help" title="Hilfe" subtitle="Sortierung und Gruppierung" content="help_sorting"}}
+</template>
+
+<template name="help_sorting">
+    <div align="left">
+        Die Liste der Ergebnisse aller Teilnehmer kann sowohl nach einem Attribut gruppiert, als auch nach mehreren Attributen sortiert werden. <br />
+        Mögliche Attribute lauten wie folgt: <br />
+
+        <ul align="left">
+            <li>Urkundenstatus: Bereit/Nicht Bereit/Update/Fertig</li>
+            <li>Urkundentyp: Teilnehmer-/Ehren-/Siegerurkunde</li>
+            <li>Nachname: Alphabetisch</li>
+            <li>Vorname: Alphabetisch</li>
+            <li>Punkte: Gesamtpunktzahl</li>
+            <li>Jahrgang: Jung nach Alt</li>
+            <li>Gruppe: Gruppenzugehörigkeit</li>
+            <li>Geschlecht: Männlich/Weiblich/Weitere</li>
+        </ul>
+
+        Das erste Attribut in der Liste wird genutzt, um die Einträge zu gruppieren, alle darauf folgenden Attribute werden zur Sortierung der
+        Einträge innerhalb ihrer Gruppen genutzt. Die Gewichtung der Attribute zur Sortierung gilt von oben nach unten.
     </div>
 </template>
