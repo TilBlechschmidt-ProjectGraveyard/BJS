@@ -329,6 +329,17 @@ export function onStartup() {
         },
 
         /**
+         * Returns the server log
+         * @param {Account} account - An admin account
+         * @param {{}} data - Data object
+         * @returns {boolean|[]}
+         */
+        getLog: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Log.getLogObject().messages;
+        },
+
+        /**
          * Sets the written status of a certificate to true
          * @param {Account} account - An output account
          * @param {{id: string}} data - Data object

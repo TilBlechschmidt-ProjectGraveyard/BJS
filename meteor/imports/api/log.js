@@ -10,7 +10,6 @@ function Log() {
     this.log_enabled = true;
 }
 
-
 /**
  * Returns a global log object
  * @returns {Log}
@@ -19,7 +18,6 @@ Log.getLogObject = function () {
     if (!Meteor.logObject) Meteor.logObject = new Log();
     return Meteor.logObject;
 };
-
 
 Log.prototype = {
 

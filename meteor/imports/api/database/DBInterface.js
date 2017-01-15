@@ -212,6 +212,7 @@ export let DBInterface = {
                 let athletes = [];
                 for (let athleteIndex in groups[groupIndex].athletes) {
                     if (!groups[groupIndex].athletes.hasOwnProperty(athleteIndex)) continue;
+                    console.log(groups[groupIndex].athletes[athleteIndex]);
                     athletes.push(Athlete.fromObject(log, groups[groupIndex].athletes[athleteIndex]));
                 }
                 groups[groupIndex].athletes = athletes;
@@ -301,7 +302,7 @@ export let DBInterface = {
         runServerFunction('removeCompetition', account, {competitionID: competitionID}, callback);
     },
     /**
-     * Marks the certificate of an athlete as written.
+     * Updates a certificate of an athlete.
      * @param {Account} account - Output account
      * @param {boolean} id - The meteor db id of the athlete
      * @param [callback] - optional callback
@@ -321,10 +322,20 @@ export let DBInterface = {
     },
 
     /**
-     * Generates certificates for the current competition
+     * Returns all ips of the server
+     * @param {Account} account - Admin account
      * @param [callback] - optional callback
      */
-    getServerIPs: function (callback) {
+    getServerIPs: function (account, callback) {
         runServerFunction('getServerIPs', account, {}, callback);
+    },
+
+    /**
+     * Generates certificates for the current competition
+     * @param {Account} account - Admin account
+     * @param [callback] - optional callback
+     */
+    getLog: function (account, callback) {
+        runServerFunction('getLog', account, {}, callback);
     }
 };

@@ -83,7 +83,7 @@ export function initAthletes() {
         const ct = COMPETITION_TYPES[0].object;
         const groupAccountA = new Account('5a', ['5a'], [], Crypto.generateAC('Nadel437Verräter', 'chilli'));
         const groupAccountB = new Account('5b', ['5b'], [], Crypto.generateAC('Termin226Frucht', 'chilli'));
-        const groupAccountC = new Account('6a', ['6a'], [], Crypto.generateAC('Bahnhof495badewanne', 'chilli'));
+        const groupAccountC = new Account('6a', ['6a'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli'));
         const groupAccountD = new Account('6b', ['6b'], [], Crypto.generateAC('Rohr560Umzug', 'chilli'));
         const groupAccountE = new Account('7a', ['7a'], [], Crypto.generateAC('Fensterbank830Bohrmaschine', 'chilli'));
         const groupAccountF = new Account('7b', ['7b'], [], Crypto.generateAC('Dachboden31Windmühle', 'chilli'));

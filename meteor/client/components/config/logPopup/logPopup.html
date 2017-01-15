@@ -1,3 +1,20 @@
 <template name="logPopup">
-    Hallo
+    {{>popup class="popup-log" title="Log" content="logPopupContent"}}
+</template>
+
+<template name="logPopupContent">
+    <table class="logTable">
+        <tr>
+            <th></th>
+            <th>Uhrzeit</th>
+            <th>Nachricht</th>
+        </tr>
+        {{#each l in getLog}}
+            <tr>
+                <td>{{l.level}}</td>
+                <td>{{l.timestamp}}</td>
+                <td>{{l.message}}</td>
+            </tr>
+        {{/each}}
+    </table>
 </template>
