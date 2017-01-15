@@ -447,34 +447,42 @@ function correlateHeaders(headerFields) {
     };
 }
 
+function processCSVResult(dataset, field, ct) {
+    for (let data in dataset) {
+        if (!dataset.hasOwnProperty(data)) continue;
+        data = dataset[data];
+        const gender = data[field["gender"]];
+        const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
+        let gid;
+        if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
+        else gid = getGroupIDByName(athlete.group);
+        modifyGroup(gid, function (group) {
+            group.athletes.push(athlete);
+        });
+    }
+    refreshErrorState();
+}
+
+function parseCSVFile(file) {
+    Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+            const compID = currentCompID.get();
+            const ct = DBInterface.getCompetitionType(compID);
+            const field = correlateHeaders(results.meta.fields);
+            processCSVResult(results.data, field, ct);
+        },
+    });
+}
+
 Template.csvImport.events({
     'change input[type=file]#csv-upload': function (event) {
         const files = event.target.files;
         for (let file in files) {
             if (!files.hasOwnProperty(file)) continue;
             file = files[file];
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: function (results) {
-                    const compID = currentCompID.get();
-                    const ct = DBInterface.getCompetitionType(compID);
-                    const field = correlateHeaders(results.meta.fields);
-                    for (let data in results.data) {
-                        if (!results.data.hasOwnProperty(data)) continue;
-                        data = results.data[data];
-                        const gender = data[field["gender"]];
-                        const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
-                        let gid;
-                        if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
-                        else gid = getGroupIDByName(athlete.group);
-                        modifyGroup(gid, function (group) {
-                            group.athletes.push(athlete);
-                        });
-                    }
-                    refreshErrorState();
-                },
-            });
+            parseCSVFile(file);
         }
     }
 });
