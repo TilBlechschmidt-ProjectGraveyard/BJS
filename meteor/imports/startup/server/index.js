@@ -117,8 +117,6 @@ export function onStartup() {
         addCompetition: function (account, data) {
             if (!account.isAdmin) return false;
 
-            console.log(data);
-
             const competitionType = getCompetitionTypeByID(data.competitionType);
             const sportTypes = lodash.map(competitionType.getSports(), function (ct) {
                 return ct.id;

@@ -112,6 +112,10 @@ Log.prototype = {
         this.messages = [];
     },
 
+    /**
+     * Returns the highest level
+     * @returns {number}
+     */
     getHighestLevel: function () {
         let logLevel = 0;
         for (let msg in this.messages) {
@@ -121,6 +125,10 @@ Log.prototype = {
         return logLevel;
     },
 
+    /**
+     * Returns the message with the highest level
+     * @returns {{level: number, message: string}}
+     */
     getHighestLevelMessage: function () {
         let message = {level: 0, message: ""};
         for (let msg in this.messages) {
