@@ -112,7 +112,7 @@
   {
     "id": "st_reck_p1",
     "name": "Reck Ü1",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Sprung in den Stütz, Abzug in den Beugehang gehockt, Senken zum Stand",
     "age": [
@@ -123,7 +123,7 @@
   {
     "id": "st_reck_p2",
     "name": "Reck Ü2",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Stütz und Abzug, Überdrehen rückwärts, Abdruck und Überdrehen vorwärts",
     "age": [
@@ -135,7 +135,7 @@
   {
     "id": "st_reck_p3",
     "name": "Reck Ü3",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Aufschwung mit Abdruckhilfe, Rückschwung in den Stand, Unterschwung aus dem Stand",
     "age": [
@@ -148,7 +148,7 @@
   {
     "id": "st_reck_p4",
     "name": "Reck Ü4",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Aufschwung, Knieaufschwung, Unterschwung aus dem Stand",
     "age": [
@@ -162,7 +162,7 @@
   {
     "id": "st_reck_p5",
     "name": "Reck Ü5",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Aufschwung, Hüftumschwung, Unterschwung aus dem beidbeinigen Absprung",
     "age": [
@@ -179,7 +179,7 @@
   {
     "id": "st_reck_p6",
     "name": "Reck Ü6",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "Aufzug, Hüftumschwung, Unterschwung aus dem Stütz",
     "age": [
@@ -199,7 +199,7 @@
   {
     "id": "st_reck_p7",
     "name": "Reck Ü7",
-    "category": 0,
+    "category": 1,
     "unit": "Punkte",
     "description": "(Spreiz-) Kippaufschwung, Hüftumschwung, Saltoabgang aus dem Langhang oder Aufgrätschen zum Unterschwung",
     "age": [
@@ -222,7 +222,7 @@
   {
     "id": "st_barren_p1",
     "name": "Barren Ü1",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Sprung in den Stütz, Vorschwung in den 4-Füßlerstand rücklings, Schwingen im Stütz",
     "age": [
@@ -233,7 +233,7 @@
   {
     "id": "st_barren_p2",
     "name": "Barren Ü2",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Sprung in den Stütz, Vor- und Rückschwung, Vorschwung zum Außenquersitz, Niederschwung",
     "age": [
@@ -245,7 +245,7 @@
   {
     "id": "st_barren_p3",
     "name": "Barren Ü3",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Sprung in den Stütz, Rückschwung in den 4-Füßlerstand vorlings, Kehre zum Außenquerstand",
     "age": [
@@ -258,7 +258,7 @@
   {
     "id": "st_barren_p4",
     "name": "Barren Ü4",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Vorschwung in den Grätschsitz, Schwingen im Stütz, Rückschwung und Hockwende",
     "age": [
@@ -272,7 +272,7 @@
   {
     "id": "st_barren_p5",
     "name": "Barren Ü5",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Kippe in den Grätschsitz, Schwingen im Stütz, hohe Wende",
     "age": [
@@ -289,7 +289,7 @@
   {
     "id": "st_barren_p6",
     "name": "Barren Ü6",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Aus dem Sitz: Oberarmstand und abrollen vorwärts, Schwungstemme in den Grätschsitz, Wendekehre",
     "age": [
@@ -309,7 +309,7 @@
   {
     "id": "st_barren_p7",
     "name": "Barren Ü7",
-    "category": 0,
+    "category": 2,
     "unit": "Punkte",
     "description": "Oberarmkippe, Schwungstemme vorwärts in den Stütz, Kreishockwende oder Wendekehre",
     "age": [
@@ -332,7 +332,7 @@
   {
     "id": "st_balancieren_p1",
     "name": "Balancieren Ü1",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Bank, breit: Gehen vorwärts und rückwärts, beidbeinige 1/2 Drehung, Abgang: Strecksprung",
     "age": [
@@ -343,7 +343,7 @@
   {
     "id": "st_balancieren_p2",
     "name": "Balancieren Ü2",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Bank schmal: Gehen vorwärts und rückwärts, beidbeinige 1/2 Drehung, Abgang: Grätschsprung",
     "age": [
@@ -355,7 +355,7 @@
   {
     "id": "st_balancieren_p3",
     "name": "Balancieren Ü3",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Balken oder höhere, schmale Bank: Stütz und Überspreizen, Strecksprung Abgang: Hocksprung",
     "age": [
@@ -368,7 +368,7 @@
   {
     "id": "st_balancieren_p4",
     "name": "Balancieren Ü4",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Balken oder hohe, schmale Bank: Aufgang: Hockwende, Strecksprung mit Fußwechsel, Pferdchensprung",
     "age": [
@@ -382,7 +382,7 @@
   {
     "id": "st_balancieren_p5",
     "name": "Balancieren Ü5",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Aufgang: Aufhocken (ein- oder beidbeinig), Standwaage, Abgang: Grätsch-winkelsprung",
     "age": [
@@ -399,7 +399,7 @@
   {
     "id": "st_balancieren_p6",
     "name": "Balancieren Ü6",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Aufgang: Durchhocken (ein- oder beidbeinig), Scherhandstand oder Rolle vorwärts Abgang: Radwende",
     "age": [
@@ -419,7 +419,7 @@
   {
     "id": "st_balancieren_p7",
     "name": "Balancieren Ü7",
-    "category": 0,
+    "category": 3,
     "unit": "Punkte",
     "description": "Aufgang: Auflaufen aus dem Schrägstand (mit oder ohne Stütz einer Hand), flüchtiger Handstand oder Rolle vorwärts Abgang: Handstütz-überschlag",
     "age": [
@@ -442,7 +442,7 @@
   {
     "id": "st_sprung_p1",
     "name": "Sprung Ü1",
-    "category": 0,
+    "category": 4,
     "unit": "Punkte",
     "description": "Kasten lang (0,70–0,90 m): Aufhocken, 2–3 Schritte, beidbeiniger Absprung zum Strecksprung, Landung",
     "age": [
@@ -465,7 +465,7 @@
   {
     "id": "st_sprung_p3",
     "name": "Sprung Ü3",
-    "category": 0,
+    "category": 4,
     "unit": "Punkte",
     "description": "Bock (1,00 m): Sprunggrätsche",
     "age": [
@@ -492,7 +492,7 @@
   {
     "id": "st_sprung_p5",
     "name": "Sprung Ü5",
-    "category": 0,
+    "category": 4,
     "unit": "Punkte",
     "description": "T-Bock/Pferd/ Kasten (1,10 m): Sprunghocke oder -grätsche",
     "age": [
@@ -509,7 +509,7 @@
   {
     "id": "st_sprung_p6",
     "name": "Sprung Ü6",
-    "category": 0,
+    "category": 4,
     "unit": "Punkte",
     "description": "T -Bock/Pferd/Kasten (1,20 m): Sprunghocke oder -grätsche",
     "age": [
@@ -529,7 +529,7 @@
   {
     "id": "st_sprung_p7",
     "name": "Sprung Ü7",
-    "category": 0,
+    "category": 4,
     "unit": "Punkte",
     "description": "Pferd/Kasten (1,20m): Handstütz-Sprung-Überschlag (gestreckt oder gewinkelt)",
     "age": [
@@ -552,7 +552,7 @@
   {
     "id": "st_miteinander_p1",
     "name": "Miteinander Ü1",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Schattenhockwende auf die Bank",
     "age": [
@@ -563,7 +563,7 @@
   {
     "id": "st_miteinander_p2",
     "name": "Miteinander Ü2",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Schattenhockwende über die Bank",
     "age": [
@@ -575,7 +575,7 @@
   {
     "id": "st_miteinander_p3",
     "name": "Miteinander Ü3",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Pyramide",
     "age": [
@@ -588,7 +588,7 @@
   {
     "id": "st_miteinander_p4",
     "name": "Miteinander Ü4",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Schattenrollen",
     "age": [
@@ -602,7 +602,7 @@
   {
     "id": "st_miteinander_p5",
     "name": "Miteinander Ü5",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Synchronräder",
     "age": [
@@ -619,7 +619,7 @@
   {
     "id": "st_miteinander_p6",
     "name": "Miteinander Ü6",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Gruppenübung an frei gewähltem Gerät",
     "age": [
@@ -639,7 +639,7 @@
   {
     "id": "st_miteinander_p7",
     "name": "Miteinander Ü7",
-    "category": 0,
+    "category": 5,
     "unit": "Punkte",
     "description": "Fließendes Minitrampolinspringen",
     "age": [
