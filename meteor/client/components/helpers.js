@@ -85,6 +85,9 @@ Template.registerHelper('length', function (arr) {
 Template.registerHelper('inc', function (i) {
     return ++i;
 });
+Template.registerHelper('dec', function (i) {
+    return --i;
+});
 Template.registerHelper('hasData', function (obj) {
     return Object.keys(obj).length > 0;
 });

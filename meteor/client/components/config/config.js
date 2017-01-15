@@ -24,6 +24,7 @@ export const editMode = new ReactiveVar(false);
 export const forwardIcon = new ReactiveVar(undefined);
 const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
+const ServerIPs = new ReactiveVar([]);
 
 DBInterface.waitForReady(function () {
     Tracker.autorun(async function () {
@@ -81,6 +82,12 @@ DBInterface.waitForReady(function () {
     });
 });
 
+Template.config.onRendered( function () {
+    DBInterface.getServerIPs(AccountManager.getAdminAccount().account, function (data) {
+        ServerIPs.set(data);
+    })
+});
+
 
 Template.config.helpers({
     competitions: function () {
@@ -103,6 +110,9 @@ Template.config.helpers({
             return forwardIcon.get();
         else
             return undefined;
+    },
+    ServerIPList: function () {
+        return ServerIPs.get();
     }
 });
 
