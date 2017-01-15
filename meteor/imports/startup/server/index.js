@@ -232,7 +232,7 @@ export function onStartup() {
          */
         retrieveCustomAccounts: function (account, data) {
             if (!account.isAdmin) return false;
-            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts;
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts || [];
         },
         /**
          * Adds a competition
