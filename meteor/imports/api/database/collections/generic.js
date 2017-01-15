@@ -1,6 +1,7 @@
 import {Collection} from "./collection";
 import {Account} from "../../logic/account";
 import {Crypto} from "../../crypto/crypto";
+import {genRandomCode} from "../../crypto/pwdgen";
 
 export function initGeneric() {
     Meteor.COLLECTIONS.Generic = new Collection('Generic', function (name, handle) {
@@ -30,7 +31,13 @@ export function initGeneric() {
     });
 
     Meteor.COLLECTIONS.Generic.createMockData = function () {
-        const adminPassword = "supersecret"; //genRandomCode(); // TODO: Add a random password
+        let adminPassword;
+        if (typeof process.env.ADMIN_PWD !== 'undefined') {
+            console.log("WARNING: Using admin password passed from environment!".red.underline.bold);
+            adminPassword = process.env.ADMIN_PWD;
+        } else {
+            adminPassword = genRandomCode();
+        }
         this.handle.insert({
             dbVersion: Meteor.config.dbVersion,
             cleanDB: true,
