@@ -117,7 +117,7 @@ export function refreshErrorState(id, firstName, lastName) {
     else
         forwardIcon.set(undefined);
 
-    console.log(errorStates);
+    //noinspection JSCheckFunctionSignatures
     athleteErrorState.set(errorStates);
 }
 
@@ -175,10 +175,12 @@ Template.athleteList.helpers({
             return true;
     },
     athleteTooltipLevel: function (athlete) {
-        return athleteErrorState.get()[athlete.id].level;
+        const errorState = athleteErrorState.get()[athlete.id];
+        if (errorState) return errorState.level;
     },
     athleteTooltipMsg: function (athlete) {
-        return athleteErrorState.get()[athlete.id].message;
+        const errorState = athleteErrorState.get()[athlete.id];
+        if (errorState) return errorState.message;
     },
     fullName: function (athlete) {
         if (editMode.get()) {
