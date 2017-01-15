@@ -98,7 +98,12 @@ export function onStartup() {
             if (!account.isAdmin) return false;
 
             Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
-                $set: {readOnly: true}
+                $set: {
+                    readOnly: true
+                },
+                $unset: {
+                    customAccounts: 1
+                }
             });
 
             return true;
@@ -206,6 +211,29 @@ export function onStartup() {
         getAthleteCount: function (account, data) {
             if (!account.isAdmin) return false;
             return Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find({}).count();
+        },
+        /**
+         * Stores a set of custom accounts in the database for later retrieval
+         * @param account - An admin account
+         * @param {{competitionID: string, customAccounts: Array}} data - Data object
+         * @returns {boolean}
+         */
+        storeCustomAccounts: function (account, data) {
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {customAccounts: data.customAccounts}
+            });
+            return true;
+        },
+        /**
+         * Retrieves a previously stored set of custom accounts
+         * @param account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {*}
+         */
+        retrieveCustomAccounts: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts;
         },
         /**
          * Adds a competition

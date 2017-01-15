@@ -24,12 +24,40 @@ const progress = new ReactiveVar(undefined);
 export const codesClean = new ReactiveVar(false);
 //noinspection JSCheckFunctionSignatures
 export const accessCodes = new ReactiveVar(baseACStructure);
+let accessCodesLoaded = undefined;
 
 
 Tracker.autorun(function () {
     const prog = progress.get();
     if (!prog) return;
     Meteor.f7.setProgressbar(".generateCodes", prog, 400);
+});
+
+// Storing custom accounts
+DBInterface.waitForReady(function () {
+    Tracker.autorun(function () {
+        const compID = currentCompID.get();
+        const acodes = accessCodes.get();
+        if (compID && accessCodesLoaded == compID)
+            DBInterface.storeCustomAccounts(AccountManager.getAdminAccount().account, compID, Crypto.encrypt(acodes[2].codes, AccountManager.getAdminAccount().account.ac, AccountManager.getAdminAccount().account.ac));
+    });
+});
+
+// Loading custom account database
+DBInterface.waitForReady(function () {
+    Tracker.autorun(async function () {
+        const compID = currentCompID.get();
+        if (compID && accessCodesLoaded !== compID) {
+            const data = await DBInterface.retrieveCustomAccounts(AccountManager.getAdminAccount().account, compID);
+            const decryptedCodes = Crypto.tryDecrypt(Meteor.config.log, data, [AccountManager.getAdminAccount().account.ac]);
+            if (decryptedCodes && decryptedCodes.signatureEnforced) {
+                const acodes = accessCodes.get();
+                acodes[2].codes = decryptedCodes.data;
+                accessCodes.set(acodes);
+            }
+            accessCodesLoaded = compID;
+        }
+    });
 });
 
 function getIndexOfCode(acodes, type, id, name) {
