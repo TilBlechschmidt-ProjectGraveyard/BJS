@@ -117,7 +117,7 @@ Athlete.prototype = {
         }
 
         if (this.sports.indexOf(stID) == -1) {
-            log.error('Der Athlete kann diese Sportarten nicht ausführen');
+            log.error("'" + this.getFullName() + "' kann diese Sportarte nicht ausführen: " + stID);
             canWrite = false;
         }
 
@@ -322,7 +322,7 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
 
 
 export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_signature, require_group_check) {
-    const log = new Log();
+    const log = Log.getLogObject();
     let groupNames = {};
     let groups = [];
 

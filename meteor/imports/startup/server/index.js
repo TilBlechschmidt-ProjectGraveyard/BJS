@@ -244,7 +244,9 @@ export function onStartup() {
             if (!account.canViewResults) return false;
 
             const ct = DBInterface.getCompetitionType();
-            const log = new Log();
+            const log = Log.getLogObject();
+
+            log.info("Die Urkunden wurden von '" + account.name + "' generiert.");
 
             const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
 
@@ -335,7 +337,7 @@ export function onStartup() {
         certificateUpdate: function (account, data) {
             if (!account.canViewResults) return false;
 
-            const log = new Log();
+            const log = Log.getLogObject();
             const athlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: data.id});
             const validityObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
 
@@ -347,6 +349,7 @@ export function onStartup() {
                         certificatedBy: encryptAsAdmin(account.name)
                     }
                 });
+                log.info("Die Urkunde von '" + athlete.firstName + " " + athlete.firstName + "' wurden von '" + athlete.name + "' fertiggestellt.");
                 return true;
             }
             return false;
@@ -371,7 +374,7 @@ export function onStartup() {
                 return false;
             }
 
-            const log = new Log();
+            const log = Log.getLogObject();
             const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
 
             return encryptAs(serverFunctions[name](account, data.data), account);

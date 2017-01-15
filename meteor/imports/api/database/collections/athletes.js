@@ -42,7 +42,7 @@ export function initAthletes() {
 
             if (updateRequired) {
                 const ct = DBInterface.getCompetitionType();
-                const log = new Log();
+                const log = Log.getLogObject();
                 const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
                 const athlete = Athlete.decryptFromDatabase(log, doc, accounts, true, true);
                 const valid = ct.validate(log, athlete, accounts, true);
@@ -79,7 +79,7 @@ export function initAthletes() {
     });
 
     Meteor.COLLECTIONS.Athletes.createMockData = function () {
-        const log = new Log();
+        const log = Log.getLogObject();
         const ct = COMPETITION_TYPES[0].object;
         const groupAccountA = new Account('Q#a', ['Q#a'], [], Crypto.generateAC('1234', 'chilli'));
         const groupAccountB = new Account('Q#b', ['Q#b'], [], Crypto.generateAC('12345', 'chilli'));

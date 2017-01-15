@@ -10,6 +10,17 @@ function Log() {
     this.log_enabled = true;
 }
 
+
+/**
+ * Returns a global log object
+ * @returns {Log}
+ */
+Log.getLogObject = function () {
+    if (!Meteor.logObject) Meteor.logObject = new Log();
+    return Meteor.logObject;
+};
+
+
 Log.prototype = {
 
     /**
@@ -18,13 +29,7 @@ Log.prototype = {
      * @param message {string} Content of the message.
      */
     error: function (message) {
-        if (this.log_enabled) {
-            this.messages.push({
-                level: 2,
-                message: message,
-                timestamp: new Date()
-            });
-        }
+        this.custom(2, message);
     },
     err: function (message) {
         this.error(message);
@@ -36,13 +41,7 @@ Log.prototype = {
      * @param message {string} Content of the message.
      */
     warning: function (message) {
-        if (this.log_enabled) {
-            this.messages.push({
-                level: 1,
-                message: message,
-                timestamp: new Date()
-            });
-        }
+        this.custom(1, message);
     },
     warn: function (message) {
         this.warning(message);
@@ -54,13 +53,7 @@ Log.prototype = {
      * @param message {string} Content of the message.
      */
     info: function (message) {
-        if (this.log_enabled) {
-            this.messages.push({
-                level: 0,
-                message: message,
-                timestamp: new Date()
-            });
-        }
+        this.custom(0, message);
     },
 
     /**

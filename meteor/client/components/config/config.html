@@ -49,6 +49,12 @@
                             <a href="#" class="download-button t-left fade fade-in">
                                 <i class="f7-icons">download</i>
                             </a>
+                        {{else}}
+                            {{#if not forwardButtonShown}}
+                                <a href="#" class="t-left fade fade-in open-popup" data-popup=".popup-log">
+                                    <i class="f7-icons">graph_round</i>
+                                </a>
+                            {{/if}}
                         {{/if}}
                     </div>
                 </div>
@@ -84,6 +90,7 @@
     {{>competitionTypeCreatePopup}}
     {{>competitionTypeInformationPopups}}
     {{>popup title="Athleten importieren" subtitle="CSV Import" content="csvImport" class="popup-csv-import"}}
+    {{>popup class="popup-log" title="Log" content="logPopup"}}
 
     {{#each c in competitions.readOnly}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}

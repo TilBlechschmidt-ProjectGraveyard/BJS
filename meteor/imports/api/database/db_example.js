@@ -8,7 +8,7 @@ module.exports = function () {
     const groupAccount = new Account('Q#z', ['Q#z', 'Test'], [], Crypto.generateAC('1234567ljhfaljawf8', 'pepper'));
     const serverAccount = new Account('Admin', ['Q#z'], ['st_long_jump', 'st_ball_200', 'st_endurance_1000', 'st_endurance_3000', 'st_sprint_100'], Crypto.generateAC('hflhkfks;kjfjankfa', 'pepper'));
 
-    const log = new Log();
+    const log = Log.getLogObject();
     const ps = DBInterface.getAthletesOfAccounts(log, [groupAccount], false);
 
     console.log(log.getAsString());

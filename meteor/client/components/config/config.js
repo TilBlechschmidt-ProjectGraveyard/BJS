@@ -13,7 +13,7 @@ import {
 } from "./accessCodes/accessCodes";
 
 Meteor.config = {};
-Meteor.config.log = new Log();
+Meteor.config.log = Log.getLogObject();
 
 export const dbReady = new Tracker.Dependency();
 

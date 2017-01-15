@@ -92,7 +92,7 @@ export function refreshErrorState(id, firstName, lastName) {
         let groupErrLevel = 0;
         for (let athlete in group.athletes) {
             if (!group.athletes.hasOwnProperty(athlete)) continue;
-            const athleteLog = new Log();
+            const athleteLog = Log.getLogObject();
 
             let athlete = group.athletes[athlete];
             if (athlete.id === id) {

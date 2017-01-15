@@ -19,7 +19,7 @@ if (Meteor.isClient) {
  */
 function runServerFunction(name, account, data, callback) {
     const loginObject = getLoginObject(account);
-    const log = new Log();
+    const log = Log.getLogObject();
     const returnPromise = typeof callback !== 'function';
     const callFunction = returnPromise ? Meteor.callPromise : Meteor.call;
     const throwError = function () {
@@ -201,7 +201,7 @@ export let DBInterface = {
      * Returns a list of groups by competition ID
      */
     getAthletesByCompetition: function (account, competitionID, require_signature, require_group_check, callback) {
-        const log = new Log();
+        const log = Log.getLogObject();
         runServerFunction('getAthletesByCompetitionID', account, {
             competitionID: competitionID,
             require_signature: require_signature,

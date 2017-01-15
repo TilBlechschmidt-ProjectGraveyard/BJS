@@ -8,7 +8,7 @@ import {AccountManager} from "../../../imports/api/account_managment/AccountMana
 import {checkPermission, updateSwiperProgress} from "../login/router";
 
 Meteor.input = {};
-Meteor.input.log = new Log();
+Meteor.input.log = Log.getLogObject();
 
 Meteor.inputDependency = new Tracker.Dependency();
 

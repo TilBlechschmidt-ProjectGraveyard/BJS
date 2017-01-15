@@ -272,7 +272,6 @@ export let Athletics = {
             }, 0),
             stScores: stScores
         };
-
     },
 
     /**
