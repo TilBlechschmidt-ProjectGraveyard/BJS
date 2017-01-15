@@ -281,13 +281,11 @@ export function loginCustom() {
 Template.accessCodeGroup.helpers({
     otherPermissions: function () {
         return [
-            {id: "resultPermission", name: "Urkunden erstellen"},
-            {id: "adminPermission", name: "Administratorzugriff"}
+            {id: "resultPermission", name: "Urkunden erstellen"}
         ];
     },
     otherPermissionList: function (code) {
         const otherPermissions = [];
-        if (code.adminPermission) otherPermissions.push("adminPermission");
         if (code.resultPermission) otherPermissions.push("resultPermission");
         return otherPermissions;
     },
