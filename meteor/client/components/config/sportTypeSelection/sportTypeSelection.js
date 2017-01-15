@@ -45,7 +45,6 @@ DBInterface.waitForReady(function () {
 
 Template.sportTypeSelection.helpers({
     categories: function () {
-        console.log("RELOAD TEMPLATE");
         return categories.get();
     }
 });
