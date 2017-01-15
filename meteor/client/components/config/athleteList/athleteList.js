@@ -46,6 +46,16 @@ export let modifyGroup = function (id, callback) {
     }
 };
 
+function getGroupIDByName(name) {
+    const lgroups = localGroups.get();
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        if (lgroups[group].name === name)
+            return lgroups[group].id;
+    }
+    return undefined;
+}
+
 function groupExists(name) {
     const lgroups = localGroups.get();
     for (let group in lgroups) {
@@ -53,6 +63,14 @@ function groupExists(name) {
         if (lgroups[group].name == name) return true;
     }
     return false;
+}
+
+function createGroup(name) {
+    const lgroups = localGroups.get();
+    const id = genUUID();
+    lgroups.push({name: name, athletes: [], collapsed: false, id: id});
+    localGroups.set(lgroups);
+    return id;
 }
 
 function checkAthleteName(id, newName) {
@@ -95,7 +113,7 @@ export function refreshErrorState(id, firstName, lastName) {
             const athleteLog = new Log();
 
             let athlete = group.athletes[athlete];
-            if (athlete.id === id) {
+            if (id && athlete.id === id) {
                 athlete.firstName = firstName;
                 athlete.lastName = lastName;
             }
@@ -192,10 +210,12 @@ Template.athleteList.helpers({
             return true;
     },
     athleteTooltipLevel: function (athlete) {
-        return athleteErrorState.get()[athlete.id].level;
+        const errorState = athleteErrorState.get()[athlete.id];
+        return errorState ? errorState.level : undefined;
     },
     athleteTooltipMsg: function (athlete) {
-        return athleteErrorState.get()[athlete.id].message;
+        const errorState = athleteErrorState.get()[athlete.id];
+        return errorState ? errorState.message : undefined;
     },
     fullName: function (athlete) {
         if (editMode.get()) {
@@ -325,9 +345,7 @@ Template.athleteList.events({
             if (groupExists(value)) {
                 Meteor.f7.alert("Eine Gruppe mit diesem Namen existiert bereits!", "Fehler");
             } else {
-                const lgroups = localGroups.get();
-                lgroups.push({name: value, athletes: [], collapsed: false, id: genUUID()});
-                localGroups.set(lgroups);
+                createGroup(value);
             }
             refreshErrorState();
         }).querySelector("input").focus();
@@ -401,19 +419,16 @@ function correlateHeaders(headerFields) {
     const group = findIndexByRegex(headerFields, /(gruppe|klasse|verband|gesell|team|verein|gemein|bund|mannschaft|group|col)/gi);
 
     const headerIndices = [firstname, lastname, ageGroup, gender, group];
-    if (hasDuplicates(headerIndices)) {
-        console.log("DUPLICATE FIELDS!!!!");
-    }
+    if (hasDuplicates(headerIndices))
+        console.warn("Duplicate header fields @ CSV File");
 
-    const headerMapping = {
+    return {
         firstName: headerFields[firstname],
         lastName: headerFields[lastname],
         ageGroup: headerFields[ageGroup],
-        gender: headerFields[gender], // TODO: Filter this by m/w
+        gender: headerFields[gender],
         group: headerFields[group]
     };
-
-    console.log(headerMapping);
 }
 
 Template.csvImport.events({
@@ -424,10 +439,24 @@ Template.csvImport.events({
             file = files[file];
             Papa.parse(file, {
                 header: true,
-                complete: function (results, file) {
-                    // console.log("PARSING DONE", results, file);
-                    correlateHeaders(results.meta.fields);
-                    console.log(results.data[0]);
+                skipEmptyLines: true,
+                complete: function (results) {
+                    const compID = currentCompID.get();
+                    const ct = DBInterface.getCompetitionType(compID);
+                    const field = correlateHeaders(results.meta.fields);
+                    for (let data in results.data) {
+                        if (!results.data.hasOwnProperty(data)) continue;
+                        data = results.data[data];
+                        const gender = data[field["gender"]];
+                        const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
+                        let gid;
+                        if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
+                        else gid = getGroupIDByName(athlete.group);
+                        modifyGroup(gid, function (group) {
+                            group.athletes.push(athlete);
+                        });
+                    }
+                    refreshErrorState();
                 },
             });
         }
