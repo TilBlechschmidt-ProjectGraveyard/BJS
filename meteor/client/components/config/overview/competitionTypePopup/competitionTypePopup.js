@@ -1,13 +1,13 @@
 import {COMPETITION_TYPES} from "../../../../../imports/api/logic/competition_type";
 import {DBInterface} from "../../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../../imports/api/account_managment/AccountManager";
-Template.competitionTypePopupContent.helpers({
+Template.competitionTypeCreatePopupContent.helpers({
     competitionTypes: function () {
         return COMPETITION_TYPES;
     }
 });
 
-Template.competitionTypePopupContent.events({
+Template.competitionTypeCreatePopupContent.events({
     'keypress .competitionNameInput': function (event) {
         if (event.keyCode == 13) {
             const submitButton = event.target.closest("div.swipeout-actions-right").querySelector(".addCompetitionSubmit");

@@ -28,9 +28,9 @@
             <div class="accordion-item-content" data-id="{{_id}}">
                 <div class="content-block">
                     <p class="t-left">
-                        Wettkampfart <i class="f7-icons open-detail-view" style="font-size: 14px; cursor: pointer"
-                                        data-id="{{type}}">info_fill</i>
-                        <span class="align-right">{{type}}</span>
+                        Wettkampfart
+                        <a href="" class="align-right t-right button-highlight open-popup show-sportTypes"
+                           data-popup=".popup-competitionType-{{type}}">{{type}} </a>
                     </p>
                     {{#if readOnly}}
                         <p class="t-left">
