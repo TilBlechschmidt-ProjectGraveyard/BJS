@@ -99,7 +99,7 @@ function checkAthleteName(id, newName) {
  */
 export function refreshErrorState(id, firstName, lastName) {
     // Calculate the group state
-    const lgroups = localGroups.get();
+    let lgroups = localGroups.get();
     let errorLevel = 0;
 
     const errorStates = {};
@@ -127,6 +127,16 @@ export function refreshErrorState(id, firstName, lastName) {
 
         errorStates[group.name] = {level: groupErrLevel};
         if (groupErrLevel > errorLevel) errorLevel = groupErrLevel;
+    }
+
+    // Set the error level of the group
+    if (!id && !firstName && !lastName) {
+        lgroups = localGroups.get();
+        for (let group in lgroups) {
+            if (!lgroups.hasOwnProperty(group)) continue;
+            lgroups[group].errorLevel = errorStates[lgroups[group].name].level;
+        }
+        localGroups.set(lgroups);
     }
 
     if (errorLevel > 0)
@@ -194,6 +204,7 @@ Template.athleteList.helpers({
                 name: group.name,
                 id: group.id,
                 collapsed: group.collapsed,
+                errorLevel: group.errorLevel,
                 athletes: _.filter(group.athletes, function (athlete) {
                     const fullName = athlete.getFullName();
                     for (let filter in nFilter) {
