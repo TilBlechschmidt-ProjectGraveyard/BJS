@@ -15,19 +15,33 @@ if (Meteor.isClient) {
  * @param {string} name - The name of the server function
  * @param {Account} account - The account that is used to authenticate
  * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
- * @param callback - A callback with one parameter: The return value of the server function
+ * @param {function} [callback] - A callback with one parameter: The return value of the server function. Function returns a promise if it is undefined.
  */
 function runServerFunction(name, account, data, callback) {
     const loginObject = getLoginObject(account);
-    Meteor.call('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
-        const log = new Log();
+    const log = new Log();
+    const errorMessage = Meteor.f7.alert.bind(null, "Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
+
+    const returnPromise = typeof callback !== 'function';
+    const callFunction = returnPromise ? Meteor.callPromise : Meteor.call;
+    const promise = callFunction('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
         const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
         if (data) {
             if (typeof callback === 'function') callback(data.data);
         } else if (Meteor.isClient) {
-            Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
+            errorMessage();
         }
     });
+
+    if (returnPromise)
+        return promise.then(data => {
+            const decrypted_data = Crypto.tryDecrypt(log, data, [account.ac]);
+
+            if (!decrypted_data && Meteor.isClient)
+                errorMessage();
+            else
+                return decrypted_data.data;
+        });
 }
 
 /**
@@ -194,6 +208,10 @@ export let DBInterface = {
             }
             if (typeof callback === 'function') callback(groups);
         });
+    },
+
+    getAthleteCountByCompetition: function (account, competitionID) {
+        return runServerFunction('getAthleteCount', account, {competitionID: competitionID});
     },
 
     /**

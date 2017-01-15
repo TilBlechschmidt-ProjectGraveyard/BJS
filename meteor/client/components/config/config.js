@@ -29,7 +29,7 @@ DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
         if (Meteor.f7) Meteor.f7.showIndicator();
         dbReady.depend();
-        DBInterface.waitForReady(function () {
+        DBInterface.waitForReady(async function () {
             const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
             const comps = {
                 writable: [],
@@ -43,8 +43,11 @@ DBInterface.waitForReady(function () {
 
                 // --- Populate data ---
 
-                const competitionType = getCompetitionTypeByID(competition.type);
+                // Athlete count (wait for promise to resolve)
+                competition.athleteCount = await DBInterface.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
+
                 // Competition type name
+                const competitionType = getCompetitionTypeByID(competition.type);
                 competition.type = competitionType.getInformation().name;
 
                 // Active property

@@ -198,6 +198,16 @@ export function onStartup() {
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },
         /**
+         * Gets the amount of athletes in a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        getAthleteCount: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find({}).count();
+        },
+        /**
          * Adds a competition
          * @param {Account} account - An output account
          * @param {{athleteIDs: [string]}} data - Data object

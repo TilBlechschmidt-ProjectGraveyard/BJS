@@ -41,9 +41,13 @@
                         </p>
                         <p class="t-left">
                             Athleten
-                            <a href="" class="align-right t-right button-highlight show-athletes">Anzeigen
-                                <i class="f7-icons"
-                                   style="font-size: 19px; display: inline-block; vertical-align: middle; padding-left: 5px">chevron_right</i></a>
+                            {{#if (eq athleteCount 0)}}
+                                <span class="align-right">Keine Athleten vorhanden.</span>
+                            {{else}}
+                                <a href="" class="align-right t-right button-highlight show-athletes">Anzeigen
+                                    <i class="f7-icons"
+                                       style="font-size: 19px; display: inline-block; vertical-align: middle; padding-left: 5px">chevron_right</i></a>
+                            {{/if}}
                         </p>
                         {{#if not active}}
                             <p>
