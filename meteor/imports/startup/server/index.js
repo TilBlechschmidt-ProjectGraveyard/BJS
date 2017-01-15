@@ -128,7 +128,6 @@ export function onStartup() {
          * @returns {boolean}
          */
         renameCompetition: function (account, data) {
-            console.log("renameCompetition");
             if (!account.isAdmin) return false;
             Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
                 $set: {name: data.newName}
@@ -185,13 +184,8 @@ export function onStartup() {
          */
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
-
             const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
-
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
-
-            console.log(encryptedAthletes);
-
 
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },

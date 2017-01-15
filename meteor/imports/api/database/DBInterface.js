@@ -192,7 +192,7 @@ export let DBInterface = {
                 }
                 groups[groupIndex].athletes = athletes;
             }
-            callback(groups);
+            if (typeof callback === 'function') callback(groups);
         });
     },
 
