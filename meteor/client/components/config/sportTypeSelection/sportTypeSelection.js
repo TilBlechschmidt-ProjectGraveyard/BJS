@@ -10,9 +10,7 @@ DBInterface.waitForReady(function () {
         dbReady.depend();
 
         const compID = currentCompID.get();
-        console.log(compID);
         if (!compID) {
-            console.log("---------ABORTED---------");
             if (Meteor.f7) Meteor.f7.hideIndicator();
             return;
         }
