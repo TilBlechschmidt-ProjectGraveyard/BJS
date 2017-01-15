@@ -13,6 +13,8 @@ export const localGroups = new ReactiveVar([]);
 export const athleteErrorState = new ReactiveVar({});
 export const selectedAthlete = new ReactiveVar(undefined);
 
+const nameFilter = new ReactiveVar([]);
+
 let loaded;
 
 export let modifyAthlete = function (id, callback) {
@@ -100,7 +102,7 @@ export function refreshErrorState(id, firstName, lastName) {
 
             athlete.check(athleteLog);
             const athleteMessage = athleteLog.getHighestLevelMessage();
-            errorStates[athlete.id] = athleteLog.getLastMessage();
+            errorStates[athlete.id] = athleteMessage;
             if (athleteMessage.level > groupErrLevel) groupErrLevel = athleteMessage.level;
         }
 
@@ -163,7 +165,24 @@ Tracker.autorun(function () {
 
 Template.athleteList.helpers({
     groups: function () {
-        return localGroups.get();
+        const nFilter = nameFilter.get();
+        console.log(nFilter);
+        console.log(localGroups.get());
+        return _.map(localGroups.get(), function (group) {
+            return {
+                name: group.name,
+                id: group.id,
+                collapsed: group.collapsed,
+                athletes: _.filter(group.athletes, function (athlete) {
+                    const fullName = athlete.getFullName();
+                    for (let filter in nFilter) {
+                        if (!nFilter.hasOwnProperty(filter)) continue;
+                        if (fullName.indexOf(nFilter[filter]) == -1) return false;
+                    }
+                    return true;
+                })
+            };
+        });
     },
     readOnly: function () {
         return !editMode.get();
@@ -175,12 +194,10 @@ Template.athleteList.helpers({
             return true;
     },
     athleteTooltipLevel: function (athlete) {
-        const errorState = athleteErrorState.get()[athlete.id];
-        if (errorState) return errorState.level;
+        return athleteErrorState.get()[athlete.id].level;
     },
     athleteTooltipMsg: function (athlete) {
-        const errorState = athleteErrorState.get()[athlete.id];
-        if (errorState) return errorState.message;
+        return athleteErrorState.get()[athlete.id].message;
     },
     fullName: function (athlete) {
         if (editMode.get()) {
@@ -258,6 +275,9 @@ Template.athleteList.events({
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         refreshErrorState(id, firstName, lastName);
     },
+    'keyup #configAthletesSearch': function (event) {
+        nameFilter.set(event.target.value.split(' '));
+    },
     'click input': function (event) {
         if (editMode.get()) {
             event.stopImmediatePropagation();
@@ -282,9 +302,8 @@ Template.athleteList.events({
         const ct = DBInterface.getCompetitionType(compID);
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
-        refreshErrorState();
-
         localGroups.set(lgroups);
+        refreshErrorState();
     },
     'click .remove-athlete': function (event) {
         event.stopImmediatePropagation();

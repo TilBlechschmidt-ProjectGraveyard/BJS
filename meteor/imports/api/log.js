@@ -122,7 +122,7 @@ Log.prototype = {
     },
 
     getHighestLevelMessage: function () {
-        let message = {level: -1, message: ""};
+        let message = {level: 0, message: ""};
         for (let msg in this.messages) {
             if (!this.messages.hasOwnProperty(msg)) continue;
             if (this.messages[msg].level > message.level) message = this.messages[msg];

@@ -70,7 +70,27 @@
             }
         }
     </script>
+    <br>
     <div class="autoWidthListBlock">
+
+        <div class="list-block">
+            <ul>
+                <!-- Text inputs -->
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="f7-icons">search</i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">Suche</div>
+                            <div class="item-input">
+                                <input id="configAthletesSearch" type="text" style="width: 100%" value=""
+                                       placeholder="Suche">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
         {{#each g in groups}}
             <div class="content-block-title collapsible collapse-height-100 {{#if g.collapsed}}collapsed{{/if}}"
                  style="position: relative" data-gid="{{g.id}}">
