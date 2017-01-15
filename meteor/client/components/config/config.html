@@ -35,11 +35,6 @@
                         </div>
                     </div>
                     <div class="right">
-                        {{#if printButtonShown}}
-                            <a href="#" class="print-button t-left fade fade-in">
-                                <i class="f7-icons">download</i>
-                            </a>
-                        {{/if}}
                         <a href="#" class="fwd-button t-left fade {{#if forwardButtonShown}}fade-in{{/if}} {{#if
                                 (eq forwardIcon.level 2)}}disabled{{/if}}">
                             {{#if forwardIcon}}
@@ -47,6 +42,14 @@
                             {{/if}}
                             {{forwardButton}}
                         </a>
+                        {{#if printButtonShown}}
+                            <a href="#" class="print-button t-left fade fade-in">
+                                <i class="f7-icons">document_text_fill</i>
+                            </a>
+                            <a href="#" class="download-button t-left fade fade-in">
+                                <i class="f7-icons">download</i>
+                            </a>
+                        {{/if}}
                     </div>
                 </div>
             </div>

@@ -159,6 +159,9 @@ Template.config.events({
         });
     },
     'click .print-button': function (event) {
+        window.print();
+    },
+    'click .download-button': function (event) {
         Blaze.saveAsPDF(Template.codes_print,{
             filename: "Zugangscodes_BJS.pdf",
             data: {
