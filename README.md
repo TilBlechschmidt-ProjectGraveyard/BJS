@@ -34,7 +34,40 @@ https://framework7.io/icons/
 ##App Icon Resizer
  
  https://resizeappicon.com
- 
+
+##Access Codes for Mock-Database
+
+UIIIb   Not879Netz
+UIIIa   Himmel757Leichtathletik
+OIIIb   Käfig452Wesen
+OIIIa   Spiegelei501Eifersucht
+IVb     Dachboden31Windmühle
+IVa     Fensterbank830Bohrmaschine
+Vb      Rohr560Umzug
+Va      Bahnhof495Badewanne
+VIb     Termin226Frucht
+VIa     Nadel437Verräter
+
+Sprint 100m (Elektronische Zeitmessung) Saft72Meile
+Sprint 75m (Handzeitmessung)            Wiede291Konzert
+Sprint 50m (Handzeitmessung)            Ständchen859Nacht
+Schleuderball 1kg                       Pfanne927Chirurg
+Ball 200g                               Dreiheit97Anspruch
+Kugelstoßen 7,26kg                      Bügeleisen4Sprechstundenhilfe
+Kugelstoßen 6kg                         Hafen375Führerschein
+Kugelstoßen 5kg                         Tiefkühltruhe144Kunde
+Kugelstoßen 4kg                         Knöchel357Datum
+Kugelstoßen 3kg                         Quark360Leerlauf
+Schlagball 80g                          Anwohner860Hass
+Hochsprung                              Fuß622Einkünft
+Weitsprung                              Joch338Bohne
+Ausdauerlauf 3000m                      Erhebung98Asylant
+Ausdauerlauf 2000m                      Pflaster236Glühlampe
+Ausdauerlauf 1000m                      Zauberei448Abwicklung
+Ausdauerlauf 800m                       Geige499Gewicht
+
+Urkundenzugang                          Ermutigung328Wäschestände
+
 ###Sizes
 
 ####Ios
