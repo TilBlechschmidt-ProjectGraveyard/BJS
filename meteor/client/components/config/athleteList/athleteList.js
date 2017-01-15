@@ -5,6 +5,7 @@ import {AccountManager} from "../../../../imports/api/account_managment/AccountM
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import gender from "gender-guess";
+import {showIndicator, hideIndicator} from "../../helpers";
 
 const startClasses = require('../../../../imports/data/start_classes.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
@@ -145,6 +146,9 @@ export function refreshErrorState(id, firstName, lastName) {
 Tracker.autorun(function () {
     const compID = currentCompID.get();
     if (compID) {
+        showIndicator();
+        //noinspection JSCheckFunctionSignatures
+        localGroups.set([]);
         DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (data) {
             for (let group in data) {
                 if (!data.hasOwnProperty(group)) continue;
@@ -154,6 +158,7 @@ Tracker.autorun(function () {
             }
             localGroups.set(data);
             refreshErrorState();
+            hideIndicator();
         });
 
         Tracker.nonreactive(refreshErrorState);

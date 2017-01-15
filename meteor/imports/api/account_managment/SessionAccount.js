@@ -1,6 +1,7 @@
 import {DBInterface} from "../database/DBInterface";
 import {Crypto} from "../crypto/crypto";
 import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
+import {hideIndicator} from "../../../client/components/helpers";
 
 const storage = window.sessionStorage;
 
@@ -50,7 +51,7 @@ export function SessionAccount(name) {
             if ((lastAccount.account.ac.pubHash != adminAccount.ac.pubHash) && !Meteor.COLLECTIONS.Accounts.handle.findOne({'ac.pubHash': lastAccount.account.ac.pubHash})) {
                 that.logout();
                 //close all indicators or preloaders
-                Meteor.f7.hideIndicator();
+                hideIndicator();
                 Meteor.f7.hidePreloader();
                 FlowRouter.go('/login');
             }
