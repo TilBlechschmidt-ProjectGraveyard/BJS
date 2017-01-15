@@ -70,23 +70,22 @@
                                     {{/if}}
                                 {{/if}}
                                 <div class="item-inner">
-                                    <div class="item-title"
-                                         style="display: inline-block; vertical-align: middle; width: 75%">
-                                        {{#if readOnly}}
-                                            {{a.firstName}}&nbsp;{{a.lastName}}
-                                            {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
-                                        {{else}}
-                                            <p style="margin:0;position:relative;"
-                                               class="{{#if (eq @index 0)}}groupTitle-{{g.id}}{{/if}}">
-                                                <span>
+                                    <div class="item-title" style="display: inline-block; vertical-align: middle; width: 75%">
+                                        <p style="margin:0;position:relative;"
+                                           class="{{#if (eq @index 0)}}groupTitle-{{g.id}}{{/if}}">
+                                            <span>
+                                                {{#if readOnly}}
+                                                    {{a.firstName}}&nbsp;{{a.lastName}}
+                                                    {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
+                                                {{else}}
                                                     <input type="text" class="name-input"
                                                            style="display: inline-block; width: 100%"
                                                            value="{{fullName a}}" placeholder="Vor-/Nachname"
                                                            data-id="{{a.id}}">
-                                                </span>
-                                                <span style="display: none">{{g.name}}</span>
-                                            </p>
-                                        {{/if}}
+                                                {{/if}}
+                                            </span>
+                                            <span style="display: none">{{g.name}}</span>
+                                        </p>
                                     </div>
                                     {{#if not readOnly}}{{#if not g.collapsed}}
                                         <span class="align-right remove-athlete delete-icon"><i class="f7-icons"
