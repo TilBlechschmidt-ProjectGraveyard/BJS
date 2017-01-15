@@ -334,6 +334,21 @@ Template.accordionInnerListBlock.events({
     }
 });
 
+Template.ACitemContent.events({
+    'click .remove-custom-code': function (event) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        const id = event.target.closest("li[data-id]").dataset.id;
+        Meteor.f7.confirm("Wollen sie den Zugangscode wirklich endgültig löschen?", "Zugangscode löschen", function () {
+            const acodes = accessCodes.get();
+            const index = getIndexOfCode(acodes, 2, id);
+            acodes[2].codes.splice(index, 1);
+            accessCodes.set(acodes);
+        });
+        return false;
+    }
+});
+
 Template.accessCodes.events({
     'click .add-code': function (event) {
         Meteor.f7.prompt("Wählen sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
