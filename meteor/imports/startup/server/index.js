@@ -126,7 +126,8 @@ export function onStartup() {
                 name: data.name,
                 sportTypes: sportTypes,
                 readOnly: false,
-                type: data.competitionType
+                type: data.competitionType,
+                customAccounts: []
             });
             Meteor.COLLECTIONS.connect(_id);
 
