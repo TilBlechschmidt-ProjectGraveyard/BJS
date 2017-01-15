@@ -30,6 +30,11 @@ DBInterface.waitForReady(function () {
         if (Meteor.f7) Meteor.f7.showIndicator();
         dbReady.depend();
 
+        if (!AccountManager.getAdminAccount().account) {
+            if (Meteor.f7) Meteor.f7.hideIndicator();
+            return undefined;
+        }
+
         const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
         const comps = {
             writable: [],
