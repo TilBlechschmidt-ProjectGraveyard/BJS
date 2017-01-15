@@ -101,18 +101,16 @@ Template.login.events({
         const type = event.target.dataset.type;
         if (event.target.dataset.type == "continue_login") {
             nextStep(getLoginSwiper());
-            setTimeout(function () {
-                document.getElementsByClassName("passwort-input")[1].focus();
-            }, 400);
+            document.getElementsByClassName("passwort-input")[1].focus();
         } else if (type == "view_data") {
             FlowRouter.go('/input');
         } else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
-            Meteor.f7.showPreloader("Abmelden");
-            AccountManager.logout(sessionStorage.getItem("firstLogin"));
-            sessionStorage.removeItem("firstLogin");
-            Meteor.inputDependency.changed();
-            checkPermission();
-            setTimeout(Meteor.f7.hidePreloader, 500);
+            Meteor.f7.confirm('Möchten Sie sich wirklich abmelden?', 'Abmelden', function () {
+                AccountManager.logout(sessionStorage.getItem("firstLogin"));
+                sessionStorage.removeItem("firstLogin");
+                Meteor.inputDependency.changed();
+                checkPermission();
+            });
         }
         return false;
     },
