@@ -30,7 +30,7 @@ function runServerFunction(name, account, data, callback) {
         console.error("Data to be transmitted:", data);
         console.error("Callback passed:", callback);
         console.error("Return type:", returnPromise ? "Promise" : "Callback");
-        Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen sie es erneut.", "Fehler");
+        Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen Sie es erneut.", "Fehler");
         throw err;
     };
 
@@ -86,16 +86,6 @@ export let DBInterface = {
                 });
             });
         });
-        // let onReadyFunctions = [];
-        // for (let collection in COLLECTIONS) {
-        //     if (!COLLECTIONS.hasOwnProperty(collection)) continue;
-        //     collection = COLLECTIONS[collection];
-        //     onReadyFunctions.push(collection.onReady);
-        // }
-        //
-        // parallel(onReadyFunctions, function () {
-        //     callback();
-        // });
     },
 
     /**
@@ -212,7 +202,6 @@ export let DBInterface = {
                 let athletes = [];
                 for (let athleteIndex in groups[groupIndex].athletes) {
                     if (!groups[groupIndex].athletes.hasOwnProperty(athleteIndex)) continue;
-                    console.log(groups[groupIndex].athletes[athleteIndex]);
                     athletes.push(Athlete.fromObject(log, groups[groupIndex].athletes[athleteIndex]));
                 }
                 groups[groupIndex].athletes = athletes;

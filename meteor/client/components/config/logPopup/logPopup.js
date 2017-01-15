@@ -6,7 +6,6 @@ let log = new ReactiveVar([]);
 Template.logPopup.events({
     'popup:open .popup-log': function () {
         DBInterface.getLog(AccountManager.getAdminAccount().account, function (data) {
-            console.log(data);
             log.set(data);
         });
     }

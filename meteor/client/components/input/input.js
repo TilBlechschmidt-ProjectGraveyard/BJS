@@ -265,7 +265,6 @@ Template.input.helpers({
         }
         const competitionType = DBInterface.getCompetitionType();
         return lodash.map(DBInterface.getCompetitionSportTypes(), function (stID) {
-            console.log(competitionType.getSportType(stID));
             const sportType = competitionType.getSportType(stID);
             sportType.m.min = sportType.m.age.length >0 ? _.min(sportType.m.age): "nicht möglich";
             sportType.m.max = sportType.m.age.length >0 ?  _.max(sportType.m.age):"";
