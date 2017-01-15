@@ -101,7 +101,9 @@ Template.login.events({
         const type = event.target.dataset.type;
         if (event.target.dataset.type == "continue_login") {
             nextStep(getLoginSwiper());
-            document.getElementsByClassName("passwort-input")[1].focus();
+            setTimeout(function () {
+                document.getElementsByClassName("passwort-input")[1].focus();
+            }, 400);
         } else if (type == "view_data") {
             FlowRouter.go('/input');
         } else if (type == "logout" && sessionStorage.getItem("firstLogin")) {
