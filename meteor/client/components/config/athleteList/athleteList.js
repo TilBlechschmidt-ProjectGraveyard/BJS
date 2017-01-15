@@ -166,8 +166,6 @@ Tracker.autorun(function () {
 Template.athleteList.helpers({
     groups: function () {
         const nFilter = nameFilter.get();
-        console.log(nFilter);
-        console.log(localGroups.get());
         return _.map(localGroups.get(), function (group) {
             return {
                 name: group.name,
