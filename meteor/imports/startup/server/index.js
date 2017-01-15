@@ -5,6 +5,7 @@ import {Log} from "../../api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
+import {getCompetitionTypeByID} from "../../api/logic/competition_type";
 
 
 export function onStartup() {
@@ -111,9 +112,16 @@ export function onStartup() {
         addCompetition: function (account, data) {
             if (!account.isAdmin) return false;
 
+            console.log(data);
+
+            const competitionType = getCompetitionTypeByID(data.competitionType);
+            const sportTypes = lodash.map(competitionType.getSports(), function (ct) {
+                return ct.id;
+            });
+
             const _id = Meteor.COLLECTIONS.Contests.handle.insert({
                 name: data.name,
-                sportTypes: [],
+                sportTypes: sportTypes,
                 readOnly: false,
                 type: data.competitionType
             });
