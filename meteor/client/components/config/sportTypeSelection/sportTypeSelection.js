@@ -10,7 +10,9 @@ DBInterface.waitForReady(function () {
         dbReady.depend();
 
         const compID = currentCompID.get();
+        console.log(compID);
         if (!compID) {
+            console.log("---------ABORTED---------");
             if (Meteor.f7) Meteor.f7.hideIndicator();
             return;
         }
@@ -27,7 +29,10 @@ DBInterface.waitForReady(function () {
             sportType = sportTypes[sportType];
 
             // set enabled state for sportType
-            if (lodash.includes(competition.sportTypes, sportType.id)) sportType.checked = "checked";
+            if (lodash.includes(competition.sportTypes, sportType.id))
+                sportType.checked = "checked";
+            else
+                sportType.checked = "";
 
             cats[sportType.category].sportTypes.push(sportType);
         }
@@ -42,6 +47,7 @@ DBInterface.waitForReady(function () {
 
 Template.sportTypeSelection.helpers({
     categories: function () {
+        console.log("RELOAD TEMPLATE");
         return categories.get();
     }
 });
