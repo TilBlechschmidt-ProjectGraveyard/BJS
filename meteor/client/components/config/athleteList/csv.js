@@ -1,5 +1,5 @@
 import {currentCompID} from "../config";
-import {modifyGroup, refreshErrorState, groupExists, getGroupIDByName, createGroup} from "./athleteList";
+import {refreshErrorState, insertAthlete} from "./athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 
@@ -45,12 +45,7 @@ function processCSVResult(dataset, field, ct) {
         data = dataset[data];
         const gender = data[field["gender"]];
         const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
-        let gid;
-        if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
-        else gid = getGroupIDByName(athlete.group);
-        modifyGroup(gid, function (group) {
-            group.athletes.push(athlete);
-        });
+        insertAthlete(athlete);
     }
     refreshErrorState();
 }

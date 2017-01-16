@@ -1,1 +1,1 @@
-export const streamer = new Meteor.Streamer('chat');
+export const asyncServerFunctionChannel = new Meteor.Streamer('serverFunctions');

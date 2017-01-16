@@ -6,6 +6,9 @@ import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
 import {getCompetitionTypeByID} from "../../api/logic/competition_type";
+import {genUUID} from "../../api/crypto/pwdgen";
+import {asyncServerFunctionChannel} from "../../api/streamer";
+const waterfall = require('async-waterfall');
 
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
@@ -18,7 +21,77 @@ export function onStartup() {
     console.log("Remember that with great power comes great responsibility, so you shall use it wisely!".italic.lightCyan);
     console.log("Now go, use all that voodoo power that comes with it and do some good to your people.".italic.lightCyan);
 
+    asyncServerFunctionChannel.allowRead('all');
+    asyncServerFunctionChannel.allowWrite('all');
+
+    const asyncServerFunctions = {
+        getAthletes: function (account, data) {
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+            const log = Log.getLogObject();
+
+            // Return false to deny permission
+            return {
+                entries: encryptedAthletes,
+                callback: function (encryptedAthlete) {
+                    return Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, data.require_signature, data.require_group_check);
+                }
+            }
+        }
+    };
+
+    // Wait for the client to be ready
+    const pendingAsyncCalls = new ReactiveVar({});
+
+    asyncServerFunctionChannel.on('clientReady', function (id) {
+        const pendingCalls = pendingAsyncCalls.get();
+        if (typeof pendingCalls[id] === 'function') {
+            const call = pendingCalls[id];
+
+            delete pendingCalls[id];
+            pendingAsyncCalls.set(pendingCalls);
+
+            call();
+        } else {
+            console.error("Got asyncReady event but there was no pending call");
+        }
+    });
+
     const serverFunctions = {
+        async: function (account, data) {
+            const context = asyncServerFunctions[data.name](account, data.data);
+            const uuid = genUUID();
+            const size = context.entries.length - 1;
+
+            if (context === false)
+                return {
+                    uuid: "",
+                    permissionDenied: true
+                };
+
+            const pendingCalls = pendingAsyncCalls.get();
+            pendingCalls[uuid] = function () {
+                let index = 0;
+                waterfall(context.entries.map(function (entry) {
+                    return function (nextCallback) {
+                        asyncServerFunctionChannel.emit(uuid, encryptAs({
+                            index: index,
+                            size: size,
+                            data: context.callback(entry)
+                        }, account));
+
+                        ++index;
+                        nextCallback(null);
+                    }
+                }));
+            };
+            pendingAsyncCalls.set(pendingCalls);
+
+            return {
+                uuid: uuid,
+                size: size,
+            }
+        },
         /**
          * Activates a competition by id
          * @param {Account} account - An admin account
@@ -200,26 +273,6 @@ export function onStartup() {
 
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },
-        getAthletesByCompetitionIDAsync: function (account, data) {
-            if (!account.isAdmin) return false;
-            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
-
-            waterfall(encryptedAthletes.map(function (athlete) {
-                return function (lastItemResult, nextCallback) {
-                    if (typeof lastItemResult === 'function') {
-                        nextCallback = lastItemResult;
-                        lastItemResult = [];
-                    }
-                    lastItemResult.push(athlete);
-                    nextCallback(null, lastItemResult);
-                }
-            }), function (err, result) {
-                // final callback
-                console.log(err, result);
-            });
-            return true;
-        },
         /**
          * Gets the amount of athletes in a competition
          * @param {Account} account - An admin account
@@ -389,8 +442,6 @@ export function onStartup() {
 
     Meteor.methods({
         'runServerFunction': function (name, loginObject, enc_data) {
-            console.log(name);
-
             //find account
             let account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 
@@ -413,11 +464,4 @@ export function onStartup() {
             return encryptAs(res, account);
         }
     });
-
-    import {streamer} from "../../api/streamer";
-
-    if (Meteor.isServer) {
-        streamer.allowRead('all');
-        streamer.allowWrite('all');
-    }
 }

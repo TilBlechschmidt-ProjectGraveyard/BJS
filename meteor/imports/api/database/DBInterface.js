@@ -4,10 +4,22 @@ import {initCollections} from "./collections/index";
 import {getLoginObject} from "../logic/account";
 import {Log} from "../log";
 import {Crypto} from "../crypto/crypto";
-
+import {asyncServerFunctionChannel} from "../streamer";
 
 if (Meteor.isClient) {
     initCollections();
+}
+
+function throwError() {
+    const err = new Error("Error whilst calling a server function.");
+    console.error("-------- Error Context --------");
+    console.error("Function called:", name);
+    console.error("Account used:", account);
+    console.error("Data to be transmitted:", data);
+    console.error("Callback passed:", callback);
+    console.error("Return type:", returnPromise ? "Promise" : "Callback");
+    Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen Sie es erneut.", "Fehler");
+    throw err;
 }
 
 /**
@@ -22,17 +34,6 @@ function runServerFunction(name, account, data, callback) {
     const log = Log.getLogObject();
     const returnPromise = typeof callback !== 'function';
     const callFunction = returnPromise ? Meteor.callPromise : Meteor.call;
-    const throwError = function () {
-        const err = new Error("Error whilst calling a server function.");
-        console.error("-------- Error Context --------");
-        console.error("Function called:", name);
-        console.error("Account used:", account);
-        console.error("Data to be transmitted:", data);
-        console.error("Callback passed:", callback);
-        console.error("Return type:", returnPromise ? "Promise" : "Callback");
-        Meteor.f7.alert("Es gab einen Fehler beim Verbinden mit dem Server. Bitte melden Sie sich ab und versuchen Sie es erneut.", "Fehler");
-        throw err;
-    };
 
     const promise = callFunction('runServerFunction', name, loginObject, Crypto.encrypt(data, account.ac, account.ac), function (err, enc_data) {
         const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
@@ -52,6 +53,24 @@ function runServerFunction(name, account, data, callback) {
             else
                 return decrypted_data.data;
         });
+}
+
+async function runAsyncServerFunction(name, account, data, callback) {
+    const log = Log.getLogObject();
+    const connection = await runServerFunction('async', account, {name: name, data: data});
+
+    asyncServerFunctionChannel.on(connection.uuid, function (encryptedEntry) {
+        const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
+
+        if (entry && !entry.data.permissionDenied) {
+            if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
+        } else if (Meteor.isClient) {
+            if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
+            throwError();
+        }
+    });
+
+    asyncServerFunctionChannel.emit('clientReady', connection.uuid);
 }
 
 /**
@@ -208,6 +227,14 @@ export let DBInterface = {
             }
             if (typeof callback === 'function') callback(groups);
         });
+    },
+
+    getAthletesByCompetitionAsync: function (account, competitionID, require_signature, require_group_check, callback) {
+        runAsyncServerFunction('getAthletes', account, {
+            competitionID: competitionID,
+            require_signature: require_signature,
+            require_group_check: require_group_check
+        }, callback);
     },
 
     getAthleteCountByCompetition: function (account, competitionID) {

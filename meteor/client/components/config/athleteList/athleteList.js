@@ -78,6 +78,15 @@ export function createGroup(name) {
     return id;
 }
 
+export function insertAthlete(athlete) {
+    let gid;
+    if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
+    else gid = getGroupIDByName(athlete.group);
+    modifyGroup(gid, function (group) {
+        group.athletes.push(athlete);
+    });
+}
+
 /**
  *
  * @param {string} [id]
@@ -136,16 +145,15 @@ Tracker.autorun(function () {
         showIndicator();
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
-        DBInterface.getAthletesByCompetition(AccountManager.getAdminAccount().account, compID, false, false, function (data) {
-            for (let group in data) {
-                if (!data.hasOwnProperty(group)) continue;
-                group = data[group];
-                group.id = genUUID();
-                group.collapsed = false;
-            }
-            localGroups.set(data);
-            refreshErrorState();
-            hideIndicator();
+
+        DBInterface.getAthletesByCompetitionAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+            if (entry.index == 0)
+                hideIndicator();
+            athlete = Athlete.fromObject(Meteor.config.log, athlete);
+            insertAthlete(athlete);
+
+            if (last)
+                refreshErrorState();
         });
     }
 });
