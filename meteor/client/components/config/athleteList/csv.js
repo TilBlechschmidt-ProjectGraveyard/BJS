@@ -55,7 +55,7 @@ function processCSVResult(dataset, field, ct) {
     refreshErrorState();
 }
 
-function parseCSVFile(file) {
+export function parseCSVFile(file) {
     Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
