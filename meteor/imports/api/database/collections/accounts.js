@@ -27,9 +27,6 @@ export function initAccounts() {
     });
 
     Meteor.COLLECTIONS.Accounts.createMockData = function () {
-        for (let i = 0; i < 10; i++) {
-            this.handle.insert(new Account('Q#z' + i, ['Q#z' + i], [], Crypto.generateAC('1234_' + i, 'pepper')));
-        }
         this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli')));
         this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli')));
         this.handle.insert(new Account('Va', ['Va'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli')));
