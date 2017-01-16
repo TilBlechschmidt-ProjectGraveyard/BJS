@@ -31,9 +31,13 @@ export function initAccounts() {
         // this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli')));
         // this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli')));
         // this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('Ermutigung328Wäschestände', 'pepper'), true));
-        this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('4321', 'pepper'), true));
+        // this.handle.insert(new Account('Sprint', [], ['st_sprint_50', 'st_sprint_75', 'st_sprint_100_el'], Crypto.generateAC('Ständchen859Nacht', 'pepper')));
+        this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('urkunden', 'pepper'), true));
         this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('1234', 'chilli')));
         this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('12345', 'chilli')));
+
+
+        this.handle.insert(new Account('Sprint', [], ['st_sprint_50', 'st_sprint_75', 'st_sprint_100_el'], Crypto.generateAC('4321', 'pepper')));
 
 
         this.handle.insert(new Account('Va', ['Va'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli')));
@@ -44,9 +48,6 @@ export function initAccounts() {
         this.handle.insert(new Account('UIIIb', ['UIIIb'], [], Crypto.generateAC('Not879Netz', 'chilli')));
         this.handle.insert(new Account('OIIIa', ['OIIIa'], [], Crypto.generateAC('Spiegelei501Eifersucht', 'chilli')));
         this.handle.insert(new Account('OIIIb', ['OIIIb'], [], Crypto.generateAC('Käfig452Wesen', 'chilli')));
-        this.handle.insert(new Account('Sprint 50m \(Handzeitmessung\)', [], ['st_sprint_50'], Crypto.generateAC('Ständchen859Nacht', 'pepper')));
-        this.handle.insert(new Account('Sprint 75m \(Handzeitmessung\)', [], ['st_sprint_75'], Crypto.generateAC('Wiede291Konzert', 'pepper')));
-        this.handle.insert(new Account('Sprint 100m \(Elektronische Messung\)', [], ['st_sprint_100_el'], Crypto.generateAC('Saft72Meile', 'pepper')));
         this.handle.insert(new Account('Ausdauerlauf 800m', [], ['st_endurance_800'], Crypto.generateAC('Geige499Gewicht', 'pepper')));
         this.handle.insert(new Account('Ausdauerlauf 1000m', [], ['st_endurance_1000'], Crypto.generateAC('Zauberei448Abwicklung', 'pepper')));
         this.handle.insert(new Account('Ausdauerlauf 2000m', [], ['st_endurance_2000'], Crypto.generateAC(' Pflaster236Glühlampe', 'pepper')));
