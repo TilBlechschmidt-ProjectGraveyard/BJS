@@ -15,8 +15,5 @@
     "jsdoc-strip-async-await": "^0.1.0",
     "meteor-node-stubs": "~0.2.0",
     "string-format": "0.5.0"
-  },
-  "devDependencies": {
-    "jsdoc-strip-async-await": "^0.1.0"
   }
 }
