@@ -4,7 +4,7 @@
     "name": "Sprint 50m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         8,
@@ -69,7 +69,7 @@
     "name": "Sprint 50m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         8,
@@ -134,7 +134,7 @@
     "name": "Sprint 75m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         13,
@@ -193,7 +193,7 @@
     "name": "Sprint 75m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         13,
@@ -252,7 +252,7 @@
     "name": "Sprint 100m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         15,
@@ -317,7 +317,7 @@
     "name": "Sprint 100m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
-    "description": "",
+    "description": "TODO: Input sprint description",
     "w": {
       "age": [
         15,
@@ -382,7 +382,7 @@
     "name": "Ausdauerlauf 800m",
     "category": 1,
     "unit": "min:s",
-    "description": "",
+    "description": "TODO: Input endurance description",
     "w": {
       "age": [
         8,
@@ -447,7 +447,7 @@
     "name": "Ausdauerlauf 1000m",
     "category": 1,
     "unit": "min:s",
-    "description": "",
+    "description": "TODO: Input endurance description",
     "w": {
       "age": [],
       "scoreCalculation": {
@@ -512,7 +512,7 @@
     "name": "Ausdauerlauf 2000m",
     "category": 1,
     "unit": "min:s",
-    "description": "",
+    "description": "TODO: Input endurance description",
     "w": {
       "age": [
         10,
@@ -575,7 +575,7 @@
     "name": "Ausdauerlauf 3000m",
     "category": 1,
     "unit": "min:s",
-    "description": "",
+    "description": "TODO: Input endurance description",
     "w": {
       "age": [
         16,
