@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>imports/startup/server/index.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
+<label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Account.html">Account</a></li>
+        <li><a href="Athlete.html">Athlete</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
+                <li data-type='method'><a href="Athlete.html#addMeasurements">addMeasurements</a></li>
+                <li data-type='method'><a href="Athlete.html#check">check</a></li>
+                <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
+                <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
+                <li data-type='method'><a href="Athlete.html#getPlain">getPlain</a></li>
+                <li data-type='method'><a href="Athlete.html#getShortName">getShortName</a></li>
+            </ul>
+        </li>
+        <li><a href="Data.html">Data</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Data.html#findEncrypted">findEncrypted</a></li>
+                <li data-type='method'><a href="Data.html#getPlain">getPlain</a></li>
+                <li data-type='method'><a href="Data.html#push">push</a></li>
+            </ul>
+        </li>
+        <li><a href="Log.html">Log</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Log.html#.getLogObject">getLogObject</a></li>
+                <li data-type='method'><a href="Log.html#clear">clear</a></li>
+                <li data-type='method'><a href="Log.html#custom">custom</a></li>
+                <li data-type='method'><a href="Log.html#disable">disable</a></li>
+                <li data-type='method'><a href="Log.html#enable">enable</a></li>
+                <li data-type='method'><a href="Log.html#error">error</a></li>
+                <li data-type='method'><a href="Log.html#getAsString">getAsString</a></li>
+                <li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li>
+                <li data-type='method'><a href="Log.html#getAsStringWithMinLevel">getAsStringWithMinLevel</a></li>
+                <li data-type='method'><a href="Log.html#getHighestLevel">getHighestLevel</a></li>
+                <li data-type='method'><a href="Log.html#getHighestLevelMessage">getHighestLevelMessage</a></li>
+                <li data-type='method'><a href="Log.html#getLastMessage">getLastMessage</a></li>
+                <li data-type='method'><a href="Log.html#info">info</a></li>
+                <li data-type='method'><a href="Log.html#merge">merge</a></li>
+                <li data-type='method'><a href="Log.html#warning">warning</a></li>
+            </ul>
+        </li>
+        <li><a href="SessionAccount.html">SessionAccount</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="SessionAccount.html#canViewResults">canViewResults</a></li>
+                <li data-type='method'><a href="SessionAccount.html#get">get</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isAdminAccount">isAdminAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isGroupAccount">isGroupAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isLoggedIn">isLoggedIn</a></li>
+                <li data-type='method'><a href="SessionAccount.html#isStationAccount">isStationAccount</a></li>
+                <li data-type='method'><a href="SessionAccount.html#login">login</a></li>
+                <li data-type='method'><a href="SessionAccount.html#logout">logout</a></li>
+                <li data-type='method'><a href="SessionAccount.html#setProcessing">setProcessing</a></li>
+                <li data-type='method'><a href="SessionAccount.html#store">store</a></li>
+            </ul>
+        </li>
+    </ul>
+    <h3>Namespaces</h3>
+    <ul>
+        <li><a href="AccountManager.html">AccountManager</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="AccountManager.html#.getAdminAccount">getAdminAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getGroupAccount">getGroupAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getOutputAccount">getOutputAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.getStationAccount">getStationAccount</a></li>
+                <li data-type='method'><a href="AccountManager.html#.inputPermitted">inputPermitted</a></li>
+                <li data-type='method'><a href="AccountManager.html#.login">login</a></li>
+                <li data-type='method'><a href="AccountManager.html#.logout">logout</a></li>
+                <li data-type='method'><a href="AccountManager.html#.retrieveAccounts">retrieveAccounts</a></li>
+                <li data-type='method'><a href="AccountManager.html#.viewPermitted">viewPermitted</a></li>
+            </ul>
+        </li>
+        <li><a href="Athletics.html">Athletics</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Athletics.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Athletics.html#.calculateOne">calculateOne</a></li>
+                <li data-type='method'><a href="Athletics.html#.canDoSportType">canDoSportType</a></li>
+                <li data-type='method'><a href="Athletics.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Athletics.html#.getCertificateInfo">getCertificateInfo</a></li>
+                <li data-type='method'><a href="Athletics.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Athletics.html#.getNameOfSportType">getNameOfSportType</a></li>
+                <li data-type='method'><a href="Athletics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Athletics.html#.getSportType">getSportType</a></li>
+                <li data-type='method'><a href="Athletics.html#.getValidData">getValidData</a></li>
+                <li data-type='method'><a href="Athletics.html#.validate">validate</a></li>
+            </ul>
+        </li>
+        <li><a href="Crypto.html">Crypto</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Crypto.html#.encrypt">encrypt</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateAC">generateAC</a></li>
+                <li data-type='method'><a href="Crypto.html#.generateLoginToken">generateLoginToken</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePrivHash">generatePrivHash</a></li>
+                <li data-type='method'><a href="Crypto.html#.generatePubHash">generatePubHash</a></li>
+                <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
+            </ul>
+        </li>
+        <li><a href="Gymnastics.html">Gymnastics</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Gymnastics.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.canDoSportType">canDoSportType</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getCertificateInfo">getCertificateInfo</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getNameOfSportType">getNameOfSportType</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getSportType">getSportType</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.getValidData">getValidData</a></li>
+                <li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li>
+            </ul>
+        </li>
+        <li><a href="Swimming.html">Swimming</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
+                <li data-type='method'><a href="Swimming.html#.canDoSportType">canDoSportType</a></li>
+                <li data-type='method'><a href="Swimming.html#.generateCertificate">generateCertificate</a></li>
+                <li data-type='method'><a href="Swimming.html#.getCertificateInfo">getCertificateInfo</a></li>
+                <li data-type='method'><a href="Swimming.html#.getInformation">getInformation</a></li>
+                <li data-type='method'><a href="Swimming.html#.getNameOfSportType">getNameOfSportType</a></li>
+                <li data-type='method'><a href="Swimming.html#.getSports">getSports</a></li>
+                <li data-type='method'><a href="Swimming.html#.getSportType">getSportType</a></li>
+                <li data-type='method'><a href="Swimming.html#.getValidData">getValidData</a></li>
+                <li data-type='method'><a href="Swimming.html#.validate">validate</a></li>
+            </ul>
+        </li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#canViewResults">canViewResults</a></li>
+        <li><a href="global.html#checkAdminLogin">checkAdminLogin</a></li>
+        <li><a href="global.html#checkLogin">checkLogin</a></li>
+        <li><a href="global.html#filterUndefined">filterUndefined</a></li>
+        <li><a href="global.html#genRandomCode">genRandomCode</a></li>
+        <li><a href="global.html#genUUID">genUUID</a></li>
+        <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
+        <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
+        <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
+        <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
+        <li><a href="global.html#getGroupNames">getGroupNames</a></li>
+        <li><a href="global.html#getLoginObject">getLoginObject</a></li>
+        <li><a href="global.html#getLoginToken">getLoginToken</a></li>
+        <li><a href="global.html#getStationNames">getStationNames</a></li>
+        <li><a href="global.html#getStationNamesAsArray">getStationNamesAsArray</a></li>
+        <li><a href="global.html#initCollections">initCollections</a></li>
+        <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
+        <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
+        <li><a href="global.html#isStationAccount">isStationAccount</a></li>
+        <li><a href="global.html#refreshErrorState">refreshErrorState</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">imports/startup/server/index.js</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {initCollections} from "../../api/database/collections/index";
+import {Server} from "../../api/database/ServerInterface";
+import {Athlete, encryptedAthletesToGroups} from "../../api/logic/athlete";
+import {Log} from "../../api/log";
+import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
+import {Crypto} from "../../api/crypto/crypto";
+import {filterUndefined} from "../../api/logic/general";
+import {getCompetitionTypeByID} from "../../api/logic/competitionType";
+import {genUUID} from "../../api/crypto/pwdgen";
+import {asyncServerFunctionChannel} from "../../api/streamer";
+const waterfall = require('async-waterfall');
+
+export function onStartup() {
+    // Load the config.json into the (semi-global) Meteor.config object
+    Meteor.config = require('../../../config.json');
+    if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
+
+    initCollections();
+
+    console.log('Your utmost secure and highly trustworthy administrator password reads "'.italic.lightCyan + Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.getGenericID()}).adminPassword.bold.lightRed.underline + '".'.italic.lightCyan);
+    console.log("Remember that with great power comes great responsibility, so you shall use it wisely!".italic.lightCyan);
+    console.log("Now go, use all that voodoo power that comes with it and do some good to your people.".italic.lightCyan);
+
+    asyncServerFunctionChannel.allowRead('all');
+    asyncServerFunctionChannel.allowWrite('all');
+
+    const asyncServerFunctions = {
+        getAthletes: function (account, data) {
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+            const log = Log.getLogObject();
+
+            // Return false to deny permission
+            return {
+                entries: encryptedAthletes,
+                callback: function (encryptedAthlete) {
+                    return Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, data.require_signature, data.require_group_check);
+                }
+            }
+        }
+    };
+
+    // Wait for the client to be ready
+    const pendingAsyncCalls = new ReactiveVar({});
+
+    asyncServerFunctionChannel.on('clientReady', function (id) {
+        const pendingCalls = pendingAsyncCalls.get();
+        if (typeof pendingCalls[id] === 'function') {
+            const call = pendingCalls[id];
+
+            delete pendingCalls[id];
+            pendingAsyncCalls.set(pendingCalls);
+
+            call();
+        } else {
+            console.error("Got asyncReady event but there was no pending call");
+        }
+    });
+
+    const serverFunctions = {
+        async: function (account, data) {
+            const context = asyncServerFunctions[data.name](account, data.data);
+            const uuid = genUUID();
+            const size = context.entries.length - 1;
+
+            if (context === false)
+                return {
+                    uuid: "",
+                    permissionDenied: true
+                };
+
+            const pendingCalls = pendingAsyncCalls.get();
+            pendingCalls[uuid] = function () {
+                let index = 0;
+                waterfall(context.entries.map(function (entry) {
+                    return function (nextCallback) {
+                        asyncServerFunctionChannel.emit(uuid, encryptAs({
+                            index: index,
+                            size: size,
+                            data: context.callback(entry)
+                        }, account));
+
+                        ++index;
+                        nextCallback(null);
+                    }
+                }));
+            };
+            pendingAsyncCalls.set(pendingCalls);
+
+            return {
+                uuid: uuid,
+                size: size,
+            }
+        },
+        /**
+         * Activates a competition by id
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        activateCompetition: function (account, data) {
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.switch(data.competitionID);
+            return true;
+        },
+        /**
+         * Removes a competition by id
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        removeCompetition: function (account, data) {
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.Contests.handle.remove({_id: data.competitionID});
+            return true;
+        },
+        /**
+         * Overwrites the athletes of a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, encryptedAthletes: []}} data - Data object
+         * @returns {boolean}
+         */
+        writeAthletes: function (account, data) {
+            if (!account.isAdmin) return false;
+
+            // create collections if they don't exist
+            Meteor.COLLECTIONS.connect(data.competitionID);
+
+            // clear collections
+            Meteor.COLLECTIONS.Athletes.handles[data.competitionID].remove({});
+
+            //write athletes
+            for (let athlete in data.encryptedAthletes) {
+                if (!data.encryptedAthletes.hasOwnProperty(athlete)) continue;
+                Meteor.COLLECTIONS.Athletes.handles[data.competitionID].insert(data.encryptedAthletes[athlete]);
+            }
+
+            return true;
+        },
+        /**
+         * Overwrites the athletes of a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, accounts: []}} data - Data object
+         * @returns {boolean}
+         */
+        writeAccounts: function (account, data) {
+            if (!account.isAdmin) return false;
+
+            // create collections if they don't exist
+            Meteor.COLLECTIONS.connect(data.competitionID);
+
+            // clear collections
+            Meteor.COLLECTIONS.Accounts.handles[data.competitionID].remove({});
+
+            //write accounts
+            for (let account in data.accounts) {
+                if (!data.accounts.hasOwnProperty(account)) continue;
+                Meteor.COLLECTIONS.Accounts.handles[data.competitionID].insert(data.accounts[account]);
+            }
+
+            return true;
+        },
+        /**
+         * Locks a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        lockCompetition: function (account, data) {
+            if (!account.isAdmin) return false;
+
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {
+                    readOnly: true
+                },
+                $unset: {
+                    customAccounts: 1
+                }
+            });
+
+            return true;
+        },
+        /**
+         * Adds a competition
+         * @param {Account} account - An admin account
+         * @param {{name: string, competitionType: number}} data - Data object
+         * @returns {boolean}
+         */
+        addCompetition: function (account, data) {
+            if (!account.isAdmin) return false;
+
+            const competitionType = getCompetitionTypeByID(data.competitionType);
+            const sportTypes = lodash.map(competitionType.getSports(), function (ct) {
+                return ct.id;
+            });
+
+            const _id = Meteor.COLLECTIONS.Contests.handle.insert({
+                name: data.name,
+                sportTypes: sportTypes,
+                readOnly: false,
+                type: data.competitionType,
+                customAccounts: []
+            });
+            Meteor.COLLECTIONS.connect(_id);
+
+            return true;
+        },
+        /**
+         * Renames a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, newName: string}} data - Data object
+         * @returns {boolean}
+         */
+        renameCompetition: function (account, data) {
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {name: data.newName}
+            });
+            return true;
+        },
+
+        /**
+         * Adds a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, sportTypeID: string, state}} data - Data object
+         * @returns {boolean}
+         */
+        setSportTypeState: function (account, data) {
+            if (!account.isAdmin) return false;
+            let sportTypes = Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).sportTypes;
+
+            if (data.state === true &amp;&amp; !lodash.includes(sportTypes, data.sportTypeID)) {
+                sportTypes.push(data.sportTypeID);
+            } else if (data.state === false) {
+                lodash.remove(sportTypes, function (stID) {
+                    return stID === data.sportTypeID
+                });
+            }
+
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {sportTypes: sportTypes}
+            });
+
+            return true;
+        },
+        /**
+         * Returns a list of competitions
+         * @param {Account} account - An admin account
+         * @param {{}} data - Data object
+         * @returns {boolean|[]}
+         */
+        getCompetitions: function (account, data) {
+            if (!account.isAdmin) return false;
+            let competitions = Meteor.COLLECTIONS.Contests.find().fetch();
+
+            lodash.map(competitions, function (competition) {
+                competition.encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competition._id].find().fetch();
+                return competition;
+            });
+
+            return competitions;
+        },
+        /**
+         * Adds a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
+         * @returns {boolean|[]}
+         */
+        getAthletesByCompetitionID: function (account, data) {
+            if (!account.isAdmin) return false;
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+
+            return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
+        },
+        /**
+         * Gets the amount of athletes in a competition
+         * @param {Account} account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {boolean}
+         */
+        getAthleteCount: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find({}).count();
+        },
+        /**
+         * Stores a set of custom accounts in the database for later retrieval
+         * @param account - An admin account
+         * @param {{competitionID: string, customAccounts: Array}} data - Data object
+         * @returns {boolean}
+         */
+        storeCustomAccounts: function (account, data) {
+            if (!account.isAdmin) return false;
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+                $set: {customAccounts: data.customAccounts}
+            });
+            return true;
+        },
+        /**
+         * Retrieves a previously stored set of custom accounts
+         * @param account - An admin account
+         * @param {{competitionID: string}} data - Data object
+         * @returns {*}
+         */
+        retrieveCustomAccounts: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts || [];
+        },
+        /**
+         * Adds a competition
+         * @param {Account} account - An output account
+         * @param {{athleteIDs: [string]}} data - Data object
+         * @returns {boolean|[]}
+         */
+        generateCertificates: function (account, data) {
+            if (!account.canViewResults) return false;
+
+            const ct = Server.getCompetitionType();
+            const log = Log.getLogObject();
+
+            log.info("Die Urkunden wurden von '" + account.name + "' generiert.");
+
+            const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
+
+            let mapAthletet = function (athleteID) {
+                const encryptedAthlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: athleteID});
+                const athlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, true);
+                const currentScoreObject = Crypto.tryDecrypt(log, athlete.currentScore, [getAdminAccount().ac]);
+                const stScoresObject = Crypto.tryDecrypt(log, athlete.stScores, [getAdminAccount().ac]);
+                const certificateObject = Crypto.tryDecrypt(log, athlete.certificate, [getAdminAccount().ac]);
+                const certificateScoreObject = Crypto.tryDecrypt(log, athlete.certificateScore, [getAdminAccount().ac]);
+                const certificateTimeObject = Crypto.tryDecrypt(log, athlete.certificateTime, [getAdminAccount().ac]);
+                const certificatedByObject = Crypto.tryDecrypt(log, athlete.certificatedBy, [getAdminAccount().ac]);
+                const validObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
+
+                if (!(currentScoreObject &amp;&amp; currentScoreObject.signatureEnforced &amp;&amp;
+                    stScoresObject &amp;&amp; stScoresObject.signatureEnforced &amp;&amp;
+                    certificateObject &amp;&amp; certificateObject.signatureEnforced &amp;&amp;
+                    certificateScoreObject &amp;&amp; certificateScoreObject.signatureEnforced &amp;&amp;
+                    certificateTimeObject &amp;&amp; certificateTimeObject.signatureEnforced &amp;&amp;
+                    certificatedByObject &amp;&amp; certificatedByObject.signatureEnforced &amp;&amp;
+                    validObject &amp;&amp; validObject.signatureEnforced)) return undefined;
+
+                const stScores = [];
+
+                for (let stID in stScoresObject.data) {
+                    if (!stScoresObject.data.hasOwnProperty(stID)) continue;
+                    stScores.push({
+                        stID: stID,
+                        name: ct.getNameOfSportType(stID),
+                        score: stScoresObject.data[stID]
+                    });
+                }
+
+                return {
+                    name: athlete.getFullName(),
+                    firstName: athlete.firstName,
+                    lastName: athlete.lastName,
+                    group: athlete.group,
+                    isMale: athlete.isMale,
+                    ageGroup: athlete.ageGroup,
+                    handicap: athlete.handicap,
+                    id: athlete.id,
+                    certificateWritten: currentScoreObject.data === certificateScoreObject.data &amp;&amp; certificateScoreObject.data > 0,
+                    certificateUpdate: (certificateScoreObject.data > 0) &amp;&amp; (certificateScoreObject.data !== currentScoreObject.data),
+                    certificateTime: certificateTimeObject.data,
+                    certificatedBy: certificatedByObject.data,
+                    valid: validObject.data,
+                    score: currentScoreObject.data,
+                    stScores: stScores,
+                    certificate: certificateObject.data,
+                    certificateName: certificateObject.data === 2 ? "Ehrenurkunde" : (certificateObject.data === 1 ? "Siegerurkunde" : (certificateObject.data === 0 ? "Teilnehmerurkunde" : "Fehler"))
+                };
+            };
+
+            return filterUndefined(_.map(data.athleteIDs, mapAthletet));
+        },
+        /**
+         * Returns all ips of the server
+         * @param {Account} account - An admin account
+         * @param {{}} data - Data object
+         * @returns {boolean|[]}
+         */
+        getServerIPs: function (account, data) {
+            if (!account.isAdmin) return false;
+
+
+            const os = require('os');
+            const ifaces = os.networkInterfaces();
+            const ips = [];
+
+            Object.keys(ifaces).forEach(function (ifname) {
+                ifaces[ifname].forEach(function (iface) {
+                    if ('IPv4' !== iface.family || iface.internal !== false) {
+                        return;
+                    }
+                    ips.push(iface.address);
+                });
+            });
+            return ips;
+        },
+
+        /**
+         * Returns the server log
+         * @param {Account} account - An admin account
+         * @param {{}} data - Data object
+         * @returns {boolean|[]}
+         */
+        getLog: function (account, data) {
+            if (!account.isAdmin) return false;
+            return Log.getLogObject().messages;
+        },
+
+        /**
+         * Sets the written status of a certificate to true
+         * @param {Account} account - An output account
+         * @param {{id: string}} data - Data object
+         * @returns {boolean|[]}
+         */
+        certificateUpdate: function (account, data) {
+            if (!account.canViewResults) return false;
+
+            const log = Log.getLogObject();
+            const athlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: data.id});
+            const validityObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
+
+            if (validityObject &amp;&amp; validityObject.signatureEnforced &amp;&amp; validityObject.data) {
+                Meteor.COLLECTIONS.Athletes.handle.update({_id: data.id}, {
+                    $set: {
+                        certificateTime: encryptAsAdmin(Date.now()),
+                        certificateScore: athlete.currentScore,
+                        certificatedBy: encryptAsAdmin(account.name)
+                    }
+                });
+                log.info("Die Urkunde von '" + athlete.firstName + " " + athlete.firstName + "' wurden von '" + athlete.name + "' fertiggestellt.");
+                return true;
+            }
+            return false;
+        }
+    };
+
+
+    Meteor.methods({
+        'runServerFunction': function (name, loginObject, enc_data) {
+            //find account
+            let account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
+
+            // check admin account
+            if (!account) {
+                const adminAccount = getAdminAccount();
+                if (loginObject.pubHash === adminAccount.ac.pubHash) {
+                    account = adminAccount;
+                }
+            }
+
+            if (!account) {
+                return false;
+            }
+
+            const log = Log.getLogObject();
+            const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
+
+            const res = serverFunctions[name](account, data.data);
+            return encryptAs(res, account);
+        }
+    });
+}</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
+    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

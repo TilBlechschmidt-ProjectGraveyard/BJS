@@ -23,7 +23,7 @@ function throwError() {
 }
 
 /**
- * Runs a function on the server and handels de/encryption and callback handling.
+ * Runs a function server-side and takes care of de-/encryption for you. It calls the callback once with the results returned from the server.
  * @param {string} name - The name of the server function
  * @param {Account} account - The account that is used to authenticate
  * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
@@ -55,6 +55,14 @@ function runServerFunction(name, account, data, callback) {
         });
 }
 
+/**
+ * Runs a function server-side in an asynchronous manner and takes care of de-/encryption for you. It calls the callback for every entry returned.
+ * @param {string} name - The name of the server function
+ * @param {Account} account - The account that is used to authenticate
+ * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
+ * @param {function} callback - A callback with one parameter: The return value of the server function. Function returns a promise if it is undefined.
+ * @returns {Promise.<void>}
+ */
 async function runAsyncServerFunction(name, account, data, callback) {
     const log = Log.getLogObject();
     const connection = await runServerFunction('async', account, {name: name, data: data});
@@ -74,7 +82,7 @@ async function runAsyncServerFunction(name, account, data, callback) {
 }
 
 /**
- * Object containing all information and functions required for Swimming contest.
+ * Object containing all information and functions for communication w/ the server.
  * @public
  * @namespace
  */

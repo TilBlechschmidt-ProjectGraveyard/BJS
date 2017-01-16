@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>imports/api/database/collections/index.js - Documentation</title>
+    <title>imports/api/accountManagement/SessionAccount.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -174,148 +174,195 @@
 </nav>
 
 <div id="main">
-    
-    <h1 class="page-title">imports/api/database/collections/index.js</h1>
-    
 
-    
+    <h1 class="page-title">imports/api/accountManagement/SessionAccount.js</h1>
 
 
-
-    
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {initGeneric} from "./generic";
-import {initContests} from "./contests";
-import {initAccounts} from "./accounts";
-import {initAthletes} from "./athletes";
-import {Server} from "../ServerInterface";
+            <pre class="prettyprint source linenums"><code>import {Server} from "../database/ServerInterface";
+import {Crypto} from "../crypto/crypto";
+import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
+import {hideIndicator} from "../../../client/components/helpers";
 
-function initDatabase() {
-    initAccounts();
-    initAthletes();
+const storage = window.sessionStorage;
 
-    Meteor.COLLECTIONS.connect = function (competitionID) {
-        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
-            return false;
+/**
+ *
+ * @param {string} passphrase - The login passphrase entered by the user.
+ * @param callback
+ * @returns {?Account}
+ */
+export function getAccountByPassphrase(passphrase, callback) {
+    Server.waitForReady(function () {
+        const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
+        const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+        const remoteAccounts = contestAccounts.concat([adminAccount]);
+        let account = null;
+        for (let remoteAccount in remoteAccounts) {
+            if (!remoteAccounts.hasOwnProperty(remoteAccount)) continue;
+
+            remoteAccount = remoteAccounts[remoteAccount];
+
+            if (remoteAccount.ac.pubHash == Crypto.generatePubHash(passphrase, remoteAccount.ac.salt)) {
+                account = remoteAccount;
+                account.ac.privHash = Crypto.generatePrivHash(passphrase, remoteAccount.ac.salt);
+                break;
+            }
         }
-        Meteor.COLLECTIONS.Accounts.connect(competitionID);
-        Meteor.COLLECTIONS.Athletes.connect(competitionID);
-        return true;
-    };
-
-    Meteor.COLLECTIONS.switch = function (competitionID) {
-        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
-            return false;
-        }
-        if (Meteor.isServer) {
-            Meteor.COLLECTIONS.Generic.handle.update({_id: Server.getGenericID()}, {$set: {activeContest: competitionID}});
-        }
-        Meteor.COLLECTIONS.Accounts.switch(competitionID);
-        Meteor.COLLECTIONS.Athletes.switch(competitionID);
-        return true;
-    };
-
-    Meteor.COLLECTIONS.connect_and_switch = function (competitionID) {
-        Meteor.COLLECTIONS.connect(competitionID);
-        return Meteor.COLLECTIONS.switch(competitionID);
-    };
-
-    if (Meteor.isClient) {
-        Meteor.COLLECTIONS.Generic.onReady(function () {
-            const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-            Meteor.COLLECTIONS.connect_and_switch(genericData.activeContest);
-        });
-    } else {
-        const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        const competitions = Meteor.COLLECTIONS.Contests.handle.find({}).fetch();
-        for (let competition in competitions) {
-            if (!competitions.hasOwnProperty(competition)) continue;
-            Meteor.COLLECTIONS.connect(competitions[competition]._id);
-        }
-        Meteor.COLLECTIONS.switch(genericData.activeContest);
-    }
-}
-
-function removeData(driver) {
-    let excludedCollections = ['system.indexes'];
-    let db = driver.mongo.db;
-    let getCollections = Meteor.wrapAsync(db.collections, db);
-    let collections = getCollections();
-    let appCollections = _.reject(collections, function (col) {
-        return col.collectionName.indexOf('velocity') === 0 ||
-            excludedCollections.indexOf(col.collectionName) !== -1;
+        if (typeof callback === 'function') callback(account);
     });
-
-    _.each(appCollections, function (appCollection) {
-        let remove = Meteor.wrapAsync(appCollection.remove, appCollection);
-        remove({});
-    });
-}
-
-function clearDatabase() {
-    console.log('-----------------------------------------------------');
-    console.log('---------------------- WARNING ----------------------');
-    console.log('-----------------------------------------------------');
-    console.log('                  Database not clean                 ');
-    console.log('Clearing database and adding mock data entries . . .');
-
-
-    // Delete everything in the regular db
-    removeData(MongoInternals.defaultRemoteCollectionDriver());
-
-    Meteor.COLLECTIONS.Generic.createMockData();
-
-    Meteor.COLLECTIONS.Contests.createMockData();
-
-    // init Data
-    initDatabase();
-
-    Meteor.COLLECTIONS.Accounts.createMockData();
-    Meteor.COLLECTIONS.Athletes.createMockData();
-
-    console.log('-----------------------------------------------------');
-    console.log('------------------------ DONE -----------------------');
-    console.log('-----------------------------------------------------');
 }
 
 /**
- * Creates all collections.
+ * Creates a new session account
+ * @param {string} name - The name that is used to store data in the session storage. Must be unique for every account but can be used multiple times to access the same account from different parts of the application.
+ * @constructor
  */
-export function initCollections() {
-    // load databases
-    if (!Meteor.COLLECTIONS) {
-        Meteor.COLLECTIONS = {};
+export function SessionAccount(name) {
+    this.name = name;
+    this.storageID = "account" + name;
 
-        let clearDB = false;
-        // let clearDB = true;
-        initGeneric();
-        initContests();
+    //check if account is still valid
+    const lastAccount = this.get();
+    if (lastAccount.logged_in) {
+        const that = this;
+        Server.waitForReady(function () {
+            const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne({}).adminAccount;
 
-        if (Meteor.isServer) {
-            if (!Meteor.isProduction) {
-                // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
-                let genericEntries = Meteor.COLLECTIONS.Generic.handle.findOne();
-                // noinspection JSUnresolvedVariable
-                if (!(
-                        genericEntries &amp;&amp;
-                        (genericEntries.hasOwnProperty('cleanDB') &amp;&amp; genericEntries.cleanDB === true) &amp;&amp;
-                        (genericEntries.hasOwnProperty('dbVersion') &amp;&amp; genericEntries.dbVersion === Meteor.config.dbVersion)
-                    )) clearDB = true;
+            if ((lastAccount.account.ac.pubHash != adminAccount.ac.pubHash) &amp;&amp; !Meteor.COLLECTIONS.Accounts.handle.findOne({'ac.pubHash': lastAccount.account.ac.pubHash})) {
+                that.logout();
+                //close all indicators or preloaders
+                hideIndicator();
+                Meteor.f7.hidePreloader();
+                FlowRouter.go('/login');
             }
-        }
-
-        if (clearDB) {
-            clearDatabase();
-        } else {
-            initDatabase();
-        }
+        });
     }
-}</code></pre>
+}
+
+SessionAccount.prototype = {
+
+    /**
+     * @typedef {Object} AccountManagerResult
+     * @property {?Account} account - The account or undefined
+     * @property {boolean} logged_in - Whether the account is logged in
+     * @property {boolean} processing - Whether the account is processed
+     */
+
+    /**
+     * Returns the account.
+     * @returns AccountManagerResult
+     */
+    get: function () {
+        if (!storage.getItem(this.storageID)) {
+            this.logout();
+        }
+        return JSON.parse(storage.getItem(this.storageID));
+    },
+
+    /**
+     * Updates the data stored in the session storage. Shouldn't be called from outside.
+     * @returns AccountManagerResult
+     */
+    store: function (account) {
+        storage.setItem(this.storageID, JSON.stringify(account));
+    },
+
+    /**
+     * Updates the processing status. Shouldn't be called from outside.
+     * @param newStatus
+     */
+    setProcessing: function (newStatus) {
+        const account = this.get();
+        account.processing = newStatus;
+        this.store(account);
+    },
+
+    /**
+     * Login for an account
+     * @param {string} passphrase - The password
+     * @param [callback] - optional callback
+     */
+    login: function (passphrase, callback) {
+        this.setProcessing(true);
+        let thisSessionAccount = this;
+        setTimeout(function () { //TODO remove timeout. its just for preloader testing
+            getAccountByPassphrase(passphrase, function (account) {
+                if (account === null &amp;&amp; typeof callback === 'function') {
+                    thisSessionAccount.setProcessing(false);
+                    callback(false, "Ungültiges Passwort.");
+                } else {
+                    thisSessionAccount.store({
+                        account: account,
+                        logged_in: true,
+                        processing: false
+                    });
+
+                    // Notify the caller
+                    if (typeof callback === 'function') callback(true);
+                }
+            });
+        }, 100);
+    },
+
+    /**
+     * logout for the account
+     */
+    logout: function () {
+        this.store({
+            account: undefined,
+            logged_in: false,
+            processing: false
+        });
+    },
+
+    /**
+     * Returns whether the account is logged in
+     * @returns {boolean}
+     */
+    isLoggedIn: function () {
+        return this.get().logged_in;
+    },
+
+    /**
+     * Returns whether the account has permissions for at least on group
+     * @returns {boolean}
+     */
+    isGroupAccount: function () {
+        return isGroupAccount(this.get().account);
+    },
+
+    /**
+     * Returns whether the account has permissions for at least on station
+     * @returns {boolean}
+     */
+    isStationAccount: function () {
+        return isStationAccount(this.get().account);
+    },
+
+    /**
+     * Returns whether the account has admin permissions
+     * @returns {boolean}
+     */
+    isAdminAccount: function () {
+        return isAdminAccount(this.get().account);
+    },
+
+    /**
+     * Returns whether the account is allowed to generate certificates
+     * @returns {boolean}
+     */
+    canViewResults: function () {
+        return this.get().account.canViewResults;
+    }
+};
+
+
+
+</code></pre>
         </article>
     </section>
-
-
 
 
 </div>

@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>imports/api/database/collections/index.js - Documentation</title>
+    <title>imports/api/logic/competitionType.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -174,148 +174,64 @@
 </nav>
 
 <div id="main">
-    
-    <h1 class="page-title">imports/api/database/collections/index.js</h1>
-    
 
-    
+    <h1 class="page-title">imports/api/logic/competitionType.js</h1>
 
 
-
-    
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {initGeneric} from "./generic";
-import {initContests} from "./contests";
-import {initAccounts} from "./accounts";
-import {initAthletes} from "./athletes";
-import {Server} from "../ServerInterface";
+            <pre class="prettyprint source linenums"><code>import {Athletics} from "./competitionTypes/athletics.js";
+import {Swimming} from "./competitionTypes/swimming.js";
+import {Gymnastics} from "./competitionTypes/gymnastics";
 
-function initDatabase() {
-    initAccounts();
-    initAthletes();
-
-    Meteor.COLLECTIONS.connect = function (competitionID) {
-        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
-            return false;
-        }
-        Meteor.COLLECTIONS.Accounts.connect(competitionID);
-        Meteor.COLLECTIONS.Athletes.connect(competitionID);
-        return true;
-    };
-
-    Meteor.COLLECTIONS.switch = function (competitionID) {
-        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
-            return false;
-        }
-        if (Meteor.isServer) {
-            Meteor.COLLECTIONS.Generic.handle.update({_id: Server.getGenericID()}, {$set: {activeContest: competitionID}});
-        }
-        Meteor.COLLECTIONS.Accounts.switch(competitionID);
-        Meteor.COLLECTIONS.Athletes.switch(competitionID);
-        return true;
-    };
-
-    Meteor.COLLECTIONS.connect_and_switch = function (competitionID) {
-        Meteor.COLLECTIONS.connect(competitionID);
-        return Meteor.COLLECTIONS.switch(competitionID);
-    };
-
-    if (Meteor.isClient) {
-        Meteor.COLLECTIONS.Generic.onReady(function () {
-            const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-            Meteor.COLLECTIONS.connect_and_switch(genericData.activeContest);
-        });
-    } else {
-        const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        const competitions = Meteor.COLLECTIONS.Contests.handle.find({}).fetch();
-        for (let competition in competitions) {
-            if (!competitions.hasOwnProperty(competition)) continue;
-            Meteor.COLLECTIONS.connect(competitions[competition]._id);
-        }
-        Meteor.COLLECTIONS.switch(genericData.activeContest);
-    }
-}
-
-function removeData(driver) {
-    let excludedCollections = ['system.indexes'];
-    let db = driver.mongo.db;
-    let getCollections = Meteor.wrapAsync(db.collections, db);
-    let collections = getCollections();
-    let appCollections = _.reject(collections, function (col) {
-        return col.collectionName.indexOf('velocity') === 0 ||
-            excludedCollections.indexOf(col.collectionName) !== -1;
-    });
-
-    _.each(appCollections, function (appCollection) {
-        let remove = Meteor.wrapAsync(appCollection.remove, appCollection);
-        remove({});
-    });
-}
-
-function clearDatabase() {
-    console.log('-----------------------------------------------------');
-    console.log('---------------------- WARNING ----------------------');
-    console.log('-----------------------------------------------------');
-    console.log('                  Database not clean                 ');
-    console.log('Clearing database and adding mock data entries . . .');
-
-
-    // Delete everything in the regular db
-    removeData(MongoInternals.defaultRemoteCollectionDriver());
-
-    Meteor.COLLECTIONS.Generic.createMockData();
-
-    Meteor.COLLECTIONS.Contests.createMockData();
-
-    // init Data
-    initDatabase();
-
-    Meteor.COLLECTIONS.Accounts.createMockData();
-    Meteor.COLLECTIONS.Athletes.createMockData();
-
-    console.log('-----------------------------------------------------');
-    console.log('------------------------ DONE -----------------------');
-    console.log('-----------------------------------------------------');
-}
 
 /**
- * Creates all collections.
+ * @typedef {Object} ConversionFactors
+ * @property {number} A1 Conversion Factor for start class 'A1'
+ * @property {number} A2 Conversion Factor for start class 'A2'
+ * @property {number} A3 Conversion Factor for start class 'A3'
+ * @property {number} A4 Conversion Factor for start class 'A4'
+ * @property {number} A5 Conversion Factor for start class 'A5'
+ * @property {number} A6 Conversion Factor for start class 'A6'
+ * @property {number} B1 Conversion Factor for start class 'B1'
+ * @property {number} B2 Conversion Factor for start class 'B2'
+ * @property {number} C1 Conversion Factor for start class 'C1'
+ * @property {number} C2 Conversion Factor for start class 'C2'
+ * @property {number} D Conversion Factor for start class 'D'
+ * @property {number} E Conversion Factor for start class 'E'
  */
-export function initCollections() {
-    // load databases
-    if (!Meteor.COLLECTIONS) {
-        Meteor.COLLECTIONS = {};
 
-        let clearDB = false;
-        // let clearDB = true;
-        initGeneric();
-        initContests();
+export const COMPETITION_TYPES = [
+    {
+        id: 'ct_athletics',
+        object: Athletics
+    },
+    {
+        id: 'ct_swimming',
+        object: Swimming
+    },
+    {
+        id: 'ct_gymnsatics',
+        object: Gymnastics
+    }
+];
 
-        if (Meteor.isServer) {
-            if (!Meteor.isProduction) {
-                // Check if the database is clean and whether or not its structure is outdated (and possibly recreate it if that's the case)
-                let genericEntries = Meteor.COLLECTIONS.Generic.handle.findOne();
-                // noinspection JSUnresolvedVariable
-                if (!(
-                        genericEntries &amp;&amp;
-                        (genericEntries.hasOwnProperty('cleanDB') &amp;&amp; genericEntries.cleanDB === true) &amp;&amp;
-                        (genericEntries.hasOwnProperty('dbVersion') &amp;&amp; genericEntries.dbVersion === Meteor.config.dbVersion)
-                    )) clearDB = true;
-            }
-        }
-
-        if (clearDB) {
-            clearDatabase();
-        } else {
-            initDatabase();
-        }
+/**
+ * Returns the competition type by a given id.
+ * @param {number} id - The id of the competition type. It matches the position in the Array COMPETITION_TYPES;
+ * @returns {object} The competition type (Athletics or Swimming)
+ */
+export function getCompetitionTypeByID(id) {
+    if (id === 0) {
+        return Athletics;
+    } else if (id === 1) {
+        return Swimming;
+    } else {
+        return Gymnastics;
     }
 }</code></pre>
         </article>
     </section>
-
-
 
 
 </div>

@@ -30,6 +30,7 @@
             <ul class='methods'>
                 <li data-type='method'><a href="Athlete.html#.decryptFromDatabase">decryptFromDatabase</a></li>
                 <li data-type='method'><a href="Athlete.html#addMeasurement">addMeasurement</a></li>
+                <li data-type='method'><a href="Athlete.html#addMeasurements">addMeasurements</a></li>
                 <li data-type='method'><a href="Athlete.html#check">check</a></li>
                 <li data-type='method'><a href="Athlete.html#encryptForDatabase">encryptForDatabase</a></li>
                 <li data-type='method'><a href="Athlete.html#getFullName">getFullName</a></li>
@@ -46,6 +47,7 @@
         </li>
         <li><a href="Log.html">Log</a>
             <ul class='methods'>
+                <li data-type='method'><a href="Log.html#.getLogObject">getLogObject</a></li>
                 <li data-type='method'><a href="Log.html#clear">clear</a></li>
                 <li data-type='method'><a href="Log.html#custom">custom</a></li>
                 <li data-type='method'><a href="Log.html#disable">disable</a></li>
@@ -54,6 +56,9 @@
                 <li data-type='method'><a href="Log.html#getAsString">getAsString</a></li>
                 <li data-type='method'><a href="Log.html#getAsStringWithLevel">getAsStringWithLevel</a></li>
                 <li data-type='method'><a href="Log.html#getAsStringWithMinLevel">getAsStringWithMinLevel</a></li>
+                <li data-type='method'><a href="Log.html#getHighestLevel">getHighestLevel</a></li>
+                <li data-type='method'><a href="Log.html#getHighestLevelMessage">getHighestLevelMessage</a></li>
+                <li data-type='method'><a href="Log.html#getLastMessage">getLastMessage</a></li>
                 <li data-type='method'><a href="Log.html#info">info</a></li>
                 <li data-type='method'><a href="Log.html#merge">merge</a></li>
                 <li data-type='method'><a href="Log.html#warning">warning</a></li>
@@ -114,32 +119,6 @@
                 <li data-type='method'><a href="Crypto.html#.tryDecrypt">tryDecrypt</a></li>
             </ul>
         </li>
-        <li><a href="DBInterface.html">DBInterface</a>
-            <ul class='methods'>
-                <li data-type='method'><a href="DBInterface.html#.activateCompetition">activateCompetition</a></li>
-                <li data-type='method'><a href="DBInterface.html#.certificateUpdate">certificateUpdate</a></li>
-                <li data-type='method'><a href="DBInterface.html#.generateCertificates">generateCertificates</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getActivatedSports">getActivatedSports</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getActiveContest">getActiveContest</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getActiveContestID">getActiveContestID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getAthletesByCompetition">getAthletesByCompetition</a>
-                </li>
-                <li data-type='method'><a href="DBInterface.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getCompetitionName">getCompetitionName</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getCompetitionSportTypes">getCompetitionSportTypes</a>
-                </li>
-                <li data-type='method'><a href="DBInterface.html#.getCompetitionType">getCompetitionType</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getEditInformation">getEditInformation</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getGenericID">getGenericID</a></li>
-                <li data-type='method'><a href="DBInterface.html#.getServerIPs">getServerIPs</a></li>
-                <li data-type='method'><a href="DBInterface.html#.isReady">isReady</a></li>
-                <li data-type='method'><a href="DBInterface.html#.removeCompetition">removeCompetition</a></li>
-                <li data-type='method'><a href="DBInterface.html#.setSportTypeState">setSportTypeState</a></li>
-                <li data-type='method'><a href="DBInterface.html#.waitForReady">waitForReady</a></li>
-                <li data-type='method'><a href="DBInterface.html#.writeCompetition">writeCompetition</a></li>
-            </ul>
-        </li>
         <li><a href="Gymnastics.html">Gymnastics</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Gymnastics.html#.calculate">calculate</a></li>
@@ -190,6 +169,7 @@
         <li><a href="global.html#isAdminAccount">isAdminAccount</a></li>
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
+        <li><a href="global.html#refreshErrorState">refreshErrorState</a></li>
     </ul>
 </nav>
 
@@ -771,7 +751,7 @@
             <ul class="dummy">
                 <li>
                     <a href="imports_api_crypto_pwdgen.js.html">imports/api/crypto/pwdgen.js</a>, <a
-                        href="imports_api_crypto_pwdgen.js.html#line13">line 13</a>
+                        href="imports_api_crypto_pwdgen.js.html#line18">line 18</a>
                 </li>
             </ul>
         </dd>
@@ -817,7 +797,7 @@
             <ul class="dummy">
                 <li>
                     <a href="imports_api_crypto_pwdgen.js.html">imports/api/crypto/pwdgen.js</a>, <a
-                        href="imports_api_crypto_pwdgen.js.html#line24">line 24</a>
+                        href="imports_api_crypto_pwdgen.js.html#line29">line 29</a>
                 </li>
             </ul>
         </dd>
@@ -859,8 +839,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_account_managment_SessionAccount.js.html">imports/api/account_managment/SessionAccount.js</a>,
-                    <a href="imports_api_account_managment_SessionAccount.js.html#line13">line 13</a>
+                    <a href="imports_api_accountManagement_SessionAccount.js.html">imports/api/accountManagement/SessionAccount.js</a>,
+                    <a href="imports_api_accountManagement_SessionAccount.js.html#line14">line 14</a>
                 </li>
             </ul>
         </dd>
@@ -1135,8 +1115,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_type.js.html">imports/api/logic/competition_type.js</a>, <a
-                        href="imports_api_logic_competition_type.js.html#line42">line 42</a>
+                    <a href="imports_api_logic_competitionType.js.html">imports/api/logic/competitionType.js</a>, <a
+                        href="imports_api_logic_competitionType.js.html#line42">line 42</a>
                 </li>
             </ul>
         </dd>
@@ -1694,7 +1674,7 @@
             <ul class="dummy">
                 <li>
                     <a href="imports_api_database_collections_index.js.html">imports/api/database/collections/index.js</a>,
-                    <a href="imports_api_database_collections_index.js.html#line113">line 113</a>
+                    <a href="imports_api_database_collections_index.js.html#line98">line 98</a>
                 </li>
             </ul>
         </dd>
@@ -1969,6 +1949,134 @@
     </dl>
 
 
+    <h4 class="name" id="refreshErrorState"><span class="type-signature"></span>refreshErrorState<span
+            class="signature">(id<span class="signature-attributes">opt</span>, firstName<span
+            class="signature-attributes">opt</span>, lastName<span class="signature-attributes">opt</span>)</span><span
+            class="type-signature"></span></h4>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="client_components_config_athleteList_athleteList.js.html">client/components/config/athleteList/athleteList.js</a>,
+                    <a href="client_components_config_athleteList_athleteList.js.html#line96">line 96</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th>Attributes</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>id</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
+
+            <td class="description last"></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>firstName</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
+
+            <td class="description last"></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>lastName</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
+
+            <td class="description last"></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
     <h3 class="subsection-title">Type Definitions</h3>
 
 
@@ -1982,8 +2090,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_account_managment_SessionAccount.js.html">imports/api/account_managment/SessionAccount.js</a>,
-                    <a href="imports_api_account_managment_SessionAccount.js.html#line63">line 63</a>
+                    <a href="imports_api_accountManagement_SessionAccount.js.html">imports/api/accountManagement/SessionAccount.js</a>,
+                    <a href="imports_api_accountManagement_SessionAccount.js.html#line64">line 64</a>
                 </li>
             </ul>
         </dd>
@@ -2113,8 +2221,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_competition_types_athletics.js.html">imports/api/logic/competition_types/athletics.js</a>,
-        <a href="imports_api_logic_competition_types_athletics.js.html#line24">line 24</a>
+        <a href="imports_api_logic_competitionTypes_athletics.js.html">imports/api/logic/competitionTypes/athletics.js</a>,
+        <a href="imports_api_logic_competitionTypes_athletics.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -2233,8 +2341,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_types_athletics.js.html">imports/api/logic/competition_types/athletics.js</a>,
-                    <a href="imports_api_logic_competition_types_athletics.js.html#line16">line 16</a>
+                    <a href="imports_api_logic_competitionTypes_athletics.js.html">imports/api/logic/competitionTypes/athletics.js</a>,
+                    <a href="imports_api_logic_competitionTypes_athletics.js.html#line16">line 16</a>
                 </li>
             </ul>
         </dd>
@@ -2362,173 +2470,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_types_gymnastics.js.html">imports/api/logic/competition_types/gymnastics.js</a>,
-                    <a href="imports_api_logic_competition_types_gymnastics.js.html#line15">line 15</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-
-    <table class="props">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>id</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The id of the sport type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>name</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The human readable name for the sport type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>category</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">number</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The category of the sport type (eg. sprinting)</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>unit</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The human readable unit for the measurements (eg. m (meter))</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>description</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>A description of the sport type. It may contain information about how to
-                measure in this sport type.</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>age</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">Array.&lt;number></span>
-
-
-            </td>
-
-
-            <td class="description last"><p>A list of ages which are allowed to participate</p></td>
-        </tr>
-
-
-        </tbody>
-    </table>
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-
-            <span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-    <h4 class="name" id="AthleticsSportData">AthleticsSportData</h4>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="imports_api_logic_competition_types_athletics.js.html">imports/api/logic/competition_types/athletics.js</a>,
-                    <a href="imports_api_logic_competition_types_athletics.js.html#line30">line 30</a>
+                    <a href="imports_api_logic_competitionTypes_athletics.js.html">imports/api/logic/competitionTypes/athletics.js</a>,
+                    <a href="imports_api_logic_competitionTypes_athletics.js.html#line30">line 30</a>
                 </li>
             </ul>
         </dd>
@@ -2702,6 +2645,171 @@
     </ul>
 
 
+    <h4 class="name" id="AthleticsSportData">AthleticsSportData</h4>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html">imports/api/logic/competitionTypes/gymnastics.js</a>,
+                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html#line15">line 15</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+
+    <table class="props">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>id</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The id of the sport type</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>name</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The human readable name for the sport type</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>category</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">number</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The category of the sport type (eg. sprinting)</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>unit</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The human readable unit for the measurements (eg. m (meter))</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>description</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A description of the sport type. It may contain information about how to
+                measure in this sport type.</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>age</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">Array.&lt;number></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A list of ages which are allowed to participate</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+
+            <span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
     <h4 class="name" id="AuthenticationCode">AuthenticationCode</h4>
 
 
@@ -2822,8 +2930,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_type.js.html">imports/api/logic/competition_type.js</a>, <a
-                        href="imports_api_logic_competition_type.js.html#line6">line 6</a>
+                    <a href="imports_api_logic_competitionType.js.html">imports/api/logic/competitionType.js</a>, <a
+                        href="imports_api_logic_competitionType.js.html#line6">line 6</a>
                 </li>
             </ul>
         </dd>
@@ -3510,8 +3618,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_types_swimming.js.html">imports/api/logic/competition_types/swimming.js</a>,
-                    <a href="imports_api_logic_competition_types_swimming.js.html#line12">line 12</a>
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html">imports/api/logic/competitionTypes/swimming.js</a>,
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html#line12">line 12</a>
                 </li>
             </ul>
         </dd>
@@ -3639,8 +3747,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_types_swimming.js.html">imports/api/logic/competition_types/swimming.js</a>,
-                    <a href="imports_api_logic_competition_types_swimming.js.html#line20">line 20</a>
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html">imports/api/logic/competitionTypes/swimming.js</a>,
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html#line20">line 20</a>
                 </li>
             </ul>
         </dd>
@@ -3713,8 +3821,8 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="imports_api_logic_competition_types_swimming.js.html">imports/api/logic/competition_types/swimming.js</a>,
-                    <a href="imports_api_logic_competition_types_swimming.js.html#line25">line 25</a>
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html">imports/api/logic/competitionTypes/swimming.js</a>,
+                    <a href="imports_api_logic_competitionTypes_swimming.js.html#line25">line 25</a>
                 </li>
             </ul>
         </dd>
@@ -3862,7 +3970,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 09 2017 22:25:54
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
     GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
