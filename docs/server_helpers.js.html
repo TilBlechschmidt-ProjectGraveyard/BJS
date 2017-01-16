@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>imports/api/logic/contestType.js - Documentation</title>
+    <title>server/helpers.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
 <label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
+    <div class="navicon"></div>
 </label>
 
 <label for="nav-trigger" class="overlay"></label>
@@ -183,71 +183,41 @@
 </nav>
 
 <div id="main">
-    
-    <h1 class="page-title">imports/api/logic/contestType.js</h1>
-    
 
-    
+    <h1 class="page-title">server/helpers.js</h1>
 
 
-
-    
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {Athletics} from "./contestTypes/athletics.js";
-import {Swimming} from "./contestTypes/swimming.js";
-import {Gymnastics} from "./contestTypes/gymnastics";
-
+            <pre class="prettyprint source linenums"><code>import {checkLogin} from "../imports/api/logic/account";
+import {Crypto} from "../imports/api/crypto/crypto";
 
 /**
- * @typedef {Object} ConversionFactors
- * @property {number} A1 Conversion Factor for start class 'A1'
- * @property {number} A2 Conversion Factor for start class 'A2'
- * @property {number} A3 Conversion Factor for start class 'A3'
- * @property {number} A4 Conversion Factor for start class 'A4'
- * @property {number} A5 Conversion Factor for start class 'A5'
- * @property {number} A6 Conversion Factor for start class 'A6'
- * @property {number} B1 Conversion Factor for start class 'B1'
- * @property {number} B2 Conversion Factor for start class 'B2'
- * @property {number} C1 Conversion Factor for start class 'C1'
- * @property {number} C2 Conversion Factor for start class 'C2'
- * @property {number} D Conversion Factor for start class 'D'
- * @property {number} E Conversion Factor for start class 'E'
+ * Returns the admin account.
+ * @returns {Account}
  */
-
-export const CONTEST_TYPES = [
-    {
-        id: 'ct_athletics',
-        object: Athletics
-    },
-    {
-        id: 'ct_swimming',
-        object: Swimming
-    },
-    {
-        id: 'ct_gymnsatics',
-        object: Gymnastics
-    }
-];
+export function getAdminAccount() {
+    return Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
+}
 
 /**
- * Returns the contest type by a given id.
- * @param {number} id - The id of the contest type. It matches the position in the Array CONTEST_TYPES;
- * @returns {object} The contest type (Athletics or Swimming)
+ *
+ * @param {LoginObject} loginObject
+ * @returns {boolean}
  */
-export function getContestTypeByID(id) {
-    if (id === 0) {
-        return Athletics;
-    } else if (id === 1) {
-        return Swimming;
-    } else {
-        return Gymnastics;
-    }
+export function checkAdminLogin(loginObject) { //TODO check isAdmin member
+    return checkLogin(getAdminAccount(), loginObject);
+}
+
+export function encryptAsAdmin(data) {
+    return Crypto.encrypt(data, getAdminAccount().ac, getAdminAccount().ac);
+}
+
+export function encryptAs(data, account) {
+    return Crypto.encrypt(data, account.ac, account.ac);
 }</code></pre>
         </article>
     </section>
-
-
 
 
 </div>

@@ -135,26 +135,9 @@
         </li>
         <li><a href="Server.html">Server</a>
             <ul class='methods'>
-                <li data-type='method'><a href="Server.html#.activateCompetition">activateCompetition</a></li>
-                <li data-type='method'><a href="Server.html#.certificateUpdate">certificateUpdate</a></li>
-                <li data-type='method'><a href="Server.html#.generateCertificates">generateCertificates</a></li>
-                <li data-type='method'><a href="Server.html#.getActivatedSports">getActivatedSports</a></li>
-                <li data-type='method'><a href="Server.html#.getActiveContest">getActiveContest</a></li>
-                <li data-type='method'><a href="Server.html#.getActiveContestID">getActiveContestID</a></li>
-                <li data-type='method'><a href="Server.html#.getAthletesByCompetition">getAthletesByCompetition</a></li>
-                <li data-type='method'><a href="Server.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
-                <li data-type='method'><a href="Server.html#.getCompetitionName">getCompetitionName</a></li>
-                <li data-type='method'><a href="Server.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li>
-                <li data-type='method'><a href="Server.html#.getCompetitionType">getCompetitionType</a></li>
-                <li data-type='method'><a href="Server.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
-                <li data-type='method'><a href="Server.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="Server.html#.getIPs">getIPs</a></li>
                 <li data-type='method'><a href="Server.html#.getLog">getLog</a></li>
-                <li data-type='method'><a href="Server.html#.getServerIPs">getServerIPs</a></li>
-                <li data-type='method'><a href="Server.html#.isReady">isReady</a></li>
-                <li data-type='method'><a href="Server.html#.removeCompetition">removeCompetition</a></li>
-                <li data-type='method'><a href="Server.html#.renameCompetition">renameCompetition</a></li>
                 <li data-type='method'><a href="Server.html#.setSportTypeState">setSportTypeState</a></li>
-                <li data-type='method'><a href="Server.html#.waitForReady">waitForReady</a></li>
             </ul>
         </li>
         <li><a href="Swimming.html">Swimming</a>
@@ -183,7 +166,7 @@
         <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
-        <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
+        <li><a href="global.html#getContestTypeByID">getContestTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
         <li><a href="global.html#getLoginObject">getLoginObject</a></li>
         <li><a href="global.html#getLoginToken">getLoginToken</a></li>
@@ -206,7 +189,7 @@
 
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {getCompetitionTypeByID} from "../logic/competitionType";
+            <pre class="prettyprint source linenums"><code>import {getContestTypeByID} from "../logic/contestType";
 import {Athlete} from "../logic/athlete";
 import {initCollections} from "./collections/index";
 import {getLoginObject} from "../logic/account";
@@ -218,7 +201,7 @@ if (Meteor.isClient) {
     initCollections();
 }
 
-function throwError() {
+function throwError(account, returnPromise) {
     const err = new Error("Error whilst calling a server function.");
     console.error("-------- Error Context --------");
     console.error("Function called:", name);
@@ -248,7 +231,7 @@ function runServerFunction(name, account, data, callback) {
         if (data) {
             if (typeof callback === 'function') callback(data.data);
         } else if (Meteor.isClient) {
-            throwError();
+            throwError(account, returnPromise);
         }
     });
 
@@ -257,7 +240,7 @@ function runServerFunction(name, account, data, callback) {
             const decrypted_data = Crypto.tryDecrypt(log, data, [account.ac]);
 
             if (!decrypted_data &amp;&amp; Meteor.isClient)
-                throwError();
+                throwError(account, returnPromise);
             else
                 return decrypted_data.data;
         });
@@ -273,7 +256,7 @@ function runServerFunction(name, account, data, callback) {
  */
 async function runAsyncServerFunction(name, account, data, callback) {
     const log = Log.getLogObject();
-    const connection = await runServerFunction('async', account, {name: name, data: data});
+    const connection = await runServerFunction('runAsync', account, {name: name, data: data});
 
     asyncServerFunctionChannel.on(connection.uuid, function (encryptedEntry) {
         const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
@@ -282,7 +265,7 @@ async function runAsyncServerFunction(name, account, data, callback) {
             if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
         } else if (Meteor.isClient) {
             if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
-            throwError();
+            throwError(account, false);
         }
     });
 
@@ -296,262 +279,203 @@ async function runAsyncServerFunction(name, account, data, callback) {
  */
 export let Server = {
 
-    /**
-     * Returns whether all collections are ready.
-     * @return {boolean}
-     */
-    isReady: function () {
-        return Meteor.COLLECTIONS.Generic.isReady() &amp;&amp;
-            Meteor.COLLECTIONS.Contests.isReady() &amp;&amp;
-            Meteor.COLLECTIONS.Accounts.isReady() &amp;&amp;
-            Meteor.COLLECTIONS.Athletes.isReady();
-    },
+    db: {
+        /**
+         * Returns the id of the server settings document.
+         * @returns {string} The id
+         */
+        getGenericID: function () {
+            return Meteor.COLLECTIONS.Generic.handle.find().fetch()[0]._id;
+        },
 
-    /**
-     * This function waits asynchronously until all collections are ready. Then it calls the callback.
-     * @param {function} callback - The callback
-     */
-    waitForReady: function (callback) {
-        Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-            Meteor.COLLECTIONS.Contests.onReady(function () {
-                Meteor.COLLECTIONS.Accounts.onReady(function () {
-                    Meteor.COLLECTIONS.Athletes.onReady(function () {
-                        callback();
+        /**
+         * Returns whether all collections are ready.
+         * @return {boolean}
+         */
+        isReady: function () {
+            return Meteor.COLLECTIONS.Generic.isReady() &amp;&amp;
+                Meteor.COLLECTIONS.Contests.isReady() &amp;&amp;
+                Meteor.COLLECTIONS.Accounts.isReady() &amp;&amp;
+                Meteor.COLLECTIONS.Athletes.isReady();
+        },
+
+        /**
+         * This function waits asynchronously until all collections are ready. Then it calls the callback.
+         * @param {function} callback - The callback
+         */
+        waitForReady: function (callback) {
+            Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
+                Meteor.COLLECTIONS.Contests.onReady(function () {
+                    Meteor.COLLECTIONS.Accounts.onReady(function () {
+                        Meteor.COLLECTIONS.Athletes.onReady(function () {
+                            callback();
+                        });
                     });
                 });
             });
-        });
+        },
     },
 
-    /**
-     * Returns the id of the server settings document.
-     * @returns {string} The id
-     */
-    getGenericID: function () {
-        return Meteor.COLLECTIONS.Generic.handle.find().fetch()[0]._id;
+    customAccounts: {
+        store: function (account, contestID, customAccounts) {
+            runServerFunction('storeCustomAccounts', account, {
+                contestID: contestID,
+                customAccounts: customAccounts
+            });
+        },
+        retrieve: function (account, contestID) {
+            return runServerFunction('retrieveCustomAccounts', account, {contestID: contestID});
+        },
     },
 
-    /**
-     *
-     * @param {Log} log - A log object
-     * @param {Account[]} accounts - The account
-     * @param {boolean} require_signature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {Athlete[]}
-     */
-    getAthletesOfAccounts: function (log, accounts, require_signature) {
-        let result = [];
-        log.disable();
-        //iterate athletes
-        Meteor.COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
-            //try to decrypt with accounts
-            const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
+    certificates: {
+        /**
+         * Updates a certificate of an athlete.
+         * @param {Account} account - Output account
+         * @param {boolean} id - The meteor db id of the athlete
+         * @param [callback] - optional callback
+         */
+        update: function (account, id, callback) {
+            runServerFunction('certificateUpdate', account, {id: id}, callback);
+        },
 
-            //if decrypted add to result
-            if (decrypted) {
-                result.push(decrypted);
-            }
-        });
-        log.enable();
-        return result;
+        /**
+         * Generates certificates for the current contest
+         * @param {Account} account - Output account
+         * @param {object[]} athleteIDs - List of athlete ids
+         * @param [callback] - optional callback
+         */
+        generate: function (account, athleteIDs, callback) {
+            runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        },
     },
 
-    /**
-     * Returns the active contest database ID
-     * @returns {string}
-     */
-    getActiveContestID: function () {
-        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.getGenericID()}).activeContest;
-    },
+    athletes: {
+        count: function (account, contestID) {
+            return runServerFunction('getAthleteCount', account, {contestID: contestID});
+        },
+        getAsync: function (account, contestID, require_signature, require_group_check, callback) {
+            runAsyncServerFunction('getAthletes', account, {
+                contestID: contestID,
+                require_signature: require_signature,
+                require_group_check: require_group_check
+            }, callback);
+        },
 
-    /**
-     * Returns the active contest object
-     * @returns {object}
-     */
-    getActiveContest: function () {
-        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: Server.getActiveContestID()});
-    },
+        /**
+         *
+         * @param {Log} log - A log object
+         * @param {Account[]} accounts - The account
+         * @param {boolean} require_signature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
+         * @returns {Athlete[]}
+         */
+        getByAccounts: function (log, accounts, require_signature) {
+            let result = [];
+            log.disable();
+            //iterate athletes
+            Meteor.COLLECTIONS.Athletes.handle.find().fetch().forEach(function (obj) {
+                //try to decrypt with accounts
+                const decrypted = Athlete.decryptFromDatabase(log, obj, accounts, require_signature);
 
-    getContestByID: function (contestID) {
-        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: contestID});
-    },
-
-    /**
-     * Returns a list of the activated sports of the current competition
-     * @returns {string[]}
-     */
-    getActivatedSports: function (contestID) {
-        if (!contestID) contestID = Server.getActiveContestID();
-        return Server.getContestByID(contestID).sportTypes;
-    },
-
-    /**
-     * Returns the current or a given competition type id
-     * @param {Mongo.Collection} [contestID] - Handle of the db
-     * @returns {number}
-     */
-    getCompetitionTypeID: function (contestID) {
-        if (!contestID) contestID = Server.getActiveContestID();
-        return Server.getContestByID(contestID).type;
-    },
-
-    /**
-     * Returns the current or a given competition type
-     * @param {Mongo.Collection} [contestID] - Handle of the db
-     * @returns {object}
-     */
-    getCompetitionType: function (contestID) {
-        if (!contestID) contestID = Server.getActiveContestID();
-        return getCompetitionTypeByID(Server.getCompetitionTypeID(contestID));
-    },
-
-    /**
-     * Returns the activated sport types of the current or a given competition
-     * @param {Mongo.Collection} [contestID] - Handle of the db
-     * @returns {string[]}
-     */
-    getCompetitionSportTypes: function (contestID) {
-        if (!contestID) contestID = Server.getActiveContestID();
-        return Server.getContestByID(contestID).sportTypes;
-    },
-
-    /**
-     * Returns the current competition name
-     * @returns {string}
-     */
-    getCompetitionName: function () {
-        return Server.getActiveContest().name;
-    },
-
-    /**
-     * Returns a list of groups by competition ID
-     */
-    getAthletesByCompetition: function (account, competitionID, require_signature, require_group_check, callback) {
-        const log = Log.getLogObject();
-        runServerFunction('getAthletesByCompetitionID', account, {
-            competitionID: competitionID,
-            require_signature: require_signature,
-            require_group_check: require_group_check
-        }, function (groups) {
-            for (let groupIndex in groups) {
-                if (!groups.hasOwnProperty(groupIndex)) continue;
-                let athletes = [];
-                for (let athleteIndex in groups[groupIndex].athletes) {
-                    if (!groups[groupIndex].athletes.hasOwnProperty(athleteIndex)) continue;
-                    athletes.push(Athlete.fromObject(log, groups[groupIndex].athletes[athleteIndex]));
+                //if decrypted add to result
+                if (decrypted) {
+                    result.push(decrypted);
                 }
-                groups[groupIndex].athletes = athletes;
-            }
-            if (typeof callback === 'function') callback(groups);
-        });
+            });
+            log.enable();
+            return result;
+        },
     },
 
-    getAthletesByCompetitionAsync: function (account, competitionID, require_signature, require_group_check, callback) {
-        runAsyncServerFunction('getAthletes', account, {
-            competitionID: competitionID,
-            require_signature: require_signature,
-            require_group_check: require_group_check
-        }, callback);
-    },
-
-    getAthleteCountByCompetition: function (account, competitionID) {
-        return runServerFunction('getAthleteCount', account, {competitionID: competitionID});
+    contest: {
+        /**
+         * Returns the active contest object
+         * @param [contestID] - ID of the contest to return
+         * @returns {object}
+         */
+        get: function (contestID) {
+            if (!contestID) contestID = Server.contest.getActiveID();
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: contestID});
+        },
+        add: function (account, name, contestType) {
+            runServerFunction('addContest', account, {name: name, contestType: contestType});
+        },
+        lock: function (account, contestID, callback) {
+            runServerFunction('lockContest', account, {contestID: contestID}, callback);
+        },
+        /**
+         * Renames a contest with a given name
+         * @param {Account} account - Admin account
+         * @param {string} contestID - The id of the contest
+         * @param {string} newName - The new name
+         * @param [callback] - optional callback
+         */
+        rename: function (account, contestID, newName, callback) {
+            runServerFunction('renameContest', account, {contestID: contestID, newName: newName}, callback);
+        },
+        /**
+         * Removes a contest with a given name. The actual data are still in the db. Only the link is deleted.
+         * @param {Account} account - Admin account
+         * @param {string} contestID - The name of the contest
+         * @param [callback] - optional callback
+         */
+        remove: function (account, contestID, callback) {
+            runServerFunction('removeContest', account, {contestID: contestID}, callback);
+        },
+        /**
+         * Activates a contest with a given name
+         * @param {Account} account - Admin account
+         * @param {string} contestID - The id of the contest
+         * @param [callback] - optional callback
+         */
+        activate: function (account, contestID, callback) {
+            runServerFunction('activateContest', account, {contestID: contestID}, callback);
+        },
+        /**
+         * Returns the current or a given contest type
+         * @param {Mongo.Collection} [contestID] - Handle of the db
+         * @returns {object}
+         */
+        getType: function (contestID) {
+            if (!contestID) contestID = Server.contest.getActiveID();
+            return getContestTypeByID(Server.contest.get(contestID).type);
+        },
+        /**
+         * Returns the active contest database ID
+         * @returns {string}
+         */
+        getActiveID: function () {
+            return Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.db.getGenericID()}).activeContest;
+        },
     },
 
     /**
-     * Set the state of a sportType for a given competition ID
+     * Set the state of a sportType for a given contest ID
      * @param account
-     * @param competitionID
+     * @param contestID
      * @param sportTypeID
      * @param state
      * @param callback
      */
-    setSportTypeState: function (account, competitionID, sportTypeID, state, callback) {
+    setSportTypeState: function (account, contestID, sportTypeID, state, callback) {
         runServerFunction('setSportTypeState', account, {
-            competitionID: competitionID,
+            contestID: contestID,
             sportTypeID: sportTypeID,
             state: state
         }, callback);
     },
 
-    writeAthletes: function (account, competitionID, encryptedAthletes, callback) {
+    // TODO: Replace this with a delta function
+    writeAthletes: function (account, contestID, encryptedAthletes, callback) {
         runServerFunction('writeAthletes', account, {
-            competitionID: competitionID,
+            contestID: contestID,
             encryptedAthletes: encryptedAthletes
         }, callback);
     },
 
-    writeAccounts: function (account, competitionID, accounts, callback) {
-        runServerFunction('writeAccounts', account, {competitionID: competitionID, accounts: accounts}, callback);
-    },
-
-    lockCompetition: function (account, competitionID, callback) {
-        runServerFunction('lockCompetition', account, {competitionID: competitionID}, callback);
-    },
-
-    addCompetition: function (account, name, competitionType) {
-        runServerFunction('addCompetition', account, {name: name, competitionType: competitionType});
-    },
-
-    storeCustomAccounts: function (account, competitionID, customAccounts) {
-        runServerFunction('storeCustomAccounts', account, {
-            competitionID: competitionID,
-            customAccounts: customAccounts
-        });
-    },
-
-    retrieveCustomAccounts: function (account, competitionID) {
-        return runServerFunction('retrieveCustomAccounts', account, {competitionID: competitionID});
-    },
-
-    /**
-     * Renames a competition with a given name
-     * @param {Account} account - Admin account
-     * @param {string} competitionID - The id of the competition
-     * @param {string} newName - The new name
-     * @param [callback] - optional callback
-     */
-    renameCompetition: function (account, competitionID, newName, callback) {
-        runServerFunction('renameCompetition', account, {competitionID: competitionID, newName: newName}, callback);
-    },
-
-    /**
-     * Activates a competition with a given name
-     * @param {Account} account - Admin account
-     * @param {string} competitionID - The id of the competition
-     * @param [callback] - optional callback
-     */
-    activateCompetition: function (account, competitionID, callback) {
-        runServerFunction('activateCompetition', account, {competitionID: competitionID}, callback);
-    },
-
-    /**
-     * Removes a competition with a given name. The actual data are still in the db. Only the link is deleted.
-     * @param {Account} account - Admin account
-     * @param {string} competitionID - The name of the competition
-     * @param [callback] - optional callback
-     */
-    removeCompetition: function (account, competitionID, callback) {
-        runServerFunction('removeCompetition', account, {competitionID: competitionID}, callback);
-    },
-
-    /**
-     * Updates a certificate of an athlete.
-     * @param {Account} account - Output account
-     * @param {boolean} id - The meteor db id of the athlete
-     * @param [callback] - optional callback
-     */
-    certificateUpdate: function (account, id, callback) {
-        runServerFunction('certificateUpdate', account, {id: id}, callback);
-    },
-
-    /**
-     * Generates certificates for the current competition
-     * @param {Account} account - Output account
-     * @param {object[]} athleteIDs - List of athlete ids
-     * @param [callback] - optional callback
-     */
-    generateCertificates: function (account, athleteIDs, callback) {
-        runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+    // TODO: Replace this with a delta function
+    writeAccounts: function (account, contestID, accounts, callback) {
+        runServerFunction('writeAccounts', account, {contestID: contestID, accounts: accounts}, callback);
     },
 
     /**
@@ -559,12 +483,12 @@ export let Server = {
      * @param {Account} account - Admin account
      * @param [callback] - optional callback
      */
-    getServerIPs: function (account, callback) {
+    getIPs: function (account, callback) {
         runServerFunction('getServerIPs', account, {}, callback);
     },
 
     /**
-     * Generates certificates for the current competition
+     * Generates certificates for the current contest
      * @param {Account} account - Admin account
      * @param [callback] - optional callback
      */
@@ -581,7 +505,7 @@ export let Server = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 23:44:32
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 17 2017 00:47:14
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
