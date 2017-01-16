@@ -1,4 +1,4 @@
-import {COMPETITION_TYPES} from "../../logic/competitionType";
+import {CONTEST_TYPES} from "../../logic/contestType";
 import {Athlete} from "../../logic/athlete";
 import {Log} from "../../log";
 import {Crypto} from "../../crypto/crypto";
@@ -9,7 +9,7 @@ import {Server} from "../ServerInterface";
 let encryptAsAdmin;
 
 if (Meteor.isServer) {
-    encryptAsAdmin = require("../../../startup/server/helpers").encryptAsAdmin;
+    encryptAsAdmin = require("../../../../server/helpers").encryptAsAdmin;
 }
 
 export function initAthletes() {
@@ -41,7 +41,7 @@ export function initAthletes() {
             }
 
             if (updateRequired) {
-                const ct = Server.getCompetitionType();
+                const ct = Server.contest.getType();
                 const log = Log.getLogObject();
                 const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
                 const athlete = Athlete.decryptFromDatabase(log, doc, accounts, true, true);
@@ -80,7 +80,7 @@ export function initAthletes() {
 
     Meteor.COLLECTIONS.Athletes.createMockData = function () {
         const log = Log.getLogObject();
-        const ct = COMPETITION_TYPES[0].object;
+        const ct = CONTEST_TYPES[0].object;
 
         //TODO include
         // const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli'));

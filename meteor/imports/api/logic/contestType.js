@@ -1,6 +1,6 @@
-import {Athletics} from "./competitionTypes/athletics.js";
-import {Swimming} from "./competitionTypes/swimming.js";
-import {Gymnastics} from "./competitionTypes/gymnastics";
+import {Athletics} from "./contestTypes/athletics.js";
+import {Swimming} from "./contestTypes/swimming.js";
+import {Gymnastics} from "./contestTypes/gymnastics";
 
 
 /**
@@ -19,7 +19,7 @@ import {Gymnastics} from "./competitionTypes/gymnastics";
  * @property {number} E Conversion Factor for start class 'E'
  */
 
-export const COMPETITION_TYPES = [
+export const CONTEST_TYPES = [
     {
         id: 'ct_athletics',
         object: Athletics
@@ -35,11 +35,11 @@ export const COMPETITION_TYPES = [
 ];
 
 /**
- * Returns the competition type by a given id.
- * @param {number} id - The id of the competition type. It matches the position in the Array COMPETITION_TYPES;
- * @returns {object} The competition type (Athletics or Swimming)
+ * Returns the contest type by a given id.
+ * @param {number} id - The id of the contest type. It matches the position in the Array CONTEST_TYPES;
+ * @returns {object} The contest type (Athletics or Swimming)
  */
-export function getCompetitionTypeByID(id) {
+export function getContestTypeByID(id) {
     if (id === 0) {
         return Athletics;
     } else if (id === 1) {

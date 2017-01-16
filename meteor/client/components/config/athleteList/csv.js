@@ -56,7 +56,7 @@ export function parseCSVFile(file) {
         skipEmptyLines: true,
         complete: function (results) {
             const compID = currentCompID.get();
-            const ct = Server.getCompetitionType(compID);
+            const ct = Server.contest.getType(compID);
             const field = correlateHeaders(results.meta.fields);
             processCSVResult(results.data, field, ct);
         },

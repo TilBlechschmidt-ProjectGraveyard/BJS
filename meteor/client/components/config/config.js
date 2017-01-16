@@ -1,16 +1,9 @@
 import {Server} from "../../../imports/api/database/ServerInterface";
 import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
-import {getCompetitionTypeByID} from "../../../imports/api/logic/competitionType";
+import {getContestTypeByID} from "../../../imports/api/logic/contestType";
 import {updateSwiperProgress} from "../login/router";
-import {
-    codesClean,
-    clearACs,
-    getCompetitionName,
-    loginStations,
-    loginGroups,
-    loginCustom
-} from "./accessCodes/accessCodes";
+import {codesClean, clearACs, getContestName, loginStations, loginGroups, loginCustom} from "./accessCodes/accessCodes";
 import {showIndicator, hideIndicator} from "../helpers";
 import {parseCSVFile} from "./athleteList/csv";
 
@@ -20,7 +13,7 @@ Meteor.config.log = Log.getLogObject();
 export const dbReady = new Tracker.Dependency();
 
 export const currentSlide = new ReactiveVar(0);
-export const competitions = new ReactiveVar([]);
+export const contests = new ReactiveVar([]);
 export const currentCompID = new ReactiveVar("");
 export const editMode = new ReactiveVar(false);
 export const forwardIcon = new ReactiveVar(undefined);
@@ -28,7 +21,7 @@ const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
 const ServerIPs = new ReactiveVar([]);
 
-Server.waitForReady(function () {
+Server.db.waitForReady(function () {
     Tracker.autorun(async function () {
         showIndicator();
         dbReady.depend();
@@ -38,60 +31,60 @@ Server.waitForReady(function () {
             return undefined;
         }
 
-        const allCompetitions = Meteor.COLLECTIONS.Contests.handle.find().fetch();
+        const allContests = Meteor.COLLECTIONS.Contests.handle.find().fetch();
         const comps = {
             writable: [],
             readOnly: []
         };
 
-        const activeCompetition = Server.getActiveContestID();
-        for (let competition in allCompetitions) {
-            if (!allCompetitions.hasOwnProperty(competition)) continue;
-            competition = allCompetitions[competition];
+        const activeContest = Server.contest.getActiveID();
+        for (let contest in allContests) {
+            if (!allContests.hasOwnProperty(contest)) continue;
+            contest = allContests[contest];
 
             // --- Populate data ---
 
             // Athlete count (wait for promise to resolve)
-            competition.athleteCount = await Server.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
+            contest.athleteCount = await Server.athletes.count(AccountManager.getAdminAccount().account, contest._id);
 
-            // Competition type name
-            const competitionType = getCompetitionTypeByID(competition.type);
-            competition.type = competitionType.getInformation().name;
+            // Contest type name
+            const contestType = getContestTypeByID(contest.type);
+            contest.type = contestType.getInformation().name;
 
             // Active property
-            competition.active = activeCompetition == competition._id;
+            contest.active = activeContest == contest._id;
 
             // Sport types metadata
             const sportTypes = [];
-            for (let sportType in competition.sportTypes) {
-                if (!competition.sportTypes.hasOwnProperty(sportType)) continue;
-                sportTypes.push(competitionType.getSportType(competition.sportTypes[sportType]));
+            for (let sportType in contest.sportTypes) {
+                if (!contest.sportTypes.hasOwnProperty(sportType)) continue;
+                sportTypes.push(contestType.getSportType(contest.sportTypes[sportType]));
             }
-            competition.sportTypes = sportTypes;
+            contest.sportTypes = sportTypes;
 
             // --- Sort by readOnly attribute ---
-            if (competition.readOnly) {
-                comps.readOnly.push(competition);
+            if (contest.readOnly) {
+                comps.readOnly.push(contest);
             } else {
-                comps.writable.push(competition);
+                comps.writable.push(contest);
             }
         }
 
-        competitions.set(comps);
+        contests.set(comps);
         Tracker.afterFlush(hideIndicator);
     });
 });
 
 Template.config.onRendered( function () {
-    Server.getServerIPs(AccountManager.getAdminAccount().account, function (data) {
+    Server.getIPs(AccountManager.getAdminAccount().account, function (data) {
         ServerIPs.set(data);
     })
 });
 
 
 Template.config.helpers({
-    competitions: function () {
-        return competitions.get();
+    contests: function () {
+        return contests.get();
     },
     edit: function () {
         return editMode.get();
@@ -175,7 +168,7 @@ Template.config.events({
         Blaze.saveAsPDF(Template.codes_print,{
             filename: "Zugangscodes_BJS.pdf",
             data: {
-                competition_name: getCompetitionName,
+                contest_name: getContestName,
                 login_stations: loginStations(),
                 login_groups: loginGroups(),
                 login_custom: loginCustom
@@ -229,7 +222,7 @@ Template.config.events({
 });
 
 Template.config.onRendered(function () {
-    Server.waitForReady(function () {
+    Server.db.waitForReady(function () {
         dbReady.changed();
 
         const leftButtonSwiper = new Swiper('#config-left-button-swiper', {

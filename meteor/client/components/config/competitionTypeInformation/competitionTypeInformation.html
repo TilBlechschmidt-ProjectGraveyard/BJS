@@ -1,10 +1,10 @@
-<template name="competitionTypeInformationPopups">
+<template name="contestTypeInformationPopups">
     {{#each i in getInformation}}
-        {{>popup class=(add "popup-competitionType-" i.name) title=i.name subtitle="Informationen" content="competitionTypeInformationContent" data=(toSimplePopupData i)}}
+        {{>popup class=(add "popup-contestType-" i.name) title=i.name subtitle="Informationen" content="contestTypeInformationContent" data=(toSimplePopupData i)}}
     {{/each}}
 </template>
 
-<template name="competitionTypeInformationContent">
+<template name="contestTypeInformationContent">
     <h3 style="text-align: center;">Beschreibung</h3>
     <div style="text-align: center;">
         {{data.description}}

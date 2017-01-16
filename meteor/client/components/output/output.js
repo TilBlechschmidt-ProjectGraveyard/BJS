@@ -18,7 +18,7 @@ const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
 
 
 function loadAllAthlets() {
-    Server.generateCertificates(
+    Server.certificates.generate(
         AccountManager.getOutputAccount().account,
         _.map(Meteor.COLLECTIONS.Athletes.handle.find({}).fetch(), function (enc_athlete) {
             return enc_athlete._id
@@ -269,7 +269,7 @@ Template.output.onRendered(function () {
     Meteor.f7.sortableOpen('.sortable');
     showIndicator();
 
-    Server.waitForReady(function () {
+    Server.db.waitForReady(function () {
         if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
             Meteor.COLLECTIONS.Athletes.changeDetector = true;
             Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
@@ -297,7 +297,7 @@ Template.output.onRendered(function () {
 
                     //change of certificate information -> update
                     if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
-                        Server.generateCertificates(
+                        Server.certificates.generate(
                             AccountManager.getOutputAccount().account, [id], function (data) {
 
                                 //load athletes

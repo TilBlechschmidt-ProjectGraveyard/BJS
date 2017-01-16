@@ -1,5 +1,5 @@
-import {checkLogin} from "../../api/logic/account";
-import {Crypto} from "../../api/crypto/crypto";
+import {checkLogin} from "../imports/api/logic/account";
+import {Crypto} from "../imports/api/crypto/crypto";
 
 /**
  * Returns the admin account.

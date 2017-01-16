@@ -72,8 +72,8 @@ export let reloadSwiper = function (forceAthleteReload) {
 };
 
 function populateAthlete(athlete) {
-    if (!Server.isReady()) {
-        Server.waitForReady(function () {
+    if (!Server.db.isReady()) {
+        Server.db.waitForReady(function () {
             Meteor.inputDependency.changed();
         });
         return {};
@@ -83,7 +83,7 @@ function populateAthlete(athlete) {
     if (athlete === undefined) return {};
 
     const stationAccount = AccountManager.getStationAccount();
-    const ct = Server.getCompetitionType();
+    const ct = Server.contest.getType();
 
 
 
@@ -106,7 +106,7 @@ function populateAthlete(athlete) {
             if (!stIDs.hasOwnProperty(stID) || !lodash.includes(athlete.sports, stIDs[stID])) continue;
             stID = stIDs[stID];
             gapKey = stID;
-            sportTypes[stID] = Server.getCompetitionType().getSportType(stID);
+            sportTypes[stID] = Server.contest.getType().getSportType(stID);
         }
     }
 
@@ -260,17 +260,17 @@ Template.input.helpers({
         });
     },
     sportTypes: function () {
-        if (!Server.isReady()) {
+        if (!Server.db.isReady()) {
             const dbDep = new Tracker.Dependency();
             dbDep.depend();
-            Server.waitForReady(function () {
+            Server.db.waitForReady(function () {
                 dbDep.changed();
             });
             return [];
         }
-        const competitionType = Server.getCompetitionType();
-        return lodash.map(Server.getCompetitionSportTypes(), function (stID) {
-            const sportType = competitionType.getSportType(stID);
+        const contestType = Server.contest.getType();
+        return lodash.map(Server.contest.get().sportTypes, function (stID) {
+            const sportType = contestType.getSportType(stID);
             sportType.m.min = sportType.m.age.length >0 ? _.min(sportType.m.age): "nicht möglich";
             sportType.m.max = sportType.m.age.length >0 ?  _.max(sportType.m.age):"";
             sportType.w.min = sportType.w.age.length >0 ?  _.min(sportType.w.age):"nicht möglich";
@@ -319,7 +319,7 @@ Template.input.events({
 
 
 Template.input.onRendered(function () {
-    Server.waitForReady(function () {
+    Server.db.waitForReady(function () {
         reloadSwiper();
     });
 });

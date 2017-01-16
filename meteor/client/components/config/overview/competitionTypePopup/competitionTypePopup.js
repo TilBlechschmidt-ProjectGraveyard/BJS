@@ -1,20 +1,20 @@
-import {COMPETITION_TYPES} from "../../../../../imports/api/logic/competitionType";
+import {CONTEST_TYPES} from "../../../../../imports/api/logic/contestType";
 import {Server} from "../../../../../imports/api/database/ServerInterface";
 import {AccountManager} from "../../../../../imports/api/accountManagement/AccountManager";
-Template.competitionTypeCreatePopupContent.helpers({
-    competitionTypes: function () {
-        return COMPETITION_TYPES;
+Template.contestTypeCreatePopupContent.helpers({
+    contestTypes: function () {
+        return CONTEST_TYPES;
     }
 });
 
-Template.competitionTypeCreatePopupContent.events({
-    'keypress .competitionNameInput': function (event) {
+Template.contestTypeCreatePopupContent.events({
+    'keypress .contestNameInput': function (event) {
         if (event.keyCode == 13) {
-            const submitButton = event.target.closest("div.swipeout-actions-right").querySelector(".addCompetitionSubmit");
+            const submitButton = event.target.closest("div.swipeout-actions-right").querySelector(".addContestSubmit");
             submitButton.click();
         }
     },
-    'click .addCompetition': function (event) {
+    'click .addContest': function (event) {
         const swipeout = event.target.closest("li.swipeout");
         const input = swipeout.querySelector("input");
         input.value = "";
@@ -22,19 +22,19 @@ Template.competitionTypeCreatePopupContent.events({
             input.focus();
         });
     },
-    'click .addCompetitionSubmit': function (event) {
+    'click .addContestSubmit': function (event) {
         const swipeout = event.target.closest("li.swipeout");
         const name = swipeout.querySelector("input").value;
         let id = swipeout.dataset.id;
-        for (const ct in COMPETITION_TYPES) {
-            if (!COMPETITION_TYPES.hasOwnProperty(ct)) continue;
-            if (COMPETITION_TYPES[ct].id == id) {
+        for (const ct in CONTEST_TYPES) {
+            if (!CONTEST_TYPES.hasOwnProperty(ct)) continue;
+            if (CONTEST_TYPES[ct].id == id) {
                 id = parseInt(ct);
                 break;
             }
         }
 
-        Server.addCompetition(AccountManager.getAdminAccount().account, name, id);
-        Meteor.f7.closeModal(".popup-competitionType");
+        Server.contest.add(AccountManager.getAdminAccount().account, name, id);
+        Meteor.f7.closeModal(".popup-contestType");
     }
 });

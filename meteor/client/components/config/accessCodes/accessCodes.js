@@ -34,22 +34,22 @@ Tracker.autorun(function () {
 });
 
 // Storing custom accounts
-Server.waitForReady(function () {
+Server.db.waitForReady(function () {
     Tracker.autorun(function () {
         if (!editMode.get()) return;
         const compID = currentCompID.get();
         const acodes = accessCodes.get();
         if (compID && accessCodesLoaded == compID)
-            Server.storeCustomAccounts(AccountManager.getAdminAccount().account, compID, Crypto.encrypt(acodes[2].codes, AccountManager.getAdminAccount().account.ac, AccountManager.getAdminAccount().account.ac));
+            Server.customAccounts.store(AccountManager.getAdminAccount().account, compID, Crypto.encrypt(acodes[2].codes, AccountManager.getAdminAccount().account.ac, AccountManager.getAdminAccount().account.ac));
     });
 });
 
 // Loading custom account database
-Server.waitForReady(function () {
+Server.db.waitForReady(function () {
     Tracker.autorun(async function () {
         const compID = currentCompID.get();
         if (compID && accessCodesLoaded !== compID) {
-            const data = await Server.retrieveCustomAccounts(AccountManager.getAdminAccount().account, compID);
+            const data = await Server.customAccounts.retrieve(AccountManager.getAdminAccount().account, compID);
             const decryptedCodes = Crypto.tryDecrypt(Meteor.config.log, data, [AccountManager.getAdminAccount().account.ac]);
             if (decryptedCodes && decryptedCodes.signatureEnforced) {
                 const acodes = accessCodes.get();
@@ -217,7 +217,7 @@ function finalizeContest() {
 
     Server.writeAthletes(admin.account, compID, athletes);
 
-    Server.lockCompetition(admin.account, compID);
+    Server.contest.lock(admin.account, compID);
 
     setTimeout(function () {
         Meteor.f7.hidePreloader();
@@ -232,9 +232,9 @@ function finalizeContest() {
 
 function getCurrentSportTypes() {
     const compID = currentCompID.get();
-    const competitionType = Server.getCompetitionType(compID);
-    return lodash.map(Server.getCompetitionSportTypes(compID), function (stID) {
-        return competitionType.getSportType(stID);
+    const contestType = Server.contest.getType(compID);
+    return lodash.map(Server.contest.get(compID).sportTypes, function (stID) {
+        return contestType.getSportType(stID);
     });
 }
 
@@ -266,8 +266,8 @@ Template.accessCodes.helpers({
     codesClean: function () {
         return codesClean.get();
     },
-    get_competition_name: function () {
-        const CurrentComp = Server.getContestByID(currentCompID.get());
+    get_contest_name: function () {
+        const CurrentComp = Server.contest.get(currentCompID.get());
         if (CurrentComp !== undefined) {
             return CurrentComp.name;
         } else
@@ -288,8 +288,8 @@ Template.accessCodes.helpers({
     sportTypes: getCurrentSportTypes
 });
 
-export function getCompetitionName() {
-    const CurrentComp = Server.getContestByID(currentCompID.get());
+export function getContestName() {
+    const CurrentComp = Server.contest.get(currentCompID.get());
     if (CurrentComp !== undefined) {
         return CurrentComp.name;
     } else

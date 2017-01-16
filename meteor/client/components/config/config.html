@@ -64,8 +64,8 @@
                 <div id="config-swiper" class="swiper-container full-height">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            {{>competitionList title="Konfigurierte Wettkämpfe" competitions=competitions.readOnly readOnly=true}}
-                            {{>competitionList title="Unvollständige Wettkämpfe" competitions=competitions.writable}}
+                            {{>contestList title="Konfigurierte Wettkämpfe" contests=contests.readOnly readOnly=true}}
+                            {{>contestList title="Unvollständige Wettkämpfe" contests=contests.writable}}
                             <div class="content-block">
                                 <p style="text-align: center;">Dieser Server ist erreichbar unter: <br />{{#each ServerIPList}}{{this}}:3000{{#if eq (dec (length ServerIPList)) @index}}{{else}} | {{/if}}{{/each}}</p>
                             </div>
@@ -90,15 +90,15 @@
     </div>
 
     {{>startClassesPopup}}
-    {{>competitionTypeCreatePopup}}
+    {{>contestTypeCreatePopup}}
     {{>logPopup}}
-    {{>competitionTypeInformationPopups}}
+    {{>contestTypeInformationPopups}}
     {{>popup title="Athleten importieren" subtitle="CSV Import" content="csvImport" class="popup-csv-import"}}
 
-    {{#each c in competitions.readOnly}}
+    {{#each c in contests.readOnly}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}
     {{/each}}
-    {{#each c in competitions.writable}}
+    {{#each c in contests.writable}}
         {{>popup class=(add "popup-sportTypes-" c._id) title=c.name subtitle="Sportarten" content="sportTypePopup" data=(toSimplePopupData c)}}
     {{/each}}
 </template>

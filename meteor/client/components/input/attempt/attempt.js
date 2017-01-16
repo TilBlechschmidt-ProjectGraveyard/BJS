@@ -19,7 +19,7 @@ function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
     if (measurements[athleteID] === undefined) measurements[athleteID] = {};
     if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
-    const ct = Server.getCompetitionType();
+    const ct = Server.contest.getType();
 
     const sportTypeData = ct.getSportType(stID);
     const strDotMeasurement = strMeasurement.replace(/,/g, ".");

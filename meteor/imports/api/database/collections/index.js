@@ -8,30 +8,30 @@ function initDatabase() {
     initAccounts();
     initAthletes();
 
-    Meteor.COLLECTIONS.connect = function (competitionID) {
-        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
+    Meteor.COLLECTIONS.connect = function (contestID) {
+        if (Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(contestID) || Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(contestID)) {
             return false;
         }
-        Meteor.COLLECTIONS.Accounts.connect(competitionID);
-        Meteor.COLLECTIONS.Athletes.connect(competitionID);
+        Meteor.COLLECTIONS.Accounts.connect(contestID);
+        Meteor.COLLECTIONS.Athletes.connect(contestID);
         return true;
     };
 
-    Meteor.COLLECTIONS.switch = function (competitionID) {
-        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(competitionID) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(competitionID)) {
+    Meteor.COLLECTIONS.switch = function (contestID) {
+        if (!Meteor.COLLECTIONS.Accounts.handles.hasOwnProperty(contestID) || !Meteor.COLLECTIONS.Athletes.handles.hasOwnProperty(contestID)) {
             return false;
         }
         if (Meteor.isServer) {
-            Meteor.COLLECTIONS.Generic.handle.update({_id: Server.getGenericID()}, {$set: {activeContest: competitionID}});
+            Meteor.COLLECTIONS.Generic.handle.update({_id: Server.db.getGenericID()}, {$set: {activeContest: contestID}});
         }
-        Meteor.COLLECTIONS.Accounts.switch(competitionID);
-        Meteor.COLLECTIONS.Athletes.switch(competitionID);
+        Meteor.COLLECTIONS.Accounts.switch(contestID);
+        Meteor.COLLECTIONS.Athletes.switch(contestID);
         return true;
     };
 
-    Meteor.COLLECTIONS.connect_and_switch = function (competitionID) {
-        Meteor.COLLECTIONS.connect(competitionID);
-        return Meteor.COLLECTIONS.switch(competitionID);
+    Meteor.COLLECTIONS.connect_and_switch = function (contestID) {
+        Meteor.COLLECTIONS.connect(contestID);
+        return Meteor.COLLECTIONS.switch(contestID);
     };
 
     if (Meteor.isClient) {
@@ -41,10 +41,10 @@ function initDatabase() {
         });
     } else {
         const genericData = Meteor.COLLECTIONS.Generic.handle.findOne();
-        const competitions = Meteor.COLLECTIONS.Contests.handle.find({}).fetch();
-        for (let competition in competitions) {
-            if (!competitions.hasOwnProperty(competition)) continue;
-            Meteor.COLLECTIONS.connect(competitions[competition]._id);
+        const contests = Meteor.COLLECTIONS.Contests.handle.find({}).fetch();
+        for (let contest in contests) {
+            if (!contests.hasOwnProperty(contest)) continue;
+            Meteor.COLLECTIONS.connect(contests[contest]._id);
         }
         Meteor.COLLECTIONS.switch(genericData.activeContest);
     }

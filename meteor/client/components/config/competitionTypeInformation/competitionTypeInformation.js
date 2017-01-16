@@ -1,9 +1,9 @@
-import {COMPETITION_TYPES} from "../../../../imports/api/logic/competitionType";
+import {CONTEST_TYPES} from "../../../../imports/api/logic/contestType";
 
 
-Template.competitionTypeInformationPopups.helpers({
+Template.contestTypeInformationPopups.helpers({
     getInformation: function () {
-        return _.map(COMPETITION_TYPES, function (ct) {
+        return _.map(CONTEST_TYPES, function (ct) {
             return ct.object.getInformation();
         })
     }

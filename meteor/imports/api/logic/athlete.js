@@ -14,8 +14,8 @@ import {Log} from "../log";
  * @param {boolean} isMale Whether or not the athlete is male
  * @param {string} group Identifier of the group this athlete is part of
  * @param {string} handicap Handicap id of the athlete
- * @param {number} maxAge The max age provided by the competition type (ct.maxAge)
- * @param {String[]|object} ct List of sports the athlete can do or a competition type object
+ * @param {number} maxAge The max age provided by the contest type (ct.maxAge)
+ * @param {String[]|object} ct List of sports the athlete can do or a contest type object
  * @param {string|string[]} [id] - Mongo DB id or list of activated sports
  * @constructor
  */
@@ -194,7 +194,7 @@ Athlete.prototype = {
         return new Date().getFullYear() - this.ageGroup;
     },
     /**
-     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Competition Type, this age is returned.
+     * Returns the age of the athlete. This might not be the correct age but for the BJS only the year of birth is important. If the age is greater than the max age of the Contest Type, this age is returned.
      * @returns {number}
      */
     get tableAge() {

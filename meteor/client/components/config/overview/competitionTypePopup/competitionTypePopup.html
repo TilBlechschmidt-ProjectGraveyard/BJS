@@ -1,13 +1,13 @@
-<template name="competitionTypeCreatePopup">
-    {{>popup class="popup-competitionType" title="Wettkampfarten" subtitle="Wählen sie die Wettkampfart" content="competitionTypeCreatePopupContent"}}
+<template name="contestTypeCreatePopup">
+    {{>popup class="popup-contestType" title="Wettkampfarten" subtitle="Wählen sie die Wettkampfart" content="contestTypeCreatePopupContent"}}
 </template>
 
-<template name="competitionTypeCreatePopupContent">
+<template name="contestTypeCreatePopupContent">
     <div class="list-block media-list">
         <ul>
-            {{#each c in competitionTypes}}
+            {{#each c in contestTypes}}
                 {{#with c}}
-                    <li data-id="{{id}}" class="swipeout addCompetition">
+                    <li data-id="{{id}}" class="swipeout addContest">
                         {{#with c.object.getInformation}}
                             <a href="#" class="swipeout-content item-link item-content startClassSelect">
                                 <div class="item-inner">
@@ -21,10 +21,10 @@
                             </a>
                             <div class="swipeout-actions-right">
                                 <a href="#" class="name-action bg-blue">
-                                    <input type="text" class="competitionNameInput" style="color: #f4f4f4;"
+                                    <input type="text" class="contestNameInput" style="color: #f4f4f4;"
                                            placeholder="Wählen sie einen Namen"/>
                                 </a>
-                                <a href="#" class="name-action bg-green addCompetitionSubmit">
+                                <a href="#" class="name-action bg-green addContestSubmit">
                                     Wettkampf erstellen
                                 </a>
                             </div>
@@ -35,16 +35,16 @@
         </ul>
     </div>
     <style>
-        input.competitionNameInput::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        input.contestNameInput::-webkit-input-placeholder { /* WebKit, Blink, Edge */
             color: #c3c3c3;
         }
 
-        input.competitionNameInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        input.contestNameInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
             color: #c3c3c3;
             opacity: 1;
         }
 
-        input.competitionNameInput::-moz-placeholder { /* Mozilla Firefox 19+ */
+        input.contestNameInput::-moz-placeholder { /* Mozilla Firefox 19+ */
             color: #c3c3c3;
             opacity: 1;
         }

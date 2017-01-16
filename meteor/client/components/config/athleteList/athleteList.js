@@ -146,7 +146,7 @@ Tracker.autorun(function () {
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
-        Server.getAthletesByCompetitionAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+        Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
@@ -327,7 +327,7 @@ Template.athleteList.events({
             }
         }
 
-        const ct = Server.getCompetitionType(compID);
+        const ct = Server.contest.getType(compID);
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
         reSave = true;

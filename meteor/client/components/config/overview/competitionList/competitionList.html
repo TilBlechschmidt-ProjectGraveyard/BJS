@@ -1,15 +1,15 @@
-<template name="competitionList">
+<template name="contestList">
     <div class="autoWidthListBlock">
         <div class="content-block-title" data-swiper-parallax="-100" data-swiper-parallax-duration="700">
             {{title}}
         </div>
         <div class="list-block accordion-list">
             <ul>
-                {{#each c in competitions}}
-                    {{>competition competition=c}}
+                {{#each c in contests}}
+                    {{>contest contest=c}}
                 {{/each}}
                 {{#if not readOnly}}
-                    <li class="button-highlight open-popup" data-popup=".popup-competitionType">
+                    <li class="button-highlight open-popup" data-popup=".popup-contestType">
                         <div class="item-content">
                             <div class="item-media">
                                 <i class="f7-icons" style="margin-left: 10px;">add</i>

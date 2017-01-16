@@ -95,12 +95,12 @@ export function ContestCollection(name, publicationFunction) {
             });
         };
 
-    col.connect = function (competition_name) {
+    col.connect = function (contest_name) {
         Meteor.dbReady[col.basename] = false;
-        let competition_name_without_whitespaces = competition_name.replace(/ /g, '');
-        let name = competition_name_without_whitespaces + "_" + col.basename;
+        let contest_name_without_whitespaces = contest_name.replace(/ /g, '');
+        let name = contest_name_without_whitespaces + "_" + col.basename;
 
-        // let dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.competitionMongoURL + competition_name_without_whitespaces);
+        // let dbHandle = new MongoInternals.RemoteCollectionDriver(Meteor.config.contestMongoURL + contest_name_without_whitespaces);
         // let handle = new Mongo.Collection(name, {_driver: dbHandle});
         let handle = new Mongo.Collection(name, {});
 
@@ -110,7 +110,7 @@ export function ContestCollection(name, publicationFunction) {
             col.handle = handle;
             Meteor.subscribe(name);
         } else {
-            col.handles[competition_name] = handle;
+            col.handles[contest_name] = handle;
             col.publish(name, handle);
         }
 
@@ -118,10 +118,10 @@ export function ContestCollection(name, publicationFunction) {
         });
     };
 
-    col.switch = function (competitionID) {
+    col.switch = function (contestID) {
         if (Meteor.isServer) {
-            col.name = competitionID + "_" + col.basename;
-            col.handle = col.handles[competitionID];
+            col.name = contestID + "_" + col.basename;
+            col.handle = col.handles[contestID];
         }
     };
 }

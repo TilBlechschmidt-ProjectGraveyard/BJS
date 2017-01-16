@@ -108,7 +108,7 @@ export function checkLogin(account, loginObject) {
 /**
  * Returns a array of the human-readable station names.
  * @param {Account} account - The Account
- * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
+ * @param ct - The contest type. This parameter is required because the human-readable station names are saved in the contest type namespace.
  * @return {string[]}
  */
 export function getStationNamesAsArray(account, ct) {
@@ -120,7 +120,7 @@ export function getStationNamesAsArray(account, ct) {
 /**
  * Returns a comma separated list of the human-readable station names.
  * @param {Account} account - The Account
- * @param ct - The competition type. This parameter is required because the human-readable station names are saved in the competition type namespace.
+ * @param ct - The contest type. This parameter is required because the human-readable station names are saved in the contest type namespace.
  * @return {string}
  */
 export function getStationNames(account, ct) {

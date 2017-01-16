@@ -159,7 +159,7 @@
         <li><a href="global.html#getAccountByPassphrase">getAccountByPassphrase</a></li>
         <li><a href="global.html#getAcsFromAccounts">getAcsFromAccounts</a></li>
         <li><a href="global.html#getAdminAccount">getAdminAccount</a></li>
-        <li><a href="global.html#getCompetitionTypeByID">getCompetitionTypeByID</a></li>
+        <li><a href="global.html#getContestTypeByID">getContestTypeByID</a></li>
         <li><a href="global.html#getGroupNames">getGroupNames</a></li>
         <li><a href="global.html#getLoginObject">getLoginObject</a></li>
         <li><a href="global.html#getLoginToken">getLoginToken</a></li>
@@ -187,7 +187,7 @@ import {Log} from "../../api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
-import {getCompetitionTypeByID} from "../../api/logic/competitionType";
+import {getContestTypeByID} from "../../api/logic/contestType";
 import {genUUID} from "../../api/crypto/pwdgen";
 import {asyncServerFunctionChannel} from "../../api/streamer";
 const waterfall = require('async-waterfall');
@@ -195,11 +195,11 @@ const waterfall = require('async-waterfall');
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../../../config.json');
-    if (Meteor.config.competitionMongoURL === "EQUAL") Meteor.config.competitionMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
+    if (Meteor.config.contestMongoURL === "EQUAL") Meteor.config.contestMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
 
     initCollections();
 
-    console.log('Your utmost secure and highly trustworthy administrator password reads "'.italic.lightCyan + Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.getGenericID()}).adminPassword.bold.lightRed.underline + '".'.italic.lightCyan);
+    console.log('Your utmost secure and highly trustworthy administrator password reads "'.italic.lightCyan + Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.db.getGenericID()}).adminPassword.bold.lightRed.underline + '".'.italic.lightCyan);
     console.log("Remember that with great power comes great responsibility, so you shall use it wisely!".italic.lightCyan);
     console.log("Now go, use all that voodoo power that comes with it and do some good to your people.".italic.lightCyan);
 
@@ -208,8 +208,8 @@ export function onStartup() {
 
     const asyncServerFunctions = {
         getAthletes: function (account, data) {
-            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.contestID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.contestID].find().fetch();
             const log = Log.getLogObject();
 
             // Return false to deny permission
@@ -240,7 +240,7 @@ export function onStartup() {
     });
 
     const serverFunctions = {
-        async: function (account, data) {
+        runAsync: function (account, data) {
             const context = asyncServerFunctions[data.name](account, data.data);
             const uuid = genUUID();
             const size = context.entries.length - 1;
@@ -275,83 +275,83 @@ export function onStartup() {
             }
         },
         /**
-         * Activates a competition by id
+         * Activates a contest by id
          * @param {Account} account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{contestID: string}} data - Data object
          * @returns {boolean}
          */
-        activateCompetition: function (account, data) {
+        activateContest: function (account, data) {
             if (!account.isAdmin) return false;
-            Meteor.COLLECTIONS.switch(data.competitionID);
+            Meteor.COLLECTIONS.switch(data.contestID);
             return true;
         },
         /**
-         * Removes a competition by id
+         * Removes a contest by id
          * @param {Account} account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{contestID: string}} data - Data object
          * @returns {boolean}
          */
-        removeCompetition: function (account, data) {
+        removeContest: function (account, data) {
             if (!account.isAdmin) return false;
-            Meteor.COLLECTIONS.Contests.handle.remove({_id: data.competitionID});
+            Meteor.COLLECTIONS.Contests.handle.remove({_id: data.contestID});
             return true;
         },
         /**
-         * Overwrites the athletes of a competition
+         * Overwrites the athletes of a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, encryptedAthletes: []}} data - Data object
+         * @param {{contestID: string, encryptedAthletes: []}} data - Data object
          * @returns {boolean}
          */
         writeAthletes: function (account, data) {
             if (!account.isAdmin) return false;
 
             // create collections if they don't exist
-            Meteor.COLLECTIONS.connect(data.competitionID);
+            Meteor.COLLECTIONS.connect(data.contestID);
 
             // clear collections
-            Meteor.COLLECTIONS.Athletes.handles[data.competitionID].remove({});
+            Meteor.COLLECTIONS.Athletes.handles[data.contestID].remove({});
 
             //write athletes
             for (let athlete in data.encryptedAthletes) {
                 if (!data.encryptedAthletes.hasOwnProperty(athlete)) continue;
-                Meteor.COLLECTIONS.Athletes.handles[data.competitionID].insert(data.encryptedAthletes[athlete]);
+                Meteor.COLLECTIONS.Athletes.handles[data.contestID].insert(data.encryptedAthletes[athlete]);
             }
 
             return true;
         },
         /**
-         * Overwrites the athletes of a competition
+         * Overwrites the athletes of a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, accounts: []}} data - Data object
+         * @param {{contestID: string, accounts: []}} data - Data object
          * @returns {boolean}
          */
         writeAccounts: function (account, data) {
             if (!account.isAdmin) return false;
 
             // create collections if they don't exist
-            Meteor.COLLECTIONS.connect(data.competitionID);
+            Meteor.COLLECTIONS.connect(data.contestID);
 
             // clear collections
-            Meteor.COLLECTIONS.Accounts.handles[data.competitionID].remove({});
+            Meteor.COLLECTIONS.Accounts.handles[data.contestID].remove({});
 
             //write accounts
             for (let account in data.accounts) {
                 if (!data.accounts.hasOwnProperty(account)) continue;
-                Meteor.COLLECTIONS.Accounts.handles[data.competitionID].insert(data.accounts[account]);
+                Meteor.COLLECTIONS.Accounts.handles[data.contestID].insert(data.accounts[account]);
             }
 
             return true;
         },
         /**
-         * Locks a competition
+         * Locks a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{contestID: string}} data - Data object
          * @returns {boolean}
          */
-        lockCompetition: function (account, data) {
+        lockContest: function (account, data) {
             if (!account.isAdmin) return false;
 
-            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.contestID}, {
                 $set: {
                     readOnly: true
                 },
@@ -363,16 +363,16 @@ export function onStartup() {
             return true;
         },
         /**
-         * Adds a competition
+         * Adds a contest
          * @param {Account} account - An admin account
-         * @param {{name: string, competitionType: number}} data - Data object
+         * @param {{name: string, contestType: number}} data - Data object
          * @returns {boolean}
          */
-        addCompetition: function (account, data) {
+        addContest: function (account, data) {
             if (!account.isAdmin) return false;
 
-            const competitionType = getCompetitionTypeByID(data.competitionType);
-            const sportTypes = lodash.map(competitionType.getSports(), function (ct) {
+            const contestType = getContestTypeByID(data.contestType);
+            const sportTypes = lodash.map(contestType.getSports(), function (ct) {
                 return ct.id;
             });
 
@@ -380,7 +380,7 @@ export function onStartup() {
                 name: data.name,
                 sportTypes: sportTypes,
                 readOnly: false,
-                type: data.competitionType,
+                type: data.contestType,
                 customAccounts: []
             });
             Meteor.COLLECTIONS.connect(_id);
@@ -388,28 +388,28 @@ export function onStartup() {
             return true;
         },
         /**
-         * Renames a competition
+         * Renames a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, newName: string}} data - Data object
+         * @param {{contestID: string, newName: string}} data - Data object
          * @returns {boolean}
          */
-        renameCompetition: function (account, data) {
+        renameContest: function (account, data) {
             if (!account.isAdmin) return false;
-            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.contestID}, {
                 $set: {name: data.newName}
             });
             return true;
         },
 
         /**
-         * Adds a competition
+         * Adds a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, sportTypeID: string, state}} data - Data object
+         * @param {{contestID: string, sportTypeID: string, state}} data - Data object
          * @returns {boolean}
          */
         setSportTypeState: function (account, data) {
             if (!account.isAdmin) return false;
-            let sportTypes = Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).sportTypes;
+            let sportTypes = Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.contestID}).sportTypes;
 
             if (data.state === true &amp;&amp; !lodash.includes(sportTypes, data.sportTypeID)) {
                 sportTypes.push(data.sportTypeID);
@@ -419,61 +419,61 @@ export function onStartup() {
                 });
             }
 
-            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.contestID}, {
                 $set: {sportTypes: sportTypes}
             });
 
             return true;
         },
         /**
-         * Returns a list of competitions
+         * Returns a list of contests
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
          * @returns {boolean|[]}
          */
-        getCompetitions: function (account, data) {
+        getContests: function (account, data) {
             if (!account.isAdmin) return false;
-            let competitions = Meteor.COLLECTIONS.Contests.find().fetch();
+            let contests = Meteor.COLLECTIONS.Contests.find().fetch();
 
-            lodash.map(competitions, function (competition) {
-                competition.encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[competition._id].find().fetch();
-                return competition;
+            lodash.map(contests, function (contest) {
+                contest.encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[contest._id].find().fetch();
+                return contest;
             });
 
-            return competitions;
+            return contests;
         },
         /**
-         * Adds a competition
+         * Adds a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
+         * @param {{contestID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
          * @returns {boolean|[]}
          */
-        getAthletesByCompetitionID: function (account, data) {
+        getAthletesByContestID: function (account, data) {
             if (!account.isAdmin) return false;
-            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.contestID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.contestID].find().fetch();
 
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },
         /**
-         * Gets the amount of athletes in a competition
+         * Gets the amount of athletes in a contest
          * @param {Account} account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{contestID: string}} data - Data object
          * @returns {boolean}
          */
         getAthleteCount: function (account, data) {
             if (!account.isAdmin) return false;
-            return Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find({}).count();
+            return Meteor.COLLECTIONS.Athletes.handles[data.contestID].find({}).count();
         },
         /**
          * Stores a set of custom accounts in the database for later retrieval
          * @param account - An admin account
-         * @param {{competitionID: string, customAccounts: Array}} data - Data object
+         * @param {{contestID: string, customAccounts: Array}} data - Data object
          * @returns {boolean}
          */
         storeCustomAccounts: function (account, data) {
             if (!account.isAdmin) return false;
-            Meteor.COLLECTIONS.Contests.handle.update({_id: data.competitionID}, {
+            Meteor.COLLECTIONS.Contests.handle.update({_id: data.contestID}, {
                 $set: {customAccounts: data.customAccounts}
             });
             return true;
@@ -481,15 +481,15 @@ export function onStartup() {
         /**
          * Retrieves a previously stored set of custom accounts
          * @param account - An admin account
-         * @param {{competitionID: string}} data - Data object
+         * @param {{contestID: string}} data - Data object
          * @returns {*}
          */
         retrieveCustomAccounts: function (account, data) {
             if (!account.isAdmin) return false;
-            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.competitionID}).customAccounts || [];
+            return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.contestID}).customAccounts || [];
         },
         /**
-         * Adds a competition
+         * Adds a contest
          * @param {Account} account - An output account
          * @param {{athleteIDs: [string]}} data - Data object
          * @returns {boolean|[]}
@@ -497,7 +497,7 @@ export function onStartup() {
         generateCertificates: function (account, data) {
             if (!account.canViewResults) return false;
 
-            const ct = Server.getCompetitionType();
+            const ct = Server.contest.getType();
             const log = Log.getLogObject();
 
             log.info("Die Urkunden wurden von '" + account.name + "' generiert.");
@@ -656,8 +656,8 @@ export function onStartup() {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
-    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 17 2017 00:29:21
+    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

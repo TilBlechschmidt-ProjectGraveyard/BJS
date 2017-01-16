@@ -1,5 +1,5 @@
-<template name="competition">
-    {{#with competition}}
+<template name="contest">
+    {{#with contest}}
         <li class="accordion-item">
             <a href="" class="item-link item-content">
                 <div class="item-media">
@@ -22,8 +22,8 @@
                         </div>
                     </div>
                     {{#if not active}}
-                        <span class="align-right delete-competition delete-icon" data-id="{{_id}}"><i class="f7-icons"
-                                                                                                      style="font-size: 17px; padding-right: 5px;">close_round</i></span>{{/if}}
+                        <span class="align-right delete-contest delete-icon" data-id="{{_id}}"><i class="f7-icons"
+                                                                                                  style="font-size: 17px; padding-right: 5px;">close_round</i></span>{{/if}}
                 </div>
             </a>
             <div class="accordion-item-content" data-id="{{_id}}">
@@ -31,7 +31,7 @@
                     <p class="t-left">
                         Wettkampfart
                         <a href="" class="align-right t-right button-highlight open-popup show-sportTypes"
-                           data-popup=".popup-competitionType-{{type}}">{{type}} </a>
+                           data-popup=".popup-contestType-{{type}}">{{type}} </a>
                     </p>
                     {{#if readOnly}}
                         <p class="t-left">
@@ -53,7 +53,7 @@
                         </p>
                         {{#if not active}}
                             <p>
-                                <a href="" class="item-link list-button launch-competition">Wettkampf starten</a>
+                                <a href="" class="item-link list-button launch-contest">Wettkampf starten</a>
                             </p>
                         {{/if}}
                     {{else}}

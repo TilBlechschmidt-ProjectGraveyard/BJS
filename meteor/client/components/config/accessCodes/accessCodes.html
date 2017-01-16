@@ -20,7 +20,7 @@
     </div>
 
     <div class="printcontent">
-        {{>codes_print competition_name=get_competition_name login_stations=login_stations login_groups=login_groups login_custom=login_custom}}
+        {{>codes_print contest_name=get_contest_name login_stations=login_stations login_groups=login_groups login_custom=login_custom}}
     </div>
 </template>
 
@@ -125,7 +125,7 @@
 
 <template name="codes_print">
     <div class="printcontent-content">
-        <h1 align="center">{{competition_name}}: Zugangscodes</h1>
+        <h1 align="center">{{contest_name}}: Zugangscodes</h1>
 
     {{#if hasData login_groups}}
         <br />

@@ -5,7 +5,7 @@ import {showIndicator, hideIndicator} from "../../helpers";
 
 const categories = new ReactiveVar([]);
 
-Server.waitForReady(function () {
+Server.db.waitForReady(function () {
     Tracker.autorun(function () {
         showIndicator();
         dbReady.depend();
@@ -16,10 +16,10 @@ Server.waitForReady(function () {
             return;
         }
 
-        const competition = Meteor.COLLECTIONS.Contests.handle.findOne({_id: compID});
-        const competitionType = Server.getCompetitionType(compID);
-        const sportTypes = competitionType.getSports();
-        const cats = lodash.map(competitionType.getInformation().categoryNames, function (name) {
+        const contest = Meteor.COLLECTIONS.Contests.handle.findOne({_id: compID});
+        const contestType = Server.contest.getType(compID);
+        const sportTypes = contestType.getSports();
+        const cats = lodash.map(contestType.getInformation().categoryNames, function (name) {
             return {name: name, sportTypes: []};
         });
 
@@ -28,7 +28,7 @@ Server.waitForReady(function () {
             sportType = sportTypes[sportType];
 
             // set enabled state for sportType
-            if (lodash.includes(competition.sportTypes, sportType.id))
+            if (lodash.includes(contest.sportTypes, sportType.id))
                 sportType.checked = "checked";
             else
                 sportType.checked = "";

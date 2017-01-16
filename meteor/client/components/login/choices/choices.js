@@ -6,16 +6,16 @@ import {Server} from "../../../../imports/api/database/ServerInterface";
 let db_tracker_tracker = new Tracker.Dependency();
 
 Template.choices.helpers({
-    competition_notice: function () {
+    contest_notice: function () {
         db_tracker_tracker.depend();
-        if (!Server.isReady()) {
+        if (!Server.db.isReady()) {
             return "Laden...";
         } else {
-            return 'Wählen Sie eine der obigen Optionen, um Ihr Gerät für die Bundesjugendspiele "' + Server.getCompetitionName() + '" bereit zu machen.';
+            return 'Wählen Sie eine der obigen Optionen, um Ihr Gerät für die Bundesjugendspiele "' + Server.contest.get().name + '" bereit zu machen.';
         }
     }
 });
 
-Server.waitForReady(function () {
+Server.db.waitForReady(function () {
     db_tracker_tracker.changed();
 });

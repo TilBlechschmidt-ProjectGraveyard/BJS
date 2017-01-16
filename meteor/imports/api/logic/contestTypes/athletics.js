@@ -1,16 +1,31 @@
 import {filterUndefined} from "./../general";
 
 
-let CERTIFICATE_INFO = require('./../../../data/gymnastics/certificateInfo.json');
+// let LANG = require('./../../../data/athletics/lang_de.json');
+// let START_CLASSES = require('./../../../data/startClasses.json');
+let CERTIFICATE_INFO = require('./../../../data/athletics/certificateInfo.json');
 
 /**
  * Object containing all information and functions required for Athletics contest.
  * @public
  * @namespace
  */
-export let Gymnastics = {
+export let Athletics = {
     /** @constant {number} */
-    maxAge: 19,
+    maxAge: 20,
+    /**
+     * @typedef {Object} AthleticsScoreCalculation
+     * @property {number} a - A sport type specific number required to calculate the score
+     * @property {number} c - A sport type specific number required to calculate the score
+     * @property {number} d - A sport type specific number required to calculate the score
+     * @property {ConversionFactors} conversionFactor An object containing information about conversion factors for all start classes
+     */
+
+    /**
+     * @typedef {Object} AthleticsGenderData
+     * @property {number[]} age - A list of ages which are allowed to participate
+     * @property {AthleticsScoreCalculation} scoreCalculation - Information about the score calculation
+     */
 
     /**
      * @typedef {Object} AthleticsSportData
@@ -19,16 +34,17 @@ export let Gymnastics = {
      * @property {number} category - The category of the sport type (eg. sprinting)
      * @property {string} unit - The human readable unit for the measurements (eg. m (meter))
      * @property {string} description - A description of the sport type. It may contain information about how to measure in this sport type.
-     * @property {number[]} age - A list of ages which are allowed to participate
+     * @property {AthleticsGenderData} w - An object containing information about how to calculate the score for female participant
+     * @property {AthleticsGenderData} m - An object containing information about how to calculate the score for male participant
      */
 
     /**
-     * Returns a list of sport types associated with the ct gymnastics.
+     * Returns a list of sport types associated with the ct athletics.
      * @public
      * @returns {AthleticsSportData[]}
      */
     getSports: function () {
-        return require('./../../../data/gymnastics/sports.json');
+        return require('./../../../data/athletics/sports.json');
     },
 
     /**
@@ -37,7 +53,7 @@ export let Gymnastics = {
      * @return {object|undefined}
      */
     getSportType: function (stID) {
-        const data = Gymnastics.getSports();
+        const data = Athletics.getSports();
 
         for (let d in data) {
             if (!data.hasOwnProperty(d)) continue;
@@ -52,7 +68,7 @@ export let Gymnastics = {
      * @return {string}
      */
     getNameOfSportType: function (stID) {
-        const sport_type = Gymnastics.getSportType(stID);
+        const sport_type = Athletics.getSportType(stID);
         if (sport_type) return sport_type.name;
         else return "Unknown";
     },
@@ -80,20 +96,31 @@ export let Gymnastics = {
             };
         }
 
+        // filter information
+        const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
+
         // save important information
         const dataObject = {
             stID: stID,
             name: baseInformation.name,
             category: baseInformation.category,
             unit: baseInformation.unit,
-            age: baseInformation.age
+            genderInfo: genderInfo,
+            conversionFactor: handicapData === undefined ? 1.0 : handicapData
         };
 
         let canDoSport = true;
 
         // check age
-        if (_.indexOf(dataObject.age, athlete.tableAge) == -1) {
+        if (_.indexOf(dataObject.genderInfo.age, athlete.tableAge) == -1) {
             log.warning(athlete.getFullName() + ' hat kein gültiges Alter für ' + baseInformation.name + '.');
+            canDoSport = false;
+        }
+
+        // check handicap
+        if (dataObject.conversionFactor === 0.0) {
+            log.warning(athlete.getFullName() + ' can die Sportart ' + baseInformation.name + ' aufgrund der Startklasse ' + athlete.handicap + ' nicht durchführen.');
             canDoSport = false;
         }
 
@@ -119,7 +146,7 @@ export let Gymnastics = {
 
         //filter data with more then one point
         const tmpData = _.filter(plain, function (dataObject) {
-            return dataObject.measurement.data;
+            return dataObject.measurement.data > 0;
         });
 
         // temporary store this in that
@@ -152,15 +179,53 @@ export let Gymnastics = {
         const validData = this.getValidData(log, athlete, accounts, requireSignature);
 
         // sort for categories
-        const categories = [false, false, false, false, false, false];
+        const categories = [];
         for (let st in validData) {
             if (!validData.hasOwnProperty(st)) continue;
             categories[validData[st].category] = true;
         }
 
-        return (3 <= _.filter(categories.slice(0, -1), function (category) {
+        return 3 <= _.filter(categories, function (category) {
                 return category;
-            }).length) && categories[5];
+            }).length;
+    },
+
+    /**
+     * Calculates the score of one dataObject returned by the getValidData function.
+     * @public
+     * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
+     * @returns {number}
+     */
+    calculateOne: function (dataObject) {
+        let calculateFunction;
+
+        // select calculation function
+        switch (dataObject.stID) {
+            case 'st_sprint_50_el':
+            case 'st_sprint_75_el':
+            case 'st_sprint_100_el':
+            case 'st_endurance_800':
+            case 'st_endurance_1000':
+            case 'st_endurance_2000':
+            case 'st_endurance_3000':
+                calculateFunction = function (d, m, a, c) {
+                    return ((d / m) - a) / c;
+                };
+                break;
+            case 'st_sprint_50':
+            case 'st_sprint_75':
+            case 'st_sprint_100':
+                calculateFunction = function (d, m, a, c) {
+                    return ((d / (m + 0.24)) - a) / c;
+                };
+                break;
+            default:
+                calculateFunction = function (d, m, a, c) {
+                    return ( Math.sqrt(m) - a) / c;
+                };
+        }
+
+        return Math.floor(calculateFunction(dataObject.genderInfo.scoreCalculation.d, dataObject.conversionFactor * dataObject.measurement, dataObject.genderInfo.scoreCalculation.a, dataObject.genderInfo.scoreCalculation.c));
     },
 
     /**
@@ -177,11 +242,11 @@ export let Gymnastics = {
         const validData = this.getValidData(log, athlete, accounts, requireSignature);
 
         // get best score for each category
-        const scores = [0, 0, 0, 0, 0, 0];
+        const scores = [0, 0, 0, 0];
         const stScores = {};
         for (let vd in validData) {
             if (!validData.hasOwnProperty(vd)) continue;
-            const score = validData[vd].measurement;
+            const score = this.calculateOne(validData[vd]);
             const category = validData[vd].category;
 
             if (!stScores.hasOwnProperty(validData[vd].stID)) {
@@ -191,7 +256,7 @@ export let Gymnastics = {
                 stScores[validData[vd].stID] = score;
             }
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' -> ' + score);
+            log.info(validData[vd].name + ': ' + validData[vd].measurement + validData[vd].unit + ' -> ' + score);
 
             if (scores[category] < score) {
                 scores[category] = score;
@@ -200,23 +265,22 @@ export let Gymnastics = {
 
         // take the three best categories
         return {
-            score: _.reduce(_.sortBy(scores.slice(0, -1), function (num) {
+            score: _.reduce(_.sortBy(scores, function (num) {
                 return num;
             }).splice(1, 3), function (mem, num) {
                 return mem + num;
-            }, 0) + scores[5],
+            }, 0),
             stScores: stScores
         };
-
     },
 
     /**
-     * Returns information about the competition type gymnastics.
+     * Returns information about the contest type athletics.
      * @public
      * @returns {object}
      */
     getInformation: function () {
-        return require('./../../../data/gymnastics/information.json');
+        return require('./../../../data/athletics/information.json');
     },
 
     /**
@@ -231,7 +295,9 @@ export let Gymnastics = {
             return undefined;
         }
 
-        return CERTIFICATE_INFO[athlete.tableAge];
+        const genderInfo = athlete.isMale ? CERTIFICATE_INFO.m : CERTIFICATE_INFO.w;
+
+        return genderInfo[athlete.tableAge];
     },
 
     /**

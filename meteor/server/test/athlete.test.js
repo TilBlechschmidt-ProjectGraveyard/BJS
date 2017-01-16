@@ -1,13 +1,13 @@
 import {Athlete} from "./../../imports/api/logic/athlete";
 import {Log} from "../../imports/api/log";
 import {chai} from "meteor/practicalmeteor:chai";
-import {COMPETITION_TYPES} from "../../imports/api/logic/competitionType";
+import {CONTEST_TYPES} from "../../imports/api/logic/contestType";
 import {Crypto} from "../../imports/api/crypto/crypto";
 import {Account} from "../../imports/api/logic/account";
 
 chai.should();
 
-const ct = COMPETITION_TYPES[0].object;
+const ct = CONTEST_TYPES[0].object;
 
 const groupAccount = new Account('Q#z', ['Q#z'], [], Crypto.generateAC('1234567ljhfaljawf8'));
 const serverAccount = new Account('Q#z', ['Q#z'], [], Crypto.generateAC('sdfjhsiufhuihr438ry34'));
