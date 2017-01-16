@@ -133,6 +133,30 @@
                 <li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li>
             </ul>
         </li>
+        <li><a href="Server.html">Server</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Server.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.certificateUpdate">certificateUpdate</a></li>
+                <li data-type='method'><a href="Server.html#.generateCertificates">generateCertificates</a></li>
+                <li data-type='method'><a href="Server.html#.getActivatedSports">getActivatedSports</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContest">getActiveContest</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContestID">getActiveContestID</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesByCompetition">getAthletesByCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionName">getCompetitionName</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionType">getCompetitionType</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="Server.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="Server.html#.getLog">getLog</a></li>
+                <li data-type='method'><a href="Server.html#.getServerIPs">getServerIPs</a></li>
+                <li data-type='method'><a href="Server.html#.isReady">isReady</a></li>
+                <li data-type='method'><a href="Server.html#.removeCompetition">removeCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.renameCompetition">renameCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.setSportTypeState">setSportTypeState</a></li>
+                <li data-type='method'><a href="Server.html#.waitForReady">waitForReady</a></li>
+            </ul>
+        </li>
         <li><a href="Swimming.html">Swimming</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
@@ -170,6 +194,8 @@
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
         <li><a href="global.html#refreshErrorState">refreshErrorState</a></li>
+        <li><a href="global.html#runAsyncServerFunction">runAsyncServerFunction</a></li>
+        <li><a href="global.html#runServerFunction">runServerFunction</a></li>
     </ul>
 </nav>
 
@@ -196,12 +222,10 @@
 
 <article>
     <div class="container-overview">
-    
-        
 
-    
 
-    <h4 class="name" id="Data"><span class="type-signature"></span>new Data<span class="signature">(data)</span><span class="type-signature"></span></h4>
+        <h4 class="name" id="Data"><span class="type-signature"></span>new Data<span class="signature">(data<span
+                class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
     <p class="summary">Creates an empty object containing arbitrary data in an encrypted fashion.</p>
@@ -215,7 +239,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line10">line 10</a>
+        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
+            href="imports_api_logic_data.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -280,9 +305,9 @@
 
         <th>Type</th>
 
-        
 
-        
+        <th>Attributes</th>
+
 
         <th class="last">Description</th>
     </tr>
@@ -297,12 +322,21 @@
             
 
             <td class="type">
-            
+
+
+                <span class="param-type">Array.&lt;<a href="global.html#EncryptedData">EncryptedData</a>></span>
+
+
             </td>
 
-            
 
-            
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
 
             <td class="description last"></td>
         </tr>
@@ -364,7 +398,7 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
-            href="imports_api_logic_data.js.html#line74">line 74</a>
+            href="imports_api_logic_data.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -563,7 +597,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a href="imports_api_logic_data.js.html#line35">line 35</a>
+        <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
+            href="imports_api_logic_data.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -767,7 +802,7 @@
     <h4 class="name" id="push"><span class="type-signature"></span>push<span class="signature">(log, stID, newMeasurement, dataID, groupAC, stationAC)</span><span
             class="type-signature"></span></h4>
 
-    
+
     <p class="summary">Updates the data of a given stID.</p>
     
 
@@ -780,7 +815,7 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
-            href="imports_api_logic_data.js.html#line90">line 90</a>
+            href="imports_api_logic_data.js.html#line99">line 99</a>
     </li></ul></dd>
     
 
@@ -1024,8 +1059,8 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
-    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 23:44:32
+    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

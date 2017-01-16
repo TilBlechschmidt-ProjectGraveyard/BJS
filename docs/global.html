@@ -133,6 +133,30 @@
                 <li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li>
             </ul>
         </li>
+        <li><a href="Server.html">Server</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Server.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.certificateUpdate">certificateUpdate</a></li>
+                <li data-type='method'><a href="Server.html#.generateCertificates">generateCertificates</a></li>
+                <li data-type='method'><a href="Server.html#.getActivatedSports">getActivatedSports</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContest">getActiveContest</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContestID">getActiveContestID</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesByCompetition">getAthletesByCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionName">getCompetitionName</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionType">getCompetitionType</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="Server.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="Server.html#.getLog">getLog</a></li>
+                <li data-type='method'><a href="Server.html#.getServerIPs">getServerIPs</a></li>
+                <li data-type='method'><a href="Server.html#.isReady">isReady</a></li>
+                <li data-type='method'><a href="Server.html#.removeCompetition">removeCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.renameCompetition">renameCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.setSportTypeState">setSportTypeState</a></li>
+                <li data-type='method'><a href="Server.html#.waitForReady">waitForReady</a></li>
+            </ul>
+        </li>
         <li><a href="Swimming.html">Swimming</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
@@ -170,6 +194,8 @@
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
         <li><a href="global.html#refreshErrorState">refreshErrorState</a></li>
+        <li><a href="global.html#runAsyncServerFunction">runAsyncServerFunction</a></li>
+        <li><a href="global.html#runServerFunction">runServerFunction</a></li>
     </ul>
 </nav>
 
@@ -2077,6 +2103,310 @@
     </table>
 
 
+    <h4 class="name" id="runAsyncServerFunction"><span class="type-signature"></span>runAsyncServerFunction<span
+            class="signature">(name, account, data, callback)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+    </h4>
+
+
+    <p class="summary">Runs a function server-side in an asynchronous manner and takes care of de-/encryption for
+        you.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="imports_api_database_ServerInterface.js.html">imports/api/database/ServerInterface.js</a>,
+                    <a href="imports_api_database_ServerInterface.js.html#line66">line 66</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Runs a function server-side in an asynchronous manner and takes care of de-/encryption for you. It calls the
+            callback for every entry returned.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>name</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The name of the server function</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The account that is used to authenticate</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>data</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">*</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A data object which will be passed to the function. These data will be send
+                encrypted.</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>callback</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">function</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A callback with one parameter: The return value of the server function.
+                Function returns a promise if it is undefined.</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Returns:</h5>
+
+
+    <dl class="param-type">
+        <dt>
+            Type
+        </dt>
+        <dd>
+
+            <span class="param-type">Promise.&lt;void></span>
+
+
+        </dd>
+    </dl>
+
+
+    <h4 class="name" id="runServerFunction"><span class="type-signature"></span>runServerFunction<span
+            class="signature">(name, account, data, callback<span class="signature-attributes">opt</span>)</span><span
+            class="type-signature"></span></h4>
+
+
+    <p class="summary">Runs a function server-side and takes care of de-/encryption for you.</p>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="imports_api_database_ServerInterface.js.html">imports/api/database/ServerInterface.js</a>,
+                    <a href="imports_api_database_ServerInterface.js.html#line32">line 32</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <div class="description">
+        <p>Runs a function server-side and takes care of de-/encryption for you. It calls the callback once with the
+            results returned from the server.</p>
+    </div>
+
+
+    <h5>Parameters:</h5>
+
+
+    <table class="params">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th>Attributes</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>name</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+
+            </td>
+
+
+            <td class="description last"><p>The name of the server function</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>account</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type"><a href="Account.html">Account</a></span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+
+            </td>
+
+
+            <td class="description last"><p>The account that is used to authenticate</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>data</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">*</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+
+            </td>
+
+
+            <td class="description last"><p>A data object which will be passed to the function. These data will be send
+                encrypted.</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>callback</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">function</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
+
+            <td class="description last"><p>A callback with one parameter: The return value of the server function.
+                Function returns a promise if it is undefined.</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
     <h3 class="subsection-title">Type Definitions</h3>
 
 
@@ -2470,6 +2800,171 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
+                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html">imports/api/logic/competitionTypes/gymnastics.js</a>,
+                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html#line15">line 15</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+
+    <table class="props">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>id</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The id of the sport type</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>name</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The human readable name for the sport type</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>category</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">number</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The category of the sport type (eg. sprinting)</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>unit</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The human readable unit for the measurements (eg. m (meter))</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>description</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A description of the sport type. It may contain information about how to
+                measure in this sport type.</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>age</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">Array.&lt;number></span>
+
+
+            </td>
+
+
+            <td class="description last"><p>A list of ages which are allowed to participate</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+
+            <span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+    <h4 class="name" id="AthleticsSportData">AthleticsSportData</h4>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
                     <a href="imports_api_logic_competitionTypes_athletics.js.html">imports/api/logic/competitionTypes/athletics.js</a>,
                     <a href="imports_api_logic_competitionTypes_athletics.js.html#line30">line 30</a>
                 </li>
@@ -2627,171 +3122,6 @@
 
             <td class="description last"><p>An object containing information about how to calculate the score for male
                 participant</p></td>
-        </tr>
-
-
-        </tbody>
-    </table>
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-
-            <span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-    <h4 class="name" id="AthleticsSportData">AthleticsSportData</h4>
-
-
-    <dl class="details">
-
-
-        <dt class="tag-source">Source:</dt>
-        <dd class="tag-source">
-            <ul class="dummy">
-                <li>
-                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html">imports/api/logic/competitionTypes/gymnastics.js</a>,
-                    <a href="imports_api_logic_competitionTypes_gymnastics.js.html#line15">line 15</a>
-                </li>
-            </ul>
-        </dd>
-
-
-    </dl>
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-
-    <table class="props">
-        <thead>
-        <tr>
-
-            <th>Name</th>
-
-
-            <th>Type</th>
-
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-
-        <tr>
-
-            <td class="name"><code>id</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The id of the sport type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>name</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The human readable name for the sport type</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>category</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">number</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The category of the sport type (eg. sprinting)</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>unit</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>The human readable unit for the measurements (eg. m (meter))</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>description</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">string</span>
-
-
-            </td>
-
-
-            <td class="description last"><p>A description of the sport type. It may contain information about how to
-                measure in this sport type.</p></td>
-        </tr>
-
-
-        <tr>
-
-            <td class="name"><code>age</code></td>
-
-
-            <td class="type">
-
-
-                <span class="param-type">Array.&lt;number></span>
-
-
-            </td>
-
-
-            <td class="description last"><p>A list of ages which are allowed to participate</p></td>
         </tr>
 
 
@@ -3192,6 +3522,133 @@
     </ul>
 
 
+    <h4 class="name" id="EncryptedData">EncryptedData</h4>
+
+
+    <dl class="details">
+
+
+        <dt class="tag-source">Source:</dt>
+        <dd class="tag-source">
+            <ul class="dummy">
+                <li>
+                    <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
+                        href="imports_api_logic_data.js.html#line6">line 6</a>
+                </li>
+            </ul>
+        </dd>
+
+
+    </dl>
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+
+    <table class="props">
+        <thead>
+        <tr>
+
+            <th>Name</th>
+
+
+            <th>Type</th>
+
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td class="name"><code>id</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The id of the measurement</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>encryptedStID</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">object</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The id of the sport type</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>encryptedMeasurements</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">object</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>The decrypted</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>synced</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">boolean</span>
+
+
+            </td>
+
+
+            <td class="description last"><p>Data synced with server</p></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+
+            <span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
     <h4 class="name" id="LoginObject">LoginObject</h4>
 
 
@@ -3295,7 +3752,7 @@
             <ul class="dummy">
                 <li>
                     <a href="imports_api_logic_data.js.html">imports/api/logic/data.js</a>, <a
-                        href="imports_api_logic_data.js.html#line20">line 20</a>
+                        href="imports_api_logic_data.js.html#line29">line 29</a>
                 </li>
             </ul>
         </dd>
@@ -3345,13 +3802,13 @@
 
         <tr>
 
-            <td class="name"><code>measurements</code></td>
+            <td class="name"><code>measurement</code></td>
 
 
             <td class="type">
 
 
-                <span class="param-type">Array.&lt;object></span>
+                <span class="param-type">object</span>
 
 
             </td>
@@ -3970,8 +4427,8 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
-    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 23:44:32
+    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

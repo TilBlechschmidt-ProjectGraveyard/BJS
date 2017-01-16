@@ -65,7 +65,6 @@ export function countTrue(list) {
     return counter;
 }
 
-//noinspection JSCheckFunctionSignatures
 let indicatorUsages = 0;
 
 export function showIndicator() {

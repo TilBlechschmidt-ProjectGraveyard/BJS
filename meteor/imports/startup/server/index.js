@@ -89,7 +89,7 @@ export function onStartup() {
 
             return {
                 uuid: uuid,
-                size: size,
+                size: size
             }
         },
         /**
@@ -114,10 +114,17 @@ export function onStartup() {
             Meteor.COLLECTIONS.Contests.handle.remove({_id: data.competitionID});
             return true;
         },
+
+        /**
+         * @typedef {Object} WriteAthletesDataObject
+         * @property {string} competitionID - The id of the contest
+         * @property {object[]} encryptedAthletes - The encrypted athletes
+         */
+
         /**
          * Overwrites the athletes of a competition
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, encryptedAthletes: []}} data - Data object
+         * @param {WriteAthletesDataObject} data - Data object
          * @returns {boolean}
          */
         writeAthletes: function (account, data) {
@@ -140,7 +147,7 @@ export function onStartup() {
         /**
          * Overwrites the athletes of a competition
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, accounts: []}} data - Data object
+         * @param {{competitionID: string, accounts: object[]}} data - Data object
          * @returns {boolean}
          */
         writeAccounts: function (account, data) {
@@ -247,7 +254,7 @@ export function onStartup() {
          * Returns a list of competitions
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getCompetitions: function (account, data) {
             if (!account.isAdmin) return false;
@@ -264,7 +271,7 @@ export function onStartup() {
          * Adds a competition
          * @param {Account} account - An admin account
          * @param {{competitionID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
@@ -309,8 +316,8 @@ export function onStartup() {
         /**
          * Adds a competition
          * @param {Account} account - An output account
-         * @param {{athleteIDs: [string]}} data - Data object
-         * @returns {boolean|[]}
+         * @param {{athleteIDs: string[]}} data - Data object
+         * @returns {boolean|object[]}
          */
         generateCertificates: function (account, data) {
             if (!account.canViewResults) return false;
@@ -379,7 +386,7 @@ export function onStartup() {
          * Returns all ips of the server
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getServerIPs: function (account, data) {
             if (!account.isAdmin) return false;
@@ -404,7 +411,7 @@ export function onStartup() {
          * Returns the server log
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getLog: function (account, data) {
             if (!account.isAdmin) return false;
@@ -415,7 +422,7 @@ export function onStartup() {
          * Sets the written status of a certificate to true
          * @param {Account} account - An output account
          * @param {{id: string}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         certificateUpdate: function (account, data) {
             if (!account.canViewResults) return false;

@@ -133,6 +133,30 @@
                 <li data-type='method'><a href="Gymnastics.html#.validate">validate</a></li>
             </ul>
         </li>
+        <li><a href="Server.html">Server</a>
+            <ul class='methods'>
+                <li data-type='method'><a href="Server.html#.activateCompetition">activateCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.certificateUpdate">certificateUpdate</a></li>
+                <li data-type='method'><a href="Server.html#.generateCertificates">generateCertificates</a></li>
+                <li data-type='method'><a href="Server.html#.getActivatedSports">getActivatedSports</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContest">getActiveContest</a></li>
+                <li data-type='method'><a href="Server.html#.getActiveContestID">getActiveContestID</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesByCompetition">getAthletesByCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.getAthletesOfAccounts">getAthletesOfAccounts</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionName">getCompetitionName</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionSportTypes">getCompetitionSportTypes</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionType">getCompetitionType</a></li>
+                <li data-type='method'><a href="Server.html#.getCompetitionTypeID">getCompetitionTypeID</a></li>
+                <li data-type='method'><a href="Server.html#.getGenericID">getGenericID</a></li>
+                <li data-type='method'><a href="Server.html#.getLog">getLog</a></li>
+                <li data-type='method'><a href="Server.html#.getServerIPs">getServerIPs</a></li>
+                <li data-type='method'><a href="Server.html#.isReady">isReady</a></li>
+                <li data-type='method'><a href="Server.html#.removeCompetition">removeCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.renameCompetition">renameCompetition</a></li>
+                <li data-type='method'><a href="Server.html#.setSportTypeState">setSportTypeState</a></li>
+                <li data-type='method'><a href="Server.html#.waitForReady">waitForReady</a></li>
+            </ul>
+        </li>
         <li><a href="Swimming.html">Swimming</a>
             <ul class='methods'>
                 <li data-type='method'><a href="Swimming.html#.calculate">calculate</a></li>
@@ -170,6 +194,8 @@
         <li><a href="global.html#isGroupAccount">isGroupAccount</a></li>
         <li><a href="global.html#isStationAccount">isStationAccount</a></li>
         <li><a href="global.html#refreshErrorState">refreshErrorState</a></li>
+        <li><a href="global.html#runAsyncServerFunction">runAsyncServerFunction</a></li>
+        <li><a href="global.html#runServerFunction">runServerFunction</a></li>
     </ul>
 </nav>
 
@@ -240,40 +266,40 @@ export function onStartup() {
     });
 
     const serverFunctions = {
-        async: function (account, data) {
-            const context = asyncServerFunctions[data.name](account, data.data);
-            const uuid = genUUID();
-            const size = context.entries.length - 1;
-
-            if (context === false)
-                return {
-                    uuid: "",
-                    permissionDenied: true
-                };
-
-            const pendingCalls = pendingAsyncCalls.get();
-            pendingCalls[uuid] = function () {
-                let index = 0;
-                waterfall(context.entries.map(function (entry) {
-                    return function (nextCallback) {
-                        asyncServerFunctionChannel.emit(uuid, encryptAs({
-                            index: index,
-                            size: size,
-                            data: context.callback(entry)
-                        }, account));
-
-                        ++index;
-                        nextCallback(null);
-                    }
-                }));
-            };
-            pendingAsyncCalls.set(pendingCalls);
-
-            return {
-                uuid: uuid,
-                size: size,
-            }
-        },
+    //     async: function (account, data) {
+    //         const context = asyncServerFunctions[data.name](account, data.data);
+    //         const uuid = genUUID();
+    //         const size = context.entries.length - 1;
+    //
+    //         if (context === false)
+    //             return {
+    //                 uuid: "",
+    //                 permissionDenied: true
+    //             };
+    //
+    //         const pendingCalls = pendingAsyncCalls.get();
+    //         pendingCalls[uuid] = function () {
+    //             let index = 0;
+    //             waterfall(context.entries.map(function (entry) {
+    //                 return function (nextCallback) {
+    //                     asyncServerFunctionChannel.emit(uuid, encryptAs({
+    //                         index: index,
+    //                         size: size,
+    //                         data: context.callback(entry)
+    //                     }, account));
+    //
+    //                     ++index;
+    //                     nextCallback(null);
+    //                 }
+    //             }));
+    //         };
+    //         pendingAsyncCalls.set(pendingCalls);
+    //
+    //         return {
+    //             uuid: uuid,
+    //             size: size,
+    //         }
+    //     },
         /**
          * Activates a competition by id
          * @param {Account} account - An admin account
@@ -296,10 +322,17 @@ export function onStartup() {
             Meteor.COLLECTIONS.Contests.handle.remove({_id: data.competitionID});
             return true;
         },
+
+        /**
+         * @typedef {Object} WriteAthletesDataObject
+         * @property {string} competitionID - The id of the contest
+         * @property {object[]} encryptedAthletes - The encrypted athletes
+         */
+
         /**
          * Overwrites the athletes of a competition
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, encryptedAthletes: []}} data - Data object
+         * @param {WriteAthletesDataObject} data - Data object
          * @returns {boolean}
          */
         writeAthletes: function (account, data) {
@@ -322,7 +355,7 @@ export function onStartup() {
         /**
          * Overwrites the athletes of a competition
          * @param {Account} account - An admin account
-         * @param {{competitionID: string, accounts: []}} data - Data object
+         * @param {{competitionID: string, accounts: object[]}} data - Data object
          * @returns {boolean}
          */
         writeAccounts: function (account, data) {
@@ -429,7 +462,7 @@ export function onStartup() {
          * Returns a list of competitions
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getCompetitions: function (account, data) {
             if (!account.isAdmin) return false;
@@ -446,7 +479,7 @@ export function onStartup() {
          * Adds a competition
          * @param {Account} account - An admin account
          * @param {{competitionID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
@@ -491,8 +524,8 @@ export function onStartup() {
         /**
          * Adds a competition
          * @param {Account} account - An output account
-         * @param {{athleteIDs: [string]}} data - Data object
-         * @returns {boolean|[]}
+         * @param {{athleteIDs: string[]}} data - Data object
+         * @returns {boolean|object[]}
          */
         generateCertificates: function (account, data) {
             if (!account.canViewResults) return false;
@@ -561,7 +594,7 @@ export function onStartup() {
          * Returns all ips of the server
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getServerIPs: function (account, data) {
             if (!account.isAdmin) return false;
@@ -586,7 +619,7 @@ export function onStartup() {
          * Returns the server log
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getLog: function (account, data) {
             if (!account.isAdmin) return false;
@@ -597,7 +630,7 @@ export function onStartup() {
          * Sets the written status of a certificate to true
          * @param {Account} account - An output account
          * @param {{id: string}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         certificateUpdate: function (account, data) {
             if (!account.canViewResults) return false;
@@ -656,8 +689,8 @@ export function onStartup() {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 22:36:02
-    GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 16 2017 23:43:46
+    GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
