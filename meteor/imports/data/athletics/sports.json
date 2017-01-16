@@ -719,7 +719,7 @@
     "name": "Hochsprung",
     "category": 2,
     "unit": "m",
-    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Der Absprung von einer Absprungfläche ist zulässig. Diese erstreckt sich von den Kanten des Absprungbalkens 30 cm nach beiden Seiten, umfasst also insgesamt 80 cm. Die Sprungweite wird vom hintersten Eindruck des Niedersprungs bis zur Höhe des vordersten Eindrucks des Absprungs gemessen, wobei die Messung immer im rechten Winkel zum Balken vorgenommen wird. Gültigkeit der Sprünge siehe Zeichnung.",
+    "description": "Der Hochsprung darf nur über die Latte erfolgen. Der Absprung muss mit einem Fuß ausgeführt werden. Jede Teilnehmerin bzw. jeder Teilnehmer hat für jede Höhe drei Versuche. Es ist freigestellt, bei welcher Höhe begonnen oder ob eine Höhe ausgelassen wird. Ein nachträgliches Zurückgehen auf eine Höhe, die ausgelassen wurde, ist nicht gestattet. Es wird die zuletzt von der Teilnehmerin bzw. dem Teilnehmer gültig übersprungene Höhe gewertet.",
     "w": {
       "age": [
         8,
@@ -798,7 +798,7 @@
     "name": "Schlagball 80g",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Die Abwurflinie wird durch eine Linie oder Latte am Boden markiert. Berühren oder Übertreten der Abwurflinie zählt als Fehlversuch und wird mit 0 Punkten gewertet. Als Leistung wird die im rechten Winkel zur Abwurflinie ermittelte Entfernung der Aufschlagstelle gemessen. <img style\"width: 100%;\" src=\"/descriptions/200g.png\" />",
     "w": {
       "age": [
         8,
@@ -861,7 +861,7 @@
     "name": "Kugelstoßen 3kg",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche aus dem Stoßkreis mit 2,135m Durchmesser. An der Außenseite in der Mitte der vorderen Kreishälfte ist ein Abstoßbalken (1,22 m lang, 10,0 cm hoch, und 11,4 cm stark) sicher im Boden zu befestigen. Wenn während des Versuchs irgendein Körperteil den Boden außerhalb des Kreises berührt oder auf den Kreisrand getreten wird, so gilt dieser als Fehlversuch und wird mit 0 Punkten gewertet. Die Teilnehmerin bzw. der Teilnehmer muss den Kreis aus einem sicheren Stand nach hinten verlassen. Als Stoßleistung wird die Entfernung des vom Stoßkreis aus gesehen ersten Eindrucks der Kugel am Boden vom inneren Kreisrand gemessen. Das Messband wird hierzu über den Mittelpunkt des Kreises geführt. <img style\"width: 100%;\" src=\"/descriptions/shot_put.png\" />",
     "w": {
       "age": [
         12,
@@ -922,7 +922,7 @@
     "name": "Kugelstoßen 4kg",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche aus dem Stoßkreis mit 2,135m Durchmesser. An der Außenseite in der Mitte der vorderen Kreishälfte ist ein Abstoßbalken (1,22 m lang, 10,0 cm hoch, und 11,4 cm stark) sicher im Boden zu befestigen. Wenn während des Versuchs irgendein Körperteil den Boden außerhalb des Kreises berührt oder auf den Kreisrand getreten wird, so gilt dieser als Fehlversuch und wird mit 0 Punkten gewertet. Die Teilnehmerin bzw. der Teilnehmer muss den Kreis aus einem sicheren Stand nach hinten verlassen. Als Stoßleistung wird die Entfernung des vom Stoßkreis aus gesehen ersten Eindrucks der Kugel am Boden vom inneren Kreisrand gemessen. Das Messband wird hierzu über den Mittelpunkt des Kreises geführt. <img style\"width: 100%;\" src=\"/descriptions/shot_put.png\" />",
     "w": {
       "age": [
         18,
@@ -980,7 +980,7 @@
     "name": "Kugelstoßen 5kg",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche aus dem Stoßkreis mit 2,135m Durchmesser. An der Außenseite in der Mitte der vorderen Kreishälfte ist ein Abstoßbalken (1,22 m lang, 10,0 cm hoch, und 11,4 cm stark) sicher im Boden zu befestigen. Wenn während des Versuchs irgendein Körperteil den Boden außerhalb des Kreises berührt oder auf den Kreisrand getreten wird, so gilt dieser als Fehlversuch und wird mit 0 Punkten gewertet. Die Teilnehmerin bzw. der Teilnehmer muss den Kreis aus einem sicheren Stand nach hinten verlassen. Als Stoßleistung wird die Entfernung des vom Stoßkreis aus gesehen ersten Eindrucks der Kugel am Boden vom inneren Kreisrand gemessen. Das Messband wird hierzu über den Mittelpunkt des Kreises geführt. <img style\"width: 100%;\" src=\"/descriptions/shot_put.png\" />",
     "w": {
       "age": [],
       "scoreCalculation": {
@@ -1034,7 +1034,7 @@
     "name": "Kugelstoßen 6kg",
     "category": 3,
     "unit": "m",
-    "description": "6kg oder 6.25kg",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche aus dem Stoßkreis mit 2,135m Durchmesser. An der Außenseite in der Mitte der vorderen Kreishälfte ist ein Abstoßbalken (1,22 m lang, 10,0 cm hoch, und 11,4 cm stark) sicher im Boden zu befestigen. Wenn während des Versuchs irgendein Körperteil den Boden außerhalb des Kreises berührt oder auf den Kreisrand getreten wird, so gilt dieser als Fehlversuch und wird mit 0 Punkten gewertet. Die Teilnehmerin bzw. der Teilnehmer muss den Kreis aus einem sicheren Stand nach hinten verlassen. Als Stoßleistung wird die Entfernung des vom Stoßkreis aus gesehen ersten Eindrucks der Kugel am Boden vom inneren Kreisrand gemessen. Das Messband wird hierzu über den Mittelpunkt des Kreises geführt. <img style\"width: 100%;\" src=\"/descriptions/shot_put.png\" />",
     "w": {
       "age": [],
       "scoreCalculation": {
@@ -1088,7 +1088,7 @@
     "name": "Kugelstoßen 7,26kg",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche aus dem Stoßkreis mit 2,135m Durchmesser. An der Außenseite in der Mitte der vorderen Kreishälfte ist ein Abstoßbalken (1,22 m lang, 10,0 cm hoch, und 11,4 cm stark) sicher im Boden zu befestigen. Wenn während des Versuchs irgendein Körperteil den Boden außerhalb des Kreises berührt oder auf den Kreisrand getreten wird, so gilt dieser als Fehlversuch und wird mit 0 Punkten gewertet. Die Teilnehmerin bzw. der Teilnehmer muss den Kreis aus einem sicheren Stand nach hinten verlassen. Als Stoßleistung wird die Entfernung des vom Stoßkreis aus gesehen ersten Eindrucks der Kugel am Boden vom inneren Kreisrand gemessen. Das Messband wird hierzu über den Mittelpunkt des Kreises geführt. <img style\"width: 100%;\" src=\"/descriptions/shot_put.png\" />",
     "w": {
       "age": [],
       "scoreCalculation": {
@@ -1141,7 +1141,7 @@
     "name": "Ball 200g",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Die Abwurflinie wird durch eine Linie oder Latte am Boden markiert. Berühren oder Übertreten der Abwurflinie zählt als Fehlversuch und wird mit 0 Punkten gewertet. Als Leistung wird die im rechten Winkel zur Abwurflinie ermittelte Entfernung der Aufschlagstelle gemessen. <img style\"width: 100%;\" src=\"/descriptions/200g.png\" />",
     "w": {
       "age": [
         14,
@@ -1206,7 +1206,7 @@
     "name": "Schleuderball 1kg",
     "category": 3,
     "unit": "m",
-    "description": "",
+    "description": "Jede Teilnehmerin bzw. jeder Teilnehmer hat drei Versuche. Die Abwurflinie wird durch eine Linie oder Latte am Boden markiert. Berühren oder Übertreten der Abwurflinie zählt als Fehlversuch und wird mit 0 Punkten gewertet. Als Leistung wird die im rechten Winkel zur Abwurflinie ermittelte Entfernung der Aufschlagstelle gemessen. <img style\"width: 100%;\" src=\"/descriptions/200g.png\" />",
     "w": {
       "age": [
         14,
