@@ -196,8 +196,29 @@ export function onStartup() {
         getAthletesByCompetitionID: function (account, data) {
             if (!account.isAdmin) return false;
             const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
 
             return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
+        },
+        getAthletesByCompetitionIDAsync: function (account, data) {
+            if (!account.isAdmin) return false;
+            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
+            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
+
+            waterfall(encryptedAthletes.map(function (athlete) {
+                return function (lastItemResult, nextCallback) {
+                    if (typeof lastItemResult === 'function') {
+                        nextCallback = lastItemResult;
+                        lastItemResult = [];
+                    }
+                    lastItemResult.push(athlete);
+                    nextCallback(null, lastItemResult);
+                }
+            }), function (err, result) {
+                // final callback
+                console.log(err, result);
+            });
+            return true;
         },
         /**
          * Gets the amount of athletes in a competition
