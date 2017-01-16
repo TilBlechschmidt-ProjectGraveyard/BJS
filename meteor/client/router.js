@@ -20,8 +20,3 @@ FlowRouter.route('/logout', {
         FlowRouter.go('/login');
     }
 });
-
-import {streamer} from "../imports/api/streamer";
-streamer.on('message', function(message) {
-    console.log('user: ' + message);
-});
