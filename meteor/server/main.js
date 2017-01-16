@@ -1,4 +1,3 @@
-import {Meteor} from "meteor/meteor";
 import {initCollections} from "../imports/api/database/collections/index";
 import {Server} from "../imports/api/database/ServerInterface";
 import {Athlete, encryptedAthletesToGroups} from "../imports/api/logic/athlete";
@@ -12,7 +11,7 @@ import {asyncServerFunctionChannel} from "../imports/api/streamer";
 const waterfall = require('async-waterfall');
 
 Meteor.startup(function () {
-// Load the config.json into the (semi-global) Meteor.config object
+    // Load the config.json into the (semi-global) Meteor.config object
     Meteor.config = require('../config.json');
     if (Meteor.config.contestMongoURL === "EQUAL") Meteor.config.contestMongoURL = process.env.MONGO_URL.replace(/([^\/]*)$/, "");
 
@@ -41,7 +40,7 @@ Meteor.startup(function () {
         }
     };
 
-// Wait for the client to be ready
+    // Wait for the client to be ready
     const pendingAsyncCalls = new ReactiveVar({});
 
     asyncServerFunctionChannel.on('clientReady', function (id) {
@@ -90,7 +89,7 @@ Meteor.startup(function () {
 
             return {
                 uuid: uuid,
-                size: size,
+                size: size
             }
         },
         /**
@@ -115,10 +114,17 @@ Meteor.startup(function () {
             Meteor.COLLECTIONS.Contests.handle.remove({_id: data.contestID});
             return true;
         },
+
+        /**
+         * @typedef {Object} WriteAthletesDataObject
+         * @property {string} contestID - The id of the contest
+         * @property {object[]} encryptedAthletes - The encrypted athletes
+         */
+
         /**
          * Overwrites the athletes of a contest
          * @param {Account} account - An admin account
-         * @param {{contestID: string, encryptedAthletes: []}} data - Data object
+         * @param {WriteAthletesDataObject} data - Data object
          * @returns {boolean}
          */
         writeAthletes: function (account, data) {
@@ -141,7 +147,7 @@ Meteor.startup(function () {
         /**
          * Overwrites the athletes of a contest
          * @param {Account} account - An admin account
-         * @param {{contestID: string, accounts: []}} data - Data object
+         * @param {{contestID: string, accounts: object[]}} data - Data object
          * @returns {boolean}
          */
         writeAccounts: function (account, data) {
@@ -248,7 +254,7 @@ Meteor.startup(function () {
          * Returns a list of contests
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getContests: function (account, data) {
             if (!account.isAdmin) return false;
@@ -265,7 +271,7 @@ Meteor.startup(function () {
          * Adds a contest
          * @param {Account} account - An admin account
          * @param {{contestID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getAthletesByContestID: function (account, data) {
             if (!account.isAdmin) return false;
@@ -310,8 +316,8 @@ Meteor.startup(function () {
         /**
          * Adds a contest
          * @param {Account} account - An output account
-         * @param {{athleteIDs: [string]}} data - Data object
-         * @returns {boolean|[]}
+         * @param {{athleteIDs: string[]}} data - Data object
+         * @returns {boolean|object[]}
          */
         generateCertificates: function (account, data) {
             if (!account.canViewResults) return false;
@@ -380,7 +386,7 @@ Meteor.startup(function () {
          * Returns all ips of the server
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getServerIPs: function (account, data) {
             if (!account.isAdmin) return false;
@@ -405,7 +411,7 @@ Meteor.startup(function () {
          * Returns the server log
          * @param {Account} account - An admin account
          * @param {{}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         getLog: function (account, data) {
             if (!account.isAdmin) return false;
@@ -416,7 +422,7 @@ Meteor.startup(function () {
          * Sets the written status of a certificate to true
          * @param {Account} account - An output account
          * @param {{id: string}} data - Data object
-         * @returns {boolean|[]}
+         * @returns {boolean|object[]}
          */
         certificateUpdate: function (account, data) {
             if (!account.canViewResults) return false;

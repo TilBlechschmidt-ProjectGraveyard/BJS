@@ -15,7 +15,7 @@
       ".git",
       ".meteor",
       "node_modules",
-      "meteor/client/lib"
+      "client/lib"
     ],
     "includePattern": ".+\\.js(x|doc)?$"
   },
