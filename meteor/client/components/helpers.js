@@ -65,29 +65,18 @@ export function countTrue(list) {
     return counter;
 }
 
-//noinspection JSCheckFunctionSignatures
-const indicatorUsages = new ReactiveVar(0);
+let indicatorUsages = 0;
 
 export function showIndicator() {
-    const currentUsages = Tracker.nonreactive(function () { return indicatorUsages.get(); });
-    indicatorUsages.set(currentUsages+1);
+    if (indicatorUsages == 0) Meteor.f7.showIndicator();
+    indicatorUsages++;
 }
 
 export function hideIndicator() {
-    const currentUsages = Tracker.nonreactive(function () { return indicatorUsages.get(); });
-    const newValue = currentUsages-1;
-    //noinspection JSCheckFunctionSignatures
-    indicatorUsages.set(newValue > 0 ? newValue : 0);
+    indicatorUsages--;
+    if (indicatorUsages < 0) indicatorUsages = 0;
+    if (indicatorUsages == 0) Meteor.f7.hideIndicator();
 }
-
-Tracker.autorun(function () {
-    const usages = indicatorUsages.get();
-    if (!Meteor.f7) return;
-    if (usages > 0)
-        Meteor.f7.showIndicator();
-    else
-        Meteor.f7.hideIndicator();
-});
 
 Meteor.pageVisitTime = new Date().getTime();
 

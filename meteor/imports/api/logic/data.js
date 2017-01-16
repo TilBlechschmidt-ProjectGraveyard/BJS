@@ -2,9 +2,18 @@ import {Crypto} from "./../crypto/crypto.js";
 import {filterUndefined} from "./general";
 import {getAcsFromAccounts} from "./account";
 
+
+/**
+ * @typedef {Object} EncryptedData
+ * @property {string} id - The id of the measurement
+ * @property {object} encryptedStID - The id of the sport type
+ * @property {object} encryptedMeasurements - The decrypted
+ * @property {boolean} synced - Data synced with server
+ */
+
 /**
  * Creates an empty object containing arbitrary data in an encrypted fashion. To read/write you always need the group_private_hash.
- * @param {[{encryptedStID: object, encryptedMeasurements: object, synced: boolean}]} [data]
+ * @param {EncryptedData[]} [data]
  * @constructor
  */
 export function Data(data) {
@@ -20,7 +29,7 @@ Data.prototype = {
     /**
      * @typedef {Object} PlainData
      * @property {string} stID - The id of the sport type
-     * @property {object[]} measurements - The decrypted
+     * @property {object} measurement - The decrypted
      * @property {boolean} synced - Data synced with server
      */
 
