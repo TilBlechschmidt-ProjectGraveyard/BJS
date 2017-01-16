@@ -81,8 +81,12 @@ export function initAthletes() {
     Meteor.COLLECTIONS.Athletes.createMockData = function () {
         const log = Log.getLogObject();
         const ct = COMPETITION_TYPES[0].object;
-        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli'));
-        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli'));
+
+        //TODO include
+        // const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli'));
+        // const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli'));
+        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('1234', 'chilli'));
+        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('12345', 'chilli'));
         const groupAccountC = new Account('Va', ['Va'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli'));
         const groupAccountD = new Account('Vb', ['Vb'], [], Crypto.generateAC('Rohr560Umzug', 'chilli'));
         const groupAccountE = new Account('IVa', ['IVa'], [], Crypto.generateAC('Fensterbank830Bohrmaschine', 'chilli'));

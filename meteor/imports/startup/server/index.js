@@ -368,6 +368,8 @@ export function onStartup() {
 
     Meteor.methods({
         'runServerFunction': function (name, loginObject, enc_data) {
+            console.log(name);
+
             //find account
             let account = Meteor.COLLECTIONS.Accounts.handle.findOne({"ac.pubHash": loginObject.pubHash});
 

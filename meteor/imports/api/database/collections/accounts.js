@@ -27,11 +27,15 @@ export function initAccounts() {
     });
 
     Meteor.COLLECTIONS.Accounts.createMockData = function () {
-        for (let i = 0; i < 10; i++) {
-            this.handle.insert(new Account('Q#z' + i, ['Q#z' + i], [], Crypto.generateAC('1234_' + i, 'pepper')));
-        }
-        this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli')));
-        this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli')));
+        //TODO include
+        // this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli')));
+        // this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli')));
+        // this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('Ermutigung328Wäschestände', 'pepper'), true));
+        this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('4321', 'pepper'), true));
+        this.handle.insert(new Account('VIa', ['VIa'], [], Crypto.generateAC('1234', 'chilli')));
+        this.handle.insert(new Account('VIb', ['VIb'], [], Crypto.generateAC('12345', 'chilli')));
+
+
         this.handle.insert(new Account('Va', ['Va'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli')));
         this.handle.insert(new Account('Vb', ['Vb'], [], Crypto.generateAC('Rohr560Umzug', 'chilli')));
         this.handle.insert(new Account('IVa', ['IVa'], [], Crypto.generateAC('Fensterbank830Bohrmaschine', 'chilli')));
@@ -57,6 +61,5 @@ export function initAccounts() {
         this.handle.insert(new Account('Kugelstoßen 7,26kg', [], ['st_shot_put_7.26'], Crypto.generateAC('Bügeleisen4Sprechstundenhilfe', 'pepper')));
         this.handle.insert(new Account('Ball 200g', [], ['st_ball_200'], Crypto.generateAC('Dreiheit97Anspruch', 'pepper')));
         this.handle.insert(new Account('Schleuderball 1kg', [], ['st_ball_with_throwing_strap_1'], Crypto.generateAC('Pfanne927Chirurg', 'pepper')));
-        this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('Ermutigung328Wäschestände', 'pepper'), true));
     };
 }

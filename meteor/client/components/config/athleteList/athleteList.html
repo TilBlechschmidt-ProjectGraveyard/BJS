@@ -48,23 +48,23 @@
                                style="min-height: 0;">
                                 {{#if not readOnly}}
                                     {{#if (and g.collapsed (eq @index 0))}}
-                                        {{#if (eq g.errorLevel 0)}}
+                                        {{#if (eq (tooltipLevel g) 0)}}
                                             <div class="item-media">{{> iconOK}}</div>
                                         {{/if}}
-                                        {{#if (eq g.errorLevel 1)}}
+                                        {{#if (eq (tooltipLevel g) 1)}}
                                             <div class="item-media">{{> iconWarn}}</div>
                                         {{/if}}
-                                        {{#if (eq g.errorLevel 2)}}
+                                        {{#if (eq (tooltipLevel g) 2)}}
                                             <div class="item-media">{{> iconErr}}</div>
                                         {{/if}}
                                     {{else}}
-                                        {{#if not (athleteTooltipLevel a)}}
+                                        {{#if not (tooltipLevel a)}}
                                             <div class="item-media">{{> iconOK}}</div>
                                         {{else}}
-                                            {{#if (eq (athleteTooltipLevel a) 1)}}
-                                                <div class="item-media">{{> iconWarn text=(athleteTooltipMsg a)}}</div>
+                                            {{#if (eq (tooltipLevel a) 1)}}
+                                                <div class="item-media">{{> iconWarn text=(tooltipMsg a)}}</div>
                                             {{else}}
-                                                <div class="item-media">{{> iconErr text=(athleteTooltipMsg a)}}</div>
+                                                <div class="item-media">{{> iconErr text=(tooltipMsg a)}}</div>
                                             {{/if}}
                                         {{/if}}
                                     {{/if}}

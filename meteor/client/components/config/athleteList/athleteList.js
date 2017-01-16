@@ -17,7 +17,7 @@ export const selectedAthlete = new ReactiveVar(undefined);
 
 const nameFilter = new ReactiveVar([]);
 
-let loaded;
+let reSave = false;
 
 export let modifyAthlete = function (id, callback) {
     const lgroups = localGroups.get();
@@ -29,6 +29,7 @@ export let modifyAthlete = function (id, callback) {
             let a = athletes[athlete];
             if (a.id == id) {
                 callback(a, group, athlete);
+                reSave = true;
                 localGroups.set(lgroups);
                 return;
             }
@@ -42,6 +43,7 @@ export let modifyGroup = function (id, callback) {
         if (!lgroups.hasOwnProperty(group)) continue;
         if (lgroups[group].id === id) {
             callback(lgroups[group], group);
+            reSave = true;
             localGroups.set(lgroups);
             return;
         }
@@ -71,27 +73,11 @@ export function createGroup(name) {
     const lgroups = localGroups.get();
     const id = genUUID();
     lgroups.push({name: name, athletes: [], collapsed: false, id: id});
+    reSave = true;
     localGroups.set(lgroups);
     return id;
 }
 
-function checkAthleteName(id, newName) {
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        let athletes = lgroups[group].athletes;
-        for (let athlete in athletes) {
-            if (!athletes.hasOwnProperty(athlete)) continue;
-            let a = athletes[athlete];
-            if (a.id == id) {
-                callback(a, group, athlete);
-                localGroups.set(lgroups);
-                return;
-            }
-        }
-    }
-    // athleteErrorState
-}
 /**
  *
  * @param {string} [id]
@@ -126,18 +112,8 @@ export function refreshErrorState(id, firstName, lastName) {
             if (athleteMessage.level > groupErrLevel) groupErrLevel = athleteMessage.level;
         }
 
-        errorStates[group.name] = {level: groupErrLevel};
+        errorStates[group.id] = {level: groupErrLevel};
         if (groupErrLevel > errorLevel) errorLevel = groupErrLevel;
-    }
-
-    // Set the error level of the group
-    if (!id && !firstName && !lastName) {
-        lgroups = localGroups.get();
-        for (let group in lgroups) {
-            if (!lgroups.hasOwnProperty(group)) continue;
-            lgroups[group].errorLevel = errorStates[lgroups[group].name].level;
-        }
-        localGroups.set(lgroups);
     }
 
     if (errorLevel > 0)
@@ -171,31 +147,33 @@ Tracker.autorun(function () {
             refreshErrorState();
             hideIndicator();
         });
-
-        Tracker.nonreactive(refreshErrorState);
-        loaded = compID;
     }
 });
 
 // Save to storage
 Tracker.autorun(function () {
+    if (!editMode.get() || !reSave) return;
+    reSave = false;
     const compID = currentCompID.get();
-    if (!editMode.get()) return;
-    if (loaded == compID) {
-        const lgroups = localGroups.get();
-        const adminAccount = AccountManager.getAdminAccount().account;
-        const encryptedAthletes = [];
-        for (let group in lgroups) {
-            if (!lgroups.hasOwnProperty(group)) continue;
-            group = lgroups[group];
-            for (let athlete in group.athletes) {
-                if (!group.athletes.hasOwnProperty(athlete)) continue;
-                athlete = group.athletes[athlete];
-                encryptedAthletes.push(athlete.encryptForDatabase(adminAccount, adminAccount));
-            }
+    const adminAccount = AccountManager.getAdminAccount().account;
+    const encryptedAthletes = [];
+    for (let group in lgroups) {
+        if (!lgroups.hasOwnProperty(group)) continue;
+        group = lgroups[group];
+        for (let athlete in group.athletes) {
+            if (!group.athletes.hasOwnProperty(athlete)) continue;
+            athlete = group.athletes[athlete];
+            encryptedAthletes.push(athlete.encryptForDatabase(adminAccount, adminAccount));
         }
-        DBInterface.writeAthletes(adminAccount, compID, encryptedAthletes);
     }
+    DBInterface.writeAthletes(adminAccount, compID, encryptedAthletes, function () {
+        Meteor.f7.addNotification({
+            title: "Gespeichert",
+            message: "Die Athleten wurden gespeichert!",
+            hold: 2000,
+            closeOnClick: true,
+        });
+    });
 });
 
 Template.athleteList.helpers({
@@ -232,12 +210,12 @@ Template.athleteList.helpers({
         else
             return true;
     },
-    athleteTooltipLevel: function (athlete) {
-        const errorState = athleteErrorState.get()[athlete.id];
+    tooltipLevel: function (obj) {
+        const errorState = athleteErrorState.get()[obj.id];
         return errorState ? errorState.level : undefined;
     },
-    athleteTooltipMsg: function (athlete) {
-        const errorState = athleteErrorState.get()[athlete.id];
+    tooltipMsg: function (obj) {
+        const errorState = athleteErrorState.get()[obj.id];
         return errorState ? errorState.message : undefined;
     },
     fullName: function (athlete) {
@@ -343,6 +321,7 @@ Template.athleteList.events({
         const ct = DBInterface.getCompetitionType(compID);
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
+        reSave = true;
         localGroups.set(lgroups);
         refreshErrorState();
     },
@@ -358,6 +337,7 @@ Template.athleteList.events({
             if (groupIndex && athleteIndex) {
                 const lgroups = localGroups.get();
                 lgroups[groupIndex].athletes.splice(athleteIndex, 1);
+                reSave = true;
                 localGroups.set(lgroups);
             }
             refreshErrorState();
@@ -398,6 +378,7 @@ Template.athleteList.events({
                 }
             }
             lgroups.splice(groupIndex, 1);
+            reSave = true;
             localGroups.set(lgroups);
             refreshErrorState();
         });
