@@ -152,9 +152,10 @@ Tracker.autorun(function () {
 
 // Save to storage
 Tracker.autorun(function () {
+    const compID = currentCompID.get();
+    const lgroups = localGroups.get();
     if (!editMode.get() || !reSave) return;
     reSave = false;
-    const compID = currentCompID.get();
     const adminAccount = AccountManager.getAdminAccount().account;
     const encryptedAthletes = [];
     for (let group in lgroups) {
