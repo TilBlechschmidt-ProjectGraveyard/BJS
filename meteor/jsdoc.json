@@ -4,7 +4,8 @@
   },
   "plugins": [
     "plugins/markdown",
-    "plugins/summarize"
+    "plugins/summarize",
+    "node_modules/jsdoc-strip-async-await"
   ],
   "markdown": {
     "parser": "gfm"
@@ -13,7 +14,8 @@
     "exclude": [
       ".git",
       ".meteor",
-      "node_modules"
+      "node_modules",
+      "meteor/client/lib"
     ],
     "includePattern": ".+\\.js(x|doc)?$"
   },

@@ -223,7 +223,9 @@ function finalizeContest() {
         Meteor.f7.hidePreloader();
         document.getElementById("config-swiper").swiper.slideTo(0);
         localStorage.removeItem("config-groups-" + compID);
+        //noinspection JSCheckFunctionSignatures
         accessCodes.set(baseACStructure);
+        //noinspection JSCheckFunctionSignatures
         codesClean.set(false);
         localGroups.set([]);
         currentCompID.set("");
@@ -412,30 +414,3 @@ Template.accessCodes.onRendered(function () {
     //noinspection JSCheckFunctionSignatures
     progress.set(100);
 });
-
-// Template.accessCodes.animations({
-//     ".item": {
-//         container: ".container", // container of the ".item" elements
-//         insert: {
-//             class: "fade-open", // class applied to inserted elements
-//             before: function (attrs, element, template) {
-//             }, // callback before the insert animation is triggered
-//             after: function (attrs, element, template) {
-//             }, // callback after an element gets inserted
-//             // delay: 500 // Delay before inserted items animate
-//         },
-//         remove: {
-//             class: "fade-out", // class applied to removed elements
-//             before: function (attrs, element, template) {
-//                 console.log("hiding");
-//             }, // callback before the remove animation is triggered
-//             after: function (attrs, element, template) {
-//                 console.log("hidden");
-//             }, // callback after an element gets removed
-//             // delay: 500 // Delay before removed items animate
-//         },
-//         animateInitial: true, // animate the elements already rendered
-//         animateInitialStep: 200, // Step between animations for each initial item
-//         animateInitialDelay: 500 // Delay before the initial items animate
-//     }
-// });

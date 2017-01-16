@@ -52,3 +52,12 @@
     background-color:rgba(225, 225, 225, 0.75);
     border-radius: 20px;
 }
+
+.popover {
+    max-height: 90vh;
+}
+
+.popover .popover-inner {
+    max-height: 90vh;
+    overflow: auto;
+}
