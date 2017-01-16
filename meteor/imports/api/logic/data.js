@@ -56,6 +56,7 @@ Data.prototype = {
             }
 
             return {
+                id: dataObject.id,
                 stID: stIDDecryptResult,
                 measurement: measurementDecryptResult,
                 synced: dataObject.synced
@@ -82,14 +83,16 @@ Data.prototype = {
      * @param {Log} log - Logger instance to use
      * @param {string} stID - Identifier of the sport the returned data should be part of
      * @param {number} newMeasurement The measurements that should be inserted
+     * @param {string} dataID - ID used in db
      * @param {AuthenticationCode} groupAC - Authentication code of the group
      * @param {AuthenticationCode} stationAC -  Authentication code of the specified sport type
      */
-    push: function (log, stID, newMeasurement, groupAC, stationAC) {
+    push: function (log, stID, newMeasurement, dataID, groupAC, stationAC) {
         const encryptedStID = Crypto.encrypt(stID, groupAC, stationAC);
         const newEncryptedMeasurement = Crypto.encrypt(newMeasurement, groupAC, stationAC);
 
         this.data.push({
+            id: dataID,
             encryptedStID: encryptedStID,
             encryptedMeasurement: newEncryptedMeasurement,
             synced: false

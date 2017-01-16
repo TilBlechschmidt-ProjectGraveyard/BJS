@@ -19,7 +19,7 @@
                 {{/if}}
             </div>
             <div class="item-inner {{#if measurement.read_only}}tooltip{{/if}}">
-                <div class="item-title label">{{inc n}}. Versuch</div>
+                <div class="item-title label">{{inc n}}. Versuch{{measurement.id}}</div>
                 <div class="item input">
                     <input type="{{#with measurement}}{{inputType}}{{/with}}"
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"

@@ -122,11 +122,17 @@ Athlete.prototype = {
         }
 
         if (canWrite) {
-            this.data.push(log, stID, newMeasurement, groupAccount.ac, stationAccount.ac);
+            let dataID = genUUID();
+            this.data.push(log, stID, newMeasurement, dataID, groupAccount.ac, stationAccount.ac);
             // write to db
             if (this.id) {
                 let writeObject = {};
-                writeObject["m_" + genUUID()] = this.data.data[this.data.data.length - 1];
+                const data = this.data.data[this.data.data.length - 1];
+                writeObject["m_" + dataID] = {
+                    encryptedStID: data.encryptedStID,
+                    encryptedMeasurement: data.encryptedMeasurement,
+                    synced: data.synced
+                };
                 Meteor.COLLECTIONS.Athletes.handle.update({_id: this.id}, {$set: writeObject});
             }
             return true;
@@ -223,7 +229,12 @@ Athlete.prototype = {
 
         for (let dataGroupID in this.data.data) {
             if (!this.data.data.hasOwnProperty(dataGroupID)) continue;
-            encrypted["m_" + genUUID()] = this.data[dataGroupID];
+            const data = this.data[dataGroupID];
+            encrypted["m_" + data.id] = {
+                encryptedStID: data.encryptedStID,
+                encryptedMeasurement: data.encryptedMeasurement,
+                synced: data.synced
+            };
         }
 
         return encrypted;
@@ -308,7 +319,9 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
 
         for (let memberName in data) {
             if (memberName.substr(0, 2) === "m_") {
-                measureData.push(data[memberName]);
+                const tmpData = data[memberName];
+                tmpData.id = memberName.substr(2, 999);
+                measureData.push(tmpData);
             }
         }
 

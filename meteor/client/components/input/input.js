@@ -142,7 +142,12 @@ function populateAthlete(athlete) {
         const stID = measurement_block.stID.data;
         if (athlete.sportType[stID].measurements === undefined) athlete.sportType[stID].measurements = [];
         athlete.sportType[stID].measurements.push(
-            {read_only: true, value: measurement_block.measurement.data, synced: measurement_block.synced}
+            {
+                read_only: true,
+                value: measurement_block.measurement.data,
+                synced: measurement_block.synced,
+                id: measurement_block.id
+            }
         );
     }
 
