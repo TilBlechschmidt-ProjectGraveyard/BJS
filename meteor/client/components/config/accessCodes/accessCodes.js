@@ -1,7 +1,7 @@
 import {genRandomCode, genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
-import {currentCompID} from "../config";
+import {currentCompID, editMode} from "../config";
 import {localGroups} from "../athleteList/athleteList";
 import {DBInterface} from "../../../../imports/api/database/DBInterface";
 import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
@@ -36,6 +36,7 @@ Tracker.autorun(function () {
 // Storing custom accounts
 DBInterface.waitForReady(function () {
     Tracker.autorun(function () {
+        if (!editMode.get()) return;
         const compID = currentCompID.get();
         const acodes = accessCodes.get();
         if (compID && accessCodesLoaded == compID)

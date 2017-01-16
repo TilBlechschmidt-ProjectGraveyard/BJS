@@ -180,6 +180,7 @@ Tracker.autorun(function () {
 // Save to storage
 Tracker.autorun(function () {
     const compID = currentCompID.get();
+    if (!editMode.get()) return;
     if (loaded == compID) {
         const lgroups = localGroups.get();
         const adminAccount = AccountManager.getAdminAccount().account;
