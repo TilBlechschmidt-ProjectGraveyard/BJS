@@ -320,13 +320,21 @@ Athlete.decryptFromDatabase = function (log, data, accounts, require_signature, 
     return false;
 };
 
-
 export function encryptedAthletesToGroups(encryptedAthletes, accounts, require_signature, require_group_check) {
     const log = Log.getLogObject();
     let groupNames = {};
     let groups = [];
 
+    let functionStatus;
+    if (Meteor.isServer) {
+        functionStatus = require("../../startup/server/index").functionStatus;
+    }
+
     for (let athlete in encryptedAthletes) {
+        if (Meteor.isServer) {
+            functionStatus.set("Entschlüsselung der Daten (" + athlete + " / " + encryptedAthletes.length + ")");
+            Tracker.flush();
+        }
         if (!encryptedAthletes.hasOwnProperty(athlete)) continue;
         let encryptedAthlete = encryptedAthletes[athlete];
         let decryptedAthlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, require_signature, require_group_check);

@@ -7,6 +7,8 @@ import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
 import {getCompetitionTypeByID} from "../../api/logic/competition_type";
 
+export const functionStatus = new ReactiveVar("Bereit");
+module.exports.functionStatus = functionStatus;
 
 export function onStartup() {
     // Load the config.json into the (semi-global) Meteor.config object
@@ -198,8 +200,13 @@ export function onStartup() {
             if (!account.isAdmin) return false;
             const accounts = Meteor.COLLECTIONS.Accounts.handles[data.competitionID].find().fetch().concat([getAdminAccount()]);
             const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.competitionID].find().fetch();
-
-            return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
+            for (let i = 200; i < 50000; i+=200) {
+                setTimeout(function () {
+                    functionStatus.set("Entschlüsselung der Daten" + i);
+                }, i);
+            }
+            const groups = encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
+            return groups;
         },
         /**
          * Gets the amount of athletes in a competition
@@ -388,9 +395,54 @@ export function onStartup() {
             const log = Log.getLogObject();
             const data = Crypto.tryDecrypt(log, enc_data, [account.ac]);
 
-            return encryptAs(serverFunctions[name](account, data.data), account);
+            const res = serverFunctions[name](account, data.data);
+            functionStatus.set("Gesicherte Datenübertragung");
+            return encryptAs(res, account);
         }
     });
 
-    // require('../../api/database/db_example')();
+    import {streamer} from "../../api/streamer";
+    Tracker.autorun(function () {
+        console.log(functionStatus.get());
+        streamer.emit('message', functionStatus.get());
+    });
+
+    if (Meteor.isServer) {
+        streamer.allowRead('all');
+        streamer.allowWrite('all');
+    }
+
+    // let id = 0;
+    // Meteor.publish('custom-publication', function(loginObject) {
+    //     this.added('meteor-functions-status', 'readable', { content: "Bereit"});
+    //     this.ready();
+    //
+    //     console.log(this.__proto__);
+    //     const col = this;
+    //     Tracker.autorun(function () {
+    //         console.log(functionStatus.get());
+    //         col.added('meteor-functions-status', ++id, { content: functionStatus.get() });
+    //         col.ready();
+    //     });
+    //     // // We can add documents one at a time
+    //     // this.added('meteor-functions-status', 'id', {field: 'values'});
+    //     //
+    //     // // We can call ready to indicate to the client that the initial document sent has been sent
+    //     // this.ready();
+    //
+    //     // // We may respond to some 3rd party event and want to send notifications
+    //     // Meteor.setTimeout(() => {
+    //     //     console.log("removing all");
+    //     //     // If we want to modify a document that we've already added
+    //     //     this.changed('collection-name', 'id', {field: 'new-value'});
+    //     //
+    //     //     // Or if we don't want the client to see it any more
+    //     //     // this.removed('collection-name', 'id');
+    //     // });
+    //     //
+    //     // // It's very important to clean up things in the subscription's onStop handler
+    //     // this.onStop(() => {
+    //     //     // Perhaps kill the connection with the 3rd party server
+    //     // });
+    // });
 }
