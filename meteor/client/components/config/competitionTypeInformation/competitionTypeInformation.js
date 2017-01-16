@@ -1,4 +1,4 @@
-import {COMPETITION_TYPES} from "../../../../imports/api/logic/competition_type";
+import {COMPETITION_TYPES} from "../../../../imports/api/logic/competitionType";
 
 
 Template.competitionTypeInformationPopups.helpers({

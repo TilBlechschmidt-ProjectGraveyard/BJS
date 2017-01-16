@@ -1,6 +1,6 @@
 import {currentCompID} from "../config";
 import {refreshErrorState, insertAthlete} from "./athleteList";
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 
 
@@ -56,7 +56,7 @@ export function parseCSVFile(file) {
         skipEmptyLines: true,
         complete: function (results) {
             const compID = currentCompID.get();
-            const ct = DBInterface.getCompetitionType(compID);
+            const ct = Server.getCompetitionType(compID);
             const field = correlateHeaders(results.meta.fields);
             processCSVResult(results.data, field, ct);
         },

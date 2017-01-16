@@ -2,9 +2,9 @@ import {Template} from "meteor/templating";
 import "./input.html";
 import "./input.css";
 import {Log} from "../../../imports/api/log";
-import {DBInterface} from "../../../imports/api/database/DBInterface";
+import {Server} from "../../../imports/api/database/ServerInterface";
 import {arrayify, getAthletes, getLastLogin} from "../helpers";
-import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
+import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 import {checkPermission, updateSwiperProgress} from "../login/router";
 
 Meteor.input = {};
@@ -72,8 +72,8 @@ export let reloadSwiper = function (forceAthleteReload) {
 };
 
 function populateAthlete(athlete) {
-    if (!DBInterface.isReady()) {
-        DBInterface.waitForReady(function () {
+    if (!Server.isReady()) {
+        Server.waitForReady(function () {
             Meteor.inputDependency.changed();
         });
         return {};
@@ -83,7 +83,7 @@ function populateAthlete(athlete) {
     if (athlete === undefined) return {};
 
     const stationAccount = AccountManager.getStationAccount();
-    const ct = DBInterface.getCompetitionType();
+    const ct = Server.getCompetitionType();
 
 
 
@@ -106,7 +106,7 @@ function populateAthlete(athlete) {
             if (!stIDs.hasOwnProperty(stID) || !lodash.includes(athlete.sports, stIDs[stID])) continue;
             stID = stIDs[stID];
             gapKey = stID;
-            sportTypes[stID] = DBInterface.getCompetitionType().getSportType(stID);
+            sportTypes[stID] = Server.getCompetitionType().getSportType(stID);
         }
     }
 
@@ -260,16 +260,16 @@ Template.input.helpers({
         });
     },
     sportTypes: function () {
-        if (!DBInterface.isReady()) {
+        if (!Server.isReady()) {
             const dbDep = new Tracker.Dependency();
             dbDep.depend();
-            DBInterface.waitForReady(function () {
+            Server.waitForReady(function () {
                 dbDep.changed();
             });
             return [];
         }
-        const competitionType = DBInterface.getCompetitionType();
-        return lodash.map(DBInterface.getCompetitionSportTypes(), function (stID) {
+        const competitionType = Server.getCompetitionType();
+        return lodash.map(Server.getCompetitionSportTypes(), function (stID) {
             const sportType = competitionType.getSportType(stID);
             sportType.m.min = sportType.m.age.length >0 ? _.min(sportType.m.age): "nicht möglich";
             sportType.m.max = sportType.m.age.length >0 ?  _.max(sportType.m.age):"";
@@ -319,7 +319,7 @@ Template.input.events({
 
 
 Template.input.onRendered(function () {
-    DBInterface.waitForReady(function () {
+    Server.waitForReady(function () {
         reloadSwiper();
     });
 });

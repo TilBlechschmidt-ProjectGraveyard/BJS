@@ -1,8 +1,8 @@
 import {Template} from "meteor/templating";
 import "./output.html";
 import "../../styles/resultCollapse.css";
-import {DBInterface} from "../../../imports/api/database/DBInterface";
-import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
+import {Server} from "../../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 import {updateSwiperProgress} from "../login/router";
 import {ReactiveVar} from "meteor/reactive-var";
 import {findIndexOfAthlete, isReady, isUpdate, isNotReady, isFinish, statusToNumber, countTrue} from "./helpers";
@@ -18,7 +18,7 @@ const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
 
 
 function loadAllAthlets() {
-    DBInterface.generateCertificates(
+    Server.generateCertificates(
         AccountManager.getOutputAccount().account,
         _.map(Meteor.COLLECTIONS.Athletes.handle.find({}).fetch(), function (enc_athlete) {
             return enc_athlete._id
@@ -269,7 +269,7 @@ Template.output.onRendered(function () {
     Meteor.f7.sortableOpen('.sortable');
     showIndicator();
 
-    DBInterface.waitForReady(function () {
+    Server.waitForReady(function () {
         if (!Meteor.COLLECTIONS.Athletes.changeDetector) {
             Meteor.COLLECTIONS.Athletes.changeDetector = true;
             Meteor.COLLECTIONS.Athletes.handle.find().observeChanges({
@@ -297,7 +297,7 @@ Template.output.onRendered(function () {
 
                     //change of certificate information -> update
                     if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
-                        DBInterface.generateCertificates(
+                        Server.generateCertificates(
                             AccountManager.getOutputAccount().account, [id], function (data) {
 
                                 //load athletes

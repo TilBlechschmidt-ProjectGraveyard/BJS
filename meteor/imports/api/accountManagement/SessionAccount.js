@@ -1,4 +1,4 @@
-import {DBInterface} from "../database/DBInterface";
+import {Server} from "../database/ServerInterface";
 import {Crypto} from "../crypto/crypto";
 import {isGroupAccount, isStationAccount, isAdminAccount} from "../logic/account";
 import {hideIndicator} from "../../../client/components/helpers";
@@ -12,7 +12,7 @@ const storage = window.sessionStorage;
  * @returns {?Account}
  */
 export function getAccountByPassphrase(passphrase, callback) {
-    DBInterface.waitForReady(function () {
+    Server.waitForReady(function () {
         const contestAccounts = Meteor.COLLECTIONS.Accounts.handle.find({}).fetch();
         const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne().adminAccount;
         const remoteAccounts = contestAccounts.concat([adminAccount]);
@@ -45,7 +45,7 @@ export function SessionAccount(name) {
     const lastAccount = this.get();
     if (lastAccount.logged_in) {
         const that = this;
-        DBInterface.waitForReady(function () {
+        Server.waitForReady(function () {
             const adminAccount = Meteor.COLLECTIONS.Generic.handle.findOne({}).adminAccount;
 
             if ((lastAccount.account.ac.pubHash != adminAccount.ac.pubHash) && !Meteor.COLLECTIONS.Accounts.handle.findOne({'ac.pubHash': lastAccount.account.ac.pubHash})) {

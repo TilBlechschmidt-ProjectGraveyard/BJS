@@ -1,6 +1,6 @@
 import {getLoginSwiper, goToStep} from "./template";
 import {tryDecrypt, invertLogin} from "../helpers";
-import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
+import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 
 const login = FlowRouter.group({
     prefix: '/login'

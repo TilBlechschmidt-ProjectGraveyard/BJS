@@ -1,4 +1,4 @@
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {Server} from "../../../../imports/api/database/ServerInterface";
 
 
 function hasClass(element, cls) {
@@ -19,7 +19,7 @@ function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
     if (measurements[athleteID] === undefined) measurements[athleteID] = {};
     if (measurements[athleteID][stID] === undefined) measurements[athleteID][stID] = {};
 
-    const ct = DBInterface.getCompetitionType();
+    const ct = Server.getCompetitionType();
 
     const sportTypeData = ct.getSportType(stID);
     const strDotMeasurement = strMeasurement.replace(/,/g, ".");

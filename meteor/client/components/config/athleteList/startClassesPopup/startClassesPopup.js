@@ -1,6 +1,6 @@
 import {selectedAthlete, modifyAthlete, refreshErrorState} from "../athleteList";
 
-const startClasses = require('../../../../../imports/data/start_classes.json');
+const startClasses = require('../../../../../imports/data/startClasses.json');
 
 Template.startClassesPopup.helpers({
     name: function () {

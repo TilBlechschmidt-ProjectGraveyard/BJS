@@ -1,5 +1,5 @@
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
-import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
+import {Server} from "../../../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 import {findIndexOfAthlete} from "../helpers";
 
 
@@ -47,7 +47,7 @@ Template.result.events({
     },
     'click .signCertificate': function (event) {
         const id = event.target.dataset.id;
-        DBInterface.certificateUpdate(AccountManager.getOutputAccount().account, id);
+        Server.certificateUpdate(AccountManager.getOutputAccount().account, id);
 
         const athletes = Meteor.reactiveAthletes.get();
         const index = findIndexOfAthlete(athletes, id);

@@ -1,4 +1,4 @@
-import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
+import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 import {checkPermission} from "./router";
 import "./login.html";
 import {triggerDefaultModalAction} from "../helpers";

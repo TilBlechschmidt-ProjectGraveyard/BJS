@@ -1,14 +1,14 @@
 import {currentCompID, editMode, forwardIcon} from "../config";
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Log} from "../../../../imports/api/log";
-import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
+import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import gender from "gender-guess";
 import {showIndicator, hideIndicator} from "../../helpers";
 import {filterUndefined} from "../../../../imports/api/logic/general";
 
-const startClasses = require('../../../../imports/data/start_classes.json');
+const startClasses = require('../../../../imports/data/startClasses.json');
 const defaultBirthYear = new Date().getFullYear() - 17;
 
 export const localGroups = new ReactiveVar([]);
@@ -146,7 +146,7 @@ Tracker.autorun(function () {
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
-        DBInterface.getAthletesByCompetitionAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+        Server.getAthletesByCompetitionAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
@@ -175,7 +175,7 @@ Tracker.autorun(function () {
             encryptedAthletes.push(athlete.encryptForDatabase(adminAccount, adminAccount));
         }
     }
-    DBInterface.writeAthletes(adminAccount, compID, encryptedAthletes, function () {
+    Server.writeAthletes(adminAccount, compID, encryptedAthletes, function () {
         Meteor.f7.addNotification({
             title: "Gespeichert",
             message: "Die Athleten wurden gespeichert!",
@@ -327,7 +327,7 @@ Template.athleteList.events({
             }
         }
 
-        const ct = DBInterface.getCompetitionType(compID);
+        const ct = Server.getCompetitionType(compID);
         lgroups[groupID].athletes.push(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 
         reSave = true;

@@ -1,6 +1,6 @@
-import {COMPETITION_TYPES} from "../../../../../imports/api/logic/competition_type";
-import {DBInterface} from "../../../../../imports/api/database/DBInterface";
-import {AccountManager} from "../../../../../imports/api/account_managment/AccountManager";
+import {COMPETITION_TYPES} from "../../../../../imports/api/logic/competitionType";
+import {Server} from "../../../../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../../../../imports/api/accountManagement/AccountManager";
 Template.competitionTypeCreatePopupContent.helpers({
     competitionTypes: function () {
         return COMPETITION_TYPES;
@@ -34,7 +34,7 @@ Template.competitionTypeCreatePopupContent.events({
             }
         }
 
-        DBInterface.addCompetition(AccountManager.getAdminAccount().account, name, id);
+        Server.addCompetition(AccountManager.getAdminAccount().account, name, id);
         Meteor.f7.closeModal(".popup-competitionType");
     }
 });

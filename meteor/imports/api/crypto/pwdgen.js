@@ -3,7 +3,7 @@ function genRandomInt(min, max) {
 }
 
 
-let words_de = require('./../../data/words_de.json');
+let words_de = require('./../../data/wordsDE.json');
 
 export let s4 = function () {
     return Math.floor((1 + Math.random()) * 0x10000)

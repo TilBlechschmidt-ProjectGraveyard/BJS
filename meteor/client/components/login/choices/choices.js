@@ -1,21 +1,21 @@
 import {Template} from "meteor/templating";
 import "./choices.html";
 import "./choices.css";
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
+import {Server} from "../../../../imports/api/database/ServerInterface";
 
 let db_tracker_tracker = new Tracker.Dependency();
 
 Template.choices.helpers({
     competition_notice: function () {
         db_tracker_tracker.depend();
-        if (!DBInterface.isReady()) {
+        if (!Server.isReady()) {
             return "Laden...";
         } else {
-            return 'Wählen Sie eine der obigen Optionen, um Ihr Gerät für die Bundesjugendspiele "' + DBInterface.getCompetitionName() + '" bereit zu machen.';
+            return 'Wählen Sie eine der obigen Optionen, um Ihr Gerät für die Bundesjugendspiele "' + Server.getCompetitionName() + '" bereit zu machen.';
         }
     }
 });
 
-DBInterface.waitForReady(function () {
+Server.waitForReady(function () {
     db_tracker_tracker.changed();
 });

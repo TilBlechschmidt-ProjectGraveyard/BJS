@@ -1,10 +1,10 @@
-import {DBInterface} from "../../imports/api/database/DBInterface";
-import {AccountManager} from "../../imports/api/account_managment/AccountManager";
+import {Server} from "../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../imports/api/accountManagement/AccountManager";
 
 export let getAthletes = function getAthletes() {
     const group_account = AccountManager.getGroupAccount().account;
     if (!group_account) return [];
-    return DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+    return Server.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 };
 
 export let arrayify = function (obj) {

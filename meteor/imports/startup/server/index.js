@@ -1,11 +1,11 @@
 import {initCollections} from "../../api/database/collections/index";
-import {DBInterface} from "../../api/database/DBInterface";
+import {Server} from "../../api/database/ServerInterface";
 import {Athlete, encryptedAthletesToGroups} from "../../api/logic/athlete";
 import {Log} from "../../api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../../api/crypto/crypto";
 import {filterUndefined} from "../../api/logic/general";
-import {getCompetitionTypeByID} from "../../api/logic/competition_type";
+import {getCompetitionTypeByID} from "../../api/logic/competitionType";
 import {genUUID} from "../../api/crypto/pwdgen";
 import {asyncServerFunctionChannel} from "../../api/streamer";
 const waterfall = require('async-waterfall');
@@ -17,7 +17,7 @@ export function onStartup() {
 
     initCollections();
 
-    console.log('Your utmost secure and highly trustworthy administrator password reads "'.italic.lightCyan + Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).adminPassword.bold.lightRed.underline + '".'.italic.lightCyan);
+    console.log('Your utmost secure and highly trustworthy administrator password reads "'.italic.lightCyan + Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.getGenericID()}).adminPassword.bold.lightRed.underline + '".'.italic.lightCyan);
     console.log("Remember that with great power comes great responsibility, so you shall use it wisely!".italic.lightCyan);
     console.log("Now go, use all that voodoo power that comes with it and do some good to your people.".italic.lightCyan);
 
@@ -315,7 +315,7 @@ export function onStartup() {
         generateCertificates: function (account, data) {
             if (!account.canViewResults) return false;
 
-            const ct = DBInterface.getCompetitionType();
+            const ct = Server.getCompetitionType();
             const log = Log.getLogObject();
 
             log.info("Die Urkunden wurden von '" + account.name + "' generiert.");

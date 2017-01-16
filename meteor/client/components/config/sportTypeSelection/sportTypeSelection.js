@@ -1,11 +1,11 @@
 import {currentCompID, dbReady} from "../config";
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
-import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
+import {Server} from "../../../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 import {showIndicator, hideIndicator} from "../../helpers";
 
 const categories = new ReactiveVar([]);
 
-DBInterface.waitForReady(function () {
+Server.waitForReady(function () {
     Tracker.autorun(function () {
         showIndicator();
         dbReady.depend();
@@ -17,7 +17,7 @@ DBInterface.waitForReady(function () {
         }
 
         const competition = Meteor.COLLECTIONS.Contests.handle.findOne({_id: compID});
-        const competitionType = DBInterface.getCompetitionType(compID);
+        const competitionType = Server.getCompetitionType(compID);
         const sportTypes = competitionType.getSports();
         const cats = lodash.map(competitionType.getInformation().categoryNames, function (name) {
             return {name: name, sportTypes: []};
@@ -56,7 +56,7 @@ Template.sportTypeSelection.events({
         const checkbox = label.querySelector("input[type='checkbox']");
         const newValue = !checkbox.checked;
 
-        DBInterface.setSportTypeState(AccountManager.getAdminAccount().account, currentCompID.get(), label.dataset.id, newValue);
+        Server.setSportTypeState(AccountManager.getAdminAccount().account, currentCompID.get(), label.dataset.id, newValue);
 
         const cats = categories.get();
         for (let cat in cats) {

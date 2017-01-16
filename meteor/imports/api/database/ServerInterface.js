@@ -1,4 +1,4 @@
-import {getCompetitionTypeByID} from "../logic/competition_type";
+import {getCompetitionTypeByID} from "../logic/competitionType";
 import {Athlete} from "../logic/athlete";
 import {initCollections} from "./collections/index";
 import {getLoginObject} from "../logic/account";
@@ -78,7 +78,7 @@ async function runAsyncServerFunction(name, account, data, callback) {
  * @public
  * @namespace
  */
-export let DBInterface = {
+export let Server = {
 
     /**
      * Returns whether all collections are ready.
@@ -144,7 +144,7 @@ export let DBInterface = {
      * @returns {string}
      */
     getActiveContestID: function () {
-        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: DBInterface.getGenericID()}).activeContest;
+        return Meteor.COLLECTIONS.Generic.handle.findOne({_id: Server.getGenericID()}).activeContest;
     },
 
     /**
@@ -152,7 +152,7 @@ export let DBInterface = {
      * @returns {object}
      */
     getActiveContest: function () {
-        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: DBInterface.getActiveContestID()});
+        return Meteor.COLLECTIONS.Contests.handle.findOne({_id: Server.getActiveContestID()});
     },
 
     getContestByID: function (contestID) {
@@ -164,8 +164,8 @@ export let DBInterface = {
      * @returns {string[]}
      */
     getActivatedSports: function (contestID) {
-        if (!contestID) contestID = DBInterface.getActiveContestID();
-        return DBInterface.getContestByID(contestID).sportTypes;
+        if (!contestID) contestID = Server.getActiveContestID();
+        return Server.getContestByID(contestID).sportTypes;
     },
 
     /**
@@ -174,8 +174,8 @@ export let DBInterface = {
      * @returns {number}
      */
     getCompetitionTypeID: function (contestID) {
-        if (!contestID) contestID = DBInterface.getActiveContestID();
-        return DBInterface.getContestByID(contestID).type;
+        if (!contestID) contestID = Server.getActiveContestID();
+        return Server.getContestByID(contestID).type;
     },
 
     /**
@@ -184,8 +184,8 @@ export let DBInterface = {
      * @returns {object}
      */
     getCompetitionType: function (contestID) {
-        if (!contestID) contestID = DBInterface.getActiveContestID();
-        return getCompetitionTypeByID(DBInterface.getCompetitionTypeID(contestID));
+        if (!contestID) contestID = Server.getActiveContestID();
+        return getCompetitionTypeByID(Server.getCompetitionTypeID(contestID));
     },
 
     /**
@@ -194,8 +194,8 @@ export let DBInterface = {
      * @returns {string[]}
      */
     getCompetitionSportTypes: function (contestID) {
-        if (!contestID) contestID = DBInterface.getActiveContestID();
-        return DBInterface.getContestByID(contestID).sportTypes;
+        if (!contestID) contestID = Server.getActiveContestID();
+        return Server.getContestByID(contestID).sportTypes;
     },
 
     /**
@@ -203,7 +203,7 @@ export let DBInterface = {
      * @returns {string}
      */
     getCompetitionName: function () {
-        return DBInterface.getActiveContest().name;
+        return Server.getActiveContest().name;
     },
 
     /**

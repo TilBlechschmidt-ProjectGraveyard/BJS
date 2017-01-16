@@ -3,8 +3,8 @@ import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID, editMode} from "../config";
 import {localGroups} from "../athleteList/athleteList";
-import {DBInterface} from "../../../../imports/api/database/DBInterface";
-import {AccountManager} from "../../../../imports/api/account_managment/AccountManager";
+import {Server} from "../../../../imports/api/database/ServerInterface";
+import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 
 
 let totalProgress = 0;
@@ -34,22 +34,22 @@ Tracker.autorun(function () {
 });
 
 // Storing custom accounts
-DBInterface.waitForReady(function () {
+Server.waitForReady(function () {
     Tracker.autorun(function () {
         if (!editMode.get()) return;
         const compID = currentCompID.get();
         const acodes = accessCodes.get();
         if (compID && accessCodesLoaded == compID)
-            DBInterface.storeCustomAccounts(AccountManager.getAdminAccount().account, compID, Crypto.encrypt(acodes[2].codes, AccountManager.getAdminAccount().account.ac, AccountManager.getAdminAccount().account.ac));
+            Server.storeCustomAccounts(AccountManager.getAdminAccount().account, compID, Crypto.encrypt(acodes[2].codes, AccountManager.getAdminAccount().account.ac, AccountManager.getAdminAccount().account.ac));
     });
 });
 
 // Loading custom account database
-DBInterface.waitForReady(function () {
+Server.waitForReady(function () {
     Tracker.autorun(async function () {
         const compID = currentCompID.get();
         if (compID && accessCodesLoaded !== compID) {
-            const data = await DBInterface.retrieveCustomAccounts(AccountManager.getAdminAccount().account, compID);
+            const data = await Server.retrieveCustomAccounts(AccountManager.getAdminAccount().account, compID);
             const decryptedCodes = Crypto.tryDecrypt(Meteor.config.log, data, [AccountManager.getAdminAccount().account.ac]);
             if (decryptedCodes && decryptedCodes.signatureEnforced) {
                 const acodes = accessCodes.get();
@@ -213,11 +213,11 @@ function finalizeContest() {
         }
     }
 
-    DBInterface.writeAccounts(admin.account, compID, accounts);
+    Server.writeAccounts(admin.account, compID, accounts);
 
-    DBInterface.writeAthletes(admin.account, compID, athletes);
+    Server.writeAthletes(admin.account, compID, athletes);
 
-    DBInterface.lockCompetition(admin.account, compID);
+    Server.lockCompetition(admin.account, compID);
 
     setTimeout(function () {
         Meteor.f7.hidePreloader();
@@ -232,8 +232,8 @@ function finalizeContest() {
 
 function getCurrentSportTypes() {
     const compID = currentCompID.get();
-    const competitionType = DBInterface.getCompetitionType(compID);
-    return lodash.map(DBInterface.getCompetitionSportTypes(compID), function (stID) {
+    const competitionType = Server.getCompetitionType(compID);
+    return lodash.map(Server.getCompetitionSportTypes(compID), function (stID) {
         return competitionType.getSportType(stID);
     });
 }
@@ -267,7 +267,7 @@ Template.accessCodes.helpers({
         return codesClean.get();
     },
     get_competition_name: function () {
-        const CurrentComp = DBInterface.getContestByID(currentCompID.get());
+        const CurrentComp = Server.getContestByID(currentCompID.get());
         if (CurrentComp !== undefined) {
             return CurrentComp.name;
         } else
@@ -289,7 +289,7 @@ Template.accessCodes.helpers({
 });
 
 export function getCompetitionName() {
-    const CurrentComp = DBInterface.getContestByID(currentCompID.get());
+    const CurrentComp = Server.getContestByID(currentCompID.get());
     if (CurrentComp !== undefined) {
         return CurrentComp.name;
     } else

@@ -1,6 +1,6 @@
-import {Athletics} from "./competition_types/athletics.js";
-import {Swimming} from "./competition_types/swimming.js";
-import {Gymnastics} from "./competition_types/gymnastics";
+import {Athletics} from "./competitionTypes/athletics.js";
+import {Swimming} from "./competitionTypes/swimming.js";
+import {Gymnastics} from "./competitionTypes/gymnastics";
 
 
 /**

@@ -2,7 +2,7 @@ import {initGeneric} from "./generic";
 import {initContests} from "./contests";
 import {initAccounts} from "./accounts";
 import {initAthletes} from "./athletes";
-import {DBInterface} from "../DBInterface";
+import {Server} from "../ServerInterface";
 
 function initDatabase() {
     initAccounts();
@@ -22,7 +22,7 @@ function initDatabase() {
             return false;
         }
         if (Meteor.isServer) {
-            Meteor.COLLECTIONS.Generic.handle.update({_id: DBInterface.getGenericID()}, {$set: {activeContest: competitionID}});
+            Meteor.COLLECTIONS.Generic.handle.update({_id: Server.getGenericID()}, {$set: {activeContest: competitionID}});
         }
         Meteor.COLLECTIONS.Accounts.switch(competitionID);
         Meteor.COLLECTIONS.Athletes.switch(competitionID);

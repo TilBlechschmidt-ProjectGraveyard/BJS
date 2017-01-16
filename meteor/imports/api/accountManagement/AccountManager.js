@@ -1,5 +1,5 @@
 import {SessionAccount} from "./SessionAccount";
-import {DBInterface} from "../database/DBInterface";
+import {Server} from "../database/ServerInterface";
 import {checkPermission} from "../../../client/components/login/router";
 
 
@@ -24,7 +24,7 @@ function logout(type) {
 function saveData() {
     const group_account = inputGroupAccount.get().account;
     const station_account = inputStationAccount.get().account;
-    const athletes = DBInterface.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
+    const athletes = Server.getAthletesOfAccounts(Meteor.input.log, [group_account], false);
 
     if (sessionStorage.getItem("measurements")) {
         const measurements = JSON.parse(sessionStorage.getItem("measurements"));
@@ -132,7 +132,7 @@ export let AccountManager = {
 
 
         account.setProcessing(true);
-        DBInterface.waitForReady(function () {
+        Server.waitForReady(function () {
             account.login(passphrase, function (logged_in) {
                 if (!logged_in) {
                     if (typeof callback === 'function') callback(false, "Ungültiges Passwort.");

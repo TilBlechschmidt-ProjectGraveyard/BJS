@@ -1,50 +1,42 @@
 import {filterUndefined} from "./../general";
 
-
-// let LANG = require('./../../../data/athletics/lang_de.json');
-// let START_CLASSES = require('./../../../data/start_classes.json');
-let CERTIFICATE_INFO = require('./../../../data/athletics/certificate_info.json');
-
 /**
- * Object containing all information and functions required for Athletics contest.
+ * Object containing all information and functions required for Swimming contest.
  * @public
  * @namespace
  */
-export let Athletics = {
+export let Swimming = {
     /** @constant {number} */
-    maxAge: 20,
+    maxAge: 18,
+
     /**
-     * @typedef {Object} AthleticsScoreCalculation
+     * @typedef {Object} SwimmingCalculation
      * @property {number} a - A sport type specific number required to calculate the score
      * @property {number} c - A sport type specific number required to calculate the score
      * @property {number} d - A sport type specific number required to calculate the score
-     * @property {ConversionFactors} conversionFactor An object containing information about conversion factors for all start classes
+     * @property {ConversionFactors} conversionFactor - An object containing information about conversion factors for all start classes
      */
 
     /**
-     * @typedef {Object} AthleticsGenderData
-     * @property {number[]} age - A list of ages which are allowed to participate
-     * @property {AthleticsScoreCalculation} scoreCalculation - Information about the score calculation
+     * @typedef {Object} SwimmingGenderData
+     * @property {SwimmingCalculation} scoreCalculation - Information about the score calculation
      */
 
     /**
-     * @typedef {Object} AthleticsSportData
+     * @typedef {Object} SwimmingSportData
      * @property {string} id - The id of the sport type
      * @property {string} name - The human readable name for the sport type
      * @property {number} category - The category of the sport type (eg. sprinting)
      * @property {string} unit - The human readable unit for the measurements (eg. m (meter))
      * @property {string} description - A description of the sport type. It may contain information about how to measure in this sport type.
-     * @property {AthleticsGenderData} w - An object containing information about how to calculate the score for female participant
-     * @property {AthleticsGenderData} m - An object containing information about how to calculate the score for male participant
      */
 
     /**
      * Returns a list of sport types associated with the ct athletics.
-     * @public
-     * @returns {AthleticsSportData[]}
+     * @returns {SwimmingSportData[]}
      */
     getSports: function () {
-        return require('./../../../data/athletics/sports.json');
+        return require('./../../../data/swimming/sports.json');
     },
 
     /**
@@ -53,7 +45,7 @@ export let Athletics = {
      * @return {object|undefined}
      */
     getSportType: function (stID) {
-        const data = Athletics.getSports();
+        const data = Swimming.getSports();
 
         for (let d in data) {
             if (!data.hasOwnProperty(d)) continue;
@@ -68,14 +60,16 @@ export let Athletics = {
      * @return {string}
      */
     getNameOfSportType: function (stID) {
-        const sport_type = Athletics.getSportType(stID);
+        const sport_type = Swimming.getSportType(stID);
         if (sport_type) return sport_type.name;
         else return "Unknown";
     },
 
+    getScoreTable: function () {
+        return require('./../../../data/swimming/scoreTable.json');
+    },
     /**
      * Returns whether a given athlete can do the sport type with the id stID.
-     * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @param {string} stID - The string id of the sport type
@@ -98,7 +92,13 @@ export let Athletics = {
 
         // filter information
         const genderInfo = athlete.isMale ? baseInformation.m : baseInformation.w;
+        //noinspection JSUnresolvedVariable
         const handicapData = genderInfo.scoreCalculation.conversionFactor[athlete.handicap];
+
+        const baseScoreTable = this.getScoreTable();
+
+        const genderScoreInfo = athlete.isMale ? baseScoreTable.m : baseScoreTable.w;
+        const scoreTable = genderScoreInfo[athlete.tableAge][stID];
 
         // save important information
         const dataObject = {
@@ -107,20 +107,16 @@ export let Athletics = {
             category: baseInformation.category,
             unit: baseInformation.unit,
             genderInfo: genderInfo,
-            conversionFactor: handicapData === undefined ? 1.0 : handicapData
+            scoreTable: scoreTable,
+            conversionFactor: handicapData === undefined ? 1.0 : handicapData,
+            conversionAddend: (athlete.handicap !== '0' && (stID === 'st_diving_push' || stID === 'st_diving')) ? 1.0 : 0.0
         };
 
         let canDoSport = true;
 
         // check age
-        if (_.indexOf(dataObject.genderInfo.age, athlete.tableAge) == -1) {
+        if (scoreTable === undefined) {
             log.warning(athlete.getFullName() + ' hat kein gültiges Alter für ' + baseInformation.name + '.');
-            canDoSport = false;
-        }
-
-        // check handicap
-        if (dataObject.conversionFactor === 0.0) {
-            log.warning(athlete.getFullName() + ' can die Sportart ' + baseInformation.name + ' aufgrund der Startklasse ' + athlete.handicap + ' nicht durchführen.');
             canDoSport = false;
         }
 
@@ -130,29 +126,27 @@ export let Athletics = {
         };
     },
 
-
     /**
      * Validates the data of an athlete and adds more information to it. A copy of the data is returned. Without the write_private_hash the data is just decrypted without a write-permission check.
-     * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @param {Account[]} accounts - A list of accounts used to decrypt
      * @param {boolean} requireSignature - Only decrypt data if the signature can be verified. Should be true for final certificate creation.
-     * @returns {object[]}
+     * * @returns {object[]}
      */
     getValidData: function (log, athlete, accounts, requireSignature) {
         //get the plain data from the athlete (unencrypted)
         const plain = athlete.getPlain(log, accounts, requireSignature);
 
-        //filter data with more then one point
+        // filter data with more then on point
         const tmpData = _.filter(plain, function (dataObject) {
-            return dataObject.measurement.data > 0;
+            return dataObject.measurement.data;
         });
 
         // temporary store this in that
         const that = this; //TODO alternative?
 
-        //Add information
+        // Add information
         return filterUndefined(_.map(tmpData, function (dataObject) {
             //noinspection JSUnresolvedVariable
             let canDoSportObject = that.canDoSportType(log, athlete, dataObject.stID.data);
@@ -167,7 +161,6 @@ export let Athletics = {
 
     /**
      * Returns whether an athlete is already finished.
-     * @public
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @param {Account[]} accounts - A list of accounts used to decrypt
@@ -176,13 +169,13 @@ export let Athletics = {
      */
     validate: function (log, athlete, accounts, requireSignature) {
         // collect data
-        const validData = this.getValidData(log, athlete, accounts, requireSignature);
+        const data = this.getValidData(log, athlete, accounts, requireSignature);
 
         // sort for categories
         const categories = [];
-        for (let st in validData) {
-            if (!validData.hasOwnProperty(st)) continue;
-            categories[validData[st].category] = true;
+        for (let st in data) {
+            if (!data.hasOwnProperty(st)) continue;
+            categories[data[st].category] = true;
         }
 
         return 3 <= _.filter(categories, function (category) {
@@ -192,45 +185,26 @@ export let Athletics = {
 
     /**
      * Calculates the score of one dataObject returned by the getValidData function.
-     * @public
+     * @private
      * @param {object} dataObject - Object containing the data. The format is returned by getValidData.
      * @returns {number}
      */
     calculateOne: function (dataObject) {
-        let calculateFunction;
+        const tmp_measurement = dataObject.conversionAddend + dataObject.conversionFactor * dataObject.measurements;
+        let score = 0;
 
-        // select calculation function
-        switch (dataObject.stID) {
-            case 'st_sprint_50_el':
-            case 'st_sprint_75_el':
-            case 'st_sprint_100_el':
-            case 'st_endurance_800':
-            case 'st_endurance_1000':
-            case 'st_endurance_2000':
-            case 'st_endurance_3000':
-                calculateFunction = function (d, m, a, c) {
-                    return ((d / m) - a) / c;
-                };
-                break;
-            case 'st_sprint_50':
-            case 'st_sprint_75':
-            case 'st_sprint_100':
-                calculateFunction = function (d, m, a, c) {
-                    return ((d / (m + 0.24)) - a) / c;
-                };
-                break;
-            default:
-                calculateFunction = function (d, m, a, c) {
-                    return ( Math.sqrt(m) - a) / c;
-                };
+        // select score from table
+        for (let i = 0; i <= 14; i++) {
+            if ((dataObject.unit === 'm' && tmp_measurement >= dataObject.scoreTable[i]) ||
+                (dataObject.unit !== 'm' && tmp_measurement <= dataObject.scoreTable[i])) {
+                score = i + 1;
+            }
         }
-
-        return Math.floor(calculateFunction(dataObject.genderInfo.scoreCalculation.d, dataObject.conversionFactor * dataObject.measurement, dataObject.genderInfo.scoreCalculation.a, dataObject.genderInfo.scoreCalculation.c));
+        return score;
     },
 
     /**
-     * Calculates the score achieved by an athlete. In case of incomplete data, the function will calculate as much as possible.
-     * @public
+     * Calculates the score archived by a athlete. In case of incomplete data, the function will calculate as much as possible.
      * @param {Log} log - A log object
      * @param {Athlete} athlete - The Athlete
      * @param {Account[]} accounts - A list of accounts used to decrypt
@@ -242,7 +216,7 @@ export let Athletics = {
         const validData = this.getValidData(log, athlete, accounts, requireSignature);
 
         // get best score for each category
-        const scores = [0, 0, 0, 0];
+        const scores = [0, 0, 0, 0, 0, 0];
         const stScores = {};
         for (let vd in validData) {
             if (!validData.hasOwnProperty(vd)) continue;
@@ -256,7 +230,7 @@ export let Athletics = {
                 stScores[validData[vd].stID] = score;
             }
 
-            log.info(validData[vd].name + ': ' + validData[vd].measurement + validData[vd].unit + ' -> ' + score);
+            log.info(validData[vd].name + ': ' + validData[vd].measurements + validData[vd].unit + ' -> ' + score);
 
             if (scores[category] < score) {
                 scores[category] = score;
@@ -267,7 +241,7 @@ export let Athletics = {
         return {
             score: _.reduce(_.sortBy(scores, function (num) {
                 return num;
-            }).splice(1, 3), function (mem, num) {
+            }).splice(3, 3), function (mem, num) {
                 return mem + num;
             }, 0),
             stScores: stScores
@@ -275,12 +249,11 @@ export let Athletics = {
     },
 
     /**
-     * Returns information about the competition type athletics.
-     * @public
+     * Returns information about the ct swimming.
      * @returns {object}
      */
     getInformation: function () {
-        return require('./../../../data/athletics/information.json');
+        return require('./../../../data/swimming/information.json');
     },
 
     /**
@@ -294,10 +267,7 @@ export let Athletics = {
             log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
             return undefined;
         }
-
-        const genderInfo = athlete.isMale ? CERTIFICATE_INFO.m : CERTIFICATE_INFO.w;
-
-        return genderInfo[athlete.tableAge];
+        return [15, 27];
     },
 
     /**

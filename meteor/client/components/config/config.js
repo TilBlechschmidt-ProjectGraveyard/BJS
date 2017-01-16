@@ -1,7 +1,7 @@
-import {DBInterface} from "../../../imports/api/database/DBInterface";
+import {Server} from "../../../imports/api/database/ServerInterface";
 import {Log} from "../../../imports/api/log";
-import {AccountManager} from "../../../imports/api/account_managment/AccountManager";
-import {getCompetitionTypeByID} from "../../../imports/api/logic/competition_type";
+import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
+import {getCompetitionTypeByID} from "../../../imports/api/logic/competitionType";
 import {updateSwiperProgress} from "../login/router";
 import {
     codesClean,
@@ -28,7 +28,7 @@ const forwardButton = new ReactiveVar(undefined);
 const forwardButtonShown = new ReactiveVar(false);
 const ServerIPs = new ReactiveVar([]);
 
-DBInterface.waitForReady(function () {
+Server.waitForReady(function () {
     Tracker.autorun(async function () {
         showIndicator();
         dbReady.depend();
@@ -44,7 +44,7 @@ DBInterface.waitForReady(function () {
             readOnly: []
         };
 
-        const activeCompetition = DBInterface.getActiveContestID();
+        const activeCompetition = Server.getActiveContestID();
         for (let competition in allCompetitions) {
             if (!allCompetitions.hasOwnProperty(competition)) continue;
             competition = allCompetitions[competition];
@@ -52,7 +52,7 @@ DBInterface.waitForReady(function () {
             // --- Populate data ---
 
             // Athlete count (wait for promise to resolve)
-            competition.athleteCount = await DBInterface.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
+            competition.athleteCount = await Server.getAthleteCountByCompetition(AccountManager.getAdminAccount().account, competition._id);
 
             // Competition type name
             const competitionType = getCompetitionTypeByID(competition.type);
@@ -83,7 +83,7 @@ DBInterface.waitForReady(function () {
 });
 
 Template.config.onRendered( function () {
-    DBInterface.getServerIPs(AccountManager.getAdminAccount().account, function (data) {
+    Server.getServerIPs(AccountManager.getAdminAccount().account, function (data) {
         ServerIPs.set(data);
     })
 });
@@ -229,7 +229,7 @@ Template.config.events({
 });
 
 Template.config.onRendered(function () {
-    DBInterface.waitForReady(function () {
+    Server.waitForReady(function () {
         dbReady.changed();
 
         const leftButtonSwiper = new Swiper('#config-left-button-swiper', {

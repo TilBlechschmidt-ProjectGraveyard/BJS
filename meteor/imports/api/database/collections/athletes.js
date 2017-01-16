@@ -1,10 +1,10 @@
-import {COMPETITION_TYPES} from "../../logic/competition_type";
+import {COMPETITION_TYPES} from "../../logic/competitionType";
 import {Athlete} from "../../logic/athlete";
 import {Log} from "../../log";
 import {Crypto} from "../../crypto/crypto";
 import {ContestCollection} from "./collection";
 import {Account} from "../../logic/account";
-import {DBInterface} from "../DBInterface";
+import {Server} from "../ServerInterface";
 
 let encryptAsAdmin;
 
@@ -41,7 +41,7 @@ export function initAthletes() {
             }
 
             if (updateRequired) {
-                const ct = DBInterface.getCompetitionType();
+                const ct = Server.getCompetitionType();
                 const log = Log.getLogObject();
                 const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
                 const athlete = Athlete.decryptFromDatabase(log, doc, accounts, true, true);
