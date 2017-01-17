@@ -11,7 +11,17 @@
         </tr>
         {{#each l in getLog}}
             <tr>
-                <td>{{l.level}}</td>
+                <td>
+                    {{#if (eq l.level 0)}}
+                        {{> iconOK}}
+                    {{/if}}
+                    {{#if (eq l.level 1)}}
+                        {{> iconWarn}}
+                    {{/if}}
+                    {{#if (eq l.level 2)}}
+                        {{> iconErr}}
+                    {{/if}}
+                </td>
                 <td>{{l.timestamp}}</td>
                 <td>{{l.message}}</td>
             </tr>
