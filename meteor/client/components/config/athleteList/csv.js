@@ -1,5 +1,5 @@
 import {currentCompID} from "../config";
-import {refreshErrorState, insertAthlete} from "./athleteList";
+import {addRawAthlete} from "./dataInterface";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
@@ -85,8 +85,7 @@ Template.csvImport.events({
             if (!file.data.hasOwnProperty(dataID)) continue;
             const data = file.data[dataID];
             const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
-            insertAthlete(athlete);
-            refreshErrorState();
+            addRawAthlete(athlete);
         }
         Meteor.f7.closeModal(".popup-csv-import");
     }
