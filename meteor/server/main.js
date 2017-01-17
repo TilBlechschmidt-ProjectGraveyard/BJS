@@ -1,6 +1,6 @@
 import {initCollections} from "../imports/api/database/collections/index";
 import {Server} from "../imports/api/database/ServerInterface";
-import {Athlete, encryptedAthletesToGroups} from "../imports/api/logic/athlete";
+import {Athlete} from "../imports/api/logic/athlete";
 import {Log} from "../imports/api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../imports/api/crypto/crypto";
@@ -272,19 +272,6 @@ Meteor.startup(function () {
             });
 
             return contests;
-        },
-        /**
-         * Adds a contest
-         * @param {Account} account - An admin account
-         * @param {{contestID: string, require_signature: boolean, require_group_check: boolean}} data - Data object
-         * @returns {boolean|object[]}
-         */
-        getAthletesByContestID: function (account, data) {
-            if (!account.isAdmin) return false;
-            const accounts = Meteor.COLLECTIONS.Accounts.handles[data.contestID].find().fetch().concat([getAdminAccount()]);
-            const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.contestID].find().fetch();
-
-            return encryptedAthletesToGroups(encryptedAthletes, accounts, data.require_signature, data.require_group_check);
         },
         /**
          * Gets the amount of athletes in a contest
