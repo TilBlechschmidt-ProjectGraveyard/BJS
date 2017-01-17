@@ -85,6 +85,17 @@ Template.attempt.events({
             return false;
         }
     },
+    'click .delete-attempt': function (event) {
+        Meteor.f7.confirm("Wollen Sie den Eintrag wirklich löschen?", "Löschen", function () {
+            let attempt_id = event.target.closest(".delete-attempt").dataset.id;
+            let athlete_id = getAthleteIDByElement(event.target);
+
+            const obj = {};
+            obj["m_" + attempt_id] = "";
+            
+            Meteor.COLLECTIONS.Athletes.handle.update({_id: athlete_id}, {$unset: obj});
+        });
+    },
     'blur input': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();

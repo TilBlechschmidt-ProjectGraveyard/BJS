@@ -1,18 +1,18 @@
-table.logTable {
+table.popupTable {
     border-collapse: collapse;
     width: 100%;
 }
 
-table.logTable th, table.logTable td {
+table.popupTable th, table.logTable td {
     text-align: left;
     padding: 8px;
 }
 
-table.logTable tr:nth-child(even) {
+table.popupTable tr:nth-child(even) {
     background-color: #f2f2f2
 }
 
-table.logTable th {
+table.popupTable th {
     background-color: #4CAF50;
     color: white;
 }

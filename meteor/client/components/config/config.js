@@ -5,7 +5,6 @@ import {getContestTypeByID} from "../../../imports/api/logic/contestType";
 import {updateSwiperProgress} from "../login/router";
 import {codesClean, clearACs, getContestName, loginStations, loginGroups, loginCustom} from "./accessCodes/accessCodes";
 import {showIndicator, hideIndicator} from "../helpers";
-import {parseCSVFile} from "./athleteList/csv";
 
 Meteor.config = {};
 Meteor.config.log = Log.getLogObject();
@@ -176,29 +175,29 @@ Template.config.events({
         });
     },
     'drop .csv-dropzone': function drop_handler(ev) {
-        let i;
-        // console.log("Drop");
-        ev.preventDefault();
-        // If dropped items aren't files, reject them
-        const dt = ev.originalEvent.dataTransfer;
-        if (dt.items) {
-            // Use DataTransferItemList interface to access the file(s)
-            for (i = 0; i < dt.items.length; i++) {
-                if (dt.items[i].kind == "file") {
-                    const f = dt.items[i].getAsFile();
-                    // console.log("... file[" + i + "].name = " + f.name);
-                    // console.log("... file[" + i + "] = ", f);
-                    parseCSVFile(f);
-                }
-            }
-        } else {
-            // Use DataTransfer interface to access the file(s)
-            for (i = 0; i < dt.files.length; i++) {
-                // console.log("... file[" + i + "].name = " + dt.files[i].name);
-                // console.log("... file[" + i + "] = ", dt.files[i]);
-                parseCSVFile(dt.files[i]);
-            }
-        }
+        // let i;
+        // // console.log("Drop");
+        // ev.preventDefault();
+        // // If dropped items aren't files, reject them
+        // const dt = ev.originalEvent.dataTransfer;
+        // if (dt.items) {
+        //     // Use DataTransferItemList interface to access the file(s)
+        //     for (i = 0; i < dt.items.length; i++) {
+        //         if (dt.items[i].kind == "file") {
+        //             const f = dt.items[i].getAsFile();
+        //             // console.log("... file[" + i + "].name = " + f.name);
+        //             // console.log("... file[" + i + "] = ", f);
+        //             parseCSVFile(f);
+        //         }
+        //     }
+        // } else {
+        //     // Use DataTransfer interface to access the file(s)
+        //     for (i = 0; i < dt.files.length; i++) {
+        //         // console.log("... file[" + i + "].name = " + dt.files[i].name);
+        //         // console.log("... file[" + i + "] = ", dt.files[i]);
+        //         parseCSVFile(dt.files[i]);
+        //     }
+        // }
     },
     'dragover .csv-dropzone': function dragover_handler(ev) {
         // console.log("dragOver");

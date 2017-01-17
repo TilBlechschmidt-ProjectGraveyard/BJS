@@ -19,7 +19,7 @@
                 {{/if}}
             </div>
             <div class="item-inner {{#if measurement.read_only}}tooltip{{/if}}">
-                <div class="item-title label">{{inc n}}. Versuch{{measurement.id}}</div>
+                <div class="item-title label">{{inc n}}. Versuch</div>
                 <div class="item input">
                     <input type="{{#with measurement}}{{inputType}}{{/with}}"
                            placeholder="Ergebnis in {{#with metadata}}{{unit}}{{/with}}"
@@ -28,10 +28,16 @@
                            data-stID="{{#with metadata}}{{id}}{{/with}}"
                            class="{{#with measurement}}{{class}}{{/with}}"
                         {{disabledText measurement}}
-                    >
+                           >
+                   
                 </div>
                 {{#if measurement.read_only}}
-                    <span class="tooltiptext">Melden sie sich mit einer Station an um Werte einzutragen!</span>{{/if}}
+                <div class="item after">
+                  <span class="align-right delete-attempt delete-icon" data-id="{{measurement.id}}">
+                    <i class="f7-icons" style="font-size: 17px; padding-right: 5px;">close_round</i></span>
+                </div>
+                {{/if}}
+           
             </div>
         </div>
     </li>
