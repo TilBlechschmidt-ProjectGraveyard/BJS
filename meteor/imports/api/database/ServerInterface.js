@@ -61,12 +61,14 @@ function runServerFunction(name, account, data, callback) {
  * @param {Account} account - The account that is used to authenticate
  * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
  * @param {function} callback - A callback with one parameter: The return value of the server function. Function returns a promise if it is undefined.
+ * @param {function} [doneCallback] - A callback that gets called when the last entry has been processed or in case there were none. Called with the raw data object
  * @returns {Promise.<void>}
  */
 async function runAsyncServerFunction(name, account, data, callback, doneCallback) {
     const log = Log.getLogObject();
     const connection = await runServerFunction('runAsync', account, {name: name, data: data});
 
+    // TODO: This handler will get set more than one time! This NEEDS to be fixed -somehow- +locally check if it was interrupted
     asyncServerFunctionChannel.on(connection.uuid, function (encryptedEntry) {
         const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
 
@@ -80,6 +82,8 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
     });
 
     asyncServerFunctionChannel.emit('clientReady', connection.uuid);
+
+    return connection.uuid;
 }
 
 /**
@@ -88,6 +92,10 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
  * @namespace
  */
 export let Server = {
+
+    cancelAsyncRequest: function (id) {
+        asyncServerFunctionChannel.emit('interrupt', id);
+    },
 
     db: {
         /**
@@ -166,7 +174,7 @@ export let Server = {
             return runServerFunction('getAthleteCount', account, {contestID: contestID});
         },
         getAsync: function (account, contestID, require_signature, require_group_check, callback, doneCallback) {
-            runAsyncServerFunction('getAthletes', account, {
+            return runAsyncServerFunction('getAthletes', account, {
                 contestID: contestID,
                 require_signature: require_signature,
                 require_group_check: require_group_check

@@ -139,14 +139,15 @@ export function refreshErrorState(id, firstName, lastName) {
 }
 
 // Load from storage
-Tracker.autorun(function () {
+Tracker.autorun(async function () {
     const compID = currentCompID.get();
     if (compID) {
         showIndicator();
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
-        Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+        const uuid = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+            console.log(entry);
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
@@ -158,6 +159,11 @@ Tracker.autorun(function () {
             if (entry.size == 0)
                 hideIndicator();
         });
+
+        // setTimeout(function () {
+        //     console.log("interrupting");
+        //     Server.cancelAsyncRequest(uuid);
+        // }, 1000);
     }
 });
 

@@ -41,19 +41,24 @@ Meteor.startup(function () {
     };
 
     // Wait for the client to be ready
-    const pendingAsyncCalls = new ReactiveVar({});
+    const pendingAsyncCalls = {};
+    const runningAsyncCalls = {};
 
     asyncServerFunctionChannel.on('clientReady', function (id) {
-        const pendingCalls = pendingAsyncCalls.get();
-        if (typeof pendingCalls[id] === 'function') {
-            const call = pendingCalls[id];
-
-            delete pendingCalls[id];
-            pendingAsyncCalls.set(pendingCalls);
-
-            call();
+        if (typeof pendingAsyncCalls[id] === 'function') {
+            runningAsyncCalls[id] = true;
+            pendingAsyncCalls[id]();
+            delete pendingAsyncCalls[id];
         } else {
             console.error("Got asyncReady event but there was no pending call");
+        }
+    });
+
+    asyncServerFunctionChannel.on('interrupt', function (id) {
+        if (runningAsyncCalls[id] === true) {
+            runningAsyncCalls[id] = false;
+        } else {
+            console.error("Attempt to cancel non-running asyncCall");
         }
     });
 
@@ -62,6 +67,7 @@ Meteor.startup(function () {
             const context = asyncServerFunctions[data.name](account, data.data);
             const uuid = genUUID();
             const size = context.entries.length;
+            let index = 0;
 
             if (context === false)
                 return {
@@ -69,9 +75,16 @@ Meteor.startup(function () {
                     permissionDenied: true
                 };
 
-            const pendingCalls = pendingAsyncCalls.get();
-            pendingCalls[uuid] = function () {
-                let index = 0;
+            const doneCallback = function () {
+                delete runningAsyncCalls[uuid];
+                asyncServerFunctionChannel.emit(uuid, encryptAs({
+                    index: index,
+                    size: size,
+                    done: true
+                }, account));
+            };
+
+            pendingAsyncCalls[uuid] = function () {
                 waterfall(context.entries.map(function (entry) {
                     return function (nextCallback) {
                         asyncServerFunctionChannel.emit(uuid, encryptAs({
@@ -81,17 +94,11 @@ Meteor.startup(function () {
                         }, account));
 
                         ++index;
-                        nextCallback(null);
+                        if (runningAsyncCalls[uuid] === false) doneCallback();
+                        else nextCallback(null);
                     }
-                }), function () {
-                    asyncServerFunctionChannel.emit(uuid, encryptAs({
-                        index: index,
-                        size: size,
-                        done: true
-                    }, account));
-                });
+                }), doneCallback);
             };
-            pendingAsyncCalls.set(pendingCalls);
 
             return {
                 uuid: uuid,
