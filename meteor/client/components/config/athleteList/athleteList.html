@@ -11,7 +11,7 @@
         {{>config_searchBar}}
 
         {{#each g in groups}}
-            {{> config_group g=g}}
+            {{> config_group gid=g}}
         {{/each}}
         {{#if not readOnly}}
             <div class="content-block t-center button-highlight add-group"><i class="f7-icons"

@@ -6,7 +6,10 @@ import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Log} from "../../../../imports/api/log";
 
-export const localGroups = new ReactiveVar([]);
+export let LocalAthletes = {};
+export let LocalGroups = {};
+export const LocalGroupIDs = new ReactiveVar([]);
+
 export const athleteErrorState = new ReactiveVar({});
 export const selectedAthlete = new ReactiveVar(undefined);
 
@@ -21,7 +24,9 @@ Tracker.autorun(async function () {
     if (compID) {
         showIndicator();
         //noinspection JSCheckFunctionSignatures
-        localGroups.set([]);
+        LocalAthletes = {};
+        LocalGroups = {};
+        LocalGroupIDs.set([]);
 
         if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
 
@@ -52,21 +57,23 @@ Tracker.autorun(async function () {
  */
 export function refreshErrorState(id, firstName, lastName) {
     // Calculate the group state
-    let lgroups = localGroups.get();
+    const localGroupIDs = LocalGroupIDs.get();
     let errorLevel = 0;
 
     const errorStates = {};
 
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        group = lgroups[group];
+    for (let index in localGroupIDs) {
+        if (!localGroupIDs.hasOwnProperty(index)) continue;
+        const id = localGroupIDs[index];
+        const group = LocalGroups[id].get();
 
         let groupErrLevel = 0;
-        for (let athlete in group.athletes) {
-            if (!group.athletes.hasOwnProperty(athlete)) continue;
+        for (let athleteIndex in group.athletes) {
+            if (!group.athletes.hasOwnProperty(athleteIndex)) continue;
+            const athleteIndex = group.athletes[athleteIndex];
+            const athlete = LocalAthletes[athleteIndex].get();
             const athleteLog = new Log();
 
-            let athlete = group.athletes[athlete];
             if (id && athlete.id === id) {
                 athlete.firstName = firstName;
                 athlete.lastName = lastName;
@@ -106,71 +113,50 @@ export function writeAthlete(athlete) {
 
 export function addAthlete(gid) {
     const compID = currentCompID.get();
-    const lgroups = localGroups.get();
-    let groupID;
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        if (lgroups[group].id === gid) {
-            groupID = group;
-            break;
-        }
-    }
-
     const ct = Server.contest.getType(compID);
+    const aid = genUUID();
 
-    addRawAthlete(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
+    const localGroup = LocalGroups[gid].get();
+    LocalAthletes[aid] = new ReactiveVar(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, localGroup.name, '0', ct.maxAge, ct, aid));
+
+    localGroup.athletes.push(aid);
+    LocalGroups[gid].set(localGroup);
 }
 
 export function addRawAthlete(athlete, skipWrite) {
     let gid;
     if (!groupExists(athlete.group)) gid = addGroup(athlete.group);
     else gid = getGroupIDByName(athlete.group);
-    modifyGroup(gid, function (group) {
-        group.athletes.push(athlete);
-    });
+
+    LocalAthletes[athlete.id] = new ReactiveVar(athlete);
+    const group = LocalGroups[gid].get();
+    group.athletes.push(athlete.id);
+    LocalGroups[gid].set(group);
+
     if (!skipWrite) writeAthlete(athlete);
     refreshErrorState();
 }
 
 export function modifyAthlete(id, callback) {
-    if (!editMode.get()) return;
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        let athletes = lgroups[group].athletes;
-        for (let athlete in athletes) {
-            if (!athletes.hasOwnProperty(athlete)) continue;
-            let a = athletes[athlete];
-            if (a.id == id) {
-                callback(a, group, athlete);
-                writeAthlete(a);
-                localGroups.set(lgroups);
-                return;
-            }
-        }
-    }
+    const athlete = LocalAthletes[id].get();
+    callback(athlete, LocalGroups[getGroupIDByName(athlete.group)].get(), athlete);
+    writeAthlete(athlete);
+    LocalAthletes[id].set(athlete);
 }
 
 export function removeAthlete(id) {
-    const lgroups = localGroups.get();
-    let groupIndex, athleteIndex;
-    outerLoop:
-        for (let group in lgroups) {
-            if (!lgroups.hasOwnProperty(group)) continue;
-            let athletes = lgroups[group].athletes;
-            for (let athlete in athletes) {
-                if (!athletes.hasOwnProperty(athlete)) continue;
-                let a = athletes[athlete];
-                if (a.id == id) {
-                    groupIndex = group;
-                    athleteIndex = athlete;
-                    break outerLoop;
-                }
-            }
-        }
-    Server.athletes.remove(AccountManager.getAdminAccount().account, currentCompID.get(), lgroups[groupIndex].athletes[athleteIndex].id);
-    lgroups[groupIndex].athletes.splice(athleteIndex, 1);
-    localGroups.set(lgroups);
+    const groupName = LocalAthletes[id].get().group();
+    delete LocalAthletes[id];
+
+    for (let gid in LocalGroups) {
+        if (!LocalGroups.hasOwnProperty(gid)) continue;
+        const group = LocalGroups[gid].get();
+        if (group.name != groupName) continue;
+        group.athletes.splice(group.athletes.indexOf(id), 0);
+        LocalGroups[gid].set(group);
+    }
+
+    Server.athletes.remove(AccountManager.getAdminAccount().account, currentCompID.get(), id);
     refreshErrorState();
 }
 
@@ -180,42 +166,40 @@ export function addGroup(name) {
     if (groupExists(name)) {
         Meteor.f7.alert("Eine Gruppe mit diesem Namen existiert bereits!", "Fehler");
     } else {
-        const lgroups = localGroups.get();
-        const id = genUUID();
-        lgroups.push({name: name, athletes: [], collapsed: false, id: id});
-        localGroups.set(lgroups);
+        const gid = genUUID();
+
+        LocalGroups[gid] = new ReactiveVar({name: name, id: gid, athletes: []});
+
+        const localGroupIDs = LocalGroupIDs.get();
+        localGroupIDs.push(gid);
+        LocalGroupIDs.set(localGroupIDs);
         refreshErrorState();
-        return id;
+        return gid;
     }
 }
 
-export function modifyGroup(id, callback) {
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        if (lgroups[group].id === id) {
-            callback(lgroups[group], group);
-            localGroups.set(lgroups);
-            return group;
-        }
-    }
+export function modifyGroup(gid, callback) {
+    const group = LocalGroups[gid].get();
+    callback(lgroups[group], group);
+    LocalGroups[gid].set(group);
 }
 
 export function removeGroup(id) {
+
     const contestID = currentCompID.get();
+    const group = LocalGroups[id].get();
 
-    // Tell the server we deleted all athletes
-    const groupIndex = modifyGroup(id, function (group) {
-        for (let athlete in group.athletes) {
-            if (!group.athletes.hasOwnProperty(athlete)) continue;
-            Server.athletes.remove(AccountManager.getAdminAccount().account, contestID, group.athletes[athlete].id);
-        }
-    });
+    for (let index in group.athletes) {
+        if (!group.athletes.hasOwnProperty(index)) continue;
+        delete LocalAthletes[group.athletes[index]];
+        Server.athletes.remove(AccountManager.getAdminAccount().account, contestID, group.athletes[index]);
+    }
 
-    // Delete the group locally
-    const lgroups = localGroups.get();
-    lgroups.splice(groupIndex, 1);
-    localGroups.set(lgroups);
+    delete LocalGroups[id];
+
+    const localGroupIDs = LocalGroupIDs.get();
+    localGroupIDs.athletes.splice(localGroupIDs.athletes.indexOf(id), 0);
+    LocalGroupIDs.set(localGroupIDs);
 
     // Update the error states
     refreshErrorState();
@@ -225,33 +209,21 @@ export function renameGroup(id, newName) {
     if (groupExists(newName)) {
         Meteor.f7.alert("Eine Gruppe mit diesem Namen existiert bereits!", "Fehler");
     } else {
-        modifyGroup(id, function (group) {
-            group.name = newName;
-            for (let athlete in group.athletes) {
-                if (!group.athletes.hasOwnProperty(athlete)) continue;
-                athlete = group.athletes[athlete];
-                athlete.group = newName;
-                writeAthlete(athlete);
-            }
-        });
+        const group = LocalGroups[id].get();
+        group.name = newName;
+        LocalGroups[id].set(group);
+        writeAthlete(athlete);
     }
 }
 
 export function getGroupIDByName(name) {
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        if (lgroups[group].name === name)
-            return lgroups[group].id;
+    for (let id in LocalGroups) {
+        if (!LocalGroups.hasOwnProperty(id)) continue;
+        if (LocalGroups[id].get().name === name) return id;
     }
     return undefined;
 }
 
 export function groupExists(name) {
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        if (lgroups[group].name == name) return true;
-    }
-    return false;
+    return getGroupIDByName(name) != undefined;
 }

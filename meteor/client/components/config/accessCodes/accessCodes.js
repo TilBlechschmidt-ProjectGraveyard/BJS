@@ -2,7 +2,6 @@ import {genRandomCode, genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID, editMode} from "../config";
-import {localGroups} from "../athleteList/athleteList";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 
@@ -139,97 +138,97 @@ function processCodes(codes) {
 
 function generateAccessCodes() {
 
-    const sportTypes = getCurrentSportTypes();
-
-    let codes = [];
-    const customAccounts = accessCodes.get()[2].codes;
-
-    // Station accounts
-    for (let sportType in sportTypes) {
-        if (!sportTypes.hasOwnProperty(sportType)) continue;
-        sportType = sportTypes[sportType];
-        codes.push({
-            name: sportType.name,
-            groups: [],
-            sportTypes: [sportType.id],
-            resultPermission: false,
-            adminPermission: false
-        });
-    }
-
-    // Group accounts
-    const lgroups = localGroups.get();
-    for (let group in lgroups) {
-        if (!lgroups.hasOwnProperty(group)) continue;
-        codes.push({
-            name: lgroups[group].name,
-            groups: [lgroups[group].name],
-            sportTypes: [],
-            resultPermission: false,
-            adminPermission: false
-        });
-    }
-
-    // Custom accounts
-    const customAccountCodes = [];
-    for (let customAccount in customAccounts) {
-        if (!customAccounts.hasOwnProperty(customAccount)) continue;
-        customAccountCodes.push(customAccounts[customAccount]);
-    }
-
-    codes = codes.concat(customAccountCodes.reverse());
-
-    Meteor.f7.showPreloader("Generiere Zugangscodes");
-    totalProgress = codes.length;
-    processCodes(codes);
+    // const sportTypes = getCurrentSportTypes();
+    //
+    // let codes = [];
+    // const customAccounts = accessCodes.get()[2].codes;
+    //
+    // // Station accounts
+    // for (let sportType in sportTypes) {
+    //     if (!sportTypes.hasOwnProperty(sportType)) continue;
+    //     sportType = sportTypes[sportType];
+    //     codes.push({
+    //         name: sportType.name,
+    //         groups: [],
+    //         sportTypes: [sportType.id],
+    //         resultPermission: false,
+    //         adminPermission: false
+    //     });
+    // }
+    //
+    // // Group accounts
+    // const lgroups = localGroups.get();
+    // for (let group in lgroups) {
+    //     if (!lgroups.hasOwnProperty(group)) continue;
+    //     codes.push({
+    //         name: lgroups[group].name,
+    //         groups: [lgroups[group].name],
+    //         sportTypes: [],
+    //         resultPermission: false,
+    //         adminPermission: false
+    //     });
+    // }
+    //
+    // // Custom accounts
+    // const customAccountCodes = [];
+    // for (let customAccount in customAccounts) {
+    //     if (!customAccounts.hasOwnProperty(customAccount)) continue;
+    //     customAccountCodes.push(customAccounts[customAccount]);
+    // }
+    //
+    // codes = codes.concat(customAccountCodes.reverse());
+    //
+    // Meteor.f7.showPreloader("Generiere Zugangscodes");
+    // totalProgress = codes.length;
+    // processCodes(codes);
 }
 
 function finalizeContest() {
-    const compID = currentCompID.get();
-    // TODO: Check validity of athletes
-
-    // Get a list of accounts
-    const acodes = accessCodes.get();
-    const accounts = lodash.map(acodes[0].codes.concat(acodes[1].codes).concat(acodes[2].codes), function (code) {
-        return code.account;
-    });
-
-    // Get a list of athletes
-    const admin = AccountManager.getAdminAccount();
-    const lgroups = localGroups.get();
-    let athletes = [];
-    for (let group in lgroups) { // Loop through groups containing athletes for encryption
-        if (!lgroups.hasOwnProperty(group)) continue;
-        group = lgroups[group];
-        for (let accountGroup in acodes[0].codes) { // Loop through groups (with accounts) to find the corresponding account
-            if (!acodes[0].codes.hasOwnProperty(accountGroup)) continue;
-            accountGroup = acodes[0].codes[accountGroup];
-            if (group.name == accountGroup.name) {
-                athletes = athletes.concat(lodash.map(group.athletes, function (athlete) { // Encrypt the athletes using the account
-                    return athlete.encryptForDatabase(accountGroup.account, accountGroup.account);
-                }));
-                break;
-            }
-        }
-    }
-
-    Server.writeAccounts(admin.account, compID, accounts);
-
-    Server.writeAthletes(admin.account, compID, athletes);
-
-    Server.contest.lock(admin.account, compID);
-
-    setTimeout(function () {
-        Meteor.f7.hidePreloader();
-        document.getElementById("config-swiper").swiper.slideTo(0);
-        localStorage.removeItem("config-groups-" + compID);
-        //noinspection JSCheckFunctionSignatures
-        accessCodes.set(baseACStructure);
-        //noinspection JSCheckFunctionSignatures
-        codesClean.set(false);
-        localGroups.set([]);
-        currentCompID.set("");
-    }, 500);
+    // const compID = currentCompID.get();
+    // // TODO: Check validity of athletes
+    //
+    // // Get a list of accounts
+    // const acodes = accessCodes.get();
+    // const accounts = lodash.map(acodes[0].codes.concat(acodes[1].codes).concat(acodes[2].codes), function (code) {
+    //     return code.account;
+    // });
+    //
+    // // Get a list of athletes
+    // const admin = AccountManager.getAdminAccount();
+    // const lgroups = localGroups.get();
+    // let athletes = [];
+    // for (let group in lgroups) { // Loop through groups containing athletes for encryption
+    //     if (!lgroups.hasOwnProperty(group)) continue;
+    //     group = lgroups[group];
+    //     for (let accountGroup in acodes[0].codes) { // Loop through groups (with accounts) to find the corresponding account
+    //         if (!acodes[0].codes.hasOwnProperty(accountGroup)) continue;
+    //         accountGroup = acodes[0].codes[accountGroup];
+    //         if (group.name == accountGroup.name) {
+    //             athletes = athletes.concat(lodash.map(group.athletes, function (athlete) { // Encrypt the athletes using the account
+    //                 return athlete.encryptForDatabase(accountGroup.account, accountGroup.account);
+    //             }));
+    //             break;
+    //         }
+    //     }
+    // }
+    //
+    // Server.writeAccounts(admin.account, compID, accounts);
+    //
+    // Server.writeAthletes(admin.account, compID, athletes);
+    //
+    // Server.contest.lock(admin.account, compID);
+    //
+    // setTimeout(function () {
+    //     Meteor.f7.hidePreloader();
+    //     document.getElementById("config-swiper").swiper.slideTo(0);
+    //     localStorage.removeItem("config-groups-" + compID);
+    //     //noinspection JSCheckFunctionSignatures
+    //     accessCodes.set(baseACStructure);
+    //     //noinspection JSCheckFunctionSignatures
+    //     codesClean.set(false);
+    //     localGroups.set([]);
+    //     currentCompID.set("");
+    // }, 500);
 }
 
 function getCurrentSportTypes() {

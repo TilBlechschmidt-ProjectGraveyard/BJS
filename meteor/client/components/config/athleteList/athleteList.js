@@ -1,18 +1,19 @@
 import {editMode} from "../config";
 import gender from "gender-guess";
-import {filterUndefined} from "../../../../imports/api/logic/general";
 import {
-    localGroups,
     athleteErrorState,
     selectedAthlete,
-    modifyAthlete,
     addAthlete,
     removeAthlete,
     addGroup,
     renameGroup,
     removeGroup,
-    modifyGroup,
-    refreshErrorState
+    refreshErrorState,
+    LocalGroupIDs,
+    LocalGroups,
+    LocalAthletes,
+    modifyAthlete,
+    modifyGroup
 } from "./dataInterface";
 
 const startClasses = require('../../../../imports/data/startClasses.json');
@@ -22,28 +23,7 @@ const groupsIsNotEmpty = new ReactiveVar(true);
 
 Template.athleteList.helpers({
     groups: function () {
-        const nFilter = nameFilter.get();
-        const groups = filterUndefined(_.map(localGroups.get(), function (group) {
-            const athletes = _.filter(group.athletes, function (athlete) {
-                const fullName = athlete.getFullName();
-                for (let filter in nFilter) {
-                    if (!nFilter.hasOwnProperty(filter)) continue;
-                    if (fullName.indexOf(nFilter[filter]) == -1) return false;
-                }
-                return true;
-            });
-
-            if (!editMode.get() && athletes.length == 0) return undefined;
-
-
-            return {
-                name: group.name,
-                id: group.id,
-                collapsed: group.collapsed,
-                errorLevel: group.errorLevel,
-                athletes: athletes
-            }
-        }));
+        const groups = LocalGroupIDs.get();
         groupsIsNotEmpty.set(groups.length != 0);
         return groups;
     },
@@ -60,27 +40,33 @@ Template.config_searchBar.helpers({
 Template.config_group.helpers({
     readOnly: function () {
         return !editMode.get();
+    },
+    getGroup: function (gid) {
+        return LocalGroups[gid].get();
     }
 });
 
 Template.config_athlete.helpers({
-    validAthlete: function (athlete) {
+    validAthlete: function (id) {
         if (editMode.get())
-            return athlete.check(Meteor.config.log);
+            return LocalAthletes[id].check(Meteor.config.log);
         else
             return true;
     },
-    tooltipLevel: function (obj) {
-        const errorState = athleteErrorState.get()[obj.id];
+    tooltipLevel: function (id) {
+        const errorState = athleteErrorState.get()[id];
         return errorState ? errorState.level : undefined;
     },
-    tooltipMsg: function (obj) {
-        const errorState = athleteErrorState.get()[obj.id];
+    tooltipMsg: function (id) {
+        const errorState = athleteErrorState.get()[id];
         return errorState ? errorState.message : undefined;
     },
     startClassName: function (startClass) {
         return startClasses[startClass].name;
     },
+    getAthlete: function (aid) {
+        return LocalAthletes[aid].get();
+    }
 });
 
 Template.config_group.events({
