@@ -206,9 +206,9 @@ export function removeGroup(id) {
 
     // Tell the server we deleted all athletes
     const groupIndex = modifyGroup(id, function (group) {
-        for (let athlete in lgroups[group].athletes) {
-            if (!lgroups[group].athletes.hasOwnProperty(athlete)) continue;
-            Server.athletes.remove(AccountManager.getAdminAccount().account, contestID, lgroups[group].athletes[athlete].id);
+        for (let athlete in group.athletes) {
+            if (!group.athletes.hasOwnProperty(athlete)) continue;
+            Server.athletes.remove(AccountManager.getAdminAccount().account, contestID, group.athletes[athlete].id);
         }
     });
 

@@ -1,5 +1,5 @@
 import {currentCompID} from "../config";
-import {refreshErrorState, addRawAthlete} from "./athleteList";
+import {addRawAthlete} from "./dataInterface";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
@@ -86,7 +86,6 @@ Template.csvImport.events({
             const data = file.data[dataID];
             const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
             addRawAthlete(athlete);
-            refreshErrorState();
         }
     }
 });
