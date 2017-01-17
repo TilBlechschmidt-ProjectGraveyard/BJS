@@ -1,0 +1,87 @@
+<template name="config_athlete">
+    <li class="accordion-item bg-color-transition"
+        style="{{#if g.collapsed}}background-color: #ECEFF1{{/if}}"
+        data-gid="{{g.id}}" data-id="{{a.id}}">
+        <a href="#" class="item-content item-link  collapsible collapse-height-100
+                                    {{#if g.collapsed}}{{#if not
+                                                             (eq index 0)}}collapsed{{else}}collapse-group{{/if}}{{/if}}"
+           style="min-height: 0;">
+            {{#if not readOnly}}
+                {{#if (and g.collapsed (eq index 0))}}
+                    {{#if (eq (tooltipLevel g) 0)}}
+                        <div class="item-media">{{> iconOK}}</div>
+                    {{/if}}
+                    {{#if (eq (tooltipLevel g) 1)}}
+                        <div class="item-media">{{> iconWarn}}</div>
+                    {{/if}}
+                    {{#if (eq (tooltipLevel g) 2)}}
+                        <div class="item-media">{{> iconErr}}</div>
+                    {{/if}}
+                {{else}}
+                    {{#if not (tooltipLevel a)}}
+                        <div class="item-media">{{> iconOK}}</div>
+                    {{else}}
+                        {{#if (eq (tooltipLevel a) 1)}}
+                            <div class="item-media">{{> iconWarn text=(tooltipMsg a)}}</div>
+                        {{else}}
+                            <div class="item-media">{{> iconErr text=(tooltipMsg a)}}</div>
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+            <div class="item-inner">
+                <div class="item-title" style="display: inline-block; vertical-align: middle; width: 75%">
+                    <p style="margin:0;position:relative;"
+                       class="{{#if (eq index 0)}}groupTitle-{{g.id}}{{/if}}">
+                                            <span>
+                                                {{#if readOnly}}
+                                                    {{a.firstName}}&nbsp;{{a.lastName}}
+                                                    {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
+                                                {{else}}
+                                                    <input type="text" class="name-input"
+                                                           style="display: inline-block; width: 100%"
+                                                           value="{{a.getFullName}}" placeholder="Vor-/Nachname"
+                                                           data-id="{{a.id}}">
+                                                {{/if}}
+                                            </span>
+                        <span style="display: none">{{g.name}}</span>
+                    </p>
+                </div>
+                {{#if not readOnly}}{{#if not g.collapsed}}
+                    <span class="align-right remove-athlete delete-icon"><i class="f7-icons"
+                                                                            style="font-size: 17px; padding-right: 5px;">close_round</i></span>{{/if}}{{/if}}
+            </div>
+        </a>
+        <div class="accordion-item-content">
+            <div class="content-block">
+                {{#with a}}
+                    <p class="t-left">
+                        Geburtsjahr:
+                        <input type="text" value="{{ageGroup}}"
+                               class="t-right align-right ageGroup"/>
+                    </p>
+                    <p class="t-left">
+                        Geschlecht:
+                        <span class="align-right">
+                            {{#if readOnly}}
+                                {{#if isMale}}Männlich{{else}}Weiblich{{/if}}
+                            {{else}}
+                                <span class="gender gender-male {{#if isUndefined
+                                                                      isMale}}not-selected{{/if}}  {{#if
+                                        not isMale}}not-selected{{/if}}">Männlich</span> / <span
+                                    class="gender gender-female {{#if isUndefined
+                                                                      isMale}}not-selected{{/if}}  {{#if
+                                            isMale}}not-selected{{/if}}">Weiblich</span>
+                            {{/if}}
+                        </span>
+                    </p>
+                    <p class="t-left">
+                        Startklasse:
+                        <span class="align-right startClassSelectOpen hover-underline">{{startClassName
+                                handicap}}</span>
+                    </p>
+                {{/with}}
+            </div>
+        </div>
+    </li>
+</template>

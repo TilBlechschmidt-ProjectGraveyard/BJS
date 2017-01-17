@@ -57,7 +57,13 @@ Template.config_searchBar.helpers({
     }
 });
 
-Template.group.helpers({
+Template.config_group.helpers({
+    readOnly: function () {
+        return !editMode.get();
+    }
+});
+
+Template.config_athlete.helpers({
     validAthlete: function (athlete) {
         if (editMode.get())
             return athlete.check(Meteor.config.log);
@@ -74,10 +80,10 @@ Template.group.helpers({
     },
     startClassName: function (startClass) {
         return startClasses[startClass].name;
-    }
+    },
 });
 
-Template.group.events({
+Template.config_group.events({
     'keyup .ageGroup': function (event) {
         event.stopImmediatePropagation();
         const id = event.target.closest("li").dataset.id;
