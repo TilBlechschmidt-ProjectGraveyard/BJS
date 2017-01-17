@@ -1,1 +1,1 @@
-export const asyncServerFunctionChannel = new Meteor.Streamer('serverFunctions');
+export const asyncServerFunctionChannel = new Meteor.Streamer('serverFunctions', {retransmit: false});

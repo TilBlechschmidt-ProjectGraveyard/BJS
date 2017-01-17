@@ -55,6 +55,7 @@ function runServerFunction(name, account, data, callback) {
         });
 }
 
+const interruptedChannels = {};
 /**
  * Runs a function server-side in an asynchronous manner and takes care of de-/encryption for you. It calls the callback for every entry returned.
  * @param {string} name - The name of the server function
@@ -70,14 +71,22 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
 
     // TODO: This handler will get set more than one time! This NEEDS to be fixed -somehow- +locally check if it was interrupted
     asyncServerFunctionChannel.on(connection.uuid, function (encryptedEntry) {
-        const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
+        if (interruptedChannels[connection.uuid] === true) {
+            delete interruptedChannels[connection.uuid];
+            asyncServerFunctionChannel.stop(connection.uuid);
+            if (typeof doneCallback === 'function') {
+                doneCallback({});
+            }
+        } else {
+            const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
 
-        if (entry && !entry.data.permissionDenied) {
-            if (entry.data.done && typeof doneCallback === 'function') doneCallback(entry.data);
-            else if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
-        } else if (Meteor.isClient) {
-            if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
-            throwError(account, false);
+            if (entry && !entry.data.permissionDenied) {
+                if (entry.data.done && typeof doneCallback === 'function') doneCallback(entry.data);
+                else if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
+            } else if (Meteor.isClient) {
+                if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
+                throwError(account, false);
+            }
         }
     });
 
@@ -94,7 +103,10 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
 export let Server = {
 
     cancelAsyncRequest: function (id) {
+        // Interrupt server
         asyncServerFunctionChannel.emit('interrupt', id);
+        // Interrupt client
+        interruptedChannels[id] = true;
     },
 
     db: {

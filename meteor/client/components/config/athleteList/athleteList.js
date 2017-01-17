@@ -156,6 +156,7 @@ Tracker.autorun(async function () {
             if (last)
                 refreshErrorState();
         }, function (entry) {
+            console.log("done", entry);
             if (entry.size == 0)
                 hideIndicator();
         });
