@@ -8,22 +8,7 @@
     <br>
     <div class="autoWidthListBlock">
 
-        {{#if not (isEmpty groups)}}
-            <div class="list-block">
-                <ul>
-                    <!-- Text inputs -->
-                    <li>
-                        <div class="item-content">
-                            <div class="item-media"><i class="f7-icons">search</i></div>
-                            <div class="item-inner">
-                                <input id="configAthletesSearch" type="text" style="width: 100%" value=""
-                                       placeholder="Suche">
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        {{/if}}
+        {{>config_searchBar}}
 
         {{#each g in groups}}
             {{> group g=g}}
@@ -40,6 +25,7 @@
         {{/if}}
     </div>
 </template>
+
 
 <template name="athleteMetaIcons">
     {{#with athlete}}

@@ -18,11 +18,12 @@ import {
 const startClasses = require('../../../../imports/data/startClasses.json');
 
 const nameFilter = new ReactiveVar([]);
+const groupsIsNotEmpty = new ReactiveVar(true);
 
 Template.athleteList.helpers({
     groups: function () {
         const nFilter = nameFilter.get();
-        return filterUndefined(_.map(localGroups.get(), function (group) {
+        const groups = filterUndefined(_.map(localGroups.get(), function (group) {
             const athletes = _.filter(group.athletes, function (athlete) {
                 const fullName = athlete.getFullName();
                 for (let filter in nFilter) {
@@ -43,9 +44,16 @@ Template.athleteList.helpers({
                 athletes: athletes
             }
         }));
+        groupsIsNotEmpty.set(groups.length != 0);
+        return groups;
     },
     readOnly: function () {
         return !editMode.get();
+    }
+});
+Template.config_searchBar.helpers({
+    groupsIsNotEmpty: function () {
+        return groupsIsNotEmpty.get();
     }
 });
 
@@ -129,9 +137,6 @@ Template.group.events({
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         refreshErrorState(id, firstName, lastName);
     },
-    'keyup #configAthletesSearch': function (event) {
-        nameFilter.set(event.target.value.split(' '));
-    },
     'click input': function (event) {
         if (editMode.get()) {
             event.stopImmediatePropagation();
@@ -182,5 +187,11 @@ Template.group.events({
         });
         const spans = $(".groupTitle-" + gid + " span");
         spans.fadeToggle(300);
+    }
+});
+
+Template.config_searchBar.events({
+    'keyup #configAthletesSearch': function (event) {
+        nameFilter.set(event.target.value.split(' '));
     }
 });
