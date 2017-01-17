@@ -2,7 +2,13 @@
     <div class="view">
         <div class="page">
             <div class="page-content login-screen-content">
-                <div class="login-screen-title">RunItEasy{{#if firstLoggedIn}} | {{firstLoggedIn}}{{/if}}</div>
+                <div class="login-screen-title">
+                    <img src="/icons/Logo512Cropped.png" style="height: 80px;">
+                    <div>
+                        RunItEasy{{#if firstLoggedIn}} | {{firstLoggedIn}}{{/if}}
+                    </div>
+
+                </div>
                 <div id="login-swiper" class="swiper-container" style="height: calc(100% - 92px);">
                     <div class="swiper-wrapper">
                         {{#each steps}}
