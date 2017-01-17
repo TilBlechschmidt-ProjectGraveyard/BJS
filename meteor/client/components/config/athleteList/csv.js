@@ -40,8 +40,6 @@ function correlateHeaders(headerFields) {
 }
 
 function processCSVAthlete(dataset, fieldNames, indexes, ct) {
-    console.log(indexes);
-    console.log(dataset);
     const gender = dataset[fieldNames[indexes.gender]];
     return new Athlete(Meteor.config.log, dataset[fieldNames[indexes.firstName]], dataset[fieldNames[indexes.lastName]], parseInt(dataset[fieldNames[indexes.ageGroup]]), gender.match(/m/gi) !== null, dataset[fieldNames[indexes.group]], '0', ct.maxAge, ct, genUUID());
 }
