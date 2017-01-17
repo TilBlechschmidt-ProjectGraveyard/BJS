@@ -138,6 +138,8 @@ export function refreshErrorState(id, firstName, lastName) {
     athleteErrorState.set(errorStates);
 }
 
+let asyncUUID = undefined;
+
 // Load from storage
 Tracker.autorun(async function () {
     const compID = currentCompID.get();
@@ -146,7 +148,10 @@ Tracker.autorun(async function () {
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
-        const uuid = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+        if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
+
+        asyncUUID = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
+            console.log(entry);
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
@@ -155,14 +160,10 @@ Tracker.autorun(async function () {
             if (last)
                 refreshErrorState();
         }, function (entry) {
+            console.log("done", entry);
             if (entry.size == 0)
                 hideIndicator();
         });
-
-        // setTimeout(function () {
-        //     console.log("interrupting");
-        //     Server.cancelAsyncRequest(uuid);
-        // }, 1000);
     }
 });
 
