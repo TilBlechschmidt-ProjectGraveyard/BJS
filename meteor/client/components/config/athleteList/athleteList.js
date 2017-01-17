@@ -147,7 +147,6 @@ Tracker.autorun(async function () {
         localGroups.set([]);
 
         const uuid = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
-            console.log(entry);
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
@@ -156,7 +155,6 @@ Tracker.autorun(async function () {
             if (last)
                 refreshErrorState();
         }, function (entry) {
-            console.log("done", entry);
             if (entry.size == 0)
                 hideIndicator();
         });
