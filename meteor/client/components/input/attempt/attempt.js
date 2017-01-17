@@ -85,6 +85,15 @@ Template.attempt.events({
             return false;
         }
     },
+    'click .delete-attempt': function (event) {
+        let attempt_id = event.target.closest(".delete-attempt").dataset.id;
+        let athlete_id = getAthleteIDByElement(event.target);
+
+        const obj = {};
+        obj[attempt_id] = "";
+        
+        Meteor.COLLECTIONS.Athletes.handle.update({_id: athlete_id}, {$unset: obj});
+    },
     'blur input': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
