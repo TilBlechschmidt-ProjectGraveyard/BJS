@@ -46,7 +46,10 @@ Template.athleteList.helpers({
     },
     readOnly: function () {
         return !editMode.get();
-    },
+    }
+});
+
+Template.group.helpers({
     validAthlete: function (athlete) {
         if (editMode.get())
             return athlete.check(Meteor.config.log);
@@ -66,7 +69,7 @@ Template.athleteList.helpers({
     }
 });
 
-Template.athleteList.events({
+Template.group.events({
     'keyup .ageGroup': function (event) {
         event.stopImmediatePropagation();
         const id = event.target.closest("li").dataset.id;
