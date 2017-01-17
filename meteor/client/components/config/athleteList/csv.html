@@ -6,68 +6,68 @@
             <th>Beispiel</th>
         </tr>
         <tr>
-        <tr>Datei</tr>
-        <td>
-            <input type="file" id="csv-upload" hidden>
-            <button type="button" onclick="document.getElementById('csv-upload').click();">Datei auswählen</button>
-        </td>
-        <tr>{{fileName}}</tr>
+            <td>Datei</td>
+            <td>
+                <input type="file" id="csv-upload" hidden>
+                <button type="button" onclick="document.getElementById('csv-upload').click();">Datei auswählen</button>
+            </td>
+            <td>{{fileName}}</td>
         </tr>
 
         <tr>
-        <tr>Vorname</tr>
-        <td>
-            <select id="csv-first-name" class="csv-field-select" data-fieldname="firstName">
-                {{#each n in csvFieldNames}}
-                    <option value="{{n}}" {{selectedString selectedIndexes.firstName @index}}>{{n}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <tr>{{getExample.firstName}}</tr>
+            <td>Vorname</td>
+            <td>
+                <select id="csv-first-name" class="csv-field-select" data-fieldname="firstName">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.firstName @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.firstName}}</td>
         </tr>
         <tr>
-        <tr>Nachname</tr>
-        <td>
-            <select id="csv-last-name" class="csv-field-select" data-fieldname="lastName">
-                {{#each n in csvFieldNames}}
-                    <option value="{{n}}" {{selectedString selectedIndexes.lastName @index}}>{{n}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <tr>{{getExample.lastName}}</tr>
+            <td>Nachname</td>
+            <td>
+                <select id="csv-last-name" class="csv-field-select" data-fieldname="lastName">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.lastName @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.lastName}}</td>
         </tr>
         <tr>
-        <tr>Geschlecht</tr>
-        <td>
-            <select id="csv-gender" class="csv-field-select" data-fieldname="gender">
-                {{#each n in csvFieldNames}}
-                    <option value="{{n}}" {{selectedString selectedIndexes.gender @index}}>{{n}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <tr>{{genderString getExample.isMale}}</tr>
+            <td>Geschlecht</td>
+            <td>
+                <select id="csv-gender" class="csv-field-select" data-fieldname="gender">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.gender @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{genderString getExample.isMale}}</td>
         </tr>
         <tr>
-        <tr>Geburtsjahr</tr>
-        <td>
-            <select id="csv-age-group" class="csv-field-select" data-fieldname="ageGroup">
-                {{#each n in csvFieldNames}}
-                    <option value="{{n}}" {{selectedString selectedIndexes.ageGroup @index}}>{{n}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <tr>{{getExample.ageGroup}}</tr>
+            <td>Geburtsjahr</td>
+            <td>
+                <select id="csv-age-group" class="csv-field-select" data-fieldname="ageGroup">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.ageGroup @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.ageGroup}}</td>
         </tr>
         <tr>
-        <tr>Gruppe</tr>
-        <td>
-            <select id="csv-group" class="csv-field-select" data-fieldname="group">
-                {{#each n in csvFieldNames}}
-                    <option value="{{n}}" {{selectedString selectedIndexes.group @index}}>{{n}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <tr>{{getExample.group}}</tr>
+            <td>Gruppe</td>
+            <td>
+                <select id="csv-group" class="csv-field-select" data-fieldname="group">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.group @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.group}}</td>
         </tr>
     </table>
 
