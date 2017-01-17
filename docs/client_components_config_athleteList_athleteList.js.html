@@ -265,7 +265,7 @@ export function groupExists(name) {
     return false;
 }
 
-export function createGroup(name) {
+export function addGroup(name) {
     const lgroups = localGroups.get();
     const id = genUUID();
     lgroups.push({name: name, athletes: [], collapsed: false, id: id});
@@ -274,9 +274,9 @@ export function createGroup(name) {
     return id;
 }
 
-export function insertAthlete(athlete) {
+export function addRawAthlete(athlete) {
     let gid;
-    if (!groupExists(athlete.group)) gid = createGroup(athlete.group);
+    if (!groupExists(athlete.group)) gid = addGroup(athlete.group);
     else gid = getGroupIDByName(athlete.group);
     modifyGroup(gid, function (group) {
         group.athletes.push(athlete);
@@ -346,7 +346,7 @@ Tracker.autorun(function () {
             if (entry.index == 0)
                 hideIndicator();
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
-            insertAthlete(athlete);
+            addRawAthlete(athlete);
 
             if (last)
                 refreshErrorState();
@@ -553,7 +553,7 @@ Template.athleteList.events({
             if (groupExists(value)) {
                 Meteor.f7.alert("Eine Gruppe mit diesem Namen existiert bereits!", "Fehler");
             } else {
-                createGroup(value);
+                addGroup(value);
             }
             refreshErrorState();
         }).querySelector("input").focus();

@@ -1,4 +1,5 @@
-import {selectedAthlete, modifyAthlete, refreshErrorState} from "../athleteList";
+import {selectedAthlete, modifyAthlete} from "../dataInterface";
+import {editMode} from "../../config";
 
 const startClasses = require('../../../../../imports/data/startClasses.json');
 
@@ -10,7 +11,10 @@ Template.startClassesPopup.helpers({
 });
 
 Template.startClassesPopupContent.helpers({
-    startClasses: startClasses
+    startClasses: startClasses,
+    readOnly: function () {
+        return !editMode.get();
+    }
 });
 
 Template.startClassesPopupContent.events({
@@ -28,7 +32,6 @@ Template.startClassesPopupContent.events({
 
             selectedAthlete.set(undefined);
             Meteor.f7.closeModal(".popup-startclass");
-            refreshErrorState();
         }
         return false;
     }

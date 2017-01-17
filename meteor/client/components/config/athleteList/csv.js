@@ -1,5 +1,5 @@
 import {currentCompID} from "../config";
-import {refreshErrorState, insertAthlete} from "./athleteList";
+import {refreshErrorState, addRawAthlete} from "./athleteList";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 
@@ -45,7 +45,7 @@ function processCSVResult(dataset, field, ct) {
         data = dataset[data];
         const gender = data[field["gender"]];
         const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
-        insertAthlete(athlete);
+        addRawAthlete(athlete);
     }
     refreshErrorState();
 }
