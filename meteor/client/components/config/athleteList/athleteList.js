@@ -61,13 +61,6 @@ Template.athleteList.helpers({
         const errorState = athleteErrorState.get()[obj.id];
         return errorState ? errorState.message : undefined;
     },
-    fullName: function (athlete) {
-        if (editMode.get()) {
-            const fullName = athlete.getFullName();
-            if (fullName === " ") return;
-            return fullName;
-        }
-    },
     startClassName: function (startClass) {
         return startClasses[startClass].name;
     }
@@ -152,12 +145,12 @@ Template.athleteList.events({
         event.stopImmediatePropagation();
         const id = event.target.closest("li").dataset.id;
         Meteor.f7.confirm('Wollen sie den Athleten wirklich endgültig löschen?', 'Athleten löschen', function () {
-            removeAthlete(id);;;;;;;;;;;;;;;;;;;;;;;;;
+            removeAthlete(id);
         });
     },
     'click .add-group': function (event) {
         Meteor.f7.prompt('Wähle einen Namen für die Gruppe', 'Gruppe erstellen', function (value) {
-            addGroup(value);;;;;;;;;;;;;;;;;;;;;;;;;
+            addGroup(value);
         }).querySelector("input").focus();
     },
     'click .rename-group': function (event) {
@@ -169,7 +162,7 @@ Template.athleteList.events({
     'click .remove-group': function (event) {
         const gid = event.target.closest("[data-gid]").dataset.gid;
         Meteor.f7.confirm('Wollen sie die Gruppe samt ihrer Athleten endgültig löschen?', 'Gruppe löschen', function () {
-            removeGroup(gid);;;;;;;;;;;;;;;;;;;;;;;;;
+            removeGroup(gid);
         });
     },
     'click .collapse-group': function (event) {
@@ -183,7 +176,7 @@ Template.athleteList.events({
                     Meteor.f7.accordionClose(accordion);
             }
             group.collapsed = !group.collapsed;
-        });;;;;;;;;;;;;;;;;;;;;;;;;
+        });
         const spans = $(".groupTitle-" + gid + " span");
         spans.fadeToggle(300);
     }
