@@ -8,29 +8,29 @@
                                     {{#if g.collapsed}}{{#if not
                                                              (eq index 0)}}collapsed{{else}}collapse-group{{/if}}{{/if}}"
                style="min-height: 0;">
-                {{#if not readOnly}}
-                    {{#if (and g.collapsed (eq index 0))}}
-                        {{#if (eq (tooltipLevel g) 0)}}
-                            <div class="item-media">{{> iconOK}}</div>
-                        {{/if}}
-                        {{#if (eq (tooltipLevel g) 1)}}
-                            <div class="item-media">{{> iconWarn}}</div>
-                        {{/if}}
-                        {{#if (eq (tooltipLevel g) 2)}}
-                            <div class="item-media">{{> iconErr}}</div>
-                        {{/if}}
-                    {{else}}
-                        {{#if not (tooltipLevel id)}}
-                            <div class="item-media">{{> iconOK}}</div>
-                        {{else}}
-                            {{#if (eq (tooltipLevel id) 1)}}
-                                <div class="item-media">{{> iconWarn text=(tooltipMsg id)}}</div>
-                            {{else}}
-                                <div class="item-media">{{> iconErr text=(tooltipMsg id)}}</div>
-                            {{/if}}
-                        {{/if}}
-                    {{/if}}
-                {{/if}}
+            <!--{{#if not readOnly}}-->
+                    <!--{{#if (and g.collapsed (eq index 0))}}-->
+                        <!--{{#if (eq (tooltipLevel g) 0)}}-->
+                        <!--<div class="item-media">{{> iconOK}}</div>-->
+                            <!--{{/if}}-->
+                        <!--{{#if (eq (tooltipLevel g) 1)}}-->
+                        <!--<div class="item-media">{{> iconWarn}}</div>-->
+                            <!--{{/if}}-->
+                        <!--{{#if (eq (tooltipLevel g) 2)}}-->
+                        <!--<div class="item-media">{{> iconErr}}</div>-->
+                            <!--{{/if}}-->
+                        <!--{{else}}-->
+                        <!--{{#if not (tooltipLevel id)}}-->
+                        <!--<div class="item-media">{{> iconOK}}</div>-->
+                            <!--{{else}}-->
+                            <!--{{#if (eq (tooltipLevel id) 1)}}-->
+                            <!--<div class="item-media">{{> iconWarn text=(tooltipMsg id)}}</div>-->
+                                <!--{{else}}-->
+                            <!--<div class="item-media">{{> iconErr text=(tooltipMsg id)}}</div>-->
+                                <!--{{/if}}-->
+                            <!--{{/if}}-->
+                        <!--{{/if}}-->
+                    <!--{{/if}}-->
                 <div class="item-inner">
                     <div class="item-title" style="display: inline-block; vertical-align: middle; width: 75%">
                         <p style="margin:0;position:relative;"
