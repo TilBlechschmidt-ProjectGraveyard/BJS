@@ -13,6 +13,7 @@ const CurrentSelectedIndexes = ReactiveVar({
     gender: 0,
     group: 0,
 });
+export const CurrentFileName = ReactiveVar("");
 
 function findIndexByRegex(headerFields, regex) {
     return lodash.findIndex(headerFields, function (field) {
@@ -45,14 +46,14 @@ function processCSVAthlete(dataset, fieldNames, indexes, ct) {
     return new Athlete(Meteor.config.log, dataset[fieldNames[indexes.firstName]], dataset[fieldNames[indexes.lastName]], parseInt(dataset[fieldNames[indexes.ageGroup]]), gender.match(/m/gi) !== null, dataset[fieldNames[indexes.group]], '0', ct.maxAge, ct, genUUID());
 }
 
-function parseCSVFile(file) {
+export function parseCSVFile(file) {
+    CurrentFileName.set(file.name);
     Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
             CurrentParsedFile.set(results);
             correlateHeaders(results.meta.fields);
-            console.log(results);
         },
     });
 }
@@ -63,8 +64,7 @@ function importDisabled() {
 
 Template.csvImport.events({
     'change input[type=file]#csv-upload': function (event) {
-        const file = event.target.files[0]; //only one file is allowed
-        parseCSVFile(file);
+        parseCSVFile(event.target.files[0]); //only one file is allowed
     },
     'change .csv-field-select': function (event) {
         const indexes = CurrentSelectedIndexes.get();
@@ -88,6 +88,7 @@ Template.csvImport.events({
             insertAthlete(athlete);
             refreshErrorState();
         }
+        Meteor.f7.closeModal(".popup-csv-import");
     }
 });
 
@@ -117,6 +118,10 @@ Template.csvImport.helpers({
         return isMale ? "Männlich" : "Weiblich";
     },
     'importButtonDisabled': function () {
-        importDisabled();
+        return importDisabled();
+    },
+    'fileName': function () {
+        const name = CurrentFileName.get();
+        return name == "" ? "Keine Datei ausgewählt." : name;
     }
 });

@@ -5,6 +5,7 @@ import {getContestTypeByID} from "../../../imports/api/logic/contestType";
 import {updateSwiperProgress} from "../login/router";
 import {codesClean, clearACs, getContestName, loginStations, loginGroups, loginCustom} from "./accessCodes/accessCodes";
 import {showIndicator, hideIndicator} from "../helpers";
+import {parseCSVFile} from "./athleteList/csv";
 
 Meteor.config = {};
 Meteor.config.log = Log.getLogObject();
@@ -174,38 +175,28 @@ Template.config.events({
             },
         });
     },
-    'drop .csv-dropzone': function drop_handler(ev) {
-        // let i;
-        // // console.log("Drop");
-        // ev.preventDefault();
+    'drop .csv-dropzone': function drop_handler(event) {
+        event.preventDefault();
+
         // // If dropped items aren't files, reject them
-        // const dt = ev.originalEvent.dataTransfer;
-        // if (dt.items) {
-        //     // Use DataTransferItemList interface to access the file(s)
-        //     for (i = 0; i < dt.items.length; i++) {
-        //         if (dt.items[i].kind == "file") {
-        //             const f = dt.items[i].getAsFile();
-        //             // console.log("... file[" + i + "].name = " + f.name);
-        //             // console.log("... file[" + i + "] = ", f);
-        //             parseCSVFile(f);
-        //         }
-        //     }
-        // } else {
-        //     // Use DataTransfer interface to access the file(s)
-        //     for (i = 0; i < dt.files.length; i++) {
-        //         // console.log("... file[" + i + "].name = " + dt.files[i].name);
-        //         // console.log("... file[" + i + "] = ", dt.files[i]);
-        //         parseCSVFile(dt.files[i]);
-        //     }
-        // }
+        const dt = event.originalEvent.dataTransfer;
+        if (dt.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            if (dt.items.length == 0) return;
+            parseCSVFile(dt.items[0].getAsFile());
+            Meteor.f7.popup(".popup-csv-import");
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            if (dt.files.length == 0) return;
+            parseCSVFile(dt.files[0]);
+            Meteor.f7.popup(".popup-csv-import");
+        }
     },
     'dragover .csv-dropzone': function dragover_handler(ev) {
-        // console.log("dragOver");
         // Prevent default select and drag behavior
         ev.preventDefault();
     },
     'dragend .csv-dropzone': function dragend_handler(ev) {
-        // console.log("dragEnd");
         // Remove all of the drag data
         const dt = ev.dataTransfer;
         if (dt.items) {

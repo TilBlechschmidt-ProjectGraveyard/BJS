@@ -7,8 +7,11 @@
         </tr>
         <tr>
         <tr>Datei</tr>
-        <td><input type="file" id="csv-upload"></td>
-        <tr></tr>
+        <td>
+            <input type="file" id="csv-upload" hidden>
+            <button type="button" onclick="document.getElementById('csv-upload').click();">Datei auswählen</button>
+        </td>
+        <tr>{{fileName}}</tr>
         </tr>
 
         <tr>
