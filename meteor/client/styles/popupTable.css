@@ -6,6 +6,7 @@ table.popupTable {
 table.popupTable th, table.logTable td {
     text-align: left;
     padding: 8px;
+    vertical-align: center;
 }
 
 table.popupTable tr:nth-child(even) {
