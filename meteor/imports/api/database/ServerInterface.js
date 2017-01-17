@@ -63,7 +63,7 @@ function runServerFunction(name, account, data, callback) {
  * @param {function} callback - A callback with one parameter: The return value of the server function. Function returns a promise if it is undefined.
  * @returns {Promise.<void>}
  */
-async function runAsyncServerFunction(name, account, data, callback) {
+async function runAsyncServerFunction(name, account, data, callback, doneCallback) {
     const log = Log.getLogObject();
     const connection = await runServerFunction('runAsync', account, {name: name, data: data});
 
@@ -71,7 +71,8 @@ async function runAsyncServerFunction(name, account, data, callback) {
         const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
 
         if (entry && !entry.data.permissionDenied) {
-            if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
+            if (entry.data.done && typeof doneCallback === 'function') doneCallback(entry.data);
+            else if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
         } else if (Meteor.isClient) {
             if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
             throwError(account, false);
@@ -113,6 +114,7 @@ export let Server = {
          * @param {function} callback - The callback
          */
         waitForReady: function (callback) {
+            // TODO Replace w/ waterfall
             Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
                 Meteor.COLLECTIONS.Contests.onReady(function () {
                     Meteor.COLLECTIONS.Accounts.onReady(function () {
@@ -163,12 +165,12 @@ export let Server = {
         count: function (account, contestID) {
             return runServerFunction('getAthleteCount', account, {contestID: contestID});
         },
-        getAsync: function (account, contestID, require_signature, require_group_check, callback) {
+        getAsync: function (account, contestID, require_signature, require_group_check, callback, doneCallback) {
             runAsyncServerFunction('getAthletes', account, {
                 contestID: contestID,
                 require_signature: require_signature,
                 require_group_check: require_group_check
-            }, callback);
+            }, callback, doneCallback);
         },
 
         /**

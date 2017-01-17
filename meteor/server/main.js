@@ -61,7 +61,7 @@ Meteor.startup(function () {
         runAsync: function (account, data) {
             const context = asyncServerFunctions[data.name](account, data.data);
             const uuid = genUUID();
-            const size = context.entries.length - 1;
+            const size = context.entries.length;
 
             if (context === false)
                 return {
@@ -83,7 +83,13 @@ Meteor.startup(function () {
                         ++index;
                         nextCallback(null);
                     }
-                }));
+                }), function () {
+                    asyncServerFunctionChannel.emit(uuid, encryptAs({
+                        index: index,
+                        size: size,
+                        done: true
+                    }, account));
+                });
             };
             pendingAsyncCalls.set(pendingCalls);
 

@@ -154,6 +154,9 @@ Tracker.autorun(function () {
 
             if (last)
                 refreshErrorState();
+        }, function (entry) {
+            if (entry.size == 0)
+                hideIndicator();
         });
     }
 });
