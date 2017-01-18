@@ -28,13 +28,7 @@ export function initAthletes() {
             }
         });
 
-        handle.before.upsert(function (userId, selector, modifier, options) {
-            console.log(modifier);
-        });
-
         handle.after.update(function (userId, doc, fieldNames, modifier) {
-            console.log(modifier);
-
             let updateRequired = false;
             if (modifier.hasOwnProperty('$set')) {
                 for (let name in modifier.$set) {
@@ -66,7 +60,6 @@ export function initAthletes() {
         });
 
         handle.after.insert(function (userId, doc, fieldNames, modifier) {
-            console.log(modifier);
             handle.direct.update({_id: doc._id}, {
                 $set: {
                     currentScore: encryptAsAdmin(0),
