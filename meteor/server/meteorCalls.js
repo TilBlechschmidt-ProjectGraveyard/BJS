@@ -73,7 +73,7 @@ const asyncServerFunctions = {
         return {
             entries: encryptedAthletes,
             callback: function (encryptedAthlete) {
-                return Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, data.require_signature, data.require_group_check);
+                return Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, data.require_signature, data.require_group_check).getMinimizedVersion();
             }
         }
     }

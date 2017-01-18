@@ -18,15 +18,19 @@ let asyncUUID = undefined;
 // Load athletes from storage
 Tracker.autorun(async function () {
     const compID = currentCompID.get();
+    const inEditMode = Tracker.nonreactive(function () {
+        return editMode.get()
+    });
     if (compID) {
-        showIndicator();
+        if (inEditMode) Meteor.f7.showPreloader("Daten laden");
+        else showIndicator();
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
         if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
 
         asyncUUID = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
-            if (entry.index == 0)
+            if (entry.index == 0 && !inEditMode)
                 hideIndicator();
             if (athlete === false) {
                 Meteor.f7.alert("Es ist ein Fehler beim Laden der Athleten aufgetreten!", "Fehler");
@@ -35,11 +39,15 @@ Tracker.autorun(async function () {
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
             addRawAthlete(athlete, true);
 
+            if (inEditMode) {
+                document.getElementsByClassName('modal-title')[0].innerHTML = entry.index + "/" + entry.size;
+            }
+
             if (last)
                 refreshErrorState();
         }, function (entry) {
-            if (entry.size == 0)
-                hideIndicator();
+            if (entry.size == 0) hideIndicator();
+            if (inEditMode) Meteor.f7.hidePreloader();
         });
     }
 });
