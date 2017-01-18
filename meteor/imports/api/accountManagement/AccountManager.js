@@ -1,7 +1,6 @@
 import {SessionAccount} from "./SessionAccount";
 import {Server} from "../database/ServerInterface";
 import {checkPermission} from "../../../client/components/login/router";
-import {refreshAthletes} from "../../../client/components/input/input";
 
 
 let inputGroupAccount = new SessionAccount('input_group_account');
@@ -164,14 +163,14 @@ export let AccountManager = {
             if (force) {
                 saveData();
                 logout(type);
-                refreshAthletes();
+                Meteor.inputDependency.changed();
             } else {
                 Meteor.f7.confirm('Wenn Sie sich abmelden können die Daten nachträglich nicht mehr editiert werden!', 'Hinweis',
                     function () {
                         Meteor.f7.showPreloader('Speichere Daten');
                         saveData();
                         logout(type);
-                        refreshAthletes();
+                        Meteor.inputDependency.changed();
                         setTimeout(function () {
                             checkPermission();
                             Meteor.f7.hidePreloader();

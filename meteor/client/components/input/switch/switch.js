@@ -1,5 +1,4 @@
-// import {reloadSwiper} from "../input";
-import {refreshAthletes} from "../input";
+
 const defaultSettings = {
     showMale: true,
     showFemale: true,
@@ -22,7 +21,7 @@ Template.settingSwitch.events({
         const newValue = !checkbox.checked;
 
         Session.set(label.dataset.id, newValue);
-        refreshAthletes();
+        Meteor.inputDependency.changed();
     }
 });
 
@@ -32,7 +31,7 @@ Template.settingSwitch.onRendered(function () {
         if (!defaultSettings.hasOwnProperty(id)) continue;
         if (Session.get(id) === undefined) {
             Session.set(id, defaultSettings[id]);
-            refreshAthletes();
+            Meteor.inputDependency.changed();
         }
     }
 });

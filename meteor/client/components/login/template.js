@@ -2,7 +2,6 @@ import {AccountManager} from "../../../imports/api/accountManagement/AccountMana
 import {checkPermission} from "./router";
 import "./login.html";
 import {triggerDefaultModalAction} from "../helpers";
-import {refreshAthletes} from "../input/input";
 
 function login(event) {
     const type = event.target.dataset.type;
@@ -34,7 +33,7 @@ function login(event) {
         if (checkPermission().redirected)
             nextStep(getLoginSwiper());
 
-        refreshAthletes();
+        Meteor.inputDependency.changed();
 
         Meteor.f7.hidePreloader();
         Meteor.loginInProgress = false;
@@ -110,7 +109,7 @@ Template.login.events({
             Meteor.f7.confirm('Möchten Sie sich wirklich abmelden?', 'Abmelden', function () {
                 AccountManager.logout(sessionStorage.getItem("firstLogin"));
                 sessionStorage.removeItem("firstLogin");
-                refreshAthletes();
+                Meteor.inputDependency.changed();
                 checkPermission();
             });
         }

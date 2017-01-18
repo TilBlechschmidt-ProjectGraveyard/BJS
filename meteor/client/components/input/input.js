@@ -10,13 +10,7 @@ import {checkPermission, updateSwiperProgress} from "../login/router";
 Meteor.input = {};
 Meteor.input.log = Log.getLogObject();
 
-Meteor.inputDependency = new ReactiveVar(0);
-Meteor.lastInput = -1;
-Meteor.lastAthletes = [];
-
-export function refreshAthletes() {
-    Meteor.inputDependency.set(Meteor.inputDependency.get() + 1);
-}
+Meteor.inputDependency = new Tracker.Dependency();
 
 export let reloadSwiper = function (forceAthleteReload) {
     const inputNameSwiperEl = document.getElementById('input-name-swiper');
@@ -58,7 +52,7 @@ export let reloadSwiper = function (forceAthleteReload) {
 function populateAthlete(athlete) {
     if (!Server.db.isReady()) {
         Server.db.waitForReady(function () {
-            refreshAthletes();
+            Meteor.inputDependency.changed();
         });
         return {};
     }
@@ -211,10 +205,7 @@ Template.input.helpers({
         return getLastLogin();
     },
     athletes: function () {
-
-        const a = Meteor.inputDependency.get();
-        if (a === Meteor.lastInput) return Meteor.lastAthletes;
-        Meteor.lastInput = a;
+        Meteor.inputDependency.depend();
         let athletes = lodash.sortBy(getAthletes(), 'lastName');
 
         // Setting show male/female
@@ -240,11 +231,11 @@ Template.input.helpers({
             athletes = w.concat(m);
         }
 
-        athletes = lodash.map(athletes, function (athlete) {
+        reloadSwiper();
+
+        return lodash.map(athletes, function (athlete) {
             return populateAthlete(athlete);
         });
-        Meteor.lastAthletes = athletes;
-        return athletes;
     },
     sportTypes: function () {
         if (!Server.db.isReady()) {
@@ -285,7 +276,7 @@ Template.input.events({
         event.stopImmediatePropagation();
         event.target.blur();
         AccountManager.logout(getLastLogin());
-        refreshAthletes();
+        Meteor.inputDependency.changed();
         return false;
     },
     'click .return-to-login': function (event) {
@@ -306,5 +297,7 @@ Template.input.events({
 
 
 Template.input.onRendered(function () {
-    reloadSwiper();
+    Server.db.waitForReady(function () {
+        reloadSwiper();
+    });
 });
