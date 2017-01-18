@@ -9,7 +9,6 @@ Template.attempts.helpers({
         }
     },
     scoreWritePermission: function (metadata) {
-        Meteor.inputDependency.depend();
         return metadata.write_permission;
     }
 });

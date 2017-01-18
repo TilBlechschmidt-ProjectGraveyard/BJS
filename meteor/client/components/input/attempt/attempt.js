@@ -1,4 +1,5 @@
 import {Server} from "../../../../imports/api/database/ServerInterface";
+import {refreshAthletes} from "../input";
 
 
 function hasClass(element, cls) {
@@ -80,7 +81,7 @@ Template.attempt.events({
             if (updateMeasurement(getAthleteIDByElement(event.target), data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
                 event.target.value = "";
 
-            Meteor.inputDependency.changed();
+            refreshAthletes();
             event.stopPropagation();
             return false;
         }
@@ -102,6 +103,6 @@ Template.attempt.events({
         const data = event.target.dataset;
         if (updateMeasurement(getAthleteIDByElement(event.target), data.stid, data.attempt, event.target.value) && hasClass(event.target, "add-attempt-input"))
             event.target.value = "";
-        Meteor.inputDependency.changed();
+        refreshAthletes();
     }
 });

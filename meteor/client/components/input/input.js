@@ -10,7 +10,13 @@ import {checkPermission, updateSwiperProgress} from "../login/router";
 Meteor.input = {};
 Meteor.input.log = Log.getLogObject();
 
-Meteor.inputDependency = new Tracker.Dependency();
+Meteor.inputDependency = new ReactiveVar(0);
+Meteor.lastInput = -1;
+Meteor.lastAthletes = [];
+
+export function refreshAthletes() {
+    Meteor.inputDependency.set(Meteor.inputDependency.get() + 1);
+}
 
 export let reloadSwiper = function (forceAthleteReload) {
     const inputNameSwiperEl = document.getElementById('input-name-swiper');
@@ -47,34 +53,12 @@ export let reloadSwiper = function (forceAthleteReload) {
         control: nameSwiper,
         keyboardControl: true
     });
-
-    // inputSwiper.on('transitionEnd', function (swiper) {
-    //     setTimeout(function () {
-    //         Session.set("inputSlideIndex", location.hash.substr(1));
-    //     }, 200);
-    // });
-    //
-    // if ((!location.hash || forceAthleteReload) && Session.get("inputSlideIndex") !== undefined) {
-    //     console.log("SETTING HASH");
-    //     const athleteID = Session.get("inputSlideIndex");
-    //     setTimeout(function () {
-    //         const slides = document.querySelectorAll(".swiper-slide[data-hash]:not(.swiper-slide-duplicate):not(.swiper-slide-duplicate-prev)");
-    //         let slideID;
-    //         for (slideID in slides) {
-    //             if (!slides.hasOwnProperty(slideID)) continue;
-    //             if (slides[slideID].dataset.hash == athleteID)
-    //                 break;
-    //         }
-    //         if (slideID === undefined) return;
-    //         inputSwiper.slideTo(parseInt(slideID)+1);
-    //     }, 500);
-    // }
 };
 
 function populateAthlete(athlete) {
     if (!Server.db.isReady()) {
         Server.db.waitForReady(function () {
-            Meteor.inputDependency.changed();
+            refreshAthletes();
         });
         return {};
     }
@@ -227,7 +211,10 @@ Template.input.helpers({
         return getLastLogin();
     },
     athletes: function () {
-        Meteor.inputDependency.depend();
+
+        const a = Meteor.inputDependency.get();
+        if (a === Meteor.lastInput) return Meteor.lastAthletes;
+        Meteor.lastInput = a;
         let athletes = lodash.sortBy(getAthletes(), 'lastName');
 
         // Setting show male/female
@@ -253,11 +240,11 @@ Template.input.helpers({
             athletes = w.concat(m);
         }
 
-        reloadSwiper();
-
-        return lodash.map(athletes, function (athlete) {
+        athletes = lodash.map(athletes, function (athlete) {
             return populateAthlete(athlete);
         });
+        Meteor.lastAthletes = athletes;
+        return athletes;
     },
     sportTypes: function () {
         if (!Server.db.isReady()) {
@@ -298,7 +285,7 @@ Template.input.events({
         event.stopImmediatePropagation();
         event.target.blur();
         AccountManager.logout(getLastLogin());
-        Meteor.inputDependency.changed();
+        refreshAthletes();
         return false;
     },
     'click .return-to-login': function (event) {
@@ -319,7 +306,5 @@ Template.input.events({
 
 
 Template.input.onRendered(function () {
-    Server.db.waitForReady(function () {
-        reloadSwiper();
-    });
+    reloadSwiper();
 });

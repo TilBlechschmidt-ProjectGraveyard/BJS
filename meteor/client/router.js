@@ -1,4 +1,5 @@
 import {AccountManager} from "../imports/api/accountManagement/AccountManager";
+import {refreshAthletes} from "./components/input/input";
 
 FlowRouter.triggers.enter(function () {
     Meteor.f7 = new Framework7({
@@ -16,7 +17,7 @@ FlowRouter.notFound = {
 FlowRouter.route('/logout', {
     action: function () {
         AccountManager.logoutAll();
-        Meteor.inputDependency.changed();
+        refreshAthletes();
         FlowRouter.go('/login');
     }
 });
