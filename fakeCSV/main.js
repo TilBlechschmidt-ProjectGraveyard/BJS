@@ -92,7 +92,6 @@ var csv = json2csv({
     ]
 });
 
-console.log(csv);
 fs.writeFile('mockData.csv', csv, function(err) {
   if (err) throw err;
   console.log('file saved');
