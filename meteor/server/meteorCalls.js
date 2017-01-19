@@ -3,7 +3,6 @@ import {Log} from "../imports/api/log";
 import {encryptAsAdmin, encryptAs, getAdminAccount} from "./helpers";
 import {Crypto} from "../imports/api/crypto/crypto";
 import {Athlete} from "../imports/api/logic/athlete";
-import {filterUndefined} from "../imports/api/logic/general";
 import {getContestTypeByID} from "../imports/api/logic/contestType";
 import {genUUID} from "../imports/api/crypto/pwdgen";
 import {asyncServerFunctionChannel} from "../imports/api/streamer";
@@ -65,18 +64,86 @@ export function registerSyncHandler() {
 
 const asyncServerFunctions = {
     getAthletes: function (account, data) {
+        if (!account.isAdmin) return false;
+
         const accounts = Meteor.COLLECTIONS.Accounts.handles[data.contestID].find().fetch().concat([getAdminAccount()]);
         const encryptedAthletes = Meteor.COLLECTIONS.Athletes.handles[data.contestID].find().fetch();
         const log = Log.getLogObject();
 
-        // Return false to deny permission
         return {
             entries: encryptedAthletes,
             callback: function (encryptedAthlete) {
                 return Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, data.require_signature, data.require_group_check).getMinimizedVersion();
             }
         }
-    }
+    },
+    generateCertificates: function (account, data) {
+        if (!account.canViewResults) return false;
+
+        console.log("generateCertificates");
+
+        const ct = Server.contest.getType();
+        const log = Log.getLogObject();
+
+        log.info("Die Urkunden wurden von '" + account.name + "' generiert.");
+
+        const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
+        const adminAccountAcs = [getAdminAccount().ac];
+
+        return {
+            entries: _.map(data.athleteIDs, function (athleteID) {
+                return Meteor.COLLECTIONS.Athletes.handle.findOne({_id: athleteID});
+            }),
+            callback: function (encryptedAthlete) {
+                const athlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, true);
+                const currentScoreObject = Crypto.tryDecrypt(log, athlete.currentScore, adminAccountAcs);
+                const stScoresObject = Crypto.tryDecrypt(log, athlete.stScores, adminAccountAcs);
+                const certificateObject = Crypto.tryDecrypt(log, athlete.certificate, adminAccountAcs);
+                const certificateScoreObject = Crypto.tryDecrypt(log, athlete.certificateScore, adminAccountAcs);
+                const certificateTimeObject = Crypto.tryDecrypt(log, athlete.certificateTime, adminAccountAcs);
+                const certificatedByObject = Crypto.tryDecrypt(log, athlete.certificatedBy, adminAccountAcs);
+                const validObject = Crypto.tryDecrypt(log, athlete.certificateValid, adminAccountAcs);
+
+                if (!(currentScoreObject && currentScoreObject.signatureEnforced &&
+                    stScoresObject && stScoresObject.signatureEnforced &&
+                    certificateObject && certificateObject.signatureEnforced &&
+                    certificateScoreObject && certificateScoreObject.signatureEnforced &&
+                    certificateTimeObject && certificateTimeObject.signatureEnforced &&
+                    certificatedByObject && certificatedByObject.signatureEnforced &&
+                    validObject && validObject.signatureEnforced)) return undefined;
+
+                const stScores = [];
+
+                for (let stID in stScoresObject.data) {
+                    if (!stScoresObject.data.hasOwnProperty(stID)) continue;
+                    stScores.push({
+                        stID: stID,
+                        name: ct.getNameOfSportType(stID),
+                        score: stScoresObject.data[stID]
+                    });
+                }
+
+                return {
+                    name: athlete.getFullName(),
+                    firstName: athlete.firstName,
+                    lastName: athlete.lastName,
+                    group: athlete.group,
+                    isMale: athlete.isMale,
+                    ageGroup: athlete.ageGroup,
+                    handicap: athlete.handicap,
+                    id: athlete.id,
+                    certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
+                    certificateUpdate: (certificateScoreObject.data > 0) && (certificateScoreObject.data !== currentScoreObject.data),
+                    certificateTime: certificateTimeObject.data,
+                    certificatedBy: certificatedByObject.data,
+                    valid: validObject.data,
+                    score: currentScoreObject.data,
+                    stScores: stScores,
+                    certificate: certificateObject.data
+                };
+            }
+        };
+    },
 };
 
 const serverFunctions = {
@@ -104,11 +171,15 @@ const serverFunctions = {
         pendingAsyncCalls[uuid] = function () {
             waterfall(context.entries.map(function (entry) {
                 return function (nextCallback) {
-                    asyncServerFunctionChannel.emit(uuid, encryptAs({
-                        index: index,
-                        size: size,
-                        data: context.callback(entry)
-                    }, account));
+                    const data = context.callback(entry);
+
+                    if (data !== undefined) {
+                        asyncServerFunctionChannel.emit(uuid, encryptAs({
+                            index: index,
+                            size: size,
+                            data: data
+                        }, account));
+                    }
 
                     ++index;
                     if (runningAsyncCalls[uuid] === false) doneCallback();
@@ -351,75 +422,6 @@ const serverFunctions = {
     retrieveCustomAccounts: function (account, data) {
         if (!account.isAdmin) return false;
         return Meteor.COLLECTIONS.Contests.handle.findOne({_id: data.contestID}).customAccounts || [];
-    },
-    /**
-     * Adds a contest
-     * @param {Account} account - An output account
-     * @param {{athleteIDs: string[]}} data - Data object
-     * @returns {boolean|object[]}
-     */
-    generateCertificates: function (account, data) {
-        if (!account.canViewResults) return false;
-
-        const ct = Server.contest.getType();
-        const log = Log.getLogObject();
-
-        log.info("Die Urkunden wurden von '" + account.name + "' generiert.");
-
-        const accounts = Meteor.COLLECTIONS.Accounts.handle.find().fetch();
-
-        let mapAthletet = function (athleteID) {
-            const encryptedAthlete = Meteor.COLLECTIONS.Athletes.handle.findOne({_id: athleteID});
-            const athlete = Athlete.decryptFromDatabase(log, encryptedAthlete, accounts, true);
-            const currentScoreObject = Crypto.tryDecrypt(log, athlete.currentScore, [getAdminAccount().ac]);
-            const stScoresObject = Crypto.tryDecrypt(log, athlete.stScores, [getAdminAccount().ac]);
-            const certificateObject = Crypto.tryDecrypt(log, athlete.certificate, [getAdminAccount().ac]);
-            const certificateScoreObject = Crypto.tryDecrypt(log, athlete.certificateScore, [getAdminAccount().ac]);
-            const certificateTimeObject = Crypto.tryDecrypt(log, athlete.certificateTime, [getAdminAccount().ac]);
-            const certificatedByObject = Crypto.tryDecrypt(log, athlete.certificatedBy, [getAdminAccount().ac]);
-            const validObject = Crypto.tryDecrypt(log, athlete.certificateValid, [getAdminAccount().ac]);
-
-            if (!(currentScoreObject && currentScoreObject.signatureEnforced &&
-                stScoresObject && stScoresObject.signatureEnforced &&
-                certificateObject && certificateObject.signatureEnforced &&
-                certificateScoreObject && certificateScoreObject.signatureEnforced &&
-                certificateTimeObject && certificateTimeObject.signatureEnforced &&
-                certificatedByObject && certificatedByObject.signatureEnforced &&
-                validObject && validObject.signatureEnforced)) return undefined;
-
-            const stScores = [];
-
-            for (let stID in stScoresObject.data) {
-                if (!stScoresObject.data.hasOwnProperty(stID)) continue;
-                stScores.push({
-                    stID: stID,
-                    name: ct.getNameOfSportType(stID),
-                    score: stScoresObject.data[stID]
-                });
-            }
-
-            return {
-                name: athlete.getFullName(),
-                firstName: athlete.firstName,
-                lastName: athlete.lastName,
-                group: athlete.group,
-                isMale: athlete.isMale,
-                ageGroup: athlete.ageGroup,
-                handicap: athlete.handicap,
-                id: athlete.id,
-                certificateWritten: currentScoreObject.data === certificateScoreObject.data && certificateScoreObject.data > 0,
-                certificateUpdate: (certificateScoreObject.data > 0) && (certificateScoreObject.data !== currentScoreObject.data),
-                certificateTime: certificateTimeObject.data,
-                certificatedBy: certificatedByObject.data,
-                valid: validObject.data,
-                score: currentScoreObject.data,
-                stScores: stScores,
-                certificate: certificateObject.data,
-                certificateName: certificateObject.data === 2 ? "Ehrenurkunde" : (certificateObject.data === 1 ? "Siegerurkunde" : (certificateObject.data === 0 ? "Teilnehmerurkunde" : "Fehler"))
-            };
-        };
-
-        return filterUndefined(_.map(data.athleteIDs, mapAthletet));
     },
     /**
      * Returns all ips of the server

@@ -15,21 +15,37 @@ const statusSettings = new ReactiveVar({ready: true, update: true, notReady: tru
 
 const baseSortingData = require('./baseSortingData');
 const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
+let asyncUUID = undefined;
 
+async function loadAllAthlets() {
+    Meteor.reactiveAthletes.set([]);
+    updatedGroups();
 
-function loadAllAthlets() {
-    Server.certificates.generate(
+    if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
+
+    const athletes = [];
+
+    asyncUUID = await Server.certificates.getAsync(
         AccountManager.getOutputAccount().account,
         _.map(Meteor.COLLECTIONS.Athletes.handle.find({}).fetch(), function (enc_athlete) {
             return enc_athlete._id
         }),
-        function (data) {
-            Meteor.reactiveAthletes.set(_.map(data, function (athlete) {
-                athlete.iconID = statusToNumber(athlete);
-                return athlete;
-            }));
+        function (athlete, last, entry) {
+            if (entry.index == 0)
+                hideIndicator();
+            if (!athlete) {
+                Meteor.f7.alert("Es ist ein Fehler beim Laden der Athleten aufgetreten!", "Fehler");
+                return;
+            }
+            athlete.iconID = statusToNumber(athlete);
+
+            athlete.certificateName = athlete.certificate === 2 ? "Ehrenurkunde" : (athlete.certificate === 1 ? "Siegerurkunde" : (athlete.certificate === 0 ? "Teilnehmerurkunde" : "Fehler"));
+
+            athletes.push(athlete);
+            Meteor.reactiveAthletes.set(athletes);
             updatedGroups();
-            hideIndicator();
+        }, function (entry) {
+            if (entry.size == 0) hideIndicator();
         }
     );
 }

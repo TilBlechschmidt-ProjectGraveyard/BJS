@@ -170,14 +170,26 @@ export let Server = {
             runServerFunction('certificateUpdate', account, {id: id}, callback);
         },
 
+        // /**
+        //  * Generates certificates for the current contest
+        //  * @param {Account} account - Output account
+        //  * @param {object[]} athleteIDs - List of athlete ids
+        //  * @param [callback] - optional callback
+        //  */
+        // generate: function (account, athleteIDs, callback) {
+        //     runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        // },
         /**
          * Generates certificates for the current contest
          * @param {Account} account - Output account
          * @param {object[]} athleteIDs - List of athlete ids
          * @param [callback] - optional callback
+         * @param [doneCallback]
          */
-        generate: function (account, athleteIDs, callback) {
-            runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        getAsync: function (account, athleteIDs, callback, doneCallback) {
+            return runAsyncServerFunction('generateCertificates', account, {
+                athleteIDs: athleteIDs,
+            }, callback, doneCallback);
         },
     },
 
