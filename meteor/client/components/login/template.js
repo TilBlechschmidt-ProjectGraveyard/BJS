@@ -76,7 +76,6 @@ export let initSwiper = function () {
 
 Template.login.helpers({
     firstLoggedIn: function () {
-        Meteor.inputDependency.depend();
         return sessionStorage.getItem("firstLogin");
     }
 });

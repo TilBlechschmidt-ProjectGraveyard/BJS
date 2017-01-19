@@ -48,7 +48,7 @@ export function initAthletes() {
                 const valid = ct.validate(log, athlete, accounts, true);
                 const certificate = ct.generateCertificate(log, athlete, accounts, true);
 
-                handle.update({_id: doc._id}, {
+                handle.direct.update({_id: doc._id}, {
                     $set: {
                         currentScore: encryptAsAdmin(certificate.score),
                         stScores: encryptAsAdmin(certificate.stScores),
@@ -60,7 +60,7 @@ export function initAthletes() {
         });
 
         handle.after.insert(function (userId, doc, fieldNames, modifier) {
-            handle.update({_id: doc._id}, {
+            handle.direct.update({_id: doc._id}, {
                 $set: {
                     currentScore: encryptAsAdmin(0),
                     stScores: encryptAsAdmin({}),
@@ -82,19 +82,16 @@ export function initAthletes() {
         const log = Log.getLogObject();
         const ct = CONTEST_TYPES[0].object;
 
-        //TODO include
-        // const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Nadel437Verräter', 'chilli'));
-        // const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('Termin226Frucht', 'chilli'));
-        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('1234', 'chilli'));
-        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('12345', 'chilli'));
-        const groupAccountC = new Account('Va', ['Va'], [], Crypto.generateAC('Bahnhof495Badewanne', 'chilli'));
-        const groupAccountD = new Account('Vb', ['Vb'], [], Crypto.generateAC('Rohr560Umzug', 'chilli'));
-        const groupAccountE = new Account('IVa', ['IVa'], [], Crypto.generateAC('Fensterbank830Bohrmaschine', 'chilli'));
-        const groupAccountF = new Account('IVb', ['IVb'], [], Crypto.generateAC('Dachboden31Windmühle', 'chilli'));
-        const groupAccountG = new Account('UIIIa', ['UIIIa'], [], Crypto.generateAC('Himmel757Leichtathletik', 'chilli'));
-        const groupAccountH = new Account('UIIIb', ['UIIIb'], [], Crypto.generateAC('Not879Netz', 'chilli'));
-        const groupAccountI = new Account('OIIIa', ['OIIIa'], [], Crypto.generateAC('Spiegelei501Eifersucht', 'chilli'));
-        const groupAccountJ = new Account('OIIIb', ['OIIIb'], [], Crypto.generateAC('Käfig452Wesen', 'chilli'));
+        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Mars456Kohl', 'chilli'));
+        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('Doktor375Dialog', 'chilli'));
+        const groupAccountC = new Account('Va', ['Va'], [], Crypto.generateAC('ARD865Paare', 'chilli'));
+        const groupAccountD = new Account('Vb', ['Vb'], [], Crypto.generateAC('Grosny21Jutta', 'chilli'));
+        const groupAccountE = new Account('IVa', ['IVa'], [], Crypto.generateAC('Fisch799V', 'chilli'));
+        const groupAccountF = new Account('IVb', ['IVb'], [], Crypto.generateAC('Stolpe278Idee', 'chilli'));
+        const groupAccountG = new Account('UIIIa', ['UIIIa'], [], Crypto.generateAC('Hier968Kalb', 'chilli'));
+        const groupAccountH = new Account('UIIIb', ['UIIIb'], [], Crypto.generateAC('Kinn13Horn', 'chilli'));
+        const groupAccountI = new Account('OIIIa', ['OIIIa'], [], Crypto.generateAC('Ton897Vieh', 'chilli'));
+        const groupAccountJ = new Account('OIIIb', ['OIIIb'], [], Crypto.generateAC('Schal794Menge', 'chilli'));
 
 
         this.handle.insert(new Athlete(log, 'Jonas', 'Rothmann', 2006, true, 'VIa', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, groupAccountA));

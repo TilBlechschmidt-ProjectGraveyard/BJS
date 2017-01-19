@@ -7,10 +7,11 @@
         <ul>
             {{#each c in (arrayify startClasses)}}
                 {{#with c}}
-                    <li data-id="{{old_object_name}}">
+                    <li data-id="{{old_object_name}}" style="{{#if readOnly}}pointer-events: none{{/if}}">
                         <a href="#" class="item-link item-content startClassSelect">
                             <div class="item-inner">
-                                <div class="item-title-row">
+                                <div class="item-title-row"
+                                     style="{{#if readOnly}} background-image: none; padding-right: 0;{{/if}}">
                                     <div class="item-title">{{name}}</div>
                                     <div class="item-after">{{old_object_name}}</div>
                                 </div>

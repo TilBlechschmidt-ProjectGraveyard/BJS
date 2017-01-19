@@ -1,8 +1,19 @@
 import {currentCompID} from "../config";
-import {refreshErrorState, insertAthlete} from "./athleteList";
+import {addRawAthlete} from "./dataInterface";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {Athlete} from "../../../../imports/api/logic/athlete";
+import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 
+
+const CurrentParsedFile = ReactiveVar(undefined);
+const CurrentSelectedIndexes = ReactiveVar({
+    firstName: 0,
+    lastName: 0,
+    ageGroup: 0,
+    gender: 0,
+    group: 0,
+});
+export const CurrentFileName = ReactiveVar("");
 
 function findIndexByRegex(headerFields, regex) {
     return lodash.findIndex(headerFields, function (field) {
@@ -11,65 +22,103 @@ function findIndexByRegex(headerFields, regex) {
     });
 }
 
-function hasDuplicates(a) {
-    return _.uniq(a).length !== a.length;
+function getCt() {
+    const compID = currentCompID.get();
+    return Server.contest.getType(compID);
 }
 
 function correlateHeaders(headerFields) {
-    const firstname = findIndexByRegex(headerFields, /(vor|tauf|ruf|first|fore|given|christian)/gi);
+    const headerIndices = {};
 
-    const lastname = findIndexByRegex(headerFields, /(nach|eigen|familien|vater|last|sur|family)/gi);
+    headerIndices.firstName = findIndexByRegex(headerFields, /(vor|tauf|ruf|first|fore|given|christian)/gi);
+    headerIndices.lastName = findIndexByRegex(headerFields, /(nach|eigen|familien|vater|last|sur|family)/gi);
+    headerIndices.ageGroup = findIndexByRegex(headerFields, /(alter|geburt|jahr|generation|stufe|geb|age|year|birth|life)/gi);
+    headerIndices.gender = findIndexByRegex(headerFields, /(geschlecht|gattung|sex|gender)/gi);
+    headerIndices.group = findIndexByRegex(headerFields, /(gruppe|klasse|verband|gesell|team|verein|gemein|bund|mannschaft|group|col)/gi);
 
-    const ageGroup = findIndexByRegex(headerFields, /(alter|geburt|jahr|generation|stufe|geb|age|year|birth|life)/gi);
-
-    const gender = findIndexByRegex(headerFields, /(geschlecht|gattung|sex|gender)/gi);
-
-    const group = findIndexByRegex(headerFields, /(gruppe|klasse|verband|gesell|team|verein|gemein|bund|mannschaft|group|col)/gi);
-
-    const headerIndices = [firstname, lastname, ageGroup, gender, group];
-    if (hasDuplicates(headerIndices))
-        console.warn("Duplicate header fields @ CSV File");
-
-    return {
-        firstName: headerFields[firstname],
-        lastName: headerFields[lastname],
-        ageGroup: headerFields[ageGroup],
-        gender: headerFields[gender],
-        group: headerFields[group]
-    };
+    CurrentSelectedIndexes.set(headerIndices);
 }
 
-function processCSVResult(dataset, field, ct) {
-    for (let data in dataset) {
-        if (!dataset.hasOwnProperty(data)) continue;
-        data = dataset[data];
-        const gender = data[field["gender"]];
-        const athlete = new Athlete(Meteor.config.log, data[field["firstName"]], data[field["lastName"]], parseInt(data[field["ageGroup"]]), gender.match(/m/gi) !== null, data[field["group"]], '0', ct.maxAge, ct);
-        insertAthlete(athlete);
-    }
-    refreshErrorState();
+function processCSVAthlete(dataset, fieldNames, indexes, ct) {
+    const gender = dataset[fieldNames[indexes.gender]];
+    return new Athlete(Meteor.config.log, dataset[fieldNames[indexes.firstName]], dataset[fieldNames[indexes.lastName]], parseInt(dataset[fieldNames[indexes.ageGroup]]), gender.match(/m/gi) !== null, dataset[fieldNames[indexes.group]], '0', ct.maxAge, ct, genUUID());
 }
 
 export function parseCSVFile(file) {
+    CurrentFileName.set(file.name);
     Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
-            const compID = currentCompID.get();
-            const ct = Server.contest.getType(compID);
-            const field = correlateHeaders(results.meta.fields);
-            processCSVResult(results.data, field, ct);
+            CurrentParsedFile.set(results);
+            correlateHeaders(results.meta.fields);
         },
     });
 }
 
+function importDisabled() {
+    return CurrentParsedFile.get() == undefined;
+}
+
 Template.csvImport.events({
     'change input[type=file]#csv-upload': function (event) {
-        const files = event.target.files;
-        for (let file in files) {
-            if (!files.hasOwnProperty(file)) continue;
-            file = files[file];
-            parseCSVFile(file);
+        parseCSVFile(event.target.files[0]); //only one file is allowed
+    },
+    'change .csv-field-select': function (event) {
+        const indexes = CurrentSelectedIndexes.get();
+        indexes[event.target.dataset.fieldname] = event.target.selectedIndex;
+        CurrentSelectedIndexes.set(indexes);
+    },
+    'click #import-button': function () {
+        if (importDisabled()) return;
+
+        const file = CurrentParsedFile.get();
+
+        if (!file) return;
+
+        const indexes = CurrentSelectedIndexes.get();
+        const ct = getCt();
+
+        for (let dataID in file.data) {
+            if (!file.data.hasOwnProperty(dataID)) continue;
+            const data = file.data[dataID];
+            const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
+            addRawAthlete(athlete);
         }
+        Meteor.f7.closeModal(".popup-csv-import");
+    }
+});
+
+Template.csvImport.helpers({
+    'csvFieldNames': function () {
+        const currentParsedFile = CurrentParsedFile.get();
+        return currentParsedFile ? currentParsedFile.meta.fields : [];
+    },
+    'selectedIndexes': function () {
+        return CurrentSelectedIndexes.get();
+    },
+    'fieldNameByIndex': function (index) {
+        const currentParsedFile = CurrentParsedFile.get();
+        return currentParsedFile ? currentParsedFile.meta.fields[index] : "";
+    },
+    'selectedString': function (index, requiredIndex) {
+        return (index == requiredIndex) ? "selected" : ""
+    },
+    'getExample': function () {
+        const file = CurrentParsedFile.get();
+        const indexes = CurrentSelectedIndexes.get();
+        if (!file || file.data.length == 0) return {};
+
+        return processCSVAthlete(file.data[0], file.meta.fields, indexes, getCt());
+    },
+    'genderString': function (isMale) {
+        return isMale ? "Männlich" : "Weiblich";
+    },
+    'importButtonDisabled': function () {
+        return importDisabled();
+    },
+    'fileName': function () {
+        const name = CurrentFileName.get();
+        return name == "" ? "Keine Datei ausgewählt." : name;
     }
 });

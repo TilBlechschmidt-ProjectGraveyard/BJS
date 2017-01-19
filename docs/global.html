@@ -3046,7 +3046,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="client_components_config_athleteList_athleteList.js.html">client/components/config/athleteList/athleteList.js</a>, <a href="client_components_config_athleteList_athleteList.js.html#line96">line 96</a>
+        <a href="client_components_config_athleteList_dataInterface.js.html">client/components/config/athleteList/dataInterface.js</a>,
+        <a href="client_components_config_athleteList_dataInterface.js.html#line61">line 61</a>
     </li></ul></dd>
     
 
@@ -3223,8 +3224,8 @@
 
 
     <h4 class="name" id="runAsyncServerFunction"><span class="type-signature"></span>runAsyncServerFunction<span
-            class="signature">(name, account, data, callback)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
-    </h4>
+            class="signature">(name, account, data, callback, doneCallback<span class="signature-attributes">opt</span>)</span><span
+            class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
 
 
     <p class="summary">Runs a function server-side in an asynchronous manner and takes care of de-/encryption for
@@ -3239,7 +3240,7 @@
             <ul class="dummy">
                 <li>
                     <a href="imports_api_database_ServerInterface.js.html">imports/api/database/ServerInterface.js</a>,
-                    <a href="imports_api_database_ServerInterface.js.html#line66">line 66</a>
+                    <a href="imports_api_database_ServerInterface.js.html#line68">line 68</a>
                 </li>
             </ul>
         </dd>
@@ -3267,6 +3268,9 @@
             <th>Type</th>
 
 
+            <th>Attributes</th>
+
+
             <th class="last">Description</th>
         </tr>
         </thead>
@@ -3283,6 +3287,12 @@
 
 
                 <span class="param-type">string</span>
+
+
+            </td>
+
+
+            <td class="attributes">
 
 
             </td>
@@ -3306,6 +3316,12 @@
             </td>
 
 
+            <td class="attributes">
+
+
+            </td>
+
+
             <td class="description last"><p>The account that is used to authenticate</p></td>
         </tr>
 
@@ -3319,6 +3335,12 @@
 
 
                 <span class="param-type">*</span>
+
+
+            </td>
+
+
+            <td class="attributes">
 
 
             </td>
@@ -3343,8 +3365,41 @@
             </td>
 
 
+            <td class="attributes">
+
+
+            </td>
+
+
             <td class="description last"><p>A callback with one parameter: The return value of the server function.
                 Function returns a promise if it is undefined.</p></td>
+        </tr>
+
+
+        <tr>
+
+            <td class="name"><code>doneCallback</code></td>
+
+
+            <td class="type">
+
+
+                <span class="param-type">function</span>
+
+
+            </td>
+
+
+            <td class="attributes">
+
+                &lt;optional><br>
+
+
+            </td>
+
+
+            <td class="description last"><p>A callback that gets called when the last entry has been processed or in
+                case there were none. Called with the raw data object</p></td>
         </tr>
 
 
@@ -4064,7 +4119,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_contestTypes_athletics.js.html">imports/api/logic/contestTypes/athletics.js</a>, <a href="imports_api_logic_contestTypes_athletics.js.html#line30">line 30</a>
+        <a href="imports_api_logic_contestTypes_athletics.js.html">imports/api/logic/contestTypes/athletics.js</a>, <a
+            href="imports_api_logic_contestTypes_athletics.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -4241,47 +4297,41 @@
     
 
         <tr>
-            
-                <td class="name"><code>w</code></td>
+
+            <td class="name"><code>w</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AthleticsGenderData">AthleticsGenderData</a></span>
+
+
+                <span class="param-type"><a href="global.html#AthleticsGenderData">AthleticsGenderData</a></span>
 
 
             
             </td>
 
-            
 
-            
-
-            <td class="description last"><p>An object containing information about how to calculate the score for female participant</p></td>
+            <td class="description last"><p>An object containing information about how to calculate the score for female
+                participant</p></td>
         </tr>
 
-    
 
         <tr>
-            
-                <td class="name"><code>m</code></td>
-            
+
+            <td class="name"><code>m</code></td>
+
 
             <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#AthleticsGenderData">AthleticsGenderData</a></span>
 
 
-            
+                <span class="param-type"><a href="global.html#AthleticsGenderData">AthleticsGenderData</a></span>
+
+
             </td>
 
-            
 
-            
-
-            <td class="description last"><p>An object containing information about how to calculate the score for male participant</p></td>
+            <td class="description last"><p>An object containing information about how to calculate the score for male
+                participant</p></td>
         </tr>
 
     
@@ -4323,7 +4373,8 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imports_api_logic_contestTypes_gymnastics.js.html">imports/api/logic/contestTypes/gymnastics.js</a>, <a href="imports_api_logic_contestTypes_gymnastics.js.html#line15">line 15</a>
+        <a href="imports_api_logic_contestTypes_gymnastics.js.html">imports/api/logic/contestTypes/gymnastics.js</a>, <a
+            href="imports_api_logic_contestTypes_gymnastics.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -4500,22 +4551,19 @@
     
 
         <tr>
-            
-                <td class="name"><code>age</code></td>
+
+            <td class="name"><code>age</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
+
+
+                <span class="param-type">Array.&lt;number></span>
 
 
             
             </td>
 
-            
-
-            
 
             <td class="description last"><p>A list of ages which are allowed to participate</p></td>
         </tr>
@@ -5101,6 +5149,7 @@
 
 
     </dl>
+
 
 
     <h5 class="subsection-title">Properties:</h5>
@@ -6367,13 +6416,15 @@
         <dd class="tag-source">
             <ul class="dummy">
                 <li>
-                    <a href="server_main.js.html">server/main.js</a>, <a href="server_main.js.html#line118">line 118</a>
+                    <a href="server_meteorCalls.js.html">server/meteorCalls.js</a>, <a
+                        href="server_meteorCalls.js.html#line219">line 219</a>
                 </li>
             </ul>
         </dd>
 
 
     </dl>
+
 
 
     <h5 class="subsection-title">Properties:</h5>
@@ -6459,7 +6510,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 17 2017 00:47:14
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jan 19 2017 12:32:37
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

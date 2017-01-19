@@ -227,7 +227,7 @@ export let Gymnastics = {
      */
     getCertificateInfo: function (log, athlete) {
         if (athlete.check(log) === false) {
-            log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
+            log.error('Athletenprüfung fehlgechlagen. Bitte überprüfen Sie die Einstellungen des Athleten (' + athlete.getFullName() + ').');
             return undefined;
         }
 

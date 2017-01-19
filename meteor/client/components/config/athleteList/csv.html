@@ -1,0 +1,80 @@
+<template name="csvImport">
+    <table class="popupTable">
+        <tr>
+            <th>Import</th>
+            <th>CSV Feld</th>
+            <th>Beispiel</th>
+        </tr>
+        <tr>
+            <td>Datei</td>
+            <td>
+                <input type="file" id="csv-upload" hidden>
+                <button type="button" onclick="document.getElementById('csv-upload').click();">Datei auswählen</button>
+            </td>
+            <td>{{fileName}}</td>
+        </tr>
+
+        <tr>
+            <td>Vorname</td>
+            <td>
+                <select id="csv-first-name" class="csv-field-select" data-fieldname="firstName">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.firstName @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.firstName}}</td>
+        </tr>
+        <tr>
+            <td>Nachname</td>
+            <td>
+                <select id="csv-last-name" class="csv-field-select" data-fieldname="lastName">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.lastName @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.lastName}}</td>
+        </tr>
+        <tr>
+            <td>Geschlecht</td>
+            <td>
+                <select id="csv-gender" class="csv-field-select" data-fieldname="gender">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.gender @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{genderString getExample.isMale}}</td>
+        </tr>
+        <tr>
+            <td>Geburtsjahr</td>
+            <td>
+                <select id="csv-age-group" class="csv-field-select" data-fieldname="ageGroup">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.ageGroup @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.ageGroup}}</td>
+        </tr>
+        <tr>
+            <td>Gruppe</td>
+            <td>
+                <select id="csv-group" class="csv-field-select" data-fieldname="group">
+                    {{#each n in csvFieldNames}}
+                        <option value="{{n}}" {{selectedString selectedIndexes.group @index}}>{{n}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>{{getExample.group}}</td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <div id="import-button" class="big-button" style="{{#if
+            importButtonDisabled}}background-color: #f2f2f2; color: black; cursor: auto;{{else}}background-color: #4CAF50;{{/if}}">
+        Import starten
+    </div>
+</template>

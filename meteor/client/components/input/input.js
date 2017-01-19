@@ -47,28 +47,6 @@ export let reloadSwiper = function (forceAthleteReload) {
         control: nameSwiper,
         keyboardControl: true
     });
-
-    // inputSwiper.on('transitionEnd', function (swiper) {
-    //     setTimeout(function () {
-    //         Session.set("inputSlideIndex", location.hash.substr(1));
-    //     }, 200);
-    // });
-    //
-    // if ((!location.hash || forceAthleteReload) && Session.get("inputSlideIndex") !== undefined) {
-    //     console.log("SETTING HASH");
-    //     const athleteID = Session.get("inputSlideIndex");
-    //     setTimeout(function () {
-    //         const slides = document.querySelectorAll(".swiper-slide[data-hash]:not(.swiper-slide-duplicate):not(.swiper-slide-duplicate-prev)");
-    //         let slideID;
-    //         for (slideID in slides) {
-    //             if (!slides.hasOwnProperty(slideID)) continue;
-    //             if (slides[slideID].dataset.hash == athleteID)
-    //                 break;
-    //         }
-    //         if (slideID === undefined) return;
-    //         inputSwiper.slideTo(parseInt(slideID)+1);
-    //     }, 500);
-    // }
 };
 
 function populateAthlete(athlete) {

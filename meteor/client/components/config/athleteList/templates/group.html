@@ -1,0 +1,41 @@
+<template name="config_group">
+    <div class="content-block-title collapsible collapse-height-100 {{#if g.collapsed}}collapsed{{/if}}"
+         style="position: relative" data-gid="{{g.id}}">
+        {{g.name}}
+        {{#if not readOnly}}
+            <i class="fa fa-pencil rename-group" aria-hidden="true"
+               style="cursor: pointer; padding-left:5px"></i>
+            <i class="fa fa-remove remove-group" aria-hidden="true"
+               style="cursor: pointer; padding-left:5px"></i>
+        {{/if}}
+        <div class="align-right fade {{#if not (isEmpty g.athletes)}}fade-in{{/if}}"
+             style="position: absolute; bottom: 0; right: 0; cursor: pointer;">
+            <i class="f7-icons collapse-group" style="font-size: 14px;">chevron_up</i>
+        </div>
+    </div>
+    <div class="list-block accordion-list">
+        <ul id="athlete-list-{{g.id}}">
+            {{#each a in g.athletes}}
+                {{> config_athlete a=a index=@index readOnly=readOnly}}
+            {{/each}}
+            {{#if not readOnly}}
+                <li class="button-highlight add-athlete collapsible collapse-height-100
+                            {{#if g.collapsed}}collapsed{{/if}}" data-id="{{g.id}}">
+                    <div class="item-content">
+                        <div class="item-media">
+                            <i class="f7-icons" style="margin-left: 10px;">add</i>
+                        </div>
+                        <div class="item-inner">
+                            <div style="display: inline-block">
+                                <div class="item-title" style="display: inline-block; vertical-align: middle;">
+                                    Athleten hinzufügen
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/if}}
+        </ul>
+        <!--<div class="list-block-label">List block label text goes here</div>-->
+    </div>
+</template>

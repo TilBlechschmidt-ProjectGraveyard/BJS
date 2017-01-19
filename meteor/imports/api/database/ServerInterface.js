@@ -10,7 +10,7 @@ if (Meteor.isClient) {
     initCollections();
 }
 
-function throwError(account, returnPromise) {
+function throwError(name, callback, account, returnPromise, data) {
     const err = new Error("Error whilst calling a server function.");
     console.error("-------- Error Context --------");
     console.error("Function called:", name);
@@ -40,7 +40,7 @@ function runServerFunction(name, account, data, callback) {
         if (data) {
             if (typeof callback === 'function') callback(data.data);
         } else if (Meteor.isClient) {
-            throwError(account, returnPromise);
+            throwError(name, callback, account, returnPromise, data);
         }
     });
 
@@ -49,7 +49,7 @@ function runServerFunction(name, account, data, callback) {
             const decrypted_data = Crypto.tryDecrypt(log, data, [account.ac]);
 
             if (!decrypted_data && Meteor.isClient)
-                throwError(account, returnPromise);
+                throwError(name, callback, account, returnPromise, data);
             else
                 return decrypted_data.data;
         });
@@ -85,7 +85,7 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
                 else if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
             } else if (Meteor.isClient) {
                 if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
-                throwError(account, false);
+                throwError(name, callback, account, false, data);
             }
         }
     });
@@ -170,14 +170,26 @@ export let Server = {
             runServerFunction('certificateUpdate', account, {id: id}, callback);
         },
 
+        // /**
+        //  * Generates certificates for the current contest
+        //  * @param {Account} account - Output account
+        //  * @param {object[]} athleteIDs - List of athlete ids
+        //  * @param [callback] - optional callback
+        //  */
+        // generate: function (account, athleteIDs, callback) {
+        //     runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        // },
         /**
          * Generates certificates for the current contest
          * @param {Account} account - Output account
          * @param {object[]} athleteIDs - List of athlete ids
          * @param [callback] - optional callback
+         * @param [doneCallback]
          */
-        generate: function (account, athleteIDs, callback) {
-            runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        getAsync: function (account, athleteIDs, callback, doneCallback) {
+            return runAsyncServerFunction('generateCertificates', account, {
+                athleteIDs: athleteIDs,
+            }, callback, doneCallback);
         },
     },
 
@@ -216,6 +228,21 @@ export let Server = {
             log.enable();
             return result;
         },
+
+        write: function (account, contestID, encryptedAthlete, id) {
+            return runServerFunction('writeAthlete', account, {
+                id: id,
+                contestID: contestID,
+                encryptedAthlete: encryptedAthlete
+            });
+        },
+
+        remove: function (account, contestID, id) {
+            return runServerFunction('removeAthlete', account, {
+                id: id,
+                contestID: contestID
+            });
+        }
     },
 
     contest: {

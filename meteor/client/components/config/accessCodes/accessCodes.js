@@ -370,7 +370,7 @@ Template.ACitemContent.events({
         event.stopImmediatePropagation();
         event.preventDefault();
         const id = event.target.closest("li[data-id]").dataset.id;
-        Meteor.f7.confirm("Wollen sie den Zugangscode wirklich endgültig löschen?", "Zugangscode löschen", function () {
+        Meteor.f7.confirm("Wollen Sie den Zugangscode wirklich endgültig löschen?", "Zugangscode löschen", function () {
             const acodes = accessCodes.get();
             const index = getIndexOfCode(acodes, 2, id);
             acodes[2].codes.splice(index, 1);
@@ -382,7 +382,7 @@ Template.ACitemContent.events({
 
 Template.accessCodes.events({
     'click .add-code': function (event) {
-        Meteor.f7.prompt("Wählen sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
+        Meteor.f7.prompt("Wählen Sie einen Namen für den Zugangscode", "Zugangscode erstellen", function (name) {
             //noinspection JSCheckFunctionSignatures
             codesClean.set(false);
             upsertCode({
@@ -398,7 +398,7 @@ Template.accessCodes.events({
     },
     'click .generateCodes': function (event) {
         if (codesClean.get()) {
-            Meteor.f7.confirm("Nach der Fertigstellung können sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind sie sicher, dass sie fortfahren wollen?", "Warnung", function () {
+            Meteor.f7.confirm("Nach der Fertigstellung können Sie den Wettkampf nichtmehr editieren und die Passwörter nichtmehr einsehen! Sind Sie sicher, dass Sie fortfahren wollen?", "Warnung", function () {
                 Meteor.f7.showPreloader("Speichere Wettkampf");
                 finalizeContest();
             });

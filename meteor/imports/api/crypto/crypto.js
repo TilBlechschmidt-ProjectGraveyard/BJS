@@ -85,6 +85,15 @@ function decrypt(SED, groupAC) {
     const bytes = CryptoJS.Rabbit.decrypt(SED.data, groupAC.privHash);
     //noinspection JSUnresolvedVariable
     try {
+        const stringData = bytes.toString(CryptoJS.enc.Utf8);
+
+        if (stringData == "") {
+            return {
+                data: undefined,
+                success: true
+            }
+        }
+
         //noinspection JSUnresolvedVariable
         return {
             data: JSON.parse(bytes.toString(CryptoJS.enc.Utf8)),

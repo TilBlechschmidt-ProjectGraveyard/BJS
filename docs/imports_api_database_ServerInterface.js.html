@@ -201,7 +201,7 @@ if (Meteor.isClient) {
     initCollections();
 }
 
-function throwError(account, returnPromise) {
+function throwError(name, callback, account, returnPromise, data) {
     const err = new Error("Error whilst calling a server function.");
     console.error("-------- Error Context --------");
     console.error("Function called:", name);
@@ -231,7 +231,7 @@ function runServerFunction(name, account, data, callback) {
         if (data) {
             if (typeof callback === 'function') callback(data.data);
         } else if (Meteor.isClient) {
-            throwError(account, returnPromise);
+            throwError(name, callback, account, returnPromise, data);
         }
     });
 
@@ -240,36 +240,50 @@ function runServerFunction(name, account, data, callback) {
             const decrypted_data = Crypto.tryDecrypt(log, data, [account.ac]);
 
             if (!decrypted_data &amp;&amp; Meteor.isClient)
-                throwError(account, returnPromise);
+                throwError(name, callback, account, returnPromise, data);
             else
                 return decrypted_data.data;
         });
 }
 
+const interruptedChannels = {};
 /**
  * Runs a function server-side in an asynchronous manner and takes care of de-/encryption for you. It calls the callback for every entry returned.
  * @param {string} name - The name of the server function
  * @param {Account} account - The account that is used to authenticate
  * @param {*} data - A data object which will be passed to the function. These data will be send encrypted.
  * @param {function} callback - A callback with one parameter: The return value of the server function. Function returns a promise if it is undefined.
+ * @param {function} [doneCallback] - A callback that gets called when the last entry has been processed or in case there were none. Called with the raw data object
  * @returns {Promise.&lt;void>}
  */
-async function runAsyncServerFunction(name, account, data, callback) {
+async function runAsyncServerFunction(name, account, data, callback, doneCallback) {
     const log = Log.getLogObject();
     const connection = await runServerFunction('runAsync', account, {name: name, data: data});
 
+    // TODO: This handler will get set more than one time! This NEEDS to be fixed -somehow- +locally check if it was interrupted
     asyncServerFunctionChannel.on(connection.uuid, function (encryptedEntry) {
-        const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
+        if (interruptedChannels[connection.uuid] === true) {
+            delete interruptedChannels[connection.uuid];
+            asyncServerFunctionChannel.stop(connection.uuid);
+            if (typeof doneCallback === 'function') {
+                doneCallback({});
+            }
+        } else {
+            const entry = Crypto.tryDecrypt(log, encryptedEntry, [account.ac]);
 
-        if (entry &amp;&amp; !entry.data.permissionDenied) {
-            if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
-        } else if (Meteor.isClient) {
-            if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
-            throwError(account, false);
+            if (entry &amp;&amp; !entry.data.permissionDenied) {
+                if (entry.data.done &amp;&amp; typeof doneCallback === 'function') doneCallback(entry.data);
+                else if (typeof callback === 'function') callback(entry.data.data, entry.data.index == entry.data.size, entry.data);
+            } else if (Meteor.isClient) {
+                if (entry.data.permissionDenied) console.warn("Server denied permission on async callback");
+                throwError(name, callback, account, false, data);
+            }
         }
     });
 
     asyncServerFunctionChannel.emit('clientReady', connection.uuid);
+
+    return connection.uuid;
 }
 
 /**
@@ -278,6 +292,13 @@ async function runAsyncServerFunction(name, account, data, callback) {
  * @namespace
  */
 export let Server = {
+
+    cancelAsyncRequest: function (id) {
+        // Interrupt server
+        asyncServerFunctionChannel.emit('interrupt', id);
+        // Interrupt client
+        interruptedChannels[id] = true;
+    },
 
     db: {
         /**
@@ -304,6 +325,7 @@ export let Server = {
          * @param {function} callback - The callback
          */
         waitForReady: function (callback) {
+            // TODO Replace w/ waterfall
             Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
                 Meteor.COLLECTIONS.Contests.onReady(function () {
                     Meteor.COLLECTIONS.Accounts.onReady(function () {
@@ -339,14 +361,26 @@ export let Server = {
             runServerFunction('certificateUpdate', account, {id: id}, callback);
         },
 
+        // /**
+        //  * Generates certificates for the current contest
+        //  * @param {Account} account - Output account
+        //  * @param {object[]} athleteIDs - List of athlete ids
+        //  * @param [callback] - optional callback
+        //  */
+        // generate: function (account, athleteIDs, callback) {
+        //     runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        // },
         /**
          * Generates certificates for the current contest
          * @param {Account} account - Output account
          * @param {object[]} athleteIDs - List of athlete ids
          * @param [callback] - optional callback
+         * @param [doneCallback]
          */
-        generate: function (account, athleteIDs, callback) {
-            runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
+        getAsync: function (account, athleteIDs, callback, doneCallback) {
+            return runAsyncServerFunction('generateCertificates', account, {
+                athleteIDs: athleteIDs,
+            }, callback, doneCallback);
         },
     },
 
@@ -354,12 +388,12 @@ export let Server = {
         count: function (account, contestID) {
             return runServerFunction('getAthleteCount', account, {contestID: contestID});
         },
-        getAsync: function (account, contestID, require_signature, require_group_check, callback) {
-            runAsyncServerFunction('getAthletes', account, {
+        getAsync: function (account, contestID, require_signature, require_group_check, callback, doneCallback) {
+            return runAsyncServerFunction('getAthletes', account, {
                 contestID: contestID,
                 require_signature: require_signature,
                 require_group_check: require_group_check
-            }, callback);
+            }, callback, doneCallback);
         },
 
         /**
@@ -385,6 +419,21 @@ export let Server = {
             log.enable();
             return result;
         },
+
+        write: function (account, contestID, encryptedAthlete, id) {
+            return runServerFunction('writeAthlete', account, {
+                id: id,
+                contestID: contestID,
+                encryptedAthlete: encryptedAthlete
+            });
+        },
+
+        remove: function (account, contestID, id) {
+            return runServerFunction('removeAthlete', account, {
+                id: id,
+                contestID: contestID
+            });
+        }
     },
 
     contest: {
@@ -505,7 +554,7 @@ export let Server = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 17 2017 00:47:14
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Jan 19 2017 12:32:37
     GMT+0100 (CET) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

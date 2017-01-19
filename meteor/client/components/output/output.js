@@ -15,21 +15,37 @@ const statusSettings = new ReactiveVar({ready: true, update: true, notReady: tru
 
 const baseSortingData = require('./baseSortingData');
 const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
+let asyncUUID = undefined;
 
+async function loadAllAthlets() {
+    Meteor.reactiveAthletes.set([]);
+    updatedGroups();
 
-function loadAllAthlets() {
-    Server.certificates.generate(
+    if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
+
+    const athletes = [];
+
+    asyncUUID = await Server.certificates.getAsync(
         AccountManager.getOutputAccount().account,
         _.map(Meteor.COLLECTIONS.Athletes.handle.find({}).fetch(), function (enc_athlete) {
             return enc_athlete._id
         }),
-        function (data) {
-            Meteor.reactiveAthletes.set(_.map(data, function (athlete) {
-                athlete.iconID = statusToNumber(athlete);
-                return athlete;
-            }));
+        function (athlete, last, entry) {
+            if (entry.index == 0)
+                hideIndicator();
+            if (!athlete) {
+                Meteor.f7.alert("Es ist ein Fehler beim Laden der Athleten aufgetreten!", "Fehler");
+                return;
+            }
+            athlete.iconID = statusToNumber(athlete);
+
+            athlete.certificateName = athlete.certificate === 2 ? "Ehrenurkunde" : (athlete.certificate === 1 ? "Siegerurkunde" : (athlete.certificate === 0 ? "Teilnehmerurkunde" : "Fehler"));
+
+            athletes.push(athlete);
+            Meteor.reactiveAthletes.set(athletes);
             updatedGroups();
-            hideIndicator();
+        }, function (entry) {
+            if (entry.size == 0) hideIndicator();
         }
     );
 }
@@ -51,11 +67,11 @@ function getGroupsFromAthletes() {
 
 function updatedGroups() {
     const groupNames = getGroupsFromAthletes();
-    const settingData = {};
+    const settingData = {text: groupNames[0], groups: {}};
     _.forEach(groupNames, function (name) {
-        settingData[name] = false;
+        settingData.groups[name] = false;
     });
-    settingData[groupNames[0]] = true;
+    settingData.groups[groupNames[0]] = true;
     settingData.text = groupNames[0];
     groupSettings.set(settingData);
 }
@@ -67,11 +83,11 @@ Template.outputFilterPopover.helpers({
     statusSettings: function () {
         return statusSettings.get();
     },
-    groupSettings: function () {
-        return groupSettings.get();
+    groupSettingsText: function () {
+        return groupSettings.get().text;
     },
     groupChecked: function (name) {
-        return groupSettings.get()[name] ? "checked" : "";
+        return groupSettings.get().groups[name] ? "checked" : "";
     },
     checked: function (b) {
         return b ? "checked" : "";
@@ -118,7 +134,7 @@ Template.outputContent.helpers({
                 (status.notReady || !isNotReady(athlete)) &&
                 (status.finish || !isFinish(athlete)) &&
                 (status.update || !isUpdate(athlete)) &&
-                groups[athlete.group];
+                groups.groups[athlete.group];
         });
 
         //sorting
@@ -224,19 +240,19 @@ Template.output.events({
             statusSettings.set(data);
         } else if (event.target.dataset.type === "group") {
             const data = groupSettings.get();
-            data[event.target.dataset.attr] = !data[event.target.dataset.attr];
-            const cTrue = countTrue(data);
+            data.groups[event.target.dataset.attr] = !data.groups[event.target.dataset.attr];
+            const cTrue = countTrue(data.groups);
             if (cTrue == 0) data.text = "Keine";
             else if (cTrue == 1) {
-                for (let a in data) {
-                    if (!data.hasOwnProperty(a)) continue;
-                    if (data[a] == true) { //== true required because list[a] might be an object
+                for (let a in data.groups) {
+                    if (!data.groups.hasOwnProperty(a)) continue;
+                    if (data.groups[a] == true) { //== true required because list[a] might be an object
                         data.text = a;
                         break;
                     }
                 }
             }
-            else if (cTrue == Object.keys(data).length - 1) data.text = "Alle";
+            else if (cTrue == Object.keys(data.groups).length - 1) data.text = "Alle";
             else data.text = "Mehrere";
             groupSettings.set(data);
         }

@@ -27,7 +27,7 @@ Template.contest.events({
     'click .delete-contest': function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        Meteor.f7.confirm("Möchten sie den Wettbewerb wirklich entgültig löschen?", "Wettbewerb löschen", function () {
+        Meteor.f7.confirm("Möchten Sie den Wettbewerb wirklich entgültig löschen?", "Wettbewerb löschen", function () {
             Server.contest.remove(AccountManager.getAdminAccount().account, event.target.closest(".delete-contest").dataset.id);
         });
     }

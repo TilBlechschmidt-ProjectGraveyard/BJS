@@ -61,3 +61,23 @@
     max-height: 90vh;
     overflow: auto;
 }
+
+.popup .content-block {
+    padding-left: 0;
+    padding-right: 0;
+    height: 100%;
+}
+
+.popup .popup-header, .popup .scrollable-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.popup .scrollable-content {
+    height: calc(85% - 35px);
+    overflow-y: auto;
+}
+
+.popup .popup-header {
+    height: 15%;
+}

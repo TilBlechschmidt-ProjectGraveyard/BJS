@@ -238,6 +238,19 @@ Athlete.prototype = {
         }
 
         return encrypted;
+    },
+    getMinimizedVersion: function () {
+        return {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            ageGroup: this.ageGroup,
+            isMale: this.isMale,
+            group: this.group,
+            handicap: this.handicap,
+            maxAge: this.maxAge,
+            sports: this.sports,
+            id: this.id
+        }
     }
 };
 
