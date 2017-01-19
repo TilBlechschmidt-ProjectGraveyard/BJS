@@ -38,7 +38,7 @@ function updateMeasurement(athleteID, stID, attempt, strMeasurement) {
 
     if (measurements[athleteID][stID][attempt] == measurement) return false;
 
-    if (strMeasurement === "") {
+    if (strMeasurement === "" || strMeasurement.indexOf("-") != -1) {
         const attempts = measurements[athleteID][stID];
         if (attempts.hasOwnProperty(attempt)) {
             delete measurements[athleteID][stID][attempt];
