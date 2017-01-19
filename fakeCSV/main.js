@@ -1,52 +1,70 @@
-var Faker = require('faker');
-var json2csv = require('json2csv');
-var fs = require('fs');
+const Faker = require('faker');
+const json2csv = require('json2csv');
+const fs = require('fs');
+const gender = require("gender-guess");
 
 // -- You are free to touch these
 
 // Group settings
-var groupSize = 30;
-var groupCount = 4; // Amount of groups per layer
-var groupCountDeviation = 10; // This is a randomness factor for the deviation from the previous value
+const averageGroupSize = 21;
+const groupCount = 4; // Amount of groups per layer
+const groupSizeDeviation = 3; // This is a randomness factor for the deviation from the previous value
 
 // Layer settings
-var layerCount = 6; // Amount of layers
-var layerNumberingStart = 5; // Number to add onto the layer label
+const layerCount = 6; // Amount of layers
+const layerNumberingStart = 5; // Number to add onto the layer label
 
 // Athlete settings
-var minAge = 5;
-var maxAge = 20;
+const relMinAge = 3;
+const relMaxAge = 4;
 
 
 // -- Do not touch anything below
 // Precalculations 
-var currentYear = new Date().getFullYear();
-var startYear = currentYear - minAge;
-var deviation = function () {
-    return Math.round(Math.random()*groupCountDeviation)*0.15;
-}
+const currentYear = new Date().getFullYear();
+const startYear = currentYear - relMinAge;
+const relAgeDiff = relMaxAge - relMinAge;
 
 // Storage
-var athletes = [];
-var ds = { // Distribution stats
+const athletes = [];
+const ds = { // Distribution stats
     groups: {},
     age: {}
+};
+
+for (let layerNumber = layerNumberingStart; layerNumber - layerNumberingStart < layerCount; layerNumber++) {
+    for (let groupIndex = 0; groupIndex < groupCount; groupIndex++) {
+        let groupSize = averageGroupSize + Faker.random.number(2 * groupSizeDeviation) - groupSizeDeviation;
+        for (let athleteNumber = 0; athleteNumber < groupSize; athleteNumber++) {
+            const athlete = {};
+            athlete.firstName = Faker.name.firstName();
+            athlete.lastName = Faker.name.lastName();
+            const genderGuess = gender.guess(athlete.firstName);
+            athlete.gender = (genderGuess !== undefined && genderGuess.gender == "M") ? "männlich" : "weiblich";
+
+            athlete.birthYear = startYear - (relMinAge + Faker.random.number(relAgeDiff)) - layerNumber;
+            athlete.group = layerNumber + String.fromCharCode(97 + groupIndex);
+
+            athletes.push(athlete);
+        }
+    }
 }
 
-for (var i = 0; i < groupSize*groupCount*layerCount; i++) {
-    var groupIndex = i % (groupCount + deviation())
-    var athlete = {};
-    athlete.firstName = Faker.name.firstName();
-    athlete.lastName = Faker.name.lastName();
-    athlete.birthYear = startYear - Faker.random.number(maxAge-minAge);
-    athlete.group = ((i % layerCount) + layerNumberingStart) + String.fromCharCode(97 + groupIndex);
-    athlete.gender = Math.round(Math.random()) ? "männlich" : "weiblich";
-    //athlete.group = 
-    
-    athletes.push(athlete);
-}
+// for (var i = 0; i < groupSize*groupCount*layerCount; i++) {
+//     var groupIndex = i % (groupCount + deviation())
+//     var athlete = {};
+//     athlete.firstName = Faker.name.firstName();
+//     athlete.lastName = Faker.name.lastName();
+//     athlete.birthYear = startYear - Faker.random.number(maxAge-minAge);
+//     const age = currentYear - athlete.birthYear;
+//     athlete.group = (age - 3 + Math.round(Math.random())) + String.fromCharCode(97 + groupIndex);
+//     athlete.gender = Math.round(Math.random()) ? "männlich" : "weiblich";
+//     //athlete.group =
+//
+//     athletes.push(athlete);
+// }
 
-for (var athlete in athletes) {
+for (let athlete in athletes) {
     if (!athletes.hasOwnProperty(athlete)) continue;
     athlete = athletes[athlete];
     
@@ -65,16 +83,16 @@ console.log(ds.age);
 
 console.log("--------- Group sizes --------");
 // Sort it by class name first
-var keys = Object.keys(ds.groups);
+const keys = Object.keys(ds.groups);
 keys.sort();
-var groups = {};
-for (var i = 0; i < keys.length; i++) {
-    k = keys[i];
+const groups = {};
+for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
     groups[k] = ds.groups[k];
 }
 console.log(groups);
 
-var csv = json2csv({
+const csv = json2csv({
     data: athletes,
     fields: [
         "firstName",
