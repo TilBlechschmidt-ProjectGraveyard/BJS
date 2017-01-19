@@ -158,7 +158,7 @@ Template.config_group.events({
     'click .remove-athlete': function (event) {
         event.stopImmediatePropagation();
         const id = event.target.closest("li").dataset.id;
-        Meteor.f7.confirm('Wollen sie den Athleten wirklich endgültig löschen?', 'Athleten löschen', function () {
+        Meteor.f7.confirm('Wollen Sie den Athleten wirklich endgültig löschen?', 'Athleten löschen', function () {
             removeAthlete(id);
         });
     },
@@ -170,7 +170,7 @@ Template.config_group.events({
     },
     'click .remove-group': function (event) {
         const gid = event.target.closest("[data-gid]").dataset.gid;
-        Meteor.f7.confirm('Wollen sie die Gruppe samt ihrer Athleten endgültig löschen?', 'Gruppe löschen', function () {
+        Meteor.f7.confirm('Wollen Sie die Gruppe samt ihrer Athleten endgültig löschen?', 'Gruppe löschen', function () {
             removeGroup(gid);
         });
     },

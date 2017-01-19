@@ -129,7 +129,7 @@ Template.config.events({
         event.stopImmediatePropagation();
         const swiper = document.getElementById("config-swiper").swiper;
         if (swiper.activeIndex == 3 && codesClean.get()) {
-            Meteor.f7.confirm("Wenn sie diese Seite verlassen werden alle Zugangsdaten gelöscht und müssen neu erzeugt werden!", "Warnung", function () {
+            Meteor.f7.confirm("Wenn Sie diese Seite verlassen werden alle Zugangsdaten gelöscht und müssen neu erzeugt werden!", "Warnung", function () {
                 swiper.slidePrev();
                 codesClean.set(false);
                 clearACs();
