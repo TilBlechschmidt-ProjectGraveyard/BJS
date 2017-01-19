@@ -31,74 +31,56 @@ https://github.com/nobutakaoshiro/meteor-framework7-ios-material#meteor-framewor
 
 https://framework7.io/icons/
 
-##App Icon Resizer
+## App Icon Resizer
  
  https://resizeappicon.com
 
-##Access Codes for Mock-Database
+## Access Codes for Mock-Database
 
+### Access Codes for Groups
 * UIIIb
-    * Not879Netz
+    * Schal794Menge
 * UIIIa
-    * Himmel757Leichtathletik
+    * Ton897Vieh
 * OIIIb
-    * Käfig452Wesen
+    * Kinn13Horn
 * OIIIa
-    * Spiegelei501Eifersucht
+    * Hier968Kalb
 * IVb
-    * Dachboden31Windmühle
+    * Stolpe278Idee
 * IVa
-    * Fensterbank830Bohrmaschine
+    * Fisch799V
 * Vb
-    * Rohr560Umzug
+    * Grosny21Jutta
 * Va
-    * Bahnhof495Badewanne
+    * ARD865Paare
 * VIb
-    * Termin226Frucht
+    * Doktor375Dialog
 * VIa
-    * Nadel437Verräter
+    * Mars456Kohl
 
-* Sprint 100m (Elektronische Zeitmessung)
-    * Saft72Meile
-* Sprint 75m (Handzeitmessung)
-    * Wiede291Konzert
-* Sprint 50m (Handzeitmessung)
-    * Ständchen859Nacht
-* Schleuderball 1kg
-    * Pfanne927Chirurg
-* Ball 200g
-    * Dreiheit97Anspruch
-* Kugelstoßen 7,26kg
-    * Bügeleisen4Sprechstundenhilfe
-* Kugelstoßen 6kg
-    * Hafen375Führerschein
-* Kugelstoßen 5kg
-    * Tiefkühltruhe144Kunde
-* Kugelstoßen 4kg
-    * Knöchel357Datum
-* Kugelstoßen 3kg
-    * Quark360Leerlauf
-* Schlagball 80g
-    * Anwohner860Hass
-* Hochsprung
-    * Fuß622Einkünft
+### Access Codes for Stations
+
+* Sprint
+    * Airbus637Horn
+* Ausdauerlauf
+    * Songs836Nabel
 * Weitsprung
-    * Joch338Bohne
-* Ausdauerlauf 3000m
-    * Erhebung98Asylant
-* Ausdauerlauf 2000m
-    * Pflaster236Glühlampe
-* Ausdauerlauf 1000m
-    * Zauberei448Abwicklung
-* Ausdauerlauf 800m
-    * Geige499Gewicht
+    * Proben912Signal
+* Hochsprung
+    * Datei155Sogar
+* Wurf
+    * Lyrik205BDI
+* Kugelstoßen
+    * EG367Wasser
+
 
 * Urkundenzugang
-    * Ermutigung328Wäschestände
+    * Nach406Freien
 
-###Sizes
+### Sizes
 
-####Ios
+#### Ios
 
 Original: white background
 * 57
@@ -112,7 +94,7 @@ Original: white background
 
 Sources: https://gist.github.com/tfausak/2222823
 
-####Android
+#### Android
 
 Original: transparent background
 * 192
