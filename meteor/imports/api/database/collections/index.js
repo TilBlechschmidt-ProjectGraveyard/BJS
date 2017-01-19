@@ -115,6 +115,8 @@ export function initCollections() {
                         (genericEntries.hasOwnProperty('cleanDB') && genericEntries.cleanDB === true) &&
                         (genericEntries.hasOwnProperty('dbVersion') && genericEntries.dbVersion === Meteor.config.dbVersion)
                     )) clearDB = true;
+            } else if (Meteor.COLLECTIONS.Generic.handle.findOne() == undefined) {
+                clearDB = true;
             }
         }
 
