@@ -16,12 +16,13 @@ Template.settingSwitch.helpers({
 
 Template.settingSwitch.events({
     'click .setting-checkbox': function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
         const label = event.target.closest("label");
         const checkbox = label.querySelector("input[type='checkbox']");
         const newValue = !checkbox.checked;
 
         Session.set(label.dataset.id, newValue);
-        Meteor.inputDependency.changed();
     }
 });
 
