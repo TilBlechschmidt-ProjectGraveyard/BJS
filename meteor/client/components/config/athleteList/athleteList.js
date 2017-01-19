@@ -162,11 +162,6 @@ Template.config_group.events({
             removeAthlete(id);
         });
     },
-    'click .add-group': function (event) {
-        Meteor.f7.prompt('Wähle einen Namen für die Gruppe', 'Gruppe erstellen', function (value) {
-            addGroup(value);
-        }).querySelector("input").focus();
-    },
     'click .rename-group': function (event) {
         const gid = event.target.closest("[data-gid]").dataset.gid;
         Meteor.f7.prompt('Wähle einen neuen Namen für die Gruppe', 'Gruppe umbenennen', function (newName) {
@@ -199,5 +194,13 @@ Template.config_group.events({
 Template.config_searchBar.events({
     'keyup #configAthletesSearch': function (event) {
         nameFilter.set(event.target.value.split(' '));
+    }
+});
+
+Template.athleteList.events({
+    'click .add-group': function (event) {
+        Meteor.f7.prompt('Wähle einen Namen für die Gruppe', 'Gruppe erstellen', function (value) {
+            addGroup(value);
+        }).querySelector("input").focus();
     }
 });
