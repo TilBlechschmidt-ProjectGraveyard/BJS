@@ -5,12 +5,12 @@ var fs = require('fs');
 // -- You are free to touch these
 
 // Group settings
-var groupSize = 30;
-var groupCount = 4; // Amount of groups per layer
+var groupSize = 10;
+var groupCount = 3; // Amount of groups per layer
 var groupCountDeviation = 10; // This is a randomness factor for the deviation from the previous value
 
 // Layer settings
-var layerCount = 6; // Amount of layers
+var layerCount = 2; // Amount of layers
 var layerNumberingStart = 5; // Number to add onto the layer label
 
 // Athlete settings
