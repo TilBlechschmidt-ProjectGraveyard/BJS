@@ -67,11 +67,11 @@ function getGroupsFromAthletes() {
 
 function updatedGroups() {
     const groupNames = getGroupsFromAthletes();
-    const settingData = {};
+    const settingData = {text: groupNames[0], groups: {}};
     _.forEach(groupNames, function (name) {
-        settingData[name] = false;
+        settingData.groups[name] = false;
     });
-    settingData[groupNames[0]] = true;
+    settingData.groups[groupNames[0]] = true;
     settingData.text = groupNames[0];
     groupSettings.set(settingData);
 }
@@ -83,11 +83,11 @@ Template.outputFilterPopover.helpers({
     statusSettings: function () {
         return statusSettings.get();
     },
-    groupSettings: function () {
-        return groupSettings.get();
+    groupSettingsText: function () {
+        return groupSettings.get().text;
     },
     groupChecked: function (name) {
-        return groupSettings.get()[name] ? "checked" : "";
+        return groupSettings.get().groups[name] ? "checked" : "";
     },
     checked: function (b) {
         return b ? "checked" : "";
@@ -134,7 +134,7 @@ Template.outputContent.helpers({
                 (status.notReady || !isNotReady(athlete)) &&
                 (status.finish || !isFinish(athlete)) &&
                 (status.update || !isUpdate(athlete)) &&
-                groups[athlete.group];
+                groups.groups[athlete.group];
         });
 
         //sorting
@@ -240,19 +240,19 @@ Template.output.events({
             statusSettings.set(data);
         } else if (event.target.dataset.type === "group") {
             const data = groupSettings.get();
-            data[event.target.dataset.attr] = !data[event.target.dataset.attr];
-            const cTrue = countTrue(data);
+            data.groups[event.target.dataset.attr] = !data.groups[event.target.dataset.attr];
+            const cTrue = countTrue(data.groups);
             if (cTrue == 0) data.text = "Keine";
             else if (cTrue == 1) {
-                for (let a in data) {
-                    if (!data.hasOwnProperty(a)) continue;
-                    if (data[a] == true) { //== true required because list[a] might be an object
+                for (let a in data.groups) {
+                    if (!data.groups.hasOwnProperty(a)) continue;
+                    if (data.groups[a] == true) { //== true required because list[a] might be an object
                         data.text = a;
                         break;
                     }
                 }
             }
-            else if (cTrue == Object.keys(data).length - 1) data.text = "Alle";
+            else if (cTrue == Object.keys(data.groups).length - 1) data.text = "Alle";
             else data.text = "Mehrere";
             groupSettings.set(data);
         }

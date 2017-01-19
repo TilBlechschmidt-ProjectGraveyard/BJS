@@ -80,8 +80,6 @@ const asyncServerFunctions = {
     generateCertificates: function (account, data) {
         if (!account.canViewResults) return false;
 
-        console.log("generateCertificates");
-
         const ct = Server.contest.getType();
         const log = Log.getLogObject();
 
