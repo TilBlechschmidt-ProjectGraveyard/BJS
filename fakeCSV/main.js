@@ -1,5 +1,6 @@
 var Faker = require('faker');
-
+var json2csv = require('json2csv');
+var fs = require('fs');
 
 // -- You are free to touch these
 
@@ -27,7 +28,7 @@ var deviation = function () {
 
 // Storage
 var athletes = [];
-var distributionStats = {
+var ds = { // Distribution stats
     groups: {},
     age: {}
 }
@@ -45,7 +46,6 @@ for (var i = 0; i < groupSize*groupCount*layerCount; i++) {
     athletes.push(athlete);
 }
 
-var ds = distributionStats;
 for (var athlete in athletes) {
     if (!athletes.hasOwnProperty(athlete)) continue;
     athlete = athletes[athlete];
@@ -57,7 +57,7 @@ for (var athlete in athletes) {
     else ds.age[athlete.birthYear]++;
 }
 
-distributionStats.athletes = athletes.length;
+ds.athletes = athletes.length;
 
 console.log("Total athletes:", ds.athletes);
 console.log("--- BirthYear distribution ---");
@@ -73,3 +73,28 @@ for (var i = 0; i < keys.length; i++) {
     groups[k] = ds.groups[k];
 }
 console.log(groups);
+
+var csv = json2csv({
+    data: athletes,
+    fields: [
+        "firstName",
+        "lastName",
+        "birthYear",
+        "group",
+        "gender"
+    ],
+    fieldNames: [
+        "Vorname",
+        "Nachname",
+        "GebJahr",
+        "Gruppe",
+        "Geschlecht"
+    ]
+});
+
+console.log(csv);
+fs.writeFile('mockData.csv', csv, function(err) {
+  if (err) throw err;
+  console.log('file saved');
+});
+
