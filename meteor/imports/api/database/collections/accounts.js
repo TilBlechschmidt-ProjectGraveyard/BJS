@@ -28,6 +28,7 @@ export function initAccounts() {
 
     Meteor.COLLECTIONS.Accounts.createMockData = function () {
         this.handle.insert(new Account('Urkunden', [], [''], Crypto.generateAC('150612', 'pepper'), true));
+        this.handle.insert(new Account('Admin', [], ['st_sprint_50', 'st_sprint_75', 'st_sprint_100_el', 'st_long_jump', 'st_rounders', 'st_ball_200'], Crypto.generateAC('000000', 'pepper'), true));
 
 
         this.handle.insert(new Account('Sprint', [], ['st_sprint_50', 'st_sprint_75', 'st_sprint_100_el'], Crypto.generateAC('999004', 'pepper')));
