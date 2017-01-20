@@ -82,16 +82,16 @@ export function initAthletes() {
         const log = Log.getLogObject();
         const ct = CONTEST_TYPES[0].object;
 
-        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('Mars456Kohl', 'chilli'));
-        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('Doktor375Dialog', 'chilli'));
-        const groupAccountC = new Account('Va', ['Va'], [], Crypto.generateAC('ARD865Paare', 'chilli'));
-        const groupAccountD = new Account('Vb', ['Vb'], [], Crypto.generateAC('Grosny21Jutta', 'chilli'));
-        const groupAccountE = new Account('IVa', ['IVa'], [], Crypto.generateAC('Fisch799V', 'chilli'));
-        const groupAccountF = new Account('IVb', ['IVb'], [], Crypto.generateAC('Stolpe278Idee', 'chilli'));
-        const groupAccountG = new Account('UIIIa', ['UIIIa'], [], Crypto.generateAC('Hier968Kalb', 'chilli'));
-        const groupAccountH = new Account('UIIIb', ['UIIIb'], [], Crypto.generateAC('Kinn13Horn', 'chilli'));
-        const groupAccountI = new Account('OIIIa', ['OIIIa'], [], Crypto.generateAC('Ton897Vieh', 'chilli'));
-        const groupAccountJ = new Account('OIIIb', ['OIIIb'], [], Crypto.generateAC('Schal794Menge', 'chilli'));
+        const groupAccountA = new Account('VIa', ['VIa'], [], Crypto.generateAC('177029', 'chilli'));
+        const groupAccountB = new Account('VIb', ['VIb'], [], Crypto.generateAC('300052', 'chilli'));
+        const groupAccountC = new Account('Va', ['Va'], [], Crypto.generateAC('674054', 'chilli'));
+        const groupAccountD = new Account('Vb', ['Vb'], [], Crypto.generateAC('265309', 'chilli'));
+        const groupAccountE = new Account('IVa', ['IVa'], [], Crypto.generateAC('771735', 'chilli'));
+        const groupAccountF = new Account('IVb', ['IVb'], [], Crypto.generateAC('165640', 'chilli'));
+        const groupAccountG = new Account('UIIIa', ['UIIIa'], [], Crypto.generateAC('986092', 'chilli'));
+        const groupAccountH = new Account('UIIIb', ['UIIIb'], [], Crypto.generateAC('394824', 'chilli'));
+        const groupAccountI = new Account('OIIIa', ['OIIIa'], [], Crypto.generateAC('514403', 'chilli'));
+        const groupAccountJ = new Account('OIIIb', ['OIIIb'], [], Crypto.generateAC('742976', 'chilli'));
 
 
         this.handle.insert(new Athlete(log, 'Jonas', 'Rothmann', 2006, true, 'VIa', '0', ct.maxAge, ct).encryptForDatabase(groupAccountA, groupAccountA));

@@ -39,44 +39,44 @@ https://framework7.io/icons/
 
 ### Access Codes for Groups
 * UIIIb
-    * Schal794Menge
+    * 742976
 * UIIIa
-    * Ton897Vieh
+    * 514403
 * OIIIb
-    * Kinn13Horn
+    * 394824
 * OIIIa
-    * Hier968Kalb
+    * 986092
 * IVb
-    * Stolpe278Idee
+    * 165640
 * IVa
-    * Fisch799V
+    * 771735
 * Vb
-    * Grosny21Jutta
+    * 265309
 * Va
-    * ARD865Paare
+    * 674054
 * VIb
-    * Doktor375Dialog
+    * 300052
 * VIa
-    * Mars456Kohl
+    * 177029
 
 ### Access Codes for Stations
 
 * Sprint
-    * Airbus637Horn
+    * 999004
 * Ausdauerlauf
-    * Songs836Nabel
+    * 938795
 * Weitsprung
-    * Proben912Signal
+    * 174641
 * Hochsprung
-    * Datei155Sogar
+    * 560520
 * Wurf
-    * Lyrik205BDI
+    * 785487
 * Kugelstoßen
-    * EG367Wasser
+    * 598824
 
 
 * Urkundenzugang
-    * Nach406Freien
+    * 150612
 
 ### Sizes
 
