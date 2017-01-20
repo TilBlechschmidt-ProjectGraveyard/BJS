@@ -252,7 +252,7 @@ Template.output.events({
                     }
                 }
             }
-            else if (cTrue == Object.keys(data.groups).length - 1) data.text = "Alle";
+            else if (cTrue == Object.keys(data.groups).length) data.text = "Alle";
             else data.text = "Mehrere";
             groupSettings.set(data);
         }
