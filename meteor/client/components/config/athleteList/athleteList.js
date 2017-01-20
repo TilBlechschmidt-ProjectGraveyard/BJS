@@ -124,7 +124,7 @@ Template.config_group.events({
     },
     'blur input.name-input': function (event) {
         const id = event.target.closest("li").dataset.id;
-        const name = event.target.value;
+        const name = event.target.value.replace(/\s\s+/g, ' ').trim();
         const firstName = name.split(' ').slice(0, -1).join(' ').trim();
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         modifyAthlete(id, function (athlete) {
@@ -138,7 +138,7 @@ Template.config_group.events({
     },
     'keyup input.name-input': function (event) {
         const id = event.target.closest("li").dataset.id;
-        const name = event.target.value;
+        const name = event.target.value.replace(/\s\s+/g, ' ').trim();
         const firstName = name.split(' ').slice(0, -1).join(' ').trim();
         const lastName = name.split(' ').slice(-1).join(' ').trim();
         refreshErrorState(id, firstName, lastName);
