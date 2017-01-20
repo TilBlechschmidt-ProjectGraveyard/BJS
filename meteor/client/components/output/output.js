@@ -313,15 +313,20 @@ Template.output.onRendered(function () {
 
                     //change of certificate information -> update
                     if (fields.hasOwnProperty("certificateScore") || fields.hasOwnProperty("certificate")) {
-                        Server.certificates.generate(
-                            AccountManager.getOutputAccount().account, [id], function (data) {
+                        Server.certificates.getAsync(
+                            AccountManager.getOutputAccount().account, [id],
 
+                            function (athlete, last, entry) {
+                                if (!athlete) {
+                                    Meteor.f7.alert("Es ist ein Fehler beim Laden der Athleten aufgetreten!", "Fehler");
+                                    return;
+                                }
                                 //load athletes
                                 const athletes = Meteor.reactiveAthletes.get();
                                 const index = findIndexOfAthlete(athletes, id);
 
                                 //update current data
-                                athletes[index].newAthlete = data[0];
+                                athletes[index].newAthlete = athlete;
 
                                 //an animation is already running -> return
                                 if (athletes[index].animation) {
@@ -367,6 +372,7 @@ Template.output.onRendered(function () {
                                         }
                                     }, 1000);
                                 }, 100);
+                            }, function (entry) {
                             }
                         );
                     }
