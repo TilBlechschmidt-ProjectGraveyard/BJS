@@ -2,7 +2,7 @@ import {genRandomCode, genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Crypto} from "../../../../imports/api/crypto/crypto";
 import {Account} from "../../../../imports/api/logic/account";
 import {currentCompID, editMode} from "../config";
-import {localGroups} from "../athleteList/athleteList";
+import {localGroups} from "../athleteList/dataInterface";
 import {Server} from "../../../../imports/api/database/ServerInterface";
 import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 
