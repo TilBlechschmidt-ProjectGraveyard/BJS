@@ -11,7 +11,7 @@ import {showIndicator, hideIndicator} from "../helpers";
 Meteor.reactiveAthletes = new ReactiveVar([]);
 const groupSettings = new ReactiveVar({text: "Keine"});
 const genderSettings = new ReactiveVar({m: true, w: true, text: "Alle"});
-const statusSettings = new ReactiveVar({ready: true, update: true, notReady: true, finish: true, text: "Alle"});
+const statusSettings = new ReactiveVar({ready: true, update: true, notReady: false, finish: false, text: "Mehrere"});
 
 const baseSortingData = require('./baseSortingData');
 const sortingSettings = new ReactiveVar([0, 1, 2, 3, 4, 5, 6, 7]);
@@ -69,10 +69,9 @@ function updatedGroups() {
     const groupNames = getGroupsFromAthletes();
     const settingData = {text: groupNames[0], groups: {}};
     _.forEach(groupNames, function (name) {
-        settingData.groups[name] = false;
+        settingData.groups[name] = true;
     });
-    settingData.groups[groupNames[0]] = true;
-    settingData.text = groupNames[0];
+    settingData.text = "Alle";
     groupSettings.set(settingData);
 }
 
