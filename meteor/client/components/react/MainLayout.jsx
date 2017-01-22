@@ -1,54 +1,68 @@
 import React from "react";
 import {FlowRouter} from "meteor/kadira:flow-router";
 import {mount} from "react-mounter";
+import {genUUID} from "../../../imports/api/crypto/pwdgen";
+import {Athlete as AthleteObj} from "../../../imports/api/logic/athlete";
+import {Log} from "../../../imports/api/log";
 
 
-MainLayout = React.createClass({
+class MainLayout extends React.Component {
     render() {
         return (
-            <div>
-                <header><h1>Kadira Blog</h1></header>
-                <main>{this.props.content}</main>
-                <footer>We love Meteor</footer>
+            <div className="page">
+                <div className="page-content">
+                    <div className="content-block autoWidthListBlock">
+                        <Athletes/>
+                    </div>
+                </div>
             </div>
         );
     }
-});
+}
 
-BlogHome = React.createClass({
+class Athletes extends React.Component {
+    getAthletes() {
+        const athletes = [];
+
+        console.log("Creating athletes");
+        for (let i = 0; i < 1000; i++) {
+            athletes.push(
+                new AthleteObj(new Log(), "Klaus" + i, "Schmidt" + i, 1999, true, "Q1y", "0", 20, [], genUUID())
+            );
+        }
+        console.log("done");
+
+        return athletes;
+    }
+
     render() {
         return (
-            <div>
-                <p>This is the home page of our blog</p>
-                <p>
-                    <a href="/react/hello-world">See Hello World Post</a>
-                </p>
+            <div className="list-block">
+                <ul>
+                    {this.getAthletes().map((athlete) => <Athlete athlete={athlete} key={athlete.id}/>)}
+                </ul>
             </div>
         );
     }
-});
+}
 
-BlogPost = React.createClass({
+class Athlete extends React.Component {
     render() {
         return (
-            <div>
-                <p>
-                    <a href="/react">Back</a> <br/>
-                    This is a single blog post
-                </p>
-            </div>
+            <li className="accordion-item">
+                <a href="" className="item-content item-link">
+                    <div className="item-inner">
+                        <div className="item-title">{this.props.athlete.getFullName()}</div>
+                    </div>
+                </a>
+                <div className="accordion-item-content">Item 1 content ...</div>
+            </li>
         );
     }
-});
+}
 
 FlowRouter.route('/react', {
     action() {
-        mount(MainLayout, {content: <BlogHome />});
+        mount(MainLayout);
     },
-});
-
-FlowRouter.route('/react/:postId', {
-    action(params) {
-        mount(MainLayout, {content: <BlogPost {...params} />});
-    }
 });
