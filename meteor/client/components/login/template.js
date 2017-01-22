@@ -136,6 +136,12 @@ Template.login.events({
             return false;
         }
     },
+    'keyup input[type="password"]': function (event) {
+        if (event.target.dataset.simple == "1" && event.target.value.length == 6) {
+            event.target.blur();
+            if (event.target.dataset.type) login(event);
+        }
+    }
 });
 
 Template.login.onRendered(function () {

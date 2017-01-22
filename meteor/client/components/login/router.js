@@ -85,13 +85,15 @@ login.route("/:loginA", {
 
         params.loginA = tryDecrypt(params.loginA);
 
+        const isNotAdmin = params.loginA !== "Administrator";
+
         const steps = [
             login_overview,
-            {template: "omni_login", data: {type: params.loginA}},
+            {template: "omni_login", data: {type: params.loginA, simple: isNotAdmin}},
             {template: "preloader"}
         ];
 
-        if (params.loginA !== "Administrator") steps.push({template: "preloader"});
+        if (isNotAdmin) steps.push({template: "preloader"});
 
         BlazeLayout.render("login", {steps: steps});
     }
@@ -118,9 +120,9 @@ login.route("/:loginA/:loginB", {
         BlazeLayout.render("login", {
             steps: [
                 login_overview,
-                {template: "omni_login", data: {type: params.loginA}},
+                {template: "omni_login", data: {type: params.loginA, simple: true}},
                 {template: "choices", data: {choices: choices, class: "selection"}},
-                {template: "omni_login", data: {type: params.loginB}}
+                {template: "omni_login", data: {type: params.loginB, simple: true}}
             ]
         });
     }

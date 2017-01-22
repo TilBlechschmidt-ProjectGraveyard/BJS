@@ -10,9 +10,18 @@
                             <div class="item-inner">
                                 <div class="item-title label">{{type}}</div>
                                 <div class="item-input">
-                                    <input type="password" placeholder="Passwort" class="passwort-input"
-                                           name="input-{{type}}"
-                                           data-type="{{type}}">
+                                    {{#if simple}}
+                                        <input type="password" placeholder="Passwort" class="passwort-input"
+                                               pattern="[0-9]*" inputmode="numeric"
+                                               name="input-{{type}}"
+                                               data-type="{{type}}"
+                                               data-simple="1">
+                                    {{else}}
+                                        <input type="password" placeholder="Passwort" class="passwort-input"
+                                               name="input-{{type}}"
+                                               data-type="{{type}}"
+                                               data-simple="0">
+                                    {{/if}}
                                 </div>
                             </div>
                         </li>

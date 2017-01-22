@@ -47,7 +47,7 @@ Template.result.events({
     },
     'click .signCertificate': function (event) {
         const id = event.target.dataset.id;
-        Server.certificate.update(AccountManager.getOutputAccount().account, id);
+        Server.certificates.update(AccountManager.getOutputAccount().account, id);
 
         const athletes = Meteor.reactiveAthletes.get();
         const index = findIndexOfAthlete(athletes, id);
