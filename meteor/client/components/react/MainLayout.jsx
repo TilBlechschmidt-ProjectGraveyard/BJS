@@ -8,7 +8,7 @@ import {Log} from "../../../imports/api/log";
 function generateAthletes() {
     const athletes = {};
 
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 700; i++) {
         let uuid = genUUID();
         athletes[uuid] = new AthleteObj(new Log(), "Klaus" + i, "Schmidt" + i, 1999, true, "Q1y", "0", 20, [], uuid);
     }

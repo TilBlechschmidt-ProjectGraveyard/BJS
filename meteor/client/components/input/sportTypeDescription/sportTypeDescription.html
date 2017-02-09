@@ -20,6 +20,7 @@
 <template name="sportTypeDescriptionsPopup">
     {{#with data}}
         <h5 class="t-center">Einheit: {{unit}}</h5>
+        <h5 class="t-center">Versuche: {{maxAttempts}}</h5>
         {{#with m}}
             <h5 class="t-center">Jungen: {{min}} {{#if not (isEmpty age)}} - {{/if}} {{max}}{{#if not (isEmpty age)}}
                 Jahre{{/if}}</h5>
