@@ -4,6 +4,7 @@
     "name": "Sprint 50m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben.",
     "w": {
       "age": [
@@ -69,6 +70,7 @@
     "name": "Sprint 50m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch und für die Kampfrichterinnen bzw. den Kampfrichter optisch gegeben.",
     "w": {
       "age": [
@@ -134,6 +136,7 @@
     "name": "Sprint 75m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben.",
     "w": {
       "age": [
@@ -193,6 +196,7 @@
     "name": "Sprint 75m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch und für die Kampfrichterinnen bzw. den Kampfrichter optisch gegeben.",
     "w": {
       "age": [
@@ -252,6 +256,7 @@
     "name": "Sprint 100m (Elektronische Zeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben.",
     "w": {
       "age": [
@@ -317,6 +322,7 @@
     "name": "Sprint 100m (Handzeitmessung)",
     "category": 0,
     "unit": "s",
+    "maxAttempts": 1,
     "description": "Beim Sprint kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch und für die Kampfrichterinnen bzw. den Kampfrichter optisch gegeben.",
     "w": {
       "age": [
@@ -382,6 +388,7 @@
     "name": "Ausdauerlauf 800m",
     "category": 1,
     "unit": "min:s",
+    "maxAttempts": 1,
     "description": "Beim Ausdauerlauf kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben. Die Startlinie sollte bei gekrümmten Laufbahnen nachteilsausgleichend gezogen werden.",
     "w": {
       "age": [
@@ -447,6 +454,7 @@
     "name": "Ausdauerlauf 1000m",
     "category": 1,
     "unit": "min:s",
+    "maxAttempts": 1,
     "description": "Beim Ausdauerlauf kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben. Die Startlinie sollte bei gekrümmten Laufbahnen nachteilsausgleichend gezogen werden.",
     "w": {
       "age": [],
@@ -512,6 +520,7 @@
     "name": "Ausdauerlauf 2000m",
     "category": 1,
     "unit": "min:s",
+    "maxAttempts": 1,
     "description": "Beim Ausdauerlauf kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben. Die Startlinie sollte bei gekrümmten Laufbahnen nachteilsausgleichend gezogen werden.",
     "w": {
       "age": [
@@ -575,6 +584,7 @@
     "name": "Ausdauerlauf 3000m",
     "category": 1,
     "unit": "min:s",
+    "maxAttempts": 1,
     "description": "Beim Ausdauerlauf kann aus dem Stand oder mithilfe eines Startblocks gestartet werden. In der Regel hat jede Teilnehmerin bzw. jeder Teilnehmer einen Versuch. Das Startsignal wird für die Teilnehmerinnen und Teilnehmer akustisch gegeben. Die Startlinie sollte bei gekrümmten Laufbahnen nachteilsausgleichend gezogen werden.",
     "w": {
       "age": [
@@ -719,6 +729,7 @@
     "name": "Hochsprung",
     "category": 2,
     "unit": "m",
+    "maxAttempts": -1,
     "description": "Der Hochsprung darf nur über die Latte erfolgen. Der Absprung muss mit einem Fuß ausgeführt werden. Jede Teilnehmerin bzw. jeder Teilnehmer hat für jede Höhe drei Versuche. Es ist freigestellt, bei welcher Höhe begonnen oder ob eine Höhe ausgelassen wird. Ein nachträgliches Zurückgehen auf eine Höhe, die ausgelassen wurde, ist nicht gestattet. Es wird die zuletzt von der Teilnehmerin bzw. dem Teilnehmer gültig übersprungene Höhe gewertet.",
     "w": {
       "age": [
