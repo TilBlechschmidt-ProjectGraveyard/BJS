@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo -e "\e[0m\e[1mCollecting files...\e[90m"
-FILES=$(find . -name '*.js' -print)
+FILES=$(find . -path ./node_modules -prune -o -name '*.js' -print)
 echo -e "\e[0m\e[1mGenerating documentation...\e[90m"
 JSDOC="./node_modules/.bin/jsdoc"
 if [[ ! -x ${JSDOC} ]]; then

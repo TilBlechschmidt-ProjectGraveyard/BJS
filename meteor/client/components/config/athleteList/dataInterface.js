@@ -5,6 +5,7 @@ import {AccountManager} from "../../../../imports/api/accountManagement/AccountM
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
 import {Log} from "../../../../imports/api/log";
+import * as gender from "gender-guess";
 
 export const localGroups = new ReactiveVar([]);
 export const athleteErrorState = new ReactiveVar({});
@@ -78,6 +79,10 @@ export function refreshErrorState(id, firstName, lastName) {
             if (id && athlete.id === id) {
                 athlete.firstName = firstName;
                 athlete.lastName = lastName;
+                if (athlete.isMale === undefined) {
+                    const genderGuess = gender.guess(firstName);
+                    if (genderGuess !== undefined && typeof genderGuess.gender === 'string' && genderGuess.confidence > 0.96) athlete.isMale = genderGuess.gender == "M";
+                }
             }
 
             athlete.check(athleteLog);

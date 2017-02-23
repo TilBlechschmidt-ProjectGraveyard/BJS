@@ -12,14 +12,22 @@ export let s4 = function () {
 };
 
 /**
- * Generates a random table code.
+ * Generates a random admin code.
  * @returns {String}
  */
-export function genRandomCode() {
+export function genRandomAdminCode() {
     //noinspection JSUnresolvedVariable
     return words_de[genRandomInt(0, words_de.length)] +
         genRandomInt(0, 1000) +
         words_de[genRandomInt(0, words_de.length)];
+}
+
+/**
+ * Generates a random table code.
+ * @returns {String}
+ */
+export function genRandomCode() {
+    return genRandomInt(100000, 999999).toString();
 }
 
 /**

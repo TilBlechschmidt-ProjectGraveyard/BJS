@@ -12,7 +12,7 @@
                     {{#each m in measurements}}
                         {{>attempt n=@index measurement=m metadata=metadata showIcon=true}}
                     {{/each}}
-                    {{#if scoreWritePermission metadata}}
+                    {{#if canAddAttempt metadata measurements}}
                         {{>attempt n=(length measurements) measurement=(empty_measurement metadata) metadata=metadata showIcon=false}}
                     {{/if}}
                 </ul>
