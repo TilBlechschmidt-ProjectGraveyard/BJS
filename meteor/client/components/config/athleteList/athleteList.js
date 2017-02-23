@@ -18,7 +18,6 @@ import {
 const startClasses = require('../../../../imports/data/startClasses.json');
 
 const nameFilter = new ReactiveVar([]);
-const groupsIsNotEmpty = new ReactiveVar(true);
 
 Template.athleteList.helpers({
     groups: function () {
@@ -44,7 +43,6 @@ Template.athleteList.helpers({
                 athletes: athletes
             }
         }));
-        groupsIsNotEmpty.set(groups.length != 0);
         return groups;
     },
     readOnly: function () {
@@ -53,7 +51,7 @@ Template.athleteList.helpers({
 });
 Template.config_searchBar.helpers({
     groupsIsNotEmpty: function () {
-        return groupsIsNotEmpty.get();
+        return localGroups.get().length != 0;
     }
 });
 
