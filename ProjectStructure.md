@@ -14,7 +14,7 @@
 │   ├── imports  
 │   ├── public  
 │   ├── server  
-│   └── *.json    
+│   └── \*.json    
 └── setupProject.sh **— Automated project setup script (Linux only)**
 
 ### Meteor folder
