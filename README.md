@@ -32,6 +32,7 @@ meteor
 ```
 
 ## Ordnerstruktur
+Siehe ProjectStructure.md
 
 ## Konzepte
 
