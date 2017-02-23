@@ -25,7 +25,7 @@ meteor
 ├── server **— Server entry point**  
 ├── generate_documentation.sh  **— Script to generate the API documentation (Unix only)**  
 ├── config.json **— Project configuration**   
-└── *.json **— Various configuration files**  
+└── \*.json **— Various configuration files**  
 
 #### Client
 meteor/client  
