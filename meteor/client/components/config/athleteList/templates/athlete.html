@@ -33,18 +33,21 @@
                 <div class="item-title" style="display: inline-block; vertical-align: middle; width: 75%">
                     <p style="margin:0;position:relative;"
                        class="{{#if (eq index 0)}}groupTitle-{{g.id}}{{/if}}">
-                                            <span>
-                                                {{#if readOnly}}
-                                                    {{a.firstName}}&nbsp;{{a.lastName}}
-                                                    {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
-                                                {{else}}
-                                                    <input type="text" class="name-input"
-                                                           style="display: inline-block; width: 100%"
-                                                           value="{{a.getFullName}}" placeholder="Vor-/Nachname"
-                                                           data-id="{{a.id}}">
-                                                {{/if}}
-                                            </span>
-                        <span style="display: none">{{g.name}}</span>
+                        {{#if (and g.collapsed (eq index 0))}}
+                            <span>{{g.name}}</span>
+                        {{else}}
+                            <span>
+                                {{#if readOnly}}
+                                    {{a.firstName}}&nbsp;{{a.lastName}}
+                                    {{#if validAthlete a}}{{>athleteMetaIcons athlete=a}}{{/if}}
+                                {{else}}
+                                    <input type="text" class="name-input"
+                                           style="display: inline-block; width: 100%"
+                                           value="{{a.getFullName}}" placeholder="Vor-/Nachname"
+                                           data-id="{{a.id}}">
+                                {{/if}}
+                            </span>
+                        {{/if}}
                     </p>
                 </div>
                 {{#if not readOnly}}{{#if not g.collapsed}}

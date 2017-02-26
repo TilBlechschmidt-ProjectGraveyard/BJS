@@ -16,7 +16,7 @@
     <div class="list-block accordion-list">
         <ul id="athlete-list-{{g.id}}">
             {{#each a in g.athletes}}
-                {{> config_athlete a=a index=@index readOnly=readOnly}}
+                {{> config_athlete a=a index=@index readOnly=readOnly g=g}}
             {{/each}}
             {{#if not readOnly}}
                 <li class="button-highlight add-athlete collapsible collapse-height-100

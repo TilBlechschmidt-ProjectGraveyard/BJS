@@ -38,7 +38,7 @@ Tracker.autorun(async function () {
                 return;
             }
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
-            addRawAthlete(athlete, true);
+            addRawAthlete(athlete, true, true);
 
             if (inEditMode) {
                 document.getElementsByClassName('modal-title')[0].innerHTML = entry.index + "/" + entry.size;
@@ -134,9 +134,9 @@ export function addAthlete(gid) {
     addRawAthlete(new Athlete(Meteor.config.log, "", "", defaultBirthYear, undefined, lgroups[groupID].name, '0', ct.maxAge, ct, genUUID()));
 }
 
-export function addRawAthlete(athlete, skipWrite) {
+export function addRawAthlete(athlete, skipWrite, hide_new_group = false) {
     let gid;
-    if (!groupExists(athlete.group)) gid = addGroup(athlete.group);
+    if (!groupExists(athlete.group)) gid = addGroup(athlete.group, hide_new_group);
     else gid = getGroupIDByName(athlete.group);
     modifyGroup(gid, function (group) {
         group.athletes.push(athlete);
@@ -189,13 +189,13 @@ export function removeAthlete(id) {
 
 // -------------------- GROUP RELATED FUNCTIONS --------------------
 
-export function addGroup(name) {
+export function addGroup(name, hide_new_group = false) {
     if (groupExists(name)) {
         Meteor.f7.alert("Eine Gruppe mit diesem Namen existiert bereits!", "Fehler");
     } else {
         const lgroups = localGroups.get();
         const id = genUUID();
-        lgroups.push({name: name, athletes: [], collapsed: false, id: id});
+        lgroups.push({name: name, athletes: [], collapsed: hide_new_group, id: id});
         localGroups.set(lgroups);
         refreshErrorState();
         return id;

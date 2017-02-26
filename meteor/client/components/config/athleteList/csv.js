@@ -68,7 +68,7 @@ function importNext(file, dataID, indexes, ct) {
     }
     const data = file.data[dataID];
     const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
-    addRawAthlete(athlete);
+    addRawAthlete(athlete, false, true);
     setTimeout(function () {
         importNext(file, dataID + 1, indexes, ct);
     }, 10);
