@@ -3,7 +3,15 @@ import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 import {getContestTypeByID} from "../../../imports/api/logic/contestType";
 import {updateSwiperProgress} from "../login/router";
-import {codesClean, clearACs, getContestName, loginStations, loginGroups, loginCustom} from "./accessCodes/accessCodes";
+import {
+    codesClean,
+    clearACs,
+    getContestName,
+    loginStations,
+    loginGroups,
+    loginCustom,
+    accessCodes
+} from "./accessCodes/accessCodes";
 import {showIndicator, hideIndicator} from "../helpers";
 import {parseCSVFile} from "./athleteList/csv";
 
@@ -161,8 +169,52 @@ Template.config.events({
             return false;
         });
     },
-    'click .print-button': function (event) {
-        window.print();
+    'click .print-button-txt': function (event) {
+        const acs = accessCodes.get();
+        console.log(acs);
+
+        let content = "Zugangscodes:\n";
+
+        for (let g in acs) {
+            if (!acs.hasOwnProperty(g)) continue;
+            const g_data = acs[g];
+
+            if (g_data["codes"].length > 0) {
+                content += "\n" + g_data["name"] + "\n";
+                for (let ac in g_data["codes"]) {
+                    if (!g_data["codes"].hasOwnProperty(ac)) continue;
+                    content += g_data["codes"][ac]["name"] + ": " + g_data["codes"][ac]["code"] + "\n";
+                }
+            }
+        }
+
+        const uriContent = "data:text/plain;charset=utf-8," + encodeURIComponent(content);
+        window.open(uriContent, 'Zugangscodes.txt');
+    },
+    'click .print-button-html': function (event) {
+        const acs = accessCodes.get();
+        console.log(acs);
+
+        let content = "<html><head><style>tr:nth-of-type(even){background-color:#eee;}</style></head><body onload='setTimeout(window.print, 500);'><font face='Ubuntu'><h1>Zugangscodes</h1>";
+
+        for (let g in acs) {
+            if (!acs.hasOwnProperty(g)) continue;
+            const g_data = acs[g];
+
+            if (g_data["codes"].length > 0) {
+                content += "<br><h3>" + g_data["name"] + "</h3><table style='width:100%'>";
+                for (let ac in g_data["codes"]) {
+                    if (!g_data["codes"].hasOwnProperty(ac)) continue;
+                    content += "<tr><td style='width: 60%'>" + g_data["codes"][ac]["name"] + "</td><td style='width: 40%'>" + g_data["codes"][ac]["code"] + "</td></tr>";
+                }
+                content += "</table>";
+            }
+        }
+
+        content += "</font></body></html>";
+
+        const uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(content);
+        window.open(uriContent, 'Zugangscodes.txt');
     },
     'click .download-button': function (event) {
         Blaze.saveAsPDF(Template.codes_print,{
