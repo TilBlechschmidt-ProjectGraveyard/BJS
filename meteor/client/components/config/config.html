@@ -67,7 +67,15 @@
                             {{>contestList title="Konfigurierte Wettkämpfe" contests=contests.readOnly readOnly=true}}
                             {{>contestList title="Unvollständige Wettkämpfe" contests=contests.writable}}
                             <div class="content-block">
-                                <p style="text-align: center;">Dieser Server ist erreichbar unter: <br />{{#each ServerIPList}}{{this}}:3000{{#if eq (dec (length ServerIPList)) @index}}{{else}} | {{/if}}{{/each}}</p>
+                                {{#if isEmpty ServerIPList}}
+                                    <p style="text-align: center;">Dieser Server hat keine Netzwerkverbindung.<br/>Verbinden
+                                        Sie
+                                        den Server mit einem Netzwerk, damit sich Benutzer verbinden können.</p>
+                                {{else}}
+                                    <p style="text-align: center;">Dieser Server ist erreichbar unter: <br/>{{#each
+                                            ServerIPList}}{{this}}:3000{{#if eq (dec (length ServerIPList))
+                                                                             @index}}{{else}} | {{/if}}{{/each}}</p>
+                                {{/if}}
                             </div>
                         </div>
                         <div class="swiper-slide">
