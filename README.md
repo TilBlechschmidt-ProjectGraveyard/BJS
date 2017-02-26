@@ -32,7 +32,7 @@ meteor
 ```
 
 ## Ordnerstruktur
-Siehe ProjectStructure.md
+Siehe [ProjectStructure.md](https://github.com/TheMegaTB/BJS/blob/master/ProjectStructure.md)
 
 ## Konzepte
 
