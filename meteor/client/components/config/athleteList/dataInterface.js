@@ -1,6 +1,5 @@
 import {currentCompID, forwardIcon, editMode} from "../config";
 import {Server} from "../../../../imports/api/database/ServerInterface";
-import {showIndicator, hideIndicator} from "../../helpers";
 import {AccountManager} from "../../../../imports/api/accountManagement/AccountManager";
 import {Athlete} from "../../../../imports/api/logic/athlete";
 import {genUUID} from "../../../../imports/api/crypto/pwdgen";
@@ -23,16 +22,17 @@ Tracker.autorun(async function () {
         return editMode.get()
     });
     if (compID) {
-        if (inEditMode) Meteor.f7.showPreloader("Daten laden");
-        else showIndicator();
+        // if (inEditMode)
+        Meteor.f7.showPreloader("Daten laden");
+        // else showIndicator();
         //noinspection JSCheckFunctionSignatures
         localGroups.set([]);
 
         if (asyncUUID) Server.cancelAsyncRequest(asyncUUID);
 
         asyncUUID = await Server.athletes.getAsync(AccountManager.getAdminAccount().account, compID, false, false, function (athlete, last, entry) {
-            if (entry.index == 0 && !inEditMode)
-                hideIndicator();
+            // if (entry.index == 0 && !inEditMode)
+            //     hideIndicator();
             if (athlete === false) {
                 Meteor.f7.alert("Es ist ein Fehler beim Laden der Athleten aufgetreten!", "Fehler");
                 return;
@@ -40,15 +40,15 @@ Tracker.autorun(async function () {
             athlete = Athlete.fromObject(Meteor.config.log, athlete);
             addRawAthlete(athlete, true, true);
 
-            if (inEditMode) {
+            // if (inEditMode)
                 document.getElementsByClassName('modal-title')[0].innerHTML = entry.index + "/" + entry.size;
-            }
 
             if (last)
                 refreshErrorState();
         }, function (entry) {
-            if (entry.size == 0) hideIndicator();
-            if (inEditMode) Meteor.f7.hidePreloader();
+            // if (entry.size == 0) hideIndicator();
+            // if (inEditMode)
+            Meteor.f7.hidePreloader();
         });
     }
 });
