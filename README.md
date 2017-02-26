@@ -41,19 +41,20 @@ RunItEasy besteht aus verschiedenen Komponenten, die sich alle in der oben besch
 ### Server
 
 Zunächst befinden sich alle serverseitigen Funktionen im meteor/server Ordner. Besonders zu beachten ist meteorCalls.js.
- Hier werden alle Funktionen definiert, die vom client aufgerufen werden können. Alle Daten werden verschlüsselt übertragen.
- Deshalb gibt es zwei wrapper: runServerFunction für normale Aufrufe und runAsync für asyncrone Aufrufe. Sie übernehmen das entschlüsseln
- der empfangenen Daten sowie das verschlüsseln der zu versendenen Daten.  
+ Hier werden alle Funktionen definiert, die vom Client aufgerufen werden können. Alle Daten werden verschlüsselt übertragen.
+ Deshalb gibt es zwei Wrapper: runServerFunction für normale Aufrufe und runAsync für asyncrone Aufrufe. Sie übernehmen das Entschlüsseln
+ der empfangenen Daten sowie das Verschlüsseln der zu versendenen Daten. Um neue server funcions hinzuzufügen muss man sich daher
+   nicht um eine sichere Verbindung kümmern.
 
 ### Client
 
-Im meteor/client Ordner befinden sich alle Daten, die nur der Client braucht. Dazu gehört das design der Website sowie die
-damit verbundenen Verarbeitung von Eingaben.
+Im meteor/client Ordner befinden sich alle Daten, die nur der Client braucht. Dazu gehört das Design der Website sowie die
+damit verbundenen Verarbeitung von Eingaben und die Vorbereitung der Ausgabe.
 
 Der allgemeine Aufbau einer Seite ist in head.html und body.html definiert. 
 Allgemeine styles sind im styles Ordner zusammengefasst
 
-Alle Popups, die von verschiedenen Seiten aus geöffnet werden sollen sind
+Alle Popups, die von verschiedenen Seiten aus geöffnet werden sollen, sind
 im popups Ordner definiert.
 
 Im lib Ordner sind alle notwendigen Bibliotheken gespeichert, die nicht mit npm installiert werden
@@ -64,30 +65,39 @@ Der eigentliche Inhalt der Seite liegt im components Order. Hier gibt es für je
   
 ### Imports
 
-Einer der wichtigsten Ordner ist der imports Ordner. Hier liegt die ganze logic, die für die Ausertung, Berechnung, Verschlüsselung zuständig ist.
+Einer der wichtigsten Ordner ist der imports Ordner. Hier liegt die ganze Logic, die für die Auswertung, Berechnung und Verschlüsselung zuständig ist.
   
 Im api Ordner gibt es verschiedenen Module. Diese sind
    
-#### accountManagement
-Ein Modul, das es einfach macht angemeldete User zu verwalten. Wird momentan nur Clientseitig benutzt.
+#### AccountManagement
+Ein Modul, das es einfach macht angemeldete User zu verwalten. Wird momentan nur clientseitig benutzt.
   Kann aber auch serverseitig verwendet werden.
-#### crypto
-Hier sind alle functionen definiert, die für die verschlüsselung notwendig sind.
-#### database
+#### Crypto
+Hier sind alle Functionen definiert, die für die Verschlüsselung notwendig sind.
+#### Database
  Die Datenbank ist so aufgebaut, dass für jeden Wettkampf eine Datenbank erstellt wird. Jede Datenbank enthällt die collections
- accounts und athletes. Jeweils repräsentiert duch eine datei in database/collections. Um Wettkampfspezifische Collections zu erstellen gibt es die Funktion
+ "accounts" und "athletes". Jeweils repräsentiert durch eine Datei in database/collections. Um wettkampfspezifische Collections zu erstellen gibt es die Funktion
   ContestCollection in collections/collections.js 
   
- Für allgemeine Daten gibt es die generic und die contests collection. Für Wettkapfunabhängige Collections gibt es die funktion Collection in collections/collections.js
+ Für allgemeine Daten gibt es die generic und die contests collection. Für wettkapfunabhängige Collections gibt es die Funktion Collection in collections/collections.js
   
- 
  Um mit der Datenbank zu interagieren gibt es sowohl auf dem client als auch auf dem server das globale object Meteor.COLLECTIONS.
-
-### logic
-
-im api/logic order befindet sich alles, um athleten zu verwalten und ihre punkte zu berechnen. Um die verschiedenen Wettbewerbstype zu 
+ 
+ Ein Client verbindet sich beim Laden der Seite automatisch mit allen wettkapfunabhängige Collections und mit der aktuellen
+  wettkampfspezifische Collections. Das heißt der Client kann auf alle Informationen aus dem aktuellen Wettkampf nicht
+   aber auf Informationen anderer Wettkämpfe zugreifen. Die Collections Objekte haben ein handle member, über den die
+   Collection erreicht werden kann.
   
-Im data Ordner befinden sich 
+ Der Server verbindet sich mit allen Collections. Es gibt aber auch für die wettkampfspezifische Collections jeweils
+  nur ein Collection Objekte. Intern wird aber eine Liste mit allen handels verwaltet. Mit der member fuction switch
+   kann man dann den aktuellen handle wechseln, so dass anschließend alle Datenbankzugriffe auf die neue Collection zugreifen.
+   Um alle wettkampfspezifische Collections gleichzeitig zu wechseln kann Meteor.COLLECTIONS.switch verwendet werden.
+
+### Logic
+
+im api/logic order befindet sich alles, um Athleten zu verwalten und ihre Punkte zu berechnen. Um die verschiedenen Wettbewerbstypen
+abzudecken wird eine Pluginstruktur verwendet. Jede Wettkampfart ist in logic/contestTypes in Form einer Datei vorhanden.
+Alle Plugins müssen in logic/contestType.js registriert werden. Daten wie Punktetabellen werden im imports/data Ordner gespeichert.
 
 
 ## Unit testing
