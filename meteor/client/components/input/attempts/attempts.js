@@ -10,7 +10,6 @@ Template.attempts.helpers({
     },
     canAddAttempt: function (metadata, measurements) {
         const maxAttempts = metadata.maxAttempts !== undefined ? metadata.maxAttempts : 3;
-        console.log("maxAttempts: " + maxAttempts + "; melen: " + measurements.length);
         return metadata.write_permission &&
             (measurements.length < maxAttempts || maxAttempts == -1);
     }

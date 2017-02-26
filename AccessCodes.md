@@ -1,44 +1,47 @@
 # Zugangscodes
 ## Zugangscodes für Gruppen
-* UIIIb
-    * Schal794Menge
-* UIIIa
-    * Ton897Vieh
-* OIIIb
-    * Kinn13Horn
-* OIIIa
-    * Hier968Kalb
-* IVb
-    * Stolpe278Idee
-* IVa
-    * Fisch799V
-* Vb
-    * Grosny21Jutta
-* Va
-    * ARD865Paare
-* VIb
-    * Doktor375Dialog
-* VIa
-    * Mars456Kohl
 
-## Zugangscodes für Stationen
-
-* Sprint
-    * Airbus637Horn
-* Ausdauerlauf
-    * Songs836Nabel
-* Weitsprung
-    * Proben912Signal
-* Hochsprung
-    * Datei155Sogar
-* Wurf
-    * Lyrik205BDI
-* Kugelstoßen
-    * EG367Wasser
-
-
+ * UIIIb
+     * 742976
+ * UIIIa
+     * 514403
+ * OIIIb
+     * 394824
+ * OIIIa
+     * 986092
+ * IVb
+     * 165640
+ * IVa
+     * 771735
+ * Vb
+     * 265309
+ * Va
+     * 674054
+ * VIb
+     * 300052
+ * VIa
+     * 177029
+ 
+ ## Zugangscodes für Stationen
+ 
+ * Sprint
+     * 999004
+ * Ausdauerlauf
+     * 938795
+ * Weitsprung
+     * 174641
+ * Hochsprung
+     * 560520
+ * Wurf
+     * 785487
+ * Kugelstoßen
+     * 598824
+ 
 ## Zugangscodes für Urkundenerstellung
-* Nach406Freien
+ 
+ * Urkundenzugang
+     * 150612
+
 
 # Passworterzeugung
 ## Wörterlisten

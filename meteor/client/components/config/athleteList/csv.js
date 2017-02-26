@@ -60,6 +60,22 @@ function importDisabled() {
     return CurrentParsedFile.get() == undefined;
 }
 
+
+function importNext(file, dataID, indexes, ct) {
+    if (!file.data.hasOwnProperty(dataID)) {
+        Meteor.f7.hidePreloader();
+        return;
+    }
+    const data = file.data[dataID];
+    const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
+    addRawAthlete(athlete);
+    setTimeout(function () {
+        importNext(file, dataID + 1, indexes, ct);
+    }, 10);
+    document.getElementsByClassName('modal-title')[0].innerHTML = (dataID + 1) + "/" + file.data.length;
+}
+
+
 Template.csvImport.events({
     'change input[type=file]#csv-upload': function (event) {
         parseCSVFile(event.target.files[0]); //only one file is allowed
@@ -79,12 +95,14 @@ Template.csvImport.events({
         const indexes = CurrentSelectedIndexes.get();
         const ct = getCt();
 
-        for (let dataID in file.data) {
-            if (!file.data.hasOwnProperty(dataID)) continue;
-            const data = file.data[dataID];
-            const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
-            addRawAthlete(athlete);
-        }
+        Meteor.f7.showPreloader("Daten importieren");
+        importNext(file, 0, indexes, ct);
+        // for (let dataID in file.data) {
+        //     if (!file.data.hasOwnProperty(dataID)) continue;
+        //     const data = file.data[dataID];
+        //     const athlete = processCSVAthlete(data, file.meta.fields, indexes, ct);
+        //     addRawAthlete(athlete);
+        // }
         Meteor.f7.closeModal(".popup-csv-import");
     }
 });
@@ -108,7 +126,6 @@ Template.csvImport.helpers({
         const file = CurrentParsedFile.get();
         const indexes = CurrentSelectedIndexes.get();
         if (!file || file.data.length == 0) return {};
-
         return processCSVAthlete(file.data[0], file.meta.fields, indexes, getCt());
     },
     'genderString': function (isMale) {
