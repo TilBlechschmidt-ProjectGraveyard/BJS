@@ -171,7 +171,6 @@ Template.config.events({
     },
     'click .print-button-txt': function (event) {
         const acs = accessCodes.get();
-        console.log(acs);
 
         let content = "Zugangscodes:\n";
 
@@ -193,7 +192,6 @@ Template.config.events({
     },
     'click .print-button-html': function (event) {
         const acs = accessCodes.get();
-        console.log(acs);
 
         let content = "<html><head><style>tr:nth-of-type(even){background-color:#eee;}</style></head><body onload='setTimeout(window.print, 500);'><font face='Ubuntu'><h1>Zugangscodes</h1>";
 
