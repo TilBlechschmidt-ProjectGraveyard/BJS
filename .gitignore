@@ -14,3 +14,19 @@ fakeCSV/*.csv
 .DS_Store
 
 BJS.zip
+
+# Latex compiled files
+_minted-*
+*.bbl
+*.blg
+*.lol
+*.dvi
+*.fdb_latexmk
+*.fls
+*.aux
+*.lof
+*.log
+*.out
+*.gz
+*.toc
+*.lot
