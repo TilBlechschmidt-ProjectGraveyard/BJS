@@ -34,8 +34,9 @@ echo -e "\e[0m\e[1mCopying developer documentation ...\e[90m"
 cp -r ../docs/* ${TARGET}/docs/developer
 
 # User docs
-echo -e "\e[0m\e[1mDownloading user documentation ...\e[90m"
-curl "https://docs.google.com/document/export?format=pdf&id=${USER_DOC_ID}" > ${TARGET}/docs/user/BJS.pdf
+# echo -e "\e[0m\e[1mDownloading user documentation ...\e[90m"
+# curl "https://docs.google.com/document/export?format=pdf&id=${USER_DOC_ID}" > ${TARGET}/docs/user/BJS.pdf
+cp ../userDoc/UserManual.pdf ${TARGET}/docs/user/BJS.pdf
 
 # Meteor build
 for arch in "${ARCHS[@]}"; do
