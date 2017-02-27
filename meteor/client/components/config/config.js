@@ -3,15 +3,7 @@ import {Log} from "../../../imports/api/log";
 import {AccountManager} from "../../../imports/api/accountManagement/AccountManager";
 import {getContestTypeByID} from "../../../imports/api/logic/contestType";
 import {updateSwiperProgress} from "../login/router";
-import {
-    codesClean,
-    clearACs,
-    getContestName,
-    loginStations,
-    loginGroups,
-    loginCustom,
-    accessCodes
-} from "./accessCodes/accessCodes";
+import {codesClean, clearACs, accessCodes} from "./accessCodes/accessCodes";
 import {showIndicator, hideIndicator} from "../helpers";
 import {parseCSVFile} from "./athleteList/csv";
 
@@ -212,18 +204,7 @@ Template.config.events({
         content += "</font></body></html>";
 
         const uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(content);
-        window.open(uriContent, 'Zugangscodes.txt');
-    },
-    'click .download-button': function (event) {
-        Blaze.saveAsPDF(Template.codes_print,{
-            filename: "Zugangscodes_BJS.pdf",
-            data: {
-                contest_name: getContestName,
-                login_stations: loginStations(),
-                login_groups: loginGroups(),
-                login_custom: loginCustom
-            },
-        });
+        window.open(uriContent, 'Zugangscodes.html');
     },
     'drop .csv-dropzone': function drop_handler(event) {
         event.preventDefault();
