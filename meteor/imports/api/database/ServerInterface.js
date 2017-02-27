@@ -134,16 +134,18 @@ export let Server = {
          * @param {function} callback - The callback
          */
         waitForReady: function (callback) {
+            let c = 0;
+            const r = function () {
+                c += 1;
+                if (c == 4) callback();
+            };
+
+
             // TODO Replace w/ waterfall
-            Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-                Meteor.COLLECTIONS.Contests.onReady(function () {
-                    Meteor.COLLECTIONS.Accounts.onReady(function () {
-                        Meteor.COLLECTIONS.Athletes.onReady(function () {
-                            callback();
-                        });
-                    });
-                });
-            });
+            Meteor.COLLECTIONS.Generic.onReady(r);
+            Meteor.COLLECTIONS.Contests.onReady(r);
+            Meteor.COLLECTIONS.Accounts.onReady(r);
+            Meteor.COLLECTIONS.Athletes.onReady(r);
         },
     },
 

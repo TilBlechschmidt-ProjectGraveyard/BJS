@@ -29,17 +29,17 @@ export function Collection(name, publicationFunction) {
 
     col.onReady = function (callback) {
         const c = function () {
-            Meteor.dbReady[col.name] = true;
-            if (typeof callback === 'function') callback();
-        };
-        if (Meteor.isClient && !Meteor.dbReady[col.name]) {
-            if (!Meteor.dbReady[col.name]) {
-                col.ground.once("loaded", c);
+            if (col.handle.findOne() !== undefined) {
+                Meteor.dbReady[col.name] = true;
+                if (typeof callback === 'function') callback();
             } else {
-                c();
+                setTimeout(c, 100);
             }
-        } else {
+        };
+        if (Meteor.isServer || Meteor.dbReady[col.name]) {
             c();
+        } else {
+            col.ground.once("loaded", c);
         }
     };
     col.onReady();
@@ -78,9 +78,18 @@ export function ContestCollection(name, publicationFunction) {
             Meteor.dbReady[col.basename] = true;
             if (typeof callback === 'function') callback();
         };
+        const d = function () {
+            if (Meteor.dbReady[col.basename]) {
+                c();
+            } else if (col.ground === undefined) {
+                setTimeout(d, 100);
+            } else {
+                col.ground.once("loaded", c);
+            }
+        };
         if (Meteor.isClient && !Meteor.dbReady[col.basename]) {
             if (!Meteor.dbReady[col.basename]) {
-                col.ground.once("loaded", c);
+                d();
             } else {
                 c();
             }
