@@ -102,6 +102,10 @@ async function runAsyncServerFunction(name, account, data, callback, doneCallbac
  */
 export let Server = {
 
+    /**
+     * Cancels an async server function.
+     * @param id
+     */
     cancelAsyncRequest: function (id) {
         // Interrupt server
         asyncServerFunctionChannel.emit('interrupt', id);
@@ -134,16 +138,18 @@ export let Server = {
          * @param {function} callback - The callback
          */
         waitForReady: function (callback) {
+            let c = 0;
+            const r = function () {
+                c += 1;
+                if (c == 4) callback();
+            };
+
+
             // TODO Replace w/ waterfall
-            Meteor.COLLECTIONS.Generic.onReady(function () { //TODO automate for all collections
-                Meteor.COLLECTIONS.Contests.onReady(function () {
-                    Meteor.COLLECTIONS.Accounts.onReady(function () {
-                        Meteor.COLLECTIONS.Athletes.onReady(function () {
-                            callback();
-                        });
-                    });
-                });
-            });
+            Meteor.COLLECTIONS.Generic.onReady(r);
+            Meteor.COLLECTIONS.Contests.onReady(r);
+            Meteor.COLLECTIONS.Accounts.onReady(r);
+            Meteor.COLLECTIONS.Athletes.onReady(r);
         },
     },
 
@@ -170,15 +176,6 @@ export let Server = {
             runServerFunction('certificateUpdate', account, {id: id}, callback);
         },
 
-        // /**
-        //  * Generates certificates for the current contest
-        //  * @param {Account} account - Output account
-        //  * @param {object[]} athleteIDs - List of athlete ids
-        //  * @param [callback] - optional callback
-        //  */
-        // generate: function (account, athleteIDs, callback) {
-        //     runServerFunction('generateCertificates', account, {athleteIDs: athleteIDs}, callback);
-        // },
         /**
          * Generates certificates for the current contest
          * @param {Account} account - Output account

@@ -44,12 +44,9 @@
                         </a>
                         {{#if printButtonShown}}
                             <a href="#" class="print-button-txt t-left fade fade-in">
-                                <i class="f7-icons">document_text</i>
-                            </a>
-                            <a href="#" class="print-button-html t-left fade fade-in">
                                 <i class="f7-icons">document_text_fill</i>
                             </a>
-                            <a href="#" class="download-button t-left fade fade-in">
+                            <a href="#" class="print-button-html t-left fade fade-in">
                                 <i class="f7-icons">download</i>
                             </a>
                         {{else}}
@@ -76,7 +73,7 @@
                                         den Server mit einem Netzwerk, damit sich Benutzer verbinden können.</p>
                                 {{else}}
                                     <p style="text-align: center;">Dieser Server ist erreichbar unter: <br/>{{#each
-                                            ServerIPList}}{{this}}:3000{{#if eq (dec (length ServerIPList))
+                                            ServerIPList}}{{this}}:8080{{#if eq (dec (length ServerIPList))
                                                                              @index}}{{else}} | {{/if}}{{/each}}</p>
                                 {{/if}}
                             </div>
