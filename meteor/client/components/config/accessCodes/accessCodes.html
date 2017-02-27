@@ -18,10 +18,6 @@
             {{/if}}
         {{/each}}
     </div>
-
-    <div class="printcontent">
-        {{>codes_print contest_name=get_contest_name login_stations=login_stations login_groups=login_groups login_custom=login_custom}}
-    </div>
 </template>
 
 <template name="addCode">
@@ -120,77 +116,5 @@
                                                                                                        style="font-size: 17px; padding-right: 5px;">close_round</i></span>
             {{/if}}
         </div>
-    </div>
-</template>
-
-<template name="codes_print">
-    <div class="printcontent-content">
-        <h1 align="center">{{contest_name}}: Zugangscodes</h1>
-
-    {{#if hasData login_groups}}
-        <br />
-        <br />
-        <br />
-        <div class="print-password-title">Gruppenlogins</div>
-        <br />
-        <table class="print-password-table">
-            <tr class="print-block-header">
-                <th><p class="print-name-subtitle" align="left">Zugang</p></th>
-                <th><p class="print-password-subtitle" align="right">Passwort</p></th>
-            </tr>
-            {{#each l in login_groups}}
-                <tr class="print-block-content">
-                    <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
-                    <td class="print-password-field">{{#with l}}{{code}}{{/with}}</td>
-                </tr>
-            {{/each}}
-        </table>
-    {{/if}}
-
-        {{#if hasData login_stations}}
-            <br />
-            <br />
-            <br />
-            <div class="print-password-title">Stationslogins</div>
-            <br />
-            <table class="print-password-table full-width">
-                <tbody>
-                <tr class="print-block-header">
-                    <th><p class="print-name-subtitle" align="left">Zugang</p></th>
-                    <th><p class="print-password-subtitle" align="right">Passwort</p></th>
-                </tr>
-                {{#each l in login_stations}}
-                    <tr class="print-block-content">
-                        <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
-                        <td class="print-password-field">{{#with l}}{{code}}{{/with}}</td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        {{/if}}
-
-        {{#if hasData login_custom}}
-            <br />
-            <br />
-            <br />
-            <div class="print-password-title">Eigene logins</div>
-            <br />
-            <table class="print-password-table">
-                <tbody>
-                <tr class="print-block-header">
-                    <th><p class="print-name-subtitle" align="left">Zugang</p></th>
-                    <th><p class="print-password-subtitle" align="right">Passwort</p></th>
-                </tr>
-                {{#each l in login_custom}}
-                    <tr class="print-block-content">
-                        <td class="print-name-field">{{#with l}}{{#with account}}{{name}}{{/with}}{{/with}}</td>
-                        <td class="print-password-field">{{#with l}}{{code}}{{/with}}</td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        {{/if}}
-
-
     </div>
 </template>
